@@ -29,6 +29,8 @@ audit_root = File.expand_path("../diagnostics/quiz-factual-audit-220", root)
 recovery_root = File.expand_path("../diagnostics/quiz-recovery-audit-after-221", root)
 recovery_payload = JSON.parse(File.read(File.join(recovery_root, "ALL_RECHECK_DECISIONS.json"), encoding: "UTF-8"))
 recovery_rows = recovery_payload.fetch("decisions")
+forum_corrections = JSON.parse(File.read(File.join(root, 'docs/QUIZ_FORUM_CORRECTIONS_239.json'), encoding: 'UTF-8'))
+semantic_corrections = JSON.parse(File.read(File.join(root, 'docs/QUIZ_SEMANTIC_CORRECTIONS_239.json'), encoding: 'UTF-8')).fetch('changes')
 
 definitions = {
   "quiz.general.en" => {
@@ -80,13 +82,26 @@ definitions.each do |pack_id, definition|
   expected = decisions.reject { |row| row.fetch("decision") == "remove" }.map { |row| row.fetch("reviewed") } +
     pack_rechecks.select { |row| row.fetch("decision") == "restore" }.map { |row| row.fetch("reviewed") }
   actual = definition.fetch(:questions).call
-  assert(actual.map { |row| row.fetch("id") }.sort == expected.map { |row| row.fetch("id") }.sort,
-    "#{pack_id} data do not match retained audit decisions")
   expected_by_id = expected.to_h { |row| [row.fetch("id"), row] }
+  forum_corrections.fetch(pack_id, []).each do |change|
+    assert(expected_by_id.fetch(change.fetch('id')) == change.fetch('before'), 'Forum correction lost its audited baseline')
+    expected_by_id[change.fetch('id')] = change.fetch('after')
+  end
+  semantic_corrections.select { |row| row.fetch('pack_id') == pack_id }.each do |change|
+    id = change.fetch('id')
+    assert(expected_by_id.fetch(id) == change.fetch('before'), 'Semantic correction lost its audited baseline')
+    if change.fetch('after')
+      expected_by_id[id] = change.fetch('after')
+    else
+      expected_by_id.delete(id)
+    end
+  end
+  assert(actual.map { |row| row.fetch('id') }.sort == expected_by_id.keys.sort,
+    "#{pack_id} data do not match retained audit decisions and subsequent corrections")
   actual.each do |question|
     assert(question == expected_by_id.fetch(question.fetch("id")), "#{pack_id} differs from its reviewed decision")
     options = [question.fetch("correct"), *question.fetch("wrong")]
-    normalized = options.map { |answer| answer.to_s.unicode_normalize(:nfkc).strip.downcase }
+    normalized = options.map { |answer| UnicodeNormalize.normalize(answer.to_s, :nfkc).strip.downcase }
     assert(normalized.uniq.length == normalized.length, "#{pack_id} has duplicate answers for #{question.fetch('id')}")
   end
 
@@ -120,7 +135,7 @@ assert(all_original_ids.length == 50_574, "the audit does not cover all 50,574 o
 witcher = GameRoomContent::WitcherPolishMediumData.load
 retained_witcher = definitions.fetch("quiz.witcher.pl").fetch(:questions).call
 retained_ids = retained_witcher.map { |question| question.fetch("id") }
-assert(witcher.fetch("version") == 4, "the Witcher medium map was not advanced to version 4")
+assert(witcher.fetch("version") == 6, "the Witcher medium map was not advanced to version 6")
 assert(witcher.fetch("media").keys.sort == retained_ids.sort, "the Witcher medium map does not cover the retained source")
 assert(witcher.fetch("media").values.all? { |code| %w[g b s].include?(code) }, "the Witcher medium map has an invalid code")
 

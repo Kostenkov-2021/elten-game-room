@@ -226,6 +226,13 @@ probe.frame
 probe.frame((mapping.keys * 12).flat_map { |code| probe.tap(code) })
 assert(GameRoomAudioBall::Keyboard.frame.length == 32 && probe.input.length == 32,
   'native metadata/pending input exceeded the existing bound')
+assert(GameRoomAudioBall::Keyboard.frame.changes.length == 64 && GameRoomAudioBall::Keyboard.frame.reset,
+  'ordered defence changes exceeded their bound or retained pre-overflow held state')
+assert(probe.field.take_defense_input[:changes].length == 64, 'field defence queue exceeded its bound')
+probe = AudioBallKeyboardProbe.new
+probe.frame(Array.new(64) { [0x53, false] }, held: [0x44])
+assert(GameRoomAudioBall::Keyboard.frame.changes.length == 64 && GameRoomAudioBall::Keyboard.frame.reset,
+  'raw fallback appended an unbounded change after ordered releases')
 assert(GameRoomAudioBall::Keyboard.frame.all? { |code, modified| mapping.key?(code) && [true, false, nil].include?(modified) },
   'observer retained raw keyboard snapshots instead of just controls/modifier flags')
 ancestors = EltenAPI::KeyboardState.singleton_class.ancestors

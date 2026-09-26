@@ -14,7 +14,7 @@ class TranslatedPointSound
   def close; pause; end
 end
 
-%w[lib/audio_ball/audio.rb lib/audio_ball/point_audio.rb lib/axel_pong/audio.rb].each do |name|
+%w[lib/audio_ball/audio.rb lib/audio_ball/point_audio.rb lib/realtime/score_announcements.rb].each do |name|
   path = File.join(BinaryRulesLoad::ROOT, name)
   raise "Point audio bypassed binary source loading: #{name}" unless BinaryRulesLoad.instance_variable_get(:@loaded)[path]
 end
@@ -68,7 +68,7 @@ game = GameRoomGames::AudioBall.new
   expected = language == :pl ? 'Drugi set.' : 'Second set.'
   raise "Missing #{language} queued ordinal" unless $spoken_messages.last == expected
   raise "Invalid #{language} queued speech encoding" unless $spoken_messages.all? { |text| text.encoding == Encoding::UTF_8 && text.valid_encoding? }
-  label = game.option_definitions.last.label
+  label = game.option_definitions.find { |definition| definition.key == 'sets_to_win' }.label
   raise "Missing #{language} match-length option" unless label == (language == :pl ? 'Sety do zwycięstwa' : 'Sets to win')
   labels = game.option_definitions.find { |definition| definition.key == 'difficulty' }.choices.map(&:label)
   expected = language == :pl ? ['Bardzo łatwy', 'Łatwy', 'Normalny', 'Trudny', 'Bardzo trudny'] : ['Very easy', 'Easy', 'Normal', 'Hard', 'Very hard']

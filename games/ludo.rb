@@ -50,7 +50,8 @@ module GameRoomGames
 
     def option_definitions
       [
-        OptionDefinition.new(key: "enter_on_six", label: _("A 6 is required to leave the base"), kind: :boolean, default: true),
+        OptionDefinition.new(key: "enter_on_six", label: _("A 6 allows leaving the base"), kind: :boolean, default: true),
+        OptionDefinition.new(key: "enter_on_one", label: _("A 1 allows leaving the base"), kind: :boolean, default: true),
         OptionDefinition.new(key: "extra_on_six", label: _("Roll again after a 6"), kind: :boolean, default: true),
         OptionDefinition.new(key: "exact_finish", label: _("An exact roll is required to reach the finish"), kind: :boolean, default: true),
         OptionDefinition.new(key: "three_sixes", label: _("Three consecutive sixes lose the turn"), kind: :boolean, default: true),
@@ -62,6 +63,14 @@ module GameRoomGames
       normalize_options(options) == default_options ? _("classic rules; four pawns per player") : _("custom rules; four pawns per player")
     end
 
+    def options_from_json(value)
+      parsed = value.to_s.empty? ? {} : JSON.parse(value.to_s)
+      parsed = {} unless parsed.is_a?(Hash)
+      normalize_options({"enter_on_one" => false}.merge(parsed))
+    rescue JSON::ParserError
+      normalize_options("enter_on_one" => false)
+    end
+
     def rule_sections
       # Generated from docs/rulebooks/ludo.json; see tools/compile-rulebooks.rb.
       [
@@ -71,12 +80,14 @@ module GameRoomGames
         rule_section(:roll, GameRoomRules.translate("A roll gives one pawn a move"),
           GameRoomRules.translate("Roll the die, then use its whole result for one pawn. You cannot split the number between pawns. When several pawns can move, choose one of the offered destinations. When only one can move, the program moves it automatically. If no pawn can move, your turn normally ends."),
           GameRoomRules.translate("Landing on an opponent's pawn sends it back to its base, unless the square is one of the four safe entry squares. Pawns on those entry squares cannot be captured. With blockades enabled, two opposing pawns sharing a track square also stop you from moving through or landing there. Your own pair does not block your other pawns; bringing a pawn out of the base is treated separately.")),
-        rule_section(:options, GameRoomRules.translate("What the five checkboxes change"),
-          GameRoomRules.translate("A 6 is required to leave the base is on by default. A six lets you place a pawn on its entry square; it does not then advance another six squares. With this option off, any roll lets you enter the track."),
+        rule_section(:options, GameRoomRules.translate("What the table options change"),
+          GameRoomRules.translate("By default, a 6 or a 1 lets you bring a pawn out of the base onto its entry square, with no further movement. A 1 does not grant another roll. Turn off the option for a 1 to require a 6; turn off the restriction on leaving the base to allow any roll. These choices never force you to leave the base if another pawn can move."),
           GameRoomRules.translate("Roll again after a 6 is on by default. After resolving a six you get another roll, even if that six could not move a pawn. Turning it off makes a six end the turn like any other result."),
           GameRoomRules.translate("An exact roll is required to reach the finish is on by default. A pawn two squares from the finish needs a two: a larger result cannot move it. With this option off, an overshooting roll also takes the pawn to the finish."),
           GameRoomRules.translate("Three consecutive sixes lose the turn is on by default. The third six ends your turn without a move for that roll. Moves made after the first two sixes stay on the board: they are not undone."),
           GameRoomRules.translate("Two pawns of one player form a blockade is on by default. Turning it off removes the restrictions caused by opposing pairs on the track. It does not remove safe entry squares or change the length of the route.")),
+        rule_section(:presentation, GameRoomRules.translate("Names or colours"),
+          GameRoomRules.translate("Positions are read with the player first, followed by the square, without pawn numbers. Ctrl+C switches between player names and colours. C always reads who has each colour. Red, blue, yellow and green follow the fixed seats at the table. Your choice is saved on this computer for future tables; it does not change other people's settings or the game history.")),
         rule_section(:controls, GameRoomRules.translate("Game keyboard shortcuts"),
           GameRoomRules.translate("1: read your pawns; for an observer, read the first player's pawns."),
           GameRoomRules.translate("2: read the next player's pawns in seating order."),
@@ -84,11 +95,14 @@ module GameRoomGames
           GameRoomRules.translate("4: read the last player's pawns at a four-player table."),
           GameRoomRules.translate("Arrows: choose an available pawn move."),
           GameRoomRules.translate("Enter: roll the die or confirm a pawn move."),
+          GameRoomRules.translate("C: read each player's colour."),
+          GameRoomRules.translate("Ctrl+C: switch between player names and colours."),
           GameRoomRules.translate("D: read who rolled last and the result, without rolling again."),
           GameRoomRules.translate("V: browse your pawns."),
           GameRoomRules.translate("Shift+V: browse everyone's pawns in track order, then home lanes, bases and finished pawns."),
           GameRoomRules.translate("P: read your unfinished pawn positions, including the base."),
           GameRoomRules.translate("Shift+P: read opponents' unfinished pawn positions, including their bases."),
+          GameRoomRules.translate("S: read how many pawns each player has finished."),
           GameRoomRules.translate("T: read whose turn it is."))
       ]
     end
@@ -152,7 +166,8 @@ module GameRoomGames
         header: pawn_track_header(replay, viewer),
         items: items,
         empty_label: _("No pawns to display"),
-        activation_action: activation_action
+        activation_action: activation_action,
+        player_labels: board_presentation_preferences.to_h.fetch("player_labels", "names")
       )
     end
 
@@ -234,13 +249,17 @@ module GameRoomGames
       ordered = replay.state[:players].rotate(player || 0)
       shortcuts = ordered.each_with_index.map do |owner, index|
         announcement_shortcut(key: (index + 1).to_s,
-          label: _("read %{player}'s pawn positions") % { player: participant_name(owner) },
+          label: _("read %{player}'s pawn positions") % { player: display_player(replay.state, owner) },
           message: _("%{player}: %{positions}.") % {
-            player: participant_name(owner),
+            player: display_player(replay.state, owner),
             positions: pawn_status_labels(replay.state, player_index(replay.state[:players], owner)).join("; ")
           })
       end
       shortcuts + [
+        announcement_shortcut(key: "c", label: _("read players' colours"),
+          message: replay.players.each_with_index.map { |name, index| "#{participant_name(name)}, #{player_colour(index)}" }.join("; ")),
+        surface_shortcut(key: "c", modifiers: [:control], label: _("switch between player names and colours"),
+          command: "toggle_player_labels", payload: {"names" => _("Player names."), "colours" => _("Player colours.")}),
         announcement_shortcut(
           key: "p",
           label: _("read your pawn positions"),
@@ -271,13 +290,35 @@ module GameRoomGames
 
     def shortcut_features; super + [:last_roll]; end
     def shortcut_feature_data(feature, replay, viewer)
+      if feature == :turn && replay.finished? && replay.winner
+        return {message: _("%{player} wins the game.") % {player: display_player(replay.state, replay.winner)}}
+      end
+      if feature == :turn && !replay.finished?
+        return {message: _("%{player}'s turn.") % {player: display_player(replay.state, replay.current_player)}}
+      end
+      if feature == :material
+        return {message: replay.players.each_with_index.map { |name, index|
+          _("%{player}: %{count} at the finish") % {player: display_player(replay.state, name), count: replay.state[:pawns][index].count(FINISH_PROGRESS)}
+        }.join("; ")}
+      end
       return super unless feature == :last_roll
       roll = replay.state[:last_roll]
       { message: roll == nil ? _("The dice have not been rolled.") : _("%{player}, %{dice}.") % {
-        player: participant_name(replay.state[:last_roll_player]), dice: roll } }
+        player: display_player(replay.state, replay.state[:last_roll_player]), dice: roll } }
     end
 
     private
+
+    def player_colour(index)
+      # Explicit calls keep these translated in source extraction, too.
+      [_("red"), _("blue"), _("yellow"), _("green")][index]
+    end
+
+    def display_player(state, name)
+      index = player_index(state[:players], name)
+      return participant_name(name) if index == nil || board_presentation_preferences.to_h["player_labels"] != "colours"
+      player_colour(index)
+    end
 
     def main_status_items(replay, viewer)
       label = if replay.finished?
@@ -285,7 +326,7 @@ module GameRoomGames
       elsif same_user?(replay.state[:current_player], viewer) && replay.state[:phase] == :awaiting_roll
         _("Roll the die")
       else
-        _("Waiting for %{player}") % { player: participant_name(replay.state[:current_player]) }
+        _("Waiting for %{player}") % { player: display_player(replay.state, replay.state[:current_player]) }
       end
       [GameSurfaces::PawnTrackItem.new(id: "status", label: label)]
     end
@@ -314,8 +355,8 @@ module GameRoomGames
     def move_choice_label(state, player, pawn)
       before = state[:pawns][player][pawn]
       after = destination_progress(state, player, pawn)
-      label = _("Pawn %{pawn}: %{from}; will move to %{to}") % {
-        pawn: pawn + 1,
+      label = _("%{player}, %{from}; will move to %{to}") % {
+        player: display_player(state, state[:players][player]),
         from: progress_label(player, before),
         to: progress_label(player, after)
       }
@@ -333,14 +374,11 @@ module GameRoomGames
       pawns = state[:pawns][player]
       labels = []
       base_pawns = pawns.each_index.select { |pawn| pawns[pawn] < 0 }.map { |pawn| pawn + 1 }
-      labels << _("Pawns in base: %{pawns}") % { pawns: base_pawns.join(", ") } if !base_pawns.empty?
+      labels << _("In base: %{count}") % { count: base_pawns.length } if !base_pawns.empty?
       pawns.each_with_index do |progress, pawn|
         next if progress < 0 || progress == FINISH_PROGRESS
 
-        labels << _("Pawn %{pawn}: %{position}") % {
-          pawn: pawn + 1,
-          position: progress_label(player, progress)
-        }
+        labels << progress_label(player, progress)
       end
       finished = pawns.count { |progress| progress == FINISH_PROGRESS }
       if finished > 0
@@ -355,8 +393,8 @@ module GameRoomGames
         [_("You are not a player in this game.")]
       else
         state[:pawns][player].each_with_index.map do |progress, pawn|
-          _("Pawn %{pawn}: %{position}") % {
-            pawn: pawn + 1,
+          _("%{player}, %{position}") % {
+            player: display_player(state, state[:players][player]),
             position: progress_label(player, progress)
           }
         end
@@ -381,9 +419,9 @@ module GameRoomGames
         end
       end
       labels = rows.map do |player, pawn, progress|
-        _("%{position}, %{player}, pawn %{pawn}") % {
+        _("%{player}, %{position}") % {
           position: progress_label(player, progress),
-          player: participant_name(state[:players][player]), pawn: pawn + 1
+          player: display_player(state, state[:players][player])
         }
       end
       shortcut_choices(labels)
@@ -399,7 +437,7 @@ module GameRoomGames
       player = player_index(state[:players], viewer)
       return _("You are not a player in this game.") if player == nil
 
-      _("Your pawns: %{positions}.") % { positions: pawn_status_labels(state, player).join("; ") }
+      _("%{player}: %{positions}.") % { player: display_player(state, viewer), positions: pawn_status_labels(state, player).join("; ") }
     end
 
     def opponents_pawn_positions_text(state, viewer)
@@ -408,11 +446,11 @@ module GameRoomGames
         next if player == viewer_index
 
         _("%{player}: %{positions}") % {
-          player: participant_name(state[:players][player]),
+          player: display_player(state, state[:players][player]),
           positions: pawn_status_labels(state, player).join("; ")
         }
       end
-      _("Opponents' pawns: %{positions}.") % { positions: positions.join("; ") }
+      positions.join("; ")
     end
 
     def initial_state(players, options)
@@ -533,7 +571,7 @@ module GameRoomGames
         next if current == FINISH_PROGRESS
 
         destination = if current < 0
-          next if state[:options]["enter_on_six"] && roll != 6
+          next if state[:options]["enter_on_six"] && roll != 6 && !(roll == 1 && state[:options]["enter_on_one"])
           0
         else
           current + roll

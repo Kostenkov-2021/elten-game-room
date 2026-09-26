@@ -85,4 +85,14 @@ assert(surface.input(root).empty?, 'settings held key became a game press on ret
 driver.frame(root, [[0x28, false], [0x28, true]], held: [0x28])
 assert(surface.input(root) == ['down'], 'fresh post-settings release/repress was lost')
 assert(chat.text == 'Keep this text', 'chat text changed across help/settings')
+driver.frame(root, [[0x28, false]])
+field.blur
+assert(!GameRoomAudioBall::Keyboard.active?, 'native blur did not release capture')
+driver.frame(root)
+assert(GameRoomAudioBall::Keyboard.active?, 'quiet native Form#update did not restore capture')
+driver.frame(root, [[0x44, true], [0x25, true], [0x53, true], [0x53, false]], held: [0x44, 0x25])
+surface.input(root)
+assert(surface.defense_input[:changes].map { |code, down, _| [code, down] } ==
+  [[0x44, true], [0x25, true], [0x53, true], [0x53, false]], 'native quiet resume lost ordered defence transitions')
+field.blur
 puts 'PASS real native Audio Ball field: quick taps, Tab/Shift+Tab, chat text, F1 reader, settings, held-key guards and fresh return'

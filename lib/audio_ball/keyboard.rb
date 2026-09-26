@@ -7,14 +7,16 @@ module GameRoomAudioBall
     MODIFIERS = [0x10, 0x11, 0x12, 0x5B, 0x5C, 0xA0, 0xA1, 0xA2, 0xA3, 0xA4, 0xA5].freeze
     FRAME = :@game_room_audio_ball_presses
     MAX_PRESSES = 32
+    MAX_CHANGES = MAX_PRESSES * 2
 
     # Relevant controls only, attached to one native result; never a key log.
     class Frame < Array
-      attr_reader :held
+      attr_reader :held, :changes, :reset
 
-      def initialize(presses, held)
+      def initialize(presses, held, changes: [], reset: false)
         super(presses)
         @held = held.freeze
+        @changes, @reset = changes.freeze, reset
         freeze
       end
     end
@@ -91,7 +93,8 @@ module GameRoomAudioBall
       return if options[:active] == false || !result.equal?(EltenAPI::KeyboardState.current)
       return if defined?(EltenWindow) && EltenWindow.respond_to?(:keyboard_flags_driven?) && EltenWindow.keyboard_flags_driven?
 
-      presses, released, mentioned = [], {}, []
+      presses, released, mentioned, changes = [], {}, [], []
+      reset = false
       blocked = (@suppressed || {}).dup
       down = previous.dup
       events.each do |code, state, press_state|
@@ -103,6 +106,7 @@ module GameRoomAudioBall
           down[code] = false
           released[code] = true
           blocked.delete(code)
+          changes << [code, false, false].freeze
         elsif state == true
           fresh = !down[code]
           down[code] = true
@@ -110,8 +114,13 @@ module GameRoomAudioBall
           modified = press_state != nil ? modifiers_in?(press_state) : modifiers.value?(true)
           presses.shift if presses.length == MAX_PRESSES
           presses << [code, modified, released.key?(code)].freeze
+          changes << [code, true, modified].freeze
         elsif state == :repeat || state == :held
           down[code] = true
+        end
+        if changes.length > MAX_CHANGES
+          changes.shift
+          reset = true
         end
       end
 
@@ -124,14 +133,21 @@ module GameRoomAudioBall
           state = result.press_states[code]
           modified = state ? MODIFIERS.any? { |key| state[key] } : modifiers.value?(true)
           presses << [code, modified, false].freeze
+          changes << [code, true, modified].freeze
         else
           presses.clear
+          changes.clear
+          reset = true
         end
+      end
+      if changes.length > MAX_CHANGES
+        changes.shift
+        reset = true
       end
       raw = options[:raw_state].to_s
       @suppressed = blocked.select { |key, _| (raw.getbyte(key).to_i & 0x80) != 0 }
       result.instance_variable_set(FRAME, Frame.new(presses,
-        KEYS.keys.select { |code| result.held[code] }))
+        KEYS.keys.select { |code| result.held[code] }, changes: changes, reset: reset))
     rescue StandardError
       nil
     end
@@ -165,7 +181,7 @@ module GameRoomAudioBall
       @suppressed ||= {}
       keys.each { |code| @suppressed[code] = true }
       result = EltenAPI::KeyboardState.current
-      result.instance_variable_set(FRAME, Frame.new([], KEYS.keys.select { |code| result.held[code] })) unless result.frozen?
+      result.instance_variable_set(FRAME, Frame.new([], KEYS.keys.select { |code| result.held[code] }, reset: true)) unless result.frozen?
     end
 
     def reset

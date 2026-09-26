@@ -36,4 +36,4 @@ puts 'Table-control application actions: replace, restore, observer master, stal
 entries = GameRoomParticipantMenu.entries
 assert(entries.none? { |entry| entry.action == :replace_player }, 'Replacement is still global')
 assert(GameRoomParticipantMenu.replacement_entry.help_key == 'Ctrl+Shift+R', 'Replacement shortcut changed')
-assert(entries.find { |entry| entry.action == :transfer_master }.help_key == 'Ctrl+M', 'Master shortcut changed')
+assert(entries.none? { |entry| entry.action == :transfer_master }, 'Master transfer is still global')

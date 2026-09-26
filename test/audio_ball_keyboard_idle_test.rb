@@ -61,7 +61,13 @@ def ephemeral_field
   field.focus
   WeakRef.new(field)
 end
-reference = ephemeral_field
+# Unwind the creator's VM stack before GC: conservative stack slots may keep
+# a dead local alive even when the observer itself only holds a WeakRef.
+reference = Thread.new do
+  $keyboard_state_frame_thread = Thread.current
+  ephemeral_field
+end.value
+$keyboard_state_frame_thread = Thread.current
 10.times { GC.start(full_mark: true, immediate_sweep: true) }
 assert(!reference.weakref_alive? && !observer.active?, 'observer retained a discarded game field')
 

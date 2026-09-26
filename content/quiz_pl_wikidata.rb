@@ -8,13 +8,13 @@ GameRoomContent.registry.register_pack(GameRoomContent::Pack.new(
   set_id: "quiz.wikidata",
   kind: :quiz,
   language_id: "pl-PL",
-  version: 4,
+  version: 6,
   title: "Wiedza ogólna: chemia, geografia, sport, wiara, historia",
   game_ids: ["quiz"],
   license: "CC0-1.0",
   author: "ELTEN Game Room",
-  entry_count: 11088,
-  checksum: "bc6b16c37ee40100368a83e1441e1b0ae5bcfef80b8a3f2c55833bd495a797c1",
+  entry_count: 11083,
+  checksum: "be5969211d041e624e251630efdcf4260e191b683ce03e1ee5261cd8b53fcc7e",
   loader: lambda {
     require_relative "quiz_pl_wikidata_data"
     GameRoomContent::Packa0830f585cc4689a1e2a6335.load

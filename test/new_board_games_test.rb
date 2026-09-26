@@ -312,11 +312,11 @@ own_pawns_shortcut = ludo_shortcuts.find { |shortcut| shortcut.key == "p" && sho
 opponent_pawns_shortcut = ludo_shortcuts.find { |shortcut| shortcut.key == "p" && shortcut.modifiers == [:shift] }
 own_pawn_list = ludo_shortcuts.find { |shortcut| shortcut.key == "v" && shortcut.modifiers.empty? }
 all_pawn_list = ludo_shortcuts.find { |shortcut| shortcut.key == "v" && shortcut.modifiers == [:shift] }
-assert(own_pawns_shortcut&.message == "Your pawns: Pawns in base: 1, 2, 3, 4.", "Ludo P does not group base pawns")
-assert(opponent_pawns_shortcut&.message.to_s.include?("Bob: Pawns in base: 1, 2, 3, 4"), "Ludo Shift+P does not report opposing pawn positions")
-assert(own_pawn_list&.kind == :browse && own_pawn_list.choices.map(&:label) == ["Pawn 1: base", "Pawn 2: base", "Pawn 3: base", "Pawn 4: base"], "Ludo V does not expose one own pawn per row")
+assert(own_pawns_shortcut&.message == "Alice: In base: 4.", "Ludo P does not group base pawns")
+assert(opponent_pawns_shortcut&.message.to_s.include?("Bob: In base: 4"), "Ludo Shift+P does not report opposing pawn positions")
+assert(own_pawn_list&.kind == :browse && own_pawn_list.choices.map(&:label) == ["Alice, base"] * 4, "Ludo V does not expose one own pawn per row")
 assert(all_pawn_list&.kind == :browse && all_pawn_list.choices.length == 16, "Ludo Shift+V does not expose every pawn in one list")
-assert(all_pawn_list.choices.first.label == "base, Alice, pawn 1", "Ludo Shift+V does not identify a pawn owner after its position")
+assert(all_pawn_list.choices.first.label == "Alice, base", "Ludo Shift+V does not identify the owner before its position")
 ludo_waiting_surface = ludo.surface_spec(ludo_replay, "Alice")
 ludo_track_spec = ludo_waiting_surface
 assert(ludo_track_spec.is_a?(GameSurfaces::PawnTrackSpec), "Ludo still exposes a spatial board")
@@ -343,11 +343,11 @@ assert(
   ludo.describe_event(ludo_events.last, ludo_repository, ludo_after, "Bob").to_s.include?("Alice moved pawn"),
   "Ludo did not expose its pawn-move announcement"
 )
-assert(ludo.game_shortcuts(ludo_after, "Alice").find { |shortcut| shortcut.key == "p" && shortcut.modifiers.empty? }.message == "Your pawns: Pawns in base: 2, 3, 4; Pawn 1: track 1.", "Ludo P did not report semantic pawn positions")
+assert(ludo.game_shortcuts(ludo_after, "Alice").find { |shortcut| shortcut.key == "p" && shortcut.modifiers.empty? }.message == "Alice: In base: 3; track 1.", "Ludo P did not report semantic pawn positions")
 finished_pawns = Marshal.load(Marshal.dump(ludo_after))
 finished_pawns.state[:pawns][0] = [GameRoomGames::Ludo::FINISH_PROGRESS, 0, -1, -1]
 assert(
-  ludo.game_shortcuts(finished_pawns, "Alice").find { |shortcut| shortcut.key == "p" && shortcut.modifiers.empty? }.message == "Your pawns: Pawns in base: 3, 4; Pawn 2: track 1; At the finish: 1 of 4 pawns.",
+  ludo.game_shortcuts(finished_pawns, "Alice").find { |shortcut| shortcut.key == "p" && shortcut.modifiers.empty? }.message == "Alice: In base: 2; track 1; At the finish: 1 of 4 pawns.",
   "Ludo P did not aggregate pawns that reached the finish"
 )
 finish_state = ludo_replay.state.merge(

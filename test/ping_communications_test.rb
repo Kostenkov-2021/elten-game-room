@@ -55,7 +55,7 @@ service = GameRoomPing.new(program, worker: worker, clock: -> { now }, probe: ->
 service.communications_channel = source
 assert(result.call == 'HTTP ping is unavailable. Communications UDP relay ping: 17 ms.', 'HTTP failure discarded valid Communications data')
 source.define_singleton_method(:ping_sample) { raise IOError, 'relay closed during read' }
-assert(result.call == 'HTTP ping is unavailable. Communications UDP relay ping is unavailable.', 'relay read error escaped to UI')
+assert(result.call == 'HTTP ping is unavailable. Communications ping is unavailable.', 'relay read error escaped to UI')
 
 # Registration uses the program's current live game client, so it works from
 # chat, F1 and local settings as well as the playfield. Closing an old client

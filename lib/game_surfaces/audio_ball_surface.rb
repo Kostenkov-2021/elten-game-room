@@ -13,9 +13,14 @@ module GameSurfaces
       super(label)
       GameRoomAudioBall::Keyboard.install
       @pending, @blocked, @down = [], [], []
+      @defense_changes, @defense_held, @defense_generation = [], [], 0
     end
 
     def update
+      # A passive task can blur the native control, then quietly resume this
+      # same field without focus(). Reacquire only when the field is actually
+      # updated again; blur/detach still stop capture outside the game field.
+      GameRoomAudioBall::Keyboard.activate(self)
       super
       native = respond_to?(:keyboard_modifier_held_when_pressed?, true)
       # Let the host refresh its normal snapshot before reading our metadata.
@@ -32,7 +37,9 @@ module GameSurfaces
       end
       if GameRoomAudioBall::Keyboard::MODIFIERS.any? { |code| key_held?(code) }
         @blocked |= down
+        reset_defense_input
       else
+        defense_blocked = @blocked.dup
         if frame
           presses = frame.equal?(@last_native_frame) ? [] : frame
         else
@@ -46,8 +53,25 @@ module GameSurfaces
           @pending.shift if @pending.length == GameRoomAudioBall::Keyboard::MAX_PRESSES
           @pending << KEYS.fetch(code)
         end
+        changes = if frame
+          frame.equal?(@last_native_frame) ? [] : frame.changes
+        else
+          (@down - down).map { |code| [code, false, false] } +
+            presses.map { |code, modified, _| [code, true, modified || modified_when_pressed?(code)] }
+        end
+        @defense_reset = true if frame && frame.reset
+        changes.each do |code, pressed, modified|
+          defense_blocked.delete(code) unless pressed
+          next if pressed && defense_blocked.include?(code)
+          if @defense_changes.length >= GameRoomAudioBall::Keyboard::MAX_CHANGES
+            @defense_changes.shift
+            @defense_reset = true
+          end
+          @defense_changes << [code, pressed, modified].freeze
+        end
       end
       @blocked &= down
+      @defense_held = (down - @blocked).freeze
       @last_native_frame = frame
       @down = down
     end
@@ -62,8 +86,22 @@ module GameSurfaces
       pending
     end
 
+    def take_defense_input
+      result = {changes: @defense_changes.freeze, held: @defense_held,
+        generation: @defense_generation, reset: !!@defense_reset}.freeze
+      @defense_changes, @defense_reset = [], false
+      result
+    end
+
+    def reset_defense_input
+      @defense_changes, @defense_held = [], []
+      @defense_generation += 1
+      @defense_reset = true
+    end
+
     def clear_input
       @pending.clear
+      reset_defense_input
       @blocked = KEYS.keys.select { |code| key_held?(code) }
       @down = @blocked.dup
       @last_native_frame = GameRoomAudioBall::Keyboard.frame
@@ -82,6 +120,7 @@ module GameSurfaces
 
     def deactivate_input
       @pending.clear
+      reset_defense_input
       GameRoomAudioBall::Keyboard.deactivate(self)
     end
 
@@ -93,7 +132,7 @@ module GameSurfaces
 
   class AudioBallSurface
     include ActionEmitter
-    attr_reader :spec, :snapshot
+    attr_reader :spec, :snapshot, :defense_input
     attr_accessor :on_audio_ball_command
 
     def _(source); GameRoomContent.utf8(super(source)); end
@@ -137,16 +176,24 @@ module GameSurfaces
       true
     end
 
-    def input_active?(form)
+    def input_selected?(form)
       return false if form.respond_to?(:game_room_background_help?) && form.game_room_background_help?
-      active = form.fields[form.index] == @field
+
+      form.fields[form.index] == @field && @spec.viewer != nil && !@spec.finished
+    end
+
+    def input_active?(form)
+      active = input_selected?(form)
       active &&= $activecontrols.include?(@field) if defined?($activecontrols) && $activecontrols.is_a?(Array)
-      active && @spec.viewer != nil && !@spec.finished
+      active
     end
 
     def input(form)
       actions = @field.take_input
-      input_active?(form) ? actions : []
+      defense = @field.take_defense_input
+      active = input_active?(form)
+      @defense_input = active ? defense : nil
+      active ? actions : []
     end
 
     def clear_input

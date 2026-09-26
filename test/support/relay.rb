@@ -31,8 +31,8 @@ class RelayEndpoint
   def on_invitation(&block); @invitation_handler = block; end
   def next_invitation(timeout:); raise unless timeout == 0; @queue.shift; end
   def enqueue(invitation); @queue << invitation; end
-  def create_session(metadata:, **_options)
-    group = { id: "session-#{rig.groups.length}", metadata: metadata, owner: name, views: {} }
+  def create_session(metadata:, **options)
+    group = { id: "session-#{rig.groups.length}", metadata: metadata, owner: name, views: {}, options: options }
     rig.groups << group
     RelaySession.new(self, group)
   end

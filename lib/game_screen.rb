@@ -18,6 +18,7 @@ require_relative "game_session_runner"
 require_relative "presentation_replay"
 require_relative "game_background_presentation"
 require_relative "game_background_policy"
+require_relative "board_preferences"
 
 require_relative "game_room_localization"
 
@@ -38,6 +39,7 @@ class GameScreen
     invite_contacts: nil,
     membership_tracker: nil,
     game_status_changed: nil,
+    statistics_observer: nil,
     activity_repository: nil,
     game_name: nil,
     send_chat: nil,
@@ -72,11 +74,13 @@ class GameScreen
     @invite_contacts = invite_contacts
     @membership_tracker = membership_tracker
     @game_status_changed = game_status_changed
+    @statistics_observer = statistics_observer
     @activity_repository = activity_repository
     @game_name = game_name || ->(id) { id.to_s }
     @send_chat = send_chat
     @room_snapshot = nil
     @surface_state = {}
+    @board_preferences = GameRoomBoardPreferences.new(program, game.id)
     @selected_surface_action = nil
     @history_index = 0
     @users_index = 0
@@ -243,6 +247,7 @@ class GameScreen
         end
         next if changed
       end
+      @statistics_observer&.call(@session, replay) unless using_cached_payload
       @game_client.update_table_control(@session) if @game_client&.respond_to?(:update_table_control)
       @game_client&.before_wait(replay, Session.name)
       synchronize_table_status(replay) if !using_cached_payload && !@session_runner
@@ -400,7 +405,7 @@ class GameScreen
     @session_runner = GameRoomSessionRunner.new(program: @program, transport: transport,
       repository: @repository, game: @game, session: @session, table: @table,
       owner: @table_owner, viewer: Session.name, room_snapshot_provider: @room_snapshot_provider,
-      context: action_context, game_status_changed: @game_status_changed,
+      context: action_context, game_status_changed: @game_status_changed, statistics_observer: @statistics_observer,
       activity_repository: @activity_repository, covered: @runner_covered).start
     @background_presentation = GameRoomBackgroundPresentation.attach(self,
       program: @program, runner: @session_runner, key: [@program.class, table_id, Session.name.to_s.downcase])
@@ -473,14 +478,17 @@ class GameScreen
     bot_token = bot_lease == nil ? nil : EltenAPI::Tasks::CancellationToken.new
     history_items = combined_history_items(replay)
     user_items = room_user_items(replay)
+    @game.board_presentation_preferences = @board_preferences.values
     @game.prepare_view(replay, Session.name, context: action_context)
     view_spec = @game.game_view_spec(replay, Session.name)
+    @board_view_spec = view_spec.surface
+    @surface_state = @board_preferences.restore(@board_view_spec, @surface_state)
     phase = replay.finished? ? :finished : :active
     @finished_at = phase == :finished ? (@layout&.phase == :active ? monotonic_time : @finished_at) : nil
     phase_changed = @layout != nil && (@layout.phase != phase || @focus_new_game == true)
     if @layout == nil
       @layout = GameRoomLayout::Screen.new(
-        view_spec: view_spec, history_items: history_items, user_items: user_items,
+        view_spec: view_spec, surface_state: @surface_state, history_items: history_items, user_items: user_items,
         users_header: users_header, chat_control: @chat_control,
         phase: phase,
         own_table: same_user?(@table_owner, Session.name)
@@ -1116,6 +1124,11 @@ class GameScreen
 
       result = surface.handle_command(shortcut.action_name, shortcut.payload)
       return result if result.is_a?(GameSurfaces::Action)
+
+      if result && @board_preferences && @board_preferences.remember(shortcut.action_name, @board_view_spec, surface.state)
+        @game.board_presentation_preferences = @board_preferences.values
+        return :inline_refresh if shortcut.action_name == "toggle_player_labels"
+      end
 
       result ? :surface_handled : nil
     else

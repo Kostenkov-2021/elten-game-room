@@ -27,6 +27,10 @@ def assert(value, message)
 end
 
 class Form
+  # This fixture drives callbacks, not keyboard input. Global Ctrl+J must see
+  # the same idle keyboard as the native-form companion test.
+  def main_shortcut_pressed?(*, **); false; end
+
   def wait
     @wait = true
     Thread.current[:event_test_driver].call(self)
@@ -237,5 +241,19 @@ on_parallel_ui do
 end
 assert(form.index == 1 && chat.text == 'Do not lose this draft' && chat.index == 7 && chat.check == 7,
   'Native scene delivery changed the chat, selection or focus')
+
+# Single-instance cleanup also runs in a modal form. It does not wait for the
+# root menu, consume an invitation there, dispatch twice or touch chat state.
+dead_launch = Thread.new do
+  Thread.current.thread_variable_set(:game_room_redirected_launch, true)
+end.tap(&:join)
+foreign_dead = Thread.new {}.tap(&:join)
+$subthreads = [foreign_dead, dead_launch]
+Thread.current[:event_test_driver] = ->(current) { current.update }
+form.game_room_entry_boundary = false
+form.wait
+assert($subthreads == [foreign_dead], 'A modal form retained a finished launch or removed a foreign window')
+assert(form.index == 1 && chat.text == 'Do not lose this draft' && chat.index == 7 && chat.check == 7,
+  'Launch cleanup changed the modal form focus or chat')
 
 puts 'Parallel-scene events passed: native endpoint constructor, fallback and RC2 scene delivery, covered drain, bounded ordered callbacks, chat and help'

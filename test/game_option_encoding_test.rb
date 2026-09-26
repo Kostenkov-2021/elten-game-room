@@ -17,6 +17,11 @@ ids = ["reversi"] + (EltenGameRoom::GAME_REGISTRY.ids - ["reversi"])
     game = EltenGameRoom::GAME_REGISTRY.build(id)
     actual = app.send(:configure_game_options, game)
     raise "Encoding fix changed defaults for #{id}" unless actual == game.default_options
+    if %w[axel_pong audio_ball].include?(id)
+      changed = game.normalize_options('p2p_enabled' => true, 'p2p_participants_limit' => 8)
+      actual = app.send(:configure_game_options, game, initial_options: changed, submit_label: "Save changes")
+      raise "Editing P2P changed selected options" unless actual == changed
+    end
     if id == "tysiac"
       %w[2 3].product([false, true]).each do |size, award|
         changed = game.normalize_options("variant" => "two_players", "talon_size" => size, "last_trick_talon" => award)

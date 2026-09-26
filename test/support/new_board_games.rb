@@ -25,7 +25,7 @@ module GameSurfaces
   Command = Struct.new(:id, :label, :enabled, :payload, keyword_init: true)
   CommandPanelSpec = Struct.new(:commands, keyword_init: true)
   PawnTrackItem = Struct.new(:id, :label, :action, keyword_init: true)
-  PawnTrackSpec = Struct.new(:id, :header, :items, :empty_label, :activation_action, keyword_init: true)
+  PawnTrackSpec = Struct.new(:id, :header, :items, :empty_label, :activation_action, :player_labels, keyword_init: true)
   Die = Struct.new(:id, :value, :sides, :held, :label, :enabled, keyword_init: true)
   DiceTraySpec = Struct.new(:id, :header, :dice, :commands, :empty_label, keyword_init: true)
   SurfacePart = Struct.new(:id, :surface, keyword_init: true)

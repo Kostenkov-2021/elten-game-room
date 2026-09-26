@@ -2,9 +2,14 @@ require_relative "game_content"
 
 module GameRoomContextHelp
   module DynamicTips
-    attr_accessor :game_room_context_help_tips
+    attr_writer :game_room_context_help_tips
+    attr_accessor :game_room_context_help_provider
     attr_accessor :game_room_game_help_tips
     attr_accessor :game_room_non_game_help_tips
+
+    def game_room_context_help_tips
+      game_room_context_help_provider ? game_room_context_help_provider.call : @game_room_context_help_tips
+    end
 
     def get_tips
       inherited = defined?(super) ? super.to_a : []
@@ -59,6 +64,7 @@ module GameRoomContextHelp
       if source == :game
         field.game_room_game_help_tips = current
       else
+        field.game_room_context_help_provider = nil
         field.game_room_context_help_tips = current
       end
     end

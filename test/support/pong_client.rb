@@ -27,7 +27,7 @@ class PongTestAudio
 end
 class PongTestChannel
   attr_accessor :epoch, :connected, :drop, :hold_events
-  attr_reader :match, :viewer, :inbox, :sent, :resets, :event_inbox, :event_sent
+  attr_reader :match, :viewer, :inbox, :sent, :resets, :event_inbox, :event_sent, :p2p_options
   def initialize(network, **args)
     @network, @match, @viewer = network, args[:match], args[:viewer].downcase
     @inbox, @sent, @event_inbox, @event_sent, @held = {}, [], [], [], []
@@ -36,6 +36,7 @@ class PongTestChannel
     network[@viewer] = self
   end
   def enable_events(mode = 'pong-local-1', routing: :owner); @events, @routing = mode, routing; end
+  def configure_p2p(options); @p2p_options = GameRoomRealtime::P2POptions.session_options(options); end
   def event_protocol; @events; end
   def tick; end
   def take_events; result, @event_inbox = @event_inbox, []; result; end

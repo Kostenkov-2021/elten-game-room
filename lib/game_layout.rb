@@ -169,6 +169,7 @@ module GameRoomLayout
       @status_command_buttons = {}
       @back_button = Button.new(_("Leave"))
       @form = GameSurfaces::RefreshAwareForm.new([], index: 0, quiet: true)
+      @form.game_room_entry_boundary = true
       @preserved_hand_surface_state = nil
       @form.extend(ShortcutFormBehavior)
       binding_controls.each { |control| control.extend(Bindings) }
@@ -194,7 +195,9 @@ module GameRoomLayout
     end
 
     def selected_participant
-      item = @user_items[@users.index.to_i]
+      index = @users.index
+      return nil unless index.is_a?(Integer) && index >= 0 && index < @user_items.length
+      item = @user_items[index]
       item.respond_to?(:participant) ? item.participant : item&.to_s
     end
 

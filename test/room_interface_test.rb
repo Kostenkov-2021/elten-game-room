@@ -99,6 +99,7 @@ controller.define_singleton_method(:cancel) { |_lease| }
 {
   game: game, repository: repository, session: session, table: row,
   table_owner: "Alice", room_snapshot: room, surface_state: {},
+  board_preferences: GameRoomBoardPreferences.new(nil, game.id),
   history_navigator: GameRoomHistory::Navigator.new,
   bot_turn_controller: controller, invite_online: ->(_table) {}, invite_contacts: ->(_table) {},
   turn_history_entries: {}, activity_entries: []
@@ -464,6 +465,12 @@ match_screen.instance_variable_set(:@room_snapshot, room)
   departure_repository.define_singleton_method(:snapshot_for) do |current, **_options|
     GameRepository::GameSnapshot.new(session: current, events: [])
   end
+  departure_guard = ->(*) { raise 'This UI fixture stops before the guarded external write' }
+  departure_repository.define_singleton_method(:control_change_guard) do |**options|
+    assert(options == {table: row, game: realtime_game, session: session, player: 'Bob'},
+      'Replacement guard received the wrong room/game/player')
+    departure_guard
+  end
   write_context = nil
   replacement_calls = []
   departure_transport = Object.new
@@ -489,7 +496,8 @@ match_screen.instance_variable_set(:@room_snapshot, room)
   Form.driver = ->(_form) { raise 'Screen waited for input instead of replacing the departed player' }
   assert(!departure_screen.instance_variable_defined?(:@transport), 'Test invented a transport absent from the real screen')
   assert(catch(:departure_write) { departure_screen.run } == :observed, 'Realtime run did not use the supplied transport')
-  assert(replacement_calls == [[row, {session_id: departure_repository.session_id(session), seat: 'Bob', bot: true}]],
+  assert(replacement_calls == [[row, {session_id: departure_repository.session_id(session), seat: 'Bob', bot: true,
+    control_guard: departure_guard}]],
     'Realtime run replaced the wrong seat or wrote more than once')
 
   gate = GameScreen.allocate

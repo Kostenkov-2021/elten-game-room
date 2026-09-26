@@ -48,14 +48,16 @@ short_cases.each do |native, (code, shot), seconds|
     EltenAPI::KeyboardState.held?(wrong_code) && !EltenAPI::KeyboardState.pressed?(wrong_code),
     'short tap setup did not sample a released fresh key beside an older held wrong key')
   engine = h.clients[native].engine
-  assert(engine.phase == :waiting && engine.holder == side && engine.goal == nil,
-    "#{native}, key=#{code}, frame=#{seconds}: an older held wrong key discarded a matching short defense (phase=#{engine.phase}, goal=#{engine.goal.inspect})")
-  h.advance(3)
-  assert(h.clients.values.all? { |client| client.engine.phase == :waiting && client.engine.holder == side && client.engine.goal == nil },
-    'short defense was not accepted by both receiving seats through the owned transition')
+  # A released correction now yields to the previous still-held key. This is
+  # the intentional hold-fallback contract, not a lost short keydown.
+  assert(h.clients[native].instance_variable_get(:@selected_lane) == (shot == 'down' ? 'left' : 'down'),
+    "#{native}, key=#{code}, frame=#{seconds}: released correction did not restore the held key")
+  h.advance(5)
+  assert(h.clients.values.all? { |client| client.engine.goal == 1 - side },
+    'the single selected wrong held defence did not produce the same miss at both peers')
   h.close
 end
-puts "PASS native Audio Ball short defense beside an older wrong held key: #{short_cases.length} cases, both sides, six aliases, short and same-frame-miss intervals"
+puts "PASS native Audio Ball released correction restores older held key: #{short_cases.length} cases, both sides, six aliases, short and same-frame-miss intervals"
 
 %w[Alice Bob].product(%w[left down]).each do |native, shot|
   h = AudioBallNativeKeys.new(native: native)

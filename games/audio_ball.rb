@@ -2,6 +2,7 @@
 require_relative 'base'
 require_relative '../lib/audio_ball/difficulty'
 require_relative '../lib/audio_ball/sound_pack'
+require_relative '../lib/realtime/p2p_options'
 
 require_relative "../lib/game_room_localization"
 
@@ -9,6 +10,7 @@ module GameRoomGames
   using GameRoomLocalization::Translations
   class AudioBall < Base
     include PublicHistoryAnnouncements
+    include GameRoomRealtime::P2POptions::GameOptions
 
     POINTS_TO_WIN = 7
     SET_BREAK = 5
@@ -56,7 +58,7 @@ module GameRoomGames
           end),
         OptionDefinition.new(key: 'sets_to_win', label: _('Sets to win'), kind: :choice, default: 1,
           choices: [1, 2, 3].map { |count| OptionChoice.new(value: count, label: count.to_s) })
-      ]
+      ] + p2p_option_definitions
     end
 
     def replay(session, events, repository)
@@ -190,7 +192,7 @@ module GameRoomGames
           GameRoomRules.translate("The court is 25 steps long. By default, you hear your end on the right and the opponent's end on the left. An incoming ball travels from left to right; your shot travels from right to left. Headphones make it easier to follow the ball. You can reverse this listening perspective in your personal settings.")),
         rule_section(:shots, GameRoomRules.translate("Defending and attacking"),
           GameRoomRules.translate("Up arrow or W corresponds to the first shot type, Left arrow or D to the second, and Down arrow or S to the third. Use the same key to defend against a shot type or to choose it for your own attack."),
-          GameRoomRules.translate("After the opponent hits, listen to the ball and press the matching defence key once. You may press it as soon as you recognise the sound, then release it. That choice remains active for this incoming ball, and you catch it automatically within the final two steps of the court. You do not need to time another press at contact. If you choose the wrong direction, you can correct it before the ball passes you; the last direction you choose is the one that counts."),
+          GameRoomRules.translate("After the opponent hits, listen to the ball and press the matching defence key once. You may press it as soon as you recognise the sound, then release it. That choice remains active for this incoming ball, and you catch it automatically within the final two steps of the court. You do not need to time another press at contact. If you choose the wrong direction, you can correct it before the ball passes you. A new press takes priority. When you release it while holding another defence key, the most recently pressed key still held takes over. If you release all keys, the last active defence remains selected."),
           GameRoomRules.translate("Every new ball needs a new press after the opponent's hit, even if the shot type is the same as before. Your previous defence or your own attack does not defend the next ball. If you are still holding a key, release it and press again after the opponent hits. Choosing a defence before that hit does not count."),
           GameRoomRules.translate("A successful defence leaves you holding the ball; it does not return it automatically. Press Right arrow or A to prepare your shot, then make a new press of one of the three shot keys to attack. You may choose any shot type. Prepare in the same way before every serve, including the first serve of the match. Keeping a shot key held down through preparation will not launch the ball."),
           GameRoomRules.translate("Keep focus on the Audio Ball playfield to use the game keys. Typing in chat or using the settings window does not defend, prepare or attack. Return to the playfield when you want to play.")),

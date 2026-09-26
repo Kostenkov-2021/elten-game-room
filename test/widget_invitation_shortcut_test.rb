@@ -74,10 +74,17 @@ assert(calls == [:prepare, :ordinary_picker], 'Empty/cancelled/rejected invitati
 # Exercise the actual factory wiring, not only a hand-built control.
 app.define_singleton_method(:initialize_services) {}
 app.define_singleton_method(:widget_active?) { true }
-app.define_singleton_method(:accept_invitation_from_widget) { calls << :widget_entry }
+app.define_singleton_method(:launch_game_room_entry) { |*request| calls << request }
 built = app.send(:build_widget_control)
 built.send(:accept_invitation)
-assert(calls.last == :widget_entry, 'Real widget factory did not connect Ctrl+J')
+assert(calls.last == [:accept_invitation_from_widget], 'Real widget factory did not connect Ctrl+J to the shared scene launch')
+built.send(:create_table, nil)
+assert(calls.last == [:create_table_from_widget, nil], 'Ctrl+N bypasses the shared scene launch')
+built.send(:create_table, 29)
+assert(calls.last == [:create_table_from_widget, 29], 'A preset bypasses the shared scene launch or loses its slot')
+snapshot = Object.new
+built.instance_variable_get(:@opener).call(snapshot)
+assert(calls.last == [:open_widget_table, snapshot], 'Opening a selected table bypasses the shared scene launch')
 built.close
 widget.close
 puts 'PASS widget invitations: native Ctrl+J scope, repeats, reentry, menu/help, errors and existing application route'

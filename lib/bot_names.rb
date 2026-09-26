@@ -10,7 +10,12 @@ module GameRoomBotNames
     "przegryw", "Karol Nawrocki", "Andrzej Duda", "Jarek Kaczor",
     "brzydkie Kaczątko", "Geralt", "Jenefer", "wujo weselnik",
     "ciocia Zdzisia", "Prymityw", "Król Karol", "Czesio", "Anusiak",
-    "Maślana", "Konieczko", "Pani Frau", "Higienistka", "Wacław"
+    "Maślana", "Konieczko", "Pani Frau", "Higienistka", "Wacław",
+    "Klara Sobieraj", "asystent Google", "Max z Orange", "Siri", "Lolek",
+    "Marek Dyrektor", "Baltazar Świździpała", "ciocia Henia", "Wujo Janek",
+    "Wiesław", "Jaskier", "Aluś", "Eulalia", "Andżej", "Audiobukis", "Natala",
+    "Gienek Gienerator", "Siostra Konsoleta", "amelinium", "Mymłon",
+    "Generał Italia", "Pułkowniciowy"
   ].map(&:freeze).freeze
   ENGLISH = [
     "Batman", "Indiana jones", "Noob's spirit", "Sister duck", "Thinky winky",

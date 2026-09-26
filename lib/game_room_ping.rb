@@ -1,7 +1,7 @@
 require_relative 'game_room_background'
 require_relative 'game_content'
 
-# An on-demand HTTP round trip, plus the active channel's cached UDP relay RTT.
+# An on-demand HTTP round trip, plus cached relay/direct RTTs and actual routes.
 # No periodic requests, disk writes, UI pumps or speech on the worker thread.
 require_relative "game_room_localization"
 
@@ -66,13 +66,38 @@ class GameRoomPing
     return unless channel.respond_to?(:ping_sample)
     sample = channel.ping_sample
     return unless sample
+    peers = Array(sample[:peers])
+    direct, relayed = peers.partition { |peer| peer[:transport] == :p2p }
+    return relay_announcement(sample) if peers.empty?
+    messages = []
+    if !direct.empty? && !relayed.empty?
+      messages << GameRoomContent.utf8(_("Communications: mixed P2P and relay connections."))
+    end
+    direct.each do |peer|
+      milliseconds = peer[:p2p_ms]
+      user = GameRoomContent.utf8(peer[:user])
+      messages << if milliseconds.is_a?(Numeric) && milliseconds.finite? && milliseconds >= 0
+        GameRoomContent.utf8(_("P2P with %{user}: %{milliseconds} ms.")) % {user: user, milliseconds: milliseconds.round}
+      else
+        GameRoomContent.utf8(_("P2P with %{user}: ping is unavailable.")) % {user: user}
+      end
+    end
+    unless relayed.empty?
+      users = relayed.map { |peer| GameRoomContent.utf8(peer[:user]) }.join(', ')
+      messages << GameRoomContent.utf8(_("Communications via relay: %{users}.")) % {users: users}
+      messages << relay_announcement(sample)
+    end
+    messages.join(' ')
+  rescue StandardError
+    GameRoomContent.utf8(_("Communications ping is unavailable."))
+  end
+
+  def relay_announcement(sample)
     milliseconds = sample[:relay_udp_ms]
     if milliseconds.is_a?(Numeric) && milliseconds.finite? && milliseconds >= 0
       GameRoomContent.utf8(_("Communications UDP relay ping: %{milliseconds} ms.")) % {milliseconds: milliseconds.round}
     else
       GameRoomContent.utf8(_("Communications UDP relay ping is unavailable."))
     end
-  rescue StandardError
-    GameRoomContent.utf8(_("Communications UDP relay ping is unavailable."))
   end
 end

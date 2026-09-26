@@ -1,5 +1,6 @@
 require 'digest'
 require_relative 'engine'
+require_relative 'defense_input'
 require_relative 'bot'
 require_relative 'audio'
 require_relative '../realtime/event_channel'
@@ -29,6 +30,7 @@ module GameRoomAudioBall
       @next_send = 0.0
       @last_reconnect = -30.0
       @selected_lane = nil
+      @defense_input = DefenseInput.new
     end
 
     def bind_screen(session_id:, table_id:, owner:, viewer:, members:)
@@ -56,6 +58,7 @@ module GameRoomAudioBall
     def after_events(replay, viewer, context:); before_wait(replay, viewer); end
 
     def before_wait(replay, viewer)
+      @channel.configure_p2p(replay.state[:options])
       changed = !@replay || @replay.state.values_at(:rally, :server) != replay.state.values_at(:rally, :server)
       @replay, @players = replay, replay.players
       @side = @players.index { |player| player.to_s.casecmp?(viewer.to_s) }
@@ -96,7 +99,10 @@ module GameRoomAudioBall
       detach_view
       return unless surface.respond_to?(:present) && @replay && !@replay.finished?
       @form, @surface = form, surface
-      @surface.activate_input if @surface.respond_to?(:activate_input) && @surface.input_active?(@form)
+      # A quiet view replacement keeps the form's focus, but activecontrols
+      # still describes the previous native frame. Rebind capture to the new
+      # selected field now; actual input keeps the stricter active-frame guard.
+      @surface.activate_input if @surface.respond_to?(:activate_input) && @surface.input_selected?(@form)
       @surface.on_audio_ball_command = method(:local_command) if @surface.respond_to?(:on_audio_ball_command=)
       @timer = GameRoomRealtime::Timer.new(clock: @clock) { frame }
       @form.add_timer(@timer)
@@ -105,6 +111,7 @@ module GameRoomAudioBall
 
     def detach_view
       @timer&.stop
+      @defense_input.forget_held
       @surface.deactivate_input if @surface.respond_to?(:deactivate_input)
       @surface.on_audio_ball_command = nil if @surface.respond_to?(:on_audio_ball_command=)
       @form.delete_timer(@timer) if @form && @timer
@@ -142,10 +149,11 @@ module GameRoomAudioBall
       @last_frame, @paused = now, !active
       commands = @surface ? @surface.input(@form) : []
       allowed_input = playable && @side != nil && !@network_wait && !@settings_open
-      if allowed_input && input_flight && input_flight == incoming_flight
-        lane = commands.reverse.find { |command| Engine::SHOTS.include?(command) }
-        @selected_lane, @selected_flight = lane, input_flight if lane
-      end
+      flight = incoming_flight
+      @selected_lane = @defense_input.update(flight: flight,
+        enabled: allowed_input && input_flight && input_flight == flight,
+        input: (@surface.defense_input if @surface.respond_to?(:defense_input)), commands: commands)
+      @selected_flight = @selected_lane ? flight : nil
       if active
         announce_set
         advance_engine(elapsed)
@@ -202,6 +210,7 @@ module GameRoomAudioBall
     # Control replacement repeats only the unfinished rally. Audio Ball owns
     # its connection and input state; the table layer knows no physics fields.
     def reset_table_control
+      @defense_input.reset
       @connection_started = @clock.call
       @epoch = nil
       @peers, @connections, @deferred = {}, {}, []
@@ -216,6 +225,7 @@ module GameRoomAudioBall
     end
 
     def reset_rally
+      @defense_input.reset
       @selected_lane = @selected_flight = nil
       server = @replay.state[:server]
       @engine = server == nil ? nil : Engine.new(level: @replay.state[:options]['difficulty'], server: server)

@@ -102,6 +102,7 @@ module GameRoomPong
     def after_events(replay, viewer, context:); before_wait(replay, viewer); end
 
     def before_wait(replay, viewer)
+      @channel.configure_p2p(replay.state[:options])
       changed = @replay == nil || @replay.state[:rally] != replay.state[:rally]
       @replay = replay
       @players = replay.players

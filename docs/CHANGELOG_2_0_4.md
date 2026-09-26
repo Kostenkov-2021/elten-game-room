@@ -4,6 +4,18 @@
 
 - Nowa wersja wymaga ELTEN-a 3.0.4 lub nowszego.
 - Dodano Wojnę i Wojnę naukową autorstwa balteama, dla dwóch do ośmiu graczy, z możliwością gry z botami. W Wojnie porównuje się karty z zakrytej talii, a w Wojnie naukowej samemu wybiera się karty i korzysta z ich specjalnych właściwości.
+- Dodano statystyki autorstwa balteama: odwiedziny, rozpoczęte i ukończone partie, z podziałem na gry i okresy. Otworzysz je przez Statystyki w menu głównym. Ctrl+W na liście opcji tego menu odczytuje bieżącą liczbę stołów publicznych i prywatnych oraz członkostw ludzi, wliczając obserwatorów, ale nie boty. Tryb deweloperski nie zbiera nowych statystyk.
+- W deblowym Axel Pongu w trybie Arcade gracze jednej drużyny korzystają ze wspólnej tarczy. Zmianę zaproponował balteam.
+- W ustawieniach stołów Axel Ponga i Audio Balla można włączyć bezpośrednie połączenia P2P. Opcja jest domyślnie wyłączona; po jej zaznaczeniu można ustawić limit uczestników P2P, domyślnie 8. Gdy bezpośrednie połączenie jest niedostępne, gra korzysta z serwera pośredniczącego.
+- Ctrl+F4 rozróżnia teraz ping HTTP, połączenie Communications przez serwer pośredniczący oraz P2P. Przy połączeniach mieszanych podaje informacje osobno.
+- Poprawiono wykrywanie szybkich naciśnięć i przytrzymywania klawiszy w Audio Ballu.
+- Zaproszenia można przyjmować skrótem Ctrl+J oraz z menu kontekstowego w całym Game Roomie, również podczas gry, pisania na czacie, przeglądania historii i w ustawieniach.
+- Ponowne uruchomienie Game Roomu przenosi do już otwartego okna, zachowując partię i szkic wiadomości. Poprawiono pozostawianie nieaktywnych wpisów w menu „Okna” ELTEN-a.
+- Poprawiono otwieranie Wiadomości i innych okien ELTEN-a po wejściu do Game Roomu przez widget oraz odbieranie aktualizacji partii uruchomionej tą drogą.
+- W Chińczyku jedynka domyślnie pozwala wyjść z bazy, lecz nie daje kolejnego rzutu. Zasadę można wyłączyć przy tworzeniu stołu. Skrócono opisy pozycji; Ctrl+C przełącza nazwy graczy i kolory, a C odczytuje ich przypisanie.
+- Ustawienia prezentacji planszy w Szachach, Warcabach i Chińczyku są zapamiętywane lokalnie dla kolejnych stołów, bez zmiany preferencji innych graczy.
+- Dodano 22 polskie imiona botów.
+- Poprawiono wiele pytań quizowych, usuwając niejasne sformułowania i błędy językowe oraz doprecyzowując treść pytań i odpowiedzi.
 - Dodano grę karcianą 3-5-8 autorstwa Guliwer777. Trzech graczy rywalizuje o lewy, wybiera kontrakty i wymienia karty między rozdaniami. Dostępna jest również gra z botami.
 - Dodano czeskie i hiszpańskie tłumaczenie interfejsu autorstwa balteama. Język można wybrać w Ustawieniach, w kategorii Ogólne. Tłumaczenia nie obejmują zasad gier. Angielska nazwa Tysiąca to teraz „1000 card game”.
 - Gospodarz może przekazać prowadzenie stołu innej osobie skrótem Ctrl+M. Jego wyjście nie zamyka już automatycznie całego stołu — prowadzenie przejmuje kolejny uczestnik, wraz z obsługą botów.
@@ -22,6 +34,18 @@
 
 - This version requires ELTEN 3.0.4 or later.
 - Added War and Scientific War by balteam, for two to eight players, with bots. War compares cards from a face-down deck; Scientific War lets you choose your cards and use their special powers.
+- Added statistics by balteam: visits, started and completed games, with game and period filters. Open Statistics in the main menu. Ctrl+W on that menu's options list reads current public and private table counts and human memberships, including observers but not bots. Developer mode does not collect new statistics.
+- In doubles Arcade Axel Pong, teammates now share their shield, as proposed by balteam.
+- Direct P2P connections can now be enabled in Axel Pong and Audio Ball table settings. The option is off by default; enabling it reveals a P2P participant limit, defaulting to 8. If a direct connection is unavailable, the game uses the relay server.
+- Ctrl+F4 now distinguishes HTTP ping, Communications through the relay server, and P2P. Mixed connections are reported separately.
+- Improved detection of quick presses and held keys in Audio Ball.
+- Invitations can be accepted with Ctrl+J or from the context menu throughout Game Room, including while playing, typing in chat, browsing history and using settings.
+- Opening Game Room again returns to the already open window, preserving your game and message draft. Fixed inactive entries being left in ELTEN's Windows menu.
+- Fixed opening Messages and other ELTEN windows after entering Game Room through the widget, and receiving updates for games opened this way.
+- In Ludo, a 1 also allows leaving the base by default, but does not grant another roll. You can turn this rule off when creating a table. Position descriptions are shorter; Ctrl+C switches between player names and colours, and C reads their colour assignments.
+- Board presentation choices in Chess, Checkers and Ludo are now remembered locally for future tables, without changing other players' preferences.
+- Added 22 Polish bot names.
+- Corrected many quiz questions, removing ambiguous wording and language errors and clarifying questions and answers.
 - Added 3-5-8 by Guliwer777: a card game for three players, with trick-taking, contract selection and card exchanges between deals. You can also play against bots.
 - Added Czech and Spanish interface translations by balteam. Choose the language in Settings > General. These translations do not include game rules. Tysiac is now called 1000 card game in English.
 - The table master can transfer ownership to another person with Ctrl+M. Leaving no longer automatically closes the whole table: another participant takes over, including control of the bots.

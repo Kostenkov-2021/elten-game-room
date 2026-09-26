@@ -1,6 +1,6 @@
 module GameSurfaces
   PawnTrackItem = Struct.new(:id, :label, :action, keyword_init: true)
-  PawnTrackSpec = Struct.new(:id, :header, :items, :empty_label, :activation_action, :menus, keyword_init: true)
+  PawnTrackSpec = Struct.new(:id, :header, :items, :empty_label, :activation_action, :menus, :player_labels, keyword_init: true)
 
   # A compact, accessible surface for race games in which the meaningful
   # information is a pawn's logical position, not its coordinates on a drawn
@@ -11,6 +11,7 @@ module GameSurfaces
 
     def initialize(spec, state: {})
       @spec = spec
+      @player_labels = @spec.player_labels
       @menus = @spec.menus || {}
       @menu = state_value(state, "menu", "").to_s
       @menu = "" if @menus[@menu].to_a.empty?
@@ -40,7 +41,8 @@ module GameSurfaces
       {
         "index" => @control.index.to_i,
         "item_id" => item&.id.to_s,
-        "menu" => @menu
+        "menu" => @menu,
+        "player_labels" => @player_labels
       }
     end
 
@@ -48,6 +50,11 @@ module GameSurfaces
     # Menu choice IDs survive replay refresh, and the game regenerates legal
     # entries/costs after each confirmed operation. An exhausted menu closes.
     def handle_command(command, payload = {})
+      if command.to_s == "toggle_player_labels" && @player_labels
+        @player_labels = @player_labels == "colours" ? "names" : "colours"
+        speak(payload.fetch(@player_labels))
+        return true
+      end
       return false unless command.to_s == "open_menu"
       menu = payload["menu"].to_s
       return false if @menus[menu].to_a.empty?

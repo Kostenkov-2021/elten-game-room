@@ -225,6 +225,18 @@ tipsów zależnych od fazy. Szczegóły: `docs/VOLUME_AND_HELP_224.md`.
 - Korzystaj ze wspólnego `Channel`/`EventChannel`. Przed implementacją
   rozpisz całą drogę akcji: wejście, kolejka, relay, odbiór, zastosowanie
   i prezentacja. Ustal, kto ma prawo rozstrzygać każde zdarzenie.
+- Opcjonalne P2P Ponga/Audio Balla korzysta z natywnego `p2p: :full` i
+  `p2p_participants_limit`, nie z własnych gniazd lub dodatkowego pośrednika.
+  Zachowaj relay po wyłączeniu, ustawienie po reconnect/zmianie gospodarza
+  i limit obejmujący obserwatorów (domyślnie 8, 0 bez limitu). Nie zmieniaj
+  globalnej zgody ELTEN-a na P2P. `routing: :peers` nie oznacza fizycznego P2P,
+  a ping relay nie mierzy bezpośredniego połączenia. Regresje: `realtime_p2p_*`.
+- Ctrl+F4 odróżnia pomiar HTTP, UDP do serwera pośredniczącego i RTT do
+  poszczególnych uczestników P2P. Ścieżkę odczytuj z natywnego
+  `Session#p2p_status`, nie z opcji stołu; po wygaśnięciu P2P nie odczytuj
+  starego RTT jako bieżącego. Mieszane połączenia opisuj osobno. Odczyt
+  nie wysyła dodatkowych sond ani nie uruchamia połączeń lub callbacków.
+  Regresje: `ping_p2p_test.rb`, `ping_p2p_dictionary_test.rb`.
 - Koordynowanie meczu przez gospodarza, także będącego obserwatorem, nie
   oznacza przekazywania przez niego każdej wiadomości. Dla akcji rozstrzyganych przez uprawnionego
   nadawcę wybieraj rozsyłanie przez relay bez dodatkowego skoku przez hosta.
@@ -295,7 +307,55 @@ Opus, ale nie koduje ponownie; identyfikatory dźwięków pozostają bez rozszer
 `tools/generate-pong-echo.rb` również produkuje Opus z deterministycznego PCM.
 Szczegóły procedury: `docs/BUILDING.md`. Licencje i autorstwo zachowaj.
 
-## Pakować tylko zawartość potrzebną graczowi
+## Kontrakty po uzupełnieniu buildu 239
+
+- Jedna instancja UI na proces: `GameRoomSingleInstance` przełącza natywny
+  wątek, nie uruchamia `main` ponownie. Właścicielem nie jest sam widget.
+  Odrzucone uruchomienie nie zamyka wspólnej puli dźwięków. Konkretne akcje
+  czekają na granicę formularza, nie przerywają dialogów modalnych.
+  ELTEN może pozostawić zakończony wątek przekierowanego uruchomienia na
+  liście Okna. Usuwaj wyłącznie własne oznaczone i już zakończone wątki,
+  na aktywnym UI po przełączeniu, także w formularzu modalnym. Nie zabijaj
+  wątków i nie porządkuj cudzych okien. Sprawdzaj natywny cykl uruchomienia,
+  nie tylko wartość zwróconą przez blokadę (`single_instance_native_test.rb`).
+  Zimne wejście z widgetu (stół, tworzenie, preset, Ctrl+J) planuje nową
+  scenę programu przez natywne `insert_scene`; nie otwieraj długotrwałego
+  formularza wewnątrz callbacku Scene_Main ani na współdzielonym obiekcie
+  widgetu. Core ma ustawić kontekst sceny i zakończyć jej cykl życia.
+  Regresja: `widget_scene_navigation_test.rb` — także inne okno i powrót.
+- `DiscoveredSession` jest związany z połączeniem, które odkryło stół.
+  Wiersz przekazany przez widget lub powiadomienie nie może pożyczać tego
+  połączenia nowemu oknu gry: dołączenie rozwiązuje identyfikator we własnym
+  magazynie LiveSessions, którego callbacki obsługuje wykonawca partii.
+  Po zmianie endpointu unieważniaj odkryte obiekty. Sprawdzaj publiczny
+  i prywatny stół oraz ruch za innym oknem po zimnym wejściu z widgetu,
+  nie tylko osobno nawigację i synchronizację. Regresja:
+  `live_sessions_discovery_owner_test.rb`.
+- Statystyki: callbacki UI/replay tylko odkładają kopie danych do ograniczonej
+  pamięci; atomowy zapis i sieć należą do workera. Błąd telemetrii nie może
+  przerwać gry. Nie ignorować konfliktów innych niż sama data powtórnego
+  rozstrzygnięcia tej samej partii. Retencja usuwa tylko własne wygasłe
+  raporty obecności, nigdy historyczne statystyki.
+- Prezentacja planszy jest lokalna. Zapisuj wyłącznie jawnie dopuszczone
+  flagi, a orientację względem miejsca gracza; nie zapisuj kursora i szkiców.
+  Nowe stoły Chińczyka mają `enter_on_one: true`, stare zdarzenia bez tej
+  opcji nadal wymagają dawnych zasad. Nie zmieniaj znaczenia starych rzutów.
+- Ctrl+M i Ctrl+Shift+R dotyczą zaznaczonej osoby na liście uczestników,
+  nie pola gry. Pomoc sprawdza bieżącą dostępność, a wywołanie ponownie
+  weryfikuje uprawnienia i tożsamość, nie sam indeks wiersza.
+
+## Czytelne kopie pytań quizu
+
+- Po każdej zmianie pytań, odpowiedzi, podziału lub dodaniu zestawu uruchom
+  `ruby tools/export-quiz-text.rb` i dołącz aktualne pliki `docs/quiz-questions/*.txt`.
+- Pliki do czytania zawierają treść, odpowiedzi A–D i wskazanie poprawnej
+  odpowiedzi, **bez identyfikatorów pytań**. Nie edytuj ich ręcznie: źródłem
+  prawdy są zestawy w `content/`. Pełny Wiedźmin i oba podzestawy muszą być zgodne.
+- `ruby tools/export-quiz-text.rb --check` oraz `test/quiz_text_export_test.rb`
+  wykrywają nieaktualne kopie. Przy nowym zestawie sprawdź także jego obecność
+  w eksporcie. Nie dołączaj TXT ani narzędzia eksportu do instalatora gry.
+
+## Pakowanie zawartości wykonawczej
 
 Nigdy nie przekazuj całego repozytorium do rekursywnego pakowania ELTEN-a.
 Najpierw przygotuj oddzielny katalog przez `tools/release_files.rb`.

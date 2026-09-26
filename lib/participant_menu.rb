@@ -25,7 +25,6 @@ module GameRoomParticipantMenu
       Entry.new(action: :edit_options, label: _("Change settings for the next game"), menu_key: "x", help_key: "Ctrl+X"),
       Entry.new(action: :edit_teams, label: _("Choose teams"), menu_key: ""),
       Entry.new(action: :abort_game, label: _("End the current game without closing the table"), menu_key: "q", help_key: "Ctrl+Q"),
-      Entry.new(action: :transfer_master, label: _("Transfer table master"), menu_key: "m", help_key: "Ctrl+M"),
       Entry.new(action: :save_game, label: _("Save the game and close the table"), menu_key: "s", help_key: "Ctrl+S"),
       Entry.new(action: :close_table, label: _("Close the table for everyone"), menu_key: ""),
       Entry.new(action: :leave, label: _("Leave"), menu_key: "")
@@ -97,9 +96,6 @@ module GameRoomParticipantMenu
       actions << :personal_settings if settings && game&.personal_settings_action
       actions -= [:invite_online, :invite_contacts] if game && !game.table_invitations_allowed?(options.to_h)
       actions -= [:observe_next_game, :play_next_game, :manage_roles] if game && !game.role_selection_allowed?(options.to_h)
-      if actions.include?(:manage_control)
-        actions << :transfer_master
-      end
       actions
     end
     layout.form.bind_context do |menu|
@@ -125,11 +121,24 @@ module GameRoomParticipantMenu
       end
     end
 
-    add_context_help(layout, available.call, game: game)
-    if available.call.include?(:manage_control) && control&.call&.dig(:active)
-      entry = replacement_entry
-      tips = layout.users.game_room_context_help_tips.to_a + [GameRoomContextHelp.shortcut_tip(entry.help_key, entry.label)]
-      GameRoomContextHelp.replace([layout.users], tips)
+    add_context_help(layout, available, game: game)
+    # Resolve per-row actions when help is opened, as the selection and owner
+    # can change without rebuilding the whole form.
+    layout.users.game_room_context_help_provider = lambda do
+      tips = context_tips(available.call, game: game)
+      participant = layout.selected_participant
+      snapshot = room&.call
+      if available.call.include?(:manage_control) && snapshot
+        if transfer_candidate?(snapshot, participant)
+          tips << GameRoomContextHelp.shortcut_tip("Ctrl+M", _("Transfer table master to this person"))
+        end
+        seats = control&.call
+        if seats&.dig(:active) && GameRoomParticipants.includes?(seats[:players], participant)
+          entry = replacement_entry
+          tips << GameRoomContextHelp.shortcut_tip(entry.help_key, entry.label)
+        end
+      end
+      tips
     end
     GameRoomRules.bind_ctrl_f1(layout.form, []) do
       dispatch.call(:rules, nil) if available.call.include?(:rules)
@@ -148,8 +157,13 @@ module GameRoomParticipantMenu
       end
       snapshot = room&.call
       if actions.include?(:manage_control) && snapshot
-        if GameRoomParticipants.human?(participant) && GameRoomParticipants.includes?(snapshot.members, participant) && !GameRoomParticipants.same?(participant, Session.name)
-          menu.option(_("Transfer table master")) { dispatch.call(:transfer_master, participant) }
+        if transfer_candidate?(snapshot, participant)
+          menu.option(_("Transfer table master to this person"), nil, "m") do
+            current = room&.call
+            if available.call.include?(:manage_control) && current && transfer_candidate?(current, participant)
+              dispatch.call(:transfer_master, participant)
+            end
+          end
         end
         seats = control&.call
         if seats && seats[:active] && GameRoomParticipants.includes?(seats[:players], participant)
@@ -174,12 +188,24 @@ module GameRoomParticipantMenu
   end
 
   def add_context_help(layout, actions, game: nil)
-    tips = entries(game: game).filter_map do |entry|
+    layout.form.fields.reject { |field| field.equal?(layout.back_button) }.each do |field|
+      resolve = -> { context_tips(actions.respond_to?(:call) ? actions.call : actions, game: game, text: field.is_a?(EditBox)) }
+      GameRoomContextHelp.replace([field], resolve.call)
+      field.game_room_context_help_provider = resolve
+    end
+  end
+
+  def transfer_candidate?(room, participant)
+    GameRoomParticipants.human?(participant) && GameRoomParticipants.includes?(room.members, participant) &&
+      !GameRoomParticipants.same?(participant, Session.name)
+  end
+
+  def context_tips(actions, game: nil, text: false)
+    entries(game: game).filter_map do |entry|
       next if !actions.include?(entry.action) || entry.help_key == nil
+      next if text && entry.action == :edit_options
 
       GameRoomContextHelp.shortcut_tip(entry.help_key, entry.label)
     end
-    help_fields = layout.form.fields.reject { |field| field.equal?(layout.back_button) }
-    GameRoomContextHelp.replace(help_fields, tips)
   end
 end

@@ -322,9 +322,16 @@ polish_238, english_238 = document_238.split('## English', 2)
 end
 
 entry_239 = entries.find { |entry| entry.build == 239 }
-assert(entry_239.version == '2.0.4' && entry_239.changes.length == 15 && entry_239.changes.uniq.length == 15,
+assert(entry_239.version == '2.0.4' && entry_239.changes.length == 26 && entry_239.changes.uniq.length == 26,
   'build 239 must contain the approved changes and minimum ELTEN version')
+assert(entry_239.changes.any? { |text| text.include?('P2P') && text.include?('off by default') && text.include?('defaulting to 8') && text.include?('relay server') }, 'optional P2P settings or relay fallback missing')
+assert(entry_239.changes.any? { |text| text.include?('Ctrl+F4') && text.include?('HTTP') && text.include?('Communications') && text.include?('P2P') && text.include?('Mixed') }, 'ping transport distinctions missing')
+assert(entry_239.changes.grep(/Ctrl\+J/).size == 1 && entry_239.changes.any? { |text| text.include?('Ctrl+J') && text.include?('context menu') && text.include?('typing in chat') && text.include?('settings') }, 'global invitation shortcut scope missing or duplicated')
+assert(entry_239.changes.any? { |text| text.include?('Opening Game Room again') && text.include?("ELTEN's Windows menu") }, 'single-instance window cleanup note missing')
+assert(entry_239.changes.any? { |text| text.include?('Fixed opening Messages') && text.include?('widget') && text.include?('receiving updates') }, 'widget navigation and game updates note missing')
+assert(entry_239.changes.any? { |text| text.include?('Corrected many quiz questions') && text.include?('questions and answers') }, 'broader quiz wording corrections missing')
 assert(entry_239.changes[1].include?('War and Scientific War by balteam'), 'new games or author credit missing')
+assert(entry_239.changes.grep(/Ctrl\+M/).size == 1, 'Added the excluded Ctrl+M focus change to the changelog')
 assert(entry_239.changes.first == 'This version requires ELTEN 3.0.4 or later.', 'minimum ELTEN version missing')
 assert(entry_239.changes.all? { |text| !catalog[text].to_s.empty? }, 'build 239 has an untranslated change')
 assert(GameRoomChangelog.pending_entries(238, 239).map(&:build) == [239], 'build 239 repeats older changes')

@@ -9,8 +9,9 @@ end
 
 names = GameRoomBotNames
 participants = GameRoomParticipants
-assert(names::POLISH.length == 24 && names::ENGLISH.length == 26, "wrong supplied list sizes")
-assert(names::NAMES.values.uniq.length == 50, "duplicate name catalog")
+assert(names::POLISH.length == 46 && names::ENGLISH.length == 26, "wrong supplied list sizes")
+assert(names::NAMES.values.uniq.length == 72, "duplicate name catalog")
+assert(names.name_for("pl25") == "Klara Sobieraj" && names.name_for("pl46") == "Pułkowniciowy", "New names lost their spelling or stable tokens")
 assert(names.name_for("pl20") == "Maślana" && names.name_for("pl11") == "brzydkie Kaczątko", "Polish names changed")
 assert(names.name_for("en03") == "Noob's spirit" && names.name_for("en17") == "Dr. jeckil", "English names/punctuation changed")
 first = Object.new
@@ -93,12 +94,13 @@ assert(h.transports["Dave"].room_snapshot(h.table, force: true)[:bots] == remain
 
 store = h.transports.fetch(owner).instance_variable_get(:@live_store)
 assert(store != nil, "missing native store")
+validator = GameRoomLiveSessionStore::RecordValidator.new
 [
   {"bot_count" => 1, "bot_names" => ["not-a-name"]},
   {"bot_count" => 2, "bot_names" => ["pl01", "pl01"]},
   {"bot_count" => 1, "bot_names" => []},
   {"bot_count" => 1, "bot_names" => {"0" => "pl01"}}
-].each { |data| assert(!store.send(:room_fields_valid?, data), "malformed name assignment accepted") }
-assert(store.send(:room_fields_valid?, {"bot_count" => 2, "bot_names" => ["pl01", "en03"]}), "valid assignment rejected")
+].each { |data| assert(!validator.send(:room_fields_valid?, data), "malformed name assignment accepted") }
+assert(validator.send(:room_fields_valid?, {"bot_count" => 2, "bot_names" => ["pl01", "en03"]}), "valid assignment rejected")
 assert(h.core.metadata["protocol"] == GameRoomLiveSessionStore::CURRENT_DISCOVERY_PROTOCOL && h.core.metadata["protocol"] >= 5, "old readers can mistake named bot actors for people")
-puts "Bot names: 24 PL/26 EN, collisions, stable names, selected removal, shared clients, checkpoint, actors and validation: OK"
+puts "Bot names: 46 PL/26 EN, collisions, stable names, selected removal, shared clients, checkpoint, actors and validation: OK"

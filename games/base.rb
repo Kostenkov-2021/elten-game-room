@@ -883,6 +883,8 @@ module GameRoomGames
       []
     end
 
+    attr_accessor :board_presentation_preferences
+
     # Games with a real card hand may expose local navigation through the
     # currently playable physical cards. The returned hash must contain a
     # stable hand id, every distinct legal action grouped by Card#id, and the

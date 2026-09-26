@@ -4,11 +4,15 @@ require_relative 'support/audio_ball_client'
   [PongHarness, %w[Alice Bob], {}],
   [AudioBallHarness, %w[Alice Bob], {}],
   [PongHarness, %w[Alice Bob Carol bot:7:1], {'team_size'=>2, 'team_seats'=>[0,0,1,1]}]
-].each do |type, players, options|
+].product([false, true]).each do |(type, original_players, original_options), p2p|
+  players = original_players.dup
+  options = original_options.merge('p2p_enabled' => p2p, 'p2p_participants_limit' => 12)
   original_bots = players.count { |player| GameRoomParticipants.bot?(player) }
   viewers = players.reject { |player| GameRoomParticipants.bot?(player) } + ['Watcher']
   h = type.new(players: players, viewers: viewers, options: options)
   h.advance(240)
+  expected_p2p = GameRoomRealtime::P2POptions.session_options(options)
+  assert(h.network.values.all? { |channel| channel.p2p_options == expected_p2p }, 'Clients did not configure table P2P')
   h.clients.each_value { |c| c.update_table_control('__control_epoch' => 'initial', '__table_owner' => 'Alice') }
   prior = h.network.transform_values(&:object_id)
   initial = players.dup
@@ -25,6 +29,7 @@ require_relative 'support/audio_ball_client'
     client.before_wait(h.replay, viewer)
   end
   assert(h.network.all? { |name, channel| prior[name] != channel.object_id }, 'Old peer channel survived authority change')
+  assert(h.network.values.all? { |channel| channel.p2p_options == expected_p2p }, 'Handover lost table P2P')
   h.advance(260)
   assert(h.clients['Watcher'].host? && !h.clients['Alice'].host?, 'Coordinator did not change')
   assert(h.clients['Alice'].instance_variable_get(:@side) == nil, 'Replaced human still controls paddle')

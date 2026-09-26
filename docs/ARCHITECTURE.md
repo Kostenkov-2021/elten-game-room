@@ -151,6 +151,24 @@ chronologicznym strumieniem i nie rozdziela ponownie danych na osobne magazyny.
 odzyskanie stanu po błędzie lub luce. Nie należy zastępować tego częstym,
 okresowym odpytywaniem serwera.
 
+Axel Pong i Audio Ball mają wspólną, domyślnie wyłączoną opcję pełnego P2P.
+Po jej zaznaczeniu formularz pokazuje następne pole: limit uczestników,
+domyślnie 8; 0 oznacza brak limitu. `realtime/p2p_options.rb` definiuje opcje
+i ich walidację, a `Channel` przekazuje do natywnego `create_session`
+`p2p: :full` oraz `p2p_participants_limit`. Wyłączenie pozostawia dotychczasowe
+argumenty tworzenia sesji. Ustawienia pochodzą z opcji stołu, także przy
+ponownym połączeniu i po zmianie gospodarza; nie są lokalną preferencją gracza.
+
+Limit obejmuje natywnych uczestników Communications, w tym obserwatorów,
+ale nie osobne miejsca botów. ELTEN zestawia połączenia bezpośrednie zgodnie
+z ustawieniami prywatności klienta i dostępnością sieci; brak ścieżki P2P
+lub przekroczenie limitu pozostawia transport przez relay. Game Room nie
+zmienia globalnej zgody na P2P ani uprawnień nadawców. Pełne P2P obejmuje
+obie ścieżki Communications (pozycje i potwierdzane akcje), nie przenosi
+czatu, członkostwa ani trwałego zapisu punktów poza LiveSessions. Odczyt
+pingu relay nadal dotyczy serwera, nie opóźnienia między graczami.
+Lokalne regresje `realtime_p2p_*` nie zastępują próby na różnych łączach/NAT.
+
 `GameRoomSessionRunner` jest jednym wykonawcą zwykłej partii w widocznym
 i przykrytym oknie. `GameRoomExecutionPolicy` współdzieli czyste decyzje
 o zastępstwie i przygotowanie planu bota z osobną ścieżką realtime; nie scala

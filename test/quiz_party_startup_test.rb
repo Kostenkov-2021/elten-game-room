@@ -63,8 +63,10 @@ packs = %w[
 ].map { |id| GameRoomContent.registry.pack(id) }
 assert(packs.all? { |pack| pack && !pack.verified? }, "rules/defaults/options eagerly loaded a question database")
 audit = JSON.parse(File.read(File.expand_path("../content/QUIZ_IMPORT_REPORT.json", __dir__), encoding: "UTF-8"))["packs"]
+semantic_changes = JSON.parse(File.read(File.expand_path('../docs/QUIZ_SEMANTIC_CORRECTIONS_239.json', __dir__), encoding: 'UTF-8')).fetch('changes')
+expected_count = lambda { |id| audit.fetch(id).fetch('kept') - semantic_changes.count { |r| r.fetch('pack_id') == id && !r.fetch('after') } }
 polish_questions = polish_pack.data["questions"]
-assert(polish_questions.length == audit.fetch(polish_pack.id).fetch("kept"), "the Polish Wikidata question pack lost its audited questions")
+assert(polish_questions.length == expected_count.call(polish_pack.id), "the Polish Wikidata question pack lost questions outside reviewed corrections")
 sport_questions = polish_questions.select { |question| question["category"] == "sport" }
 assert(sport_questions.length == 2_317, "the audited sport category has an unexpected size")
 undated_coach_questions = sport_questions.select do |question|
@@ -96,7 +98,7 @@ lewandowski_answers.each do |prompt, answer|
 end
 assert(polish_pack.verified? && packs.drop(1).none?(&:verified?), "loading Polish also loaded an unrelated pack")
 witcher_pack = GameRoomContent.registry.pack("quiz.witcher.pl")
-assert(witcher_pack.data["questions"].length == audit.fetch(witcher_pack.id).fetch("kept") && witcher_pack.verified?, "the cleaned Witcher data did not verify")
+assert(witcher_pack.data["questions"].length == expected_count.call(witcher_pack.id) && witcher_pack.verified?, "the cleaned Witcher data did not verify")
 assert(packs[2..].none?(&:verified?), "loading the full Witcher set eagerly loaded a detailed set")
 assert(game.selected_content_pack(options) != nil, "the default table options do not resolve to an installed pack")
 polish_sets = game.send(:available_content_sets, "pl-PL").map(&:id).sort

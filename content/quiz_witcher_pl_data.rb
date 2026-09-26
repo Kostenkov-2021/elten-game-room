@@ -1,9 +1,10 @@
 # encoding: UTF-8
+# Generated from the reviewed semantic corrections; see docs/QUIZ_SEMANTIC_CORRECTIONS_239.json.
 require 'json'
 module GameRoomContent
   module Pack1f9366a686ccc2dddda06ad6
     def self.load
-      JSON.parse(<<'QUIZ_DATA_0336bd29566432960496da574fed26a1ebaa0d0a2eb4d22d006c94d3b6798b81')
+      JSON.parse(<<'QUIZ_DATA_cdeebe6bb532c1d98f9e4898c886a1d77ecee382ad3607df62a94bcb339f45c6')
 {
   "questions": [
     {
@@ -238,7 +239,7 @@ module GameRoomContent
       "id": "0b87ae41dc22",
       "category": "czarodzieje",
       "level": "easy",
-      "prompt": "Alzur — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Alzur — jak nazywała się jego kochanka w grach ze świata Wiedźmina?",
       "correct": "Lylianna",
       "wrong": [
         "Sigrdrifa",
@@ -250,7 +251,7 @@ module GameRoomContent
       "id": "3fcfa6106445",
       "category": "czarodzieje",
       "level": "easy",
-      "prompt": "Alzur — z którą z poniższych postaci była powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Alzur — jak nazywała się jego kochanka w grach ze świata Wiedźmina?",
       "correct": "Lylianna",
       "wrong": [
         "Tiziana Frevi",
@@ -418,7 +419,7 @@ module GameRoomContent
       "id": "31d50088a083",
       "category": "czarodzieje",
       "level": "easy",
-      "prompt": "Avallac'h — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Avallac'h — kto z wymienionych był jego ojcem w książkach o Wiedźminie?",
       "correct": "Caomhan Macha",
       "wrong": [
         "Iriana van Troffke",
@@ -430,7 +431,7 @@ module GameRoomContent
       "id": "8a7bd415a04e",
       "category": "czarodzieje",
       "level": "easy",
-      "prompt": "Avallac'h — z którą z poniższych postaci była powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Avallac'h — jak nazywała się jego uczennica w książkach o Wiedźminie?",
       "correct": "Ciri",
       "wrong": [
         "Radmir z Tor Carnedd",
@@ -574,7 +575,7 @@ module GameRoomContent
       "id": "f3605a85d85a",
       "category": "czarodzieje",
       "level": "easy",
-      "prompt": "Belleteyn — który czarodziej lub która czarodziejka urodziła się w tym miejscu w książkach z cyklu Wiedźmin?",
+      "prompt": "Która z wymienionych czarodziejek urodziła się w święto Belleteyn w książkach o Wiedźminie?",
       "correct": "Yennefer z Vengerbergu",
       "wrong": [
         "Agnes z Glanville",
@@ -694,7 +695,7 @@ module GameRoomContent
       "id": "6b8e3419ed25",
       "category": "czarodzieje",
       "level": "easy",
-      "prompt": "Cynthia — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Cynthia — jak nazywała się jej była kochanka w grach ze świata Wiedźmina?",
       "correct": "Filippa Eilhart",
       "wrong": [
         "Gardenia Biberveldt",
@@ -706,7 +707,7 @@ module GameRoomContent
       "id": "b9a942c48520",
       "category": "czarodzieje",
       "level": "easy",
-      "prompt": "Cynthia — z którą z poniższych postaci była powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Cynthia — jak nazywała się jej była kochanka w grach ze świata Wiedźmina?",
       "correct": "Filippa Eilhart",
       "wrong": [
         "Radcliffe z Oxenfurtu",
@@ -898,7 +899,7 @@ module GameRoomContent
       "id": "1eb520233887",
       "category": "czarodzieje",
       "level": "easy",
-      "prompt": "Detmold z Ban Ard — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Detmold z Ban Ard — kto z wymienionych był jego bratem w książkach o Wiedźminie?",
       "correct": "Drithelm",
       "wrong": [
         "Otto Thyssen",
@@ -910,7 +911,7 @@ module GameRoomContent
       "id": "b1cd6461c967",
       "category": "czarodzieje",
       "level": "easy",
-      "prompt": "Detmold z Ban Ard — z którą z poniższych postaci była powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Detmold z Ban Ard — kto z wymienionych był jego bratem w książkach o Wiedźminie?",
       "correct": "Drithelm",
       "wrong": [
         "Horst Yensen",
@@ -1066,7 +1067,7 @@ module GameRoomContent
       "id": "10318f3fa88e",
       "category": "czarodzieje",
       "level": "easy",
-      "prompt": "Felicja Cori — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Felicja Cori — jak nazywała się jej mistrzyni w grach ze świata Wiedźmina?",
       "correct": "Filippa Eilhart",
       "wrong": [
         "Kaleb Menge",
@@ -1078,7 +1079,7 @@ module GameRoomContent
       "id": "a6c7bb70a2d3",
       "category": "czarodzieje",
       "level": "easy",
-      "prompt": "Felicja Cori — z którą z poniższych postaci była powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Felicja Cori — jak nazywała się jej mistrzyni w grach ze świata Wiedźmina?",
       "correct": "Filippa Eilhart",
       "wrong": [
         "Aurora Henson",
@@ -1102,12 +1103,12 @@ module GameRoomContent
       "id": "94a52c67899c",
       "category": "czarodzieje",
       "level": "easy",
-      "prompt": "Filippa Eilhart — do której z poniższych grup czarodziejów zalicza tę postać wiki?",
-      "correct": "Członkinie Loży Czarodziejek",
+      "prompt": "Filippa Eilhart — do jakiej tajnej organizacji czarodziejek należy w książkach o Wiedźminie?",
+      "correct": "Loża Czarodziejek",
       "wrong": [
-        "Kadra Aretuzy",
-        "Studentki Aretuzy",
-        "Kadra Ban Ard"
+        "Zakon Płonącej Róży",
+        "Szczury",
+        "Wolna Kompania"
       ]
     },
     {
@@ -1186,7 +1187,7 @@ module GameRoomContent
       "id": "4f04494bc741",
       "category": "czarodzieje",
       "level": "easy",
-      "prompt": "Filippa Eilhart — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Filippa Eilhart — jak nazywała się jej kochanka w grach ze świata Wiedźmina?",
       "correct": "Cynthia",
       "wrong": [
         "Tadrus Hen Lohsa",
@@ -1198,7 +1199,7 @@ module GameRoomContent
       "id": "44a5ce1dca2d",
       "category": "czarodzieje",
       "level": "easy",
-      "prompt": "Filippa Eilhart — z którą z poniższych postaci była powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Filippa Eilhart — kto z wymienionych był jej kochankiem w książkach o Wiedźminie?",
       "correct": "Sigismund Dijkstra",
       "wrong": [
         "Roedskilde",
@@ -1210,12 +1211,12 @@ module GameRoomContent
       "id": "45c6fef8e049",
       "category": "czarodzieje",
       "level": "easy",
-      "prompt": "Francesca Findabair — do której z poniższych grup czarodziejów zalicza tę postać wiki?",
-      "correct": "Członkinie Loży Czarodziejek",
+      "prompt": "Francesca Findabair — do jakiej tajnej organizacji czarodziejek należy w książkach o Wiedźminie?",
+      "correct": "Loża Czarodziejek",
       "wrong": [
-        "Onejromanci",
-        "Kadra Ban Ard",
-        "Studentki Aretuzy"
+        "Zakon Płonącej Róży",
+        "Szczury",
+        "Wolna Kompania"
       ]
     },
     {
@@ -1342,7 +1343,7 @@ module GameRoomContent
       "id": "3b22a7aec3f0",
       "category": "czarodzieje",
       "level": "easy",
-      "prompt": "Francesca Findabair — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Francesca Findabair — kto z wymienionych był jej ojcem w grach ze świata Wiedźmina?",
       "correct": "Simlas Finn aep Dabairr",
       "wrong": [
         "Eudora Breckenriggs",
@@ -1354,7 +1355,7 @@ module GameRoomContent
       "id": "807524cb22d0",
       "category": "czarodzieje",
       "level": "easy",
-      "prompt": "Francesca Findabair — z którą z poniższych postaci była powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Francesca Findabair — kto z wymienionych był jej ojcem w grach ze świata Wiedźmina?",
       "correct": "Simlas Finn aep Dabairr",
       "wrong": [
         "Łowcy czarownic",
@@ -1366,12 +1367,12 @@ module GameRoomContent
       "id": "be4f9af04397",
       "category": "czarodzieje",
       "level": "easy",
-      "prompt": "Fringilla Vigo — do której z poniższych grup czarodziejów zalicza tę postać wiki?",
-      "correct": "Członkinie Loży Czarodziejek",
+      "prompt": "Fringilla Vigo — do jakiej tajnej organizacji czarodziejek należy w książkach o Wiedźminie?",
+      "correct": "Loża Czarodziejek",
       "wrong": [
-        "Studentki Aretuzy",
-        "Kadra Aretuzy",
-        "Renegaci"
+        "Zakon Płonącej Róży",
+        "Szczury",
+        "Wolna Kompania"
       ]
     },
     {
@@ -1450,7 +1451,7 @@ module GameRoomContent
       "id": "2c79e845a21d",
       "category": "czarodzieje",
       "level": "easy",
-      "prompt": "Fringilla Vigo — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Fringilla Vigo — kto z wymienionych był jej byłym kochankiem w książkach o Wiedźminie?",
       "correct": "Geralt",
       "wrong": [
         "Braenn",
@@ -1462,7 +1463,7 @@ module GameRoomContent
       "id": "020054e81fda",
       "category": "czarodzieje",
       "level": "easy",
-      "prompt": "Fringilla Vigo — z którą z poniższych postaci była powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Fringilla Vigo — jak nazywała się jej krewna w grach ze świata Wiedźmina?",
       "correct": "Sylvia Anna",
       "wrong": [
         "Tadrus Hen Lohsa",
@@ -1813,7 +1814,7 @@ module GameRoomContent
       "id": "7e3e496eed9e",
       "category": "czarodzieje",
       "level": "easy",
-      "prompt": "Keira Metz — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Z kim Keira Metz może związać się w grze Wiedźmin 3: Dziki Gon, jeśli oboje przeżyją bitwę o Kaer Morhen?",
       "correct": "Lambert",
       "wrong": [
         "Aucwenn",
@@ -1825,7 +1826,7 @@ module GameRoomContent
       "id": "8b5b1b41c280",
       "category": "czarodzieje",
       "level": "easy",
-      "prompt": "Keira Metz — z którą z poniższych postaci była powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Z kim Keira Metz może związać się w grze Wiedźmin 3: Dziki Gon, jeśli oboje przeżyją bitwę o Kaer Morhen?",
       "correct": "Lambert",
       "wrong": [
         "Lukrezia Vigo",
@@ -1885,7 +1886,7 @@ module GameRoomContent
       "id": "b61f06134651",
       "category": "czarodzieje",
       "level": "easy",
-      "prompt": "Leticia Charbonneau — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Leticia Charbonneau — kto z wymienionych był jej ojcem w książkach o Wiedźminie?",
       "correct": "Gardic",
       "wrong": [
         "Lambert Temerski",
@@ -1925,7 +1926,7 @@ module GameRoomContent
       "correct": "Wojciech Machnicki",
       "wrong": [
         "Piotr Bąk",
-        "Agata Gawrońska-Bauman]",
+        "Agata Gawrońska-Bauman",
         "Michalina Olszańska"
       ]
     },
@@ -1993,12 +1994,12 @@ module GameRoomContent
       "id": "1276ff39fe71",
       "category": "czarodzieje",
       "level": "easy",
-      "prompt": "Margarita Laux-Antille — do której z poniższych grup czarodziejów zalicza tę postać wiki?",
-      "correct": "Członkinie Loży Czarodziejek",
+      "prompt": "Margarita Laux-Antille — do jakiej tajnej organizacji czarodziejek należy w książkach o Wiedźminie?",
+      "correct": "Loża Czarodziejek",
       "wrong": [
-        "Onejromanci",
-        "Kadra Aretuzy",
-        "Renegaci"
+        "Zakon Płonącej Róży",
+        "Szczury",
+        "Wolna Kompania"
       ]
     },
     {
@@ -2101,7 +2102,7 @@ module GameRoomContent
       "id": "64d390bd3fd5",
       "category": "czarodzieje",
       "level": "easy",
-      "prompt": "Margarita Laux-Antille — z którą z poniższych postaci była powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Margarita Laux-Antille — kto z wymienionych był jej byłym kochankiem w książkach o Wiedźminie?",
       "correct": "Lars",
       "wrong": [
         "Euclides Croft",
@@ -2341,7 +2342,7 @@ module GameRoomContent
       "id": "b8811f580010",
       "category": "czarodzieje",
       "level": "easy",
-      "prompt": "Rience — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Rience — kto z wymienionych był jego mistrzem w książkach o Wiedźminie?",
       "correct": "Vilgefortz",
       "wrong": [
         "Abelard Levesley",
@@ -2353,7 +2354,7 @@ module GameRoomContent
       "id": "bd928dc9bd51",
       "category": "czarodzieje",
       "level": "easy",
-      "prompt": "Rience — z którą z poniższych postaci była powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Rience — kto z wymienionych był jego mistrzem w książkach o Wiedźminie?",
       "correct": "Vilgefortz",
       "wrong": [
         "Agnes z Glanville",
@@ -2560,7 +2561,7 @@ module GameRoomContent
       "id": "e0f63901f029",
       "category": "czarodzieje",
       "level": "easy",
-      "prompt": "Sabrina Glevissig — z którą z poniższych postaci była powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Sabrina Glevissig — kto z wymienionych był jej byłym kochankiem w książkach o Wiedźminie?",
       "correct": "Algernon Guincamp",
       "wrong": [
         "Albina Tottelkampf",
@@ -2611,7 +2612,7 @@ module GameRoomContent
       "prompt": "Savolla — kto z poniższych osób zagrał lub dubbingował tę postać w grach z serii Wiedźmin?",
       "correct": "Piotr Bąk",
       "wrong": [
-        "Anna Kerth]",
+        "Anna Kerth",
         "Barbara Melzer",
         "Zofia Zborowska"
       ]
@@ -2668,7 +2669,7 @@ module GameRoomContent
       "id": "6911ceda24c4",
       "category": "czarodzieje",
       "level": "easy",
-      "prompt": "Savolla — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Savolla — kto z wymienionych był jego mistrzem w grach ze świata Wiedźmina?",
       "correct": "Azar Javed",
       "wrong": [
         "Griffarin",
@@ -2680,7 +2681,7 @@ module GameRoomContent
       "id": "c0b9cda9474c",
       "category": "czarodzieje",
       "level": "easy",
-      "prompt": "Savolla — z którą z poniższych postaci była powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Savolla — kto z wymienionych był jego mistrzem w grach ze świata Wiedźmina?",
       "correct": "Azar Javed",
       "wrong": [
         "Geoffrey Monck",
@@ -2745,7 +2746,7 @@ module GameRoomContent
       "wrong": [
         "Judit Fekete",
         "Stefan Knothe",
-        "Rochelle Rose]"
+        "Rochelle Rose"
       ]
     },
     {
@@ -2839,7 +2840,7 @@ module GameRoomContent
       "prompt": "Stregobor — kto z poniższych osób zagrał lub dubbingował tę postać w ekranizacjach Wiedźmina?",
       "correct": "Lars Mikkelsen",
       "wrong": [
-        "Anna Kerth]",
+        "Anna Kerth",
         "Jacek Mikołajczak",
         "Magdalena Warzecha"
       ]
@@ -3016,7 +3017,7 @@ module GameRoomContent
       "id": "fe04b3a96593",
       "category": "czarodzieje",
       "level": "easy",
-      "prompt": "Tissaia de Vries — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Tissaia de Vries — jak nazywała się jej uczennica w książkach o Wiedźminie?",
       "correct": "Yennefer z Vengerbergu",
       "wrong": [
         "Postać w grze Wiedźmin Pogromca Potworów",
@@ -3028,7 +3029,7 @@ module GameRoomContent
       "id": "94448457525b",
       "category": "czarodzieje",
       "level": "easy",
-      "prompt": "Tissaia de Vries — z którą z poniższych postaci była powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Tissaia de Vries — jak nazywała się jej uczennica w książkach o Wiedźminie?",
       "correct": "Margarita Laux-Antille",
       "wrong": [
         "Aamad",
@@ -3052,12 +3053,12 @@ module GameRoomContent
       "id": "62f33efb1934",
       "category": "czarodzieje",
       "level": "easy",
-      "prompt": "Triss Merigold — do której z poniższych grup czarodziejów zalicza tę postać wiki?",
-      "correct": "Członkinie Loży Czarodziejek",
+      "prompt": "Triss Merigold — do jakiej tajnej organizacji czarodziejek należy w książkach o Wiedźminie?",
+      "correct": "Loża Czarodziejek",
       "wrong": [
-        "Onejromanci",
-        "Studentki Aretuzy",
-        "Kadra Ban Ard"
+        "Zakon Płonącej Róży",
+        "Szczury",
+        "Wolna Kompania"
       ]
     },
     {
@@ -3196,7 +3197,7 @@ module GameRoomContent
       "id": "0fefc93b2471",
       "category": "czarodzieje",
       "level": "easy",
-      "prompt": "Triss Merigold — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Triss Merigold — kto z wymienionych był jej byłym kochankiem w książkach o Wiedźminie?",
       "correct": "Geralt",
       "wrong": [
         "Cerbin",
@@ -3208,7 +3209,7 @@ module GameRoomContent
       "id": "4cfe2151ab22",
       "category": "czarodzieje",
       "level": "easy",
-      "prompt": "Triss Merigold — z którą z poniższych postaci była powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Triss Merigold — kto z wymienionych był jej byłym kochankiem w książkach o Wiedźminie?",
       "correct": "Geralt",
       "wrong": [
         "Keira Metz",
@@ -3232,7 +3233,7 @@ module GameRoomContent
       "id": "4e163b2187f9",
       "category": "czarodzieje",
       "level": "easy",
-      "prompt": "Vilgefortz z Roggeveen — kto był uczennicą tej postaci w książkach z cyklu Wiedźmin?",
+      "prompt": "Vilgefortz z Roggeveen — jak nazywała się jego uczennica w książkach o Wiedźminie?",
       "correct": "Lydia van Bredevoort",
       "wrong": [
         "Lambert",
@@ -3340,7 +3341,7 @@ module GameRoomContent
       "id": "88028c90e1b9",
       "category": "czarodzieje",
       "level": "easy",
-      "prompt": "Vilgefortz z Roggeveen — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Vilgefortz z Roggeveen — jak nazywała się jego uczennica w książkach o Wiedźminie?",
       "correct": "Lydia van Bredevoort",
       "wrong": [
         "Sigismund Dijkstra",
@@ -3352,7 +3353,7 @@ module GameRoomContent
       "id": "cd2803f15717",
       "category": "czarodzieje",
       "level": "easy",
-      "prompt": "Vilgefortz z Roggeveen — z którą z poniższych postaci była powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Vilgefortz z Roggeveen — jak nazywała się jego uczennica w książkach o Wiedźminie?",
       "correct": "Lydia van Bredevoort",
       "wrong": [
         "Dagobert z Vole",
@@ -3544,7 +3545,7 @@ module GameRoomContent
       "id": "e0d5d3271ec2",
       "category": "czarodzieje",
       "level": "easy",
-      "prompt": "Yennefer z Vengerbergu — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Yennefer z Vengerbergu — kto z wymienionych był jej partnerem w książkach o Wiedźminie?",
       "correct": "Geralt z Rivii",
       "wrong": [
         "Ezra Metzgerkop",
@@ -3556,7 +3557,7 @@ module GameRoomContent
       "id": "8526549379b6",
       "category": "czarodzieje",
       "level": "easy",
-      "prompt": "Yennefer z Vengerbergu — z którą z poniższych postaci była powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Yennefer z Vengerbergu — kto z wymienionych był jej partnerem w książkach o Wiedźminie?",
       "correct": "Geralt z Rivii",
       "wrong": [
         "Vilgefortz z Roggeveen",
@@ -3853,7 +3854,7 @@ module GameRoomContent
       "id": "28d8a2c202f6",
       "category": "czarodzieje",
       "level": "medium",
-      "prompt": "Algernon Guincamp — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Algernon Guincamp — jak nazywała się jego była kochanka w książkach o Wiedźminie?",
       "correct": "Lytta Neyd",
       "wrong": [
         "Ulrik",
@@ -3865,7 +3866,7 @@ module GameRoomContent
       "id": "dd66d659b7df",
       "category": "czarodzieje",
       "level": "medium",
-      "prompt": "Algernon Guincamp — z którą z poniższych postaci była powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Algernon Guincamp — jak nazywała się jego była kochanka w książkach o Wiedźminie?",
       "correct": "Lytta Neyd",
       "wrong": [
         "Auberon Muircetach",
@@ -4021,7 +4022,7 @@ module GameRoomContent
       "id": "3d9a05ee0e91",
       "category": "czarodzieje",
       "level": "medium",
-      "prompt": "Artamon z Asguth — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Artamon z Asguth — jak nazywała się jego krewna w książkach o Wiedźminie?",
       "correct": "Deianira",
       "wrong": [
         "Luba",
@@ -4033,7 +4034,7 @@ module GameRoomContent
       "id": "ba10213f193d",
       "category": "czarodzieje",
       "level": "medium",
-      "prompt": "Artamon z Asguth — z którą z poniższych postaci była powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Artamon z Asguth — jak nazywała się jego krewna w książkach o Wiedźminie?",
       "correct": "Deianira",
       "wrong": [
         "Agnes z Glanville",
@@ -4057,7 +4058,7 @@ module GameRoomContent
       "id": "a8b3acf58da9",
       "category": "czarodzieje",
       "level": "medium",
-      "prompt": "Artaud Terranova — kto z poniższych osób zagrał lub dubbingował tę postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Kto użyczył głosu Artaudowi Terranovie w polskiej adaptacji dźwiękowej książek o Wiedźminie?",
       "correct": "Adam Bauman",
       "wrong": [
         "Jacek Mikołajczak",
@@ -4177,12 +4178,12 @@ module GameRoomContent
       "id": "0f53890abf59",
       "category": "czarodzieje",
       "level": "medium",
-      "prompt": "Assire var Anahid — do której z poniższych grup czarodziejów zalicza tę postać wiki?",
-      "correct": "Członkinie Loży Czarodziejek",
+      "prompt": "Assire var Anahid — do jakiej tajnej organizacji czarodziejek należy w książkach o Wiedźminie?",
+      "correct": "Loża Czarodziejek",
       "wrong": [
-        "Renegaci",
-        "Kadra Ban Ard",
-        "Kadra Aretuzy"
+        "Zakon Płonącej Róży",
+        "Szczury",
+        "Wolna Kompania"
       ]
     },
     {
@@ -4213,7 +4214,7 @@ module GameRoomContent
       "id": "d6afe446a0df",
       "category": "czarodzieje",
       "level": "medium",
-      "prompt": "Assire var Anahid — kto z poniższych osób zagrał lub dubbingował tę postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Kto użyczył głosu Assire var Anahid w polskiej adaptacji dźwiękowej książek o Wiedźminie?",
       "correct": "Dorota Ignatjew",
       "wrong": [
         "Tomasz Marzecki",
@@ -4285,7 +4286,7 @@ module GameRoomContent
       "id": "3ea6038a58ab",
       "category": "czarodzieje",
       "level": "medium",
-      "prompt": "Assire var Anahid — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Assire var Anahid — jak nazywała się jej siostra w książkach o Wiedźminie?",
       "correct": "Eviva",
       "wrong": [
         "Bertram Tauler",
@@ -4297,7 +4298,7 @@ module GameRoomContent
       "id": "138e59fc3815",
       "category": "czarodzieje",
       "level": "medium",
-      "prompt": "Assire var Anahid — z którą z poniższych postaci była powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Assire var Anahid — jak nazywała się jej siostra w książkach o Wiedźminie?",
       "correct": "Eviva",
       "wrong": [
         "Nora Wagner",
@@ -4441,7 +4442,7 @@ module GameRoomContent
       "id": "4d6a525e72b5",
       "category": "czarodzieje",
       "level": "medium",
-      "prompt": "Auberon Muircetach — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Auberon Muircetach — jak nazywała się jego żona w książkach o Wiedźminie?",
       "correct": "Shiadhal",
       "wrong": [
         "Gaudemunda Thyssen",
@@ -4453,7 +4454,7 @@ module GameRoomContent
       "id": "abb641dc7f2c",
       "category": "czarodzieje",
       "level": "medium",
-      "prompt": "Auberon Muircetach — z którą z poniższych postaci była powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Auberon Muircetach — jak nazywała się jego córka w książkach o Wiedźminie?",
       "correct": "Lara Dorren",
       "wrong": [
         "Bras z Ban Ard",
@@ -4597,7 +4598,7 @@ module GameRoomContent
       "id": "86185faaec88",
       "category": "czarodzieje",
       "level": "medium",
-      "prompt": "Caranthir Ar-Feiniel — w której grze pojawia się ta postać?",
+      "prompt": "W której z wymienionych gier występuje Caranthir Ar-Feiniel?",
       "correct": "GWINT: Wiedźmińska Gra Karciana",
       "wrong": [
         "Czwartki z Wiedźminem",
@@ -4633,7 +4634,7 @@ module GameRoomContent
       "id": "3eca82798d16",
       "category": "czarodzieje",
       "level": "medium",
-      "prompt": "Caranthir Ar-Feiniel — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Caranthir Ar-Feiniel — kto z wymienionych był jego mistrzem w grach ze świata Wiedźmina?",
       "correct": "Avallac'h",
       "wrong": [
         "Arno Hardbottom",
@@ -4645,7 +4646,7 @@ module GameRoomContent
       "id": "e59aa20628f7",
       "category": "czarodzieje",
       "level": "medium",
-      "prompt": "Caranthir Ar-Feiniel — z którą z poniższych postaci była powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Caranthir Ar-Feiniel — kto z wymienionych był jego mistrzem w grach ze świata Wiedźmina?",
       "correct": "Avallac'h",
       "wrong": [
         "Geoffrey Monck",
@@ -4660,7 +4661,7 @@ module GameRoomContent
       "prompt": "Carduin z Lan Exeter — kto z poniższych osób zagrał lub dubbingował tę postać w grach z serii Wiedźmin?",
       "correct": "Aleksander Wysocki",
       "wrong": [
-        "Rochelle Rose]",
+        "Rochelle Rose",
         "Piotr Bąk",
         "Szymon Kuśmider"
       ]
@@ -4693,19 +4694,19 @@ module GameRoomContent
       "id": "ade2370330ec",
       "category": "czarodzieje",
       "level": "medium",
-      "prompt": "Condwiramurs Tilly — do której z poniższych grup czarodziejów zalicza tę postać wiki?",
-      "correct": "Onejromanci",
+      "prompt": "Jak nazywa się specjalistka od magii snów, taka jak Condwiramurs Tilly w powieści „Pani Jeziora”?",
+      "correct": "onejromantka",
       "wrong": [
-        "Kadra Aretuzy",
-        "Rektorki Aretuzy",
-        "Wiedzący"
+        "nekromantka",
+        "alchemiczka",
+        "iluzjonistka"
       ]
     },
     {
       "id": "88e886da7bf3",
       "category": "czarodzieje",
       "level": "medium",
-      "prompt": "Condwiramurs Tilly — kto był mentorką tej postaci w książkach z cyklu Wiedźmin?",
+      "prompt": "Condwiramurs Tilly — jak nazywa się jej mentorka w powieści „Pani Jeziora”?",
       "correct": "Nimue",
       "wrong": [
         "Carys",
@@ -4741,7 +4742,7 @@ module GameRoomContent
       "id": "363284c1e7f6",
       "category": "czarodzieje",
       "level": "medium",
-      "prompt": "Condwiramurs Tilly — z którą z poniższych postaci była powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Condwiramurs Tilly — jak nazywała się jej mentorka w książkach o Wiedźminie?",
       "correct": "Nimue",
       "wrong": [
         "Sigismund Dijkstra",
@@ -4801,7 +4802,7 @@ module GameRoomContent
       "id": "a5f1b5094fd2",
       "category": "czarodzieje",
       "level": "medium",
-      "prompt": "Corine Tilly — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Z którym bożątkiem Corine Tilly może zamieszkać w nawiedzonym domu w grze Wiedźmin 3: Dziki Gon?",
       "correct": "Sara",
       "wrong": [
         "Chireadan",
@@ -4813,7 +4814,7 @@ module GameRoomContent
       "id": "c8cf6aa45b1a",
       "category": "czarodzieje",
       "level": "medium",
-      "prompt": "Corine Tilly — z którą z poniższych postaci była powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Z którym bożątkiem Corine Tilly może zamieszkać w nawiedzonym domu w grze Wiedźmin 3: Dziki Gon?",
       "correct": "Sara",
       "wrong": [
         "Giaccomo Vitti",
@@ -5137,7 +5138,7 @@ module GameRoomContent
       "id": "160ba9296dcc",
       "category": "czarodzieje",
       "level": "medium",
-      "prompt": "Hen Gedymdeith — kto był przyjaciółką tej postaci w książkach z cyklu Wiedźmin?",
+      "prompt": "Hen Gedymdeith — jak nazywała się jego przyjaciółka w książkach o Wiedźminie?",
       "correct": "Tissaia de Vries",
       "wrong": [
         "Wierzym",
@@ -5221,7 +5222,7 @@ module GameRoomContent
       "id": "62c25d972abc",
       "category": "czarodzieje",
       "level": "medium",
-      "prompt": "Hen Gedymdeith — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Hen Gedymdeith — jak nazywała się jego przyjaciółka w książkach o Wiedźminie?",
       "correct": "Tissaia de Vries",
       "wrong": [
         "Anabelle",
@@ -5233,7 +5234,7 @@ module GameRoomContent
       "id": "30219060c0e8",
       "category": "czarodzieje",
       "level": "medium",
-      "prompt": "Hen Gedymdeith — z którą z poniższych postaci była powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Hen Gedymdeith — jak nazywała się jego przyjaciółka w książkach o Wiedźminie?",
       "correct": "Tissaia de Vries",
       "wrong": [
         "Margarita Laux-Antille",
@@ -5329,7 +5330,7 @@ module GameRoomContent
       "id": "065674b3fae1",
       "category": "czarodzieje",
       "level": "medium",
-      "prompt": "Ida Emean — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Ida Emean — kto z wymienionych był jednym z jej rodziców w książkach o Wiedźminie?",
       "correct": "Sivney",
       "wrong": [
         "Lytta Neyd",
@@ -5341,7 +5342,7 @@ module GameRoomContent
       "id": "1b211c995c4c",
       "category": "czarodzieje",
       "level": "medium",
-      "prompt": "Ida Emean — z którą z poniższych postaci była powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Ida Emean — kto z wymienionych był jednym z jej rodziców w książkach o Wiedźminie?",
       "correct": "Sivney",
       "wrong": [
         "Klara Larissa de Winter",
@@ -5413,7 +5414,7 @@ module GameRoomContent
       "id": "7000a549803f",
       "category": "czarodzieje",
       "level": "medium",
-      "prompt": "Idarran z Ulivo — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Idarran z Ulivo — kto z wymienionych był jego mistrzem w książkach o Wiedźminie?",
       "correct": "Alzur",
       "wrong": [
         "Korin",
@@ -5425,7 +5426,7 @@ module GameRoomContent
       "id": "4157713c4b72",
       "category": "czarodzieje",
       "level": "medium",
-      "prompt": "Idarran z Ulivo — z którą z poniższych postaci była powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Idarran z Ulivo — kto z wymienionych był jego mistrzem w książkach o Wiedźminie?",
       "correct": "Alzur",
       "wrong": [
         "Hen Gedymdeith",
@@ -5526,7 +5527,7 @@ module GameRoomContent
       "wrong": [
         "Zofia Zborowska",
         "Szymon Kuśmider",
-        "Agata Gawrońska-Bauman]"
+        "Agata Gawrońska-Bauman"
       ]
     },
     {
@@ -5581,7 +5582,7 @@ module GameRoomContent
       "id": "bdc6610afa79",
       "category": "czarodzieje",
       "level": "medium",
-      "prompt": "Istredd — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Istredd — jak nazywała się jego była kochanka w książkach o Wiedźminie?",
       "correct": "Yennefer",
       "wrong": [
         "Ivar Złe Oko",
@@ -5593,7 +5594,7 @@ module GameRoomContent
       "id": "d7a574e21437",
       "category": "czarodzieje",
       "level": "medium",
-      "prompt": "Istredd — z którą z poniższych postaci była powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Istredd — jak nazywała się jego była kochanka w książkach o Wiedźminie?",
       "correct": "Yennefer",
       "wrong": [
         "Astrogarus",
@@ -5689,7 +5690,7 @@ module GameRoomContent
       "id": "c26ddc612c2f",
       "category": "czarodzieje",
       "level": "medium",
-      "prompt": "Lara Dorren — kto był córką tej postaci w książkach z cyklu Wiedźmin?",
+      "prompt": "Lara Dorren — jak nazywała się jej córka w książkach o Wiedźminie?",
       "correct": "Riannon",
       "wrong": [
         "Dabairr",
@@ -5701,7 +5702,7 @@ module GameRoomContent
       "id": "9c7b8388f64e",
       "category": "czarodzieje",
       "level": "medium",
-      "prompt": "Lara Dorren — kto był matką tej postaci w książkach z cyklu Wiedźmin?",
+      "prompt": "Lara Dorren — jak nazywała się jej matka w książkach o Wiedźminie?",
       "correct": "Shiadhal",
       "wrong": [
         "Amos var Ypsis",
@@ -5761,7 +5762,7 @@ module GameRoomContent
       "id": "39966aa9eaf0",
       "category": "czarodzieje",
       "level": "medium",
-      "prompt": "Lara Dorren — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Lara Dorren — kto z wymienionych był jej ojcem w książkach o Wiedźminie?",
       "correct": "Auberon Muircetach",
       "wrong": [
         "Czarodziej",
@@ -5773,7 +5774,7 @@ module GameRoomContent
       "id": "d3374086e1ca",
       "category": "czarodzieje",
       "level": "medium",
-      "prompt": "Lara Dorren — z którą z poniższych postaci była powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Lara Dorren — kto z wymienionych był jej kochankiem w książkach o Wiedźminie?",
       "correct": "Cregennan",
       "wrong": [
         "Nawigator",
@@ -5785,7 +5786,7 @@ module GameRoomContent
       "id": "a39c0a19a939",
       "category": "czarodzieje",
       "level": "medium",
-      "prompt": "Leticia Charbonneau — kto był matką tej postaci w książkach z cyklu Wiedźmin?",
+      "prompt": "Leticia Charbonneau — jak nazywała się jej matka według „Genealogii” Andrzeja Sapkowskiego?",
       "correct": "Carezza Charbonneau",
       "wrong": [
         "Lytta Neyd",
@@ -5833,7 +5834,7 @@ module GameRoomContent
       "id": "8b3bb86bf0c2",
       "category": "czarodzieje",
       "level": "medium",
-      "prompt": "Leticia Charbonneau — z którą z poniższych postaci była powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Leticia Charbonneau — kto z wymienionych był jej ojcem w książkach o Wiedźminie?",
       "correct": "Gardic",
       "wrong": [
         "Królowa Zimy",
@@ -5929,7 +5930,7 @@ module GameRoomContent
       "id": "f1d986aec49c",
       "category": "czarodzieje",
       "level": "medium",
-      "prompt": "Lydia van Bredevoort — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Lydia van Bredevoort — kto z wymienionych był jej mistrzem w książkach o Wiedźminie?",
       "correct": "Vilgefortz",
       "wrong": [
         "Timur Voronoff",
@@ -5941,7 +5942,7 @@ module GameRoomContent
       "id": "5261f4275903",
       "category": "czarodzieje",
       "level": "medium",
-      "prompt": "Lydia van Bredevoort — z którą z poniższych postaci była powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Lydia van Bredevoort — kto z wymienionych był jej mistrzem w książkach o Wiedźminie?",
       "correct": "Vilgefortz",
       "wrong": [
         "Onejromancja",
@@ -6073,7 +6074,7 @@ module GameRoomContent
       "id": "b3686d070eb8",
       "category": "czarodzieje",
       "level": "medium",
-      "prompt": "Lytta Neyd — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Lytta Neyd — kto z wymienionych był jej byłym kochankiem w książkach o Wiedźminie?",
       "correct": "Algernon Guincamp",
       "wrong": [
         "Wledyr",
@@ -6085,7 +6086,7 @@ module GameRoomContent
       "id": "359cddadf888",
       "category": "czarodzieje",
       "level": "medium",
-      "prompt": "Lytta Neyd — z którą z poniższych postaci była powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Lytta Neyd — jak nazywała się jej uczennica w książkach o Wiedźminie?",
       "correct": "Mozaïk",
       "wrong": [
         "April",
@@ -6121,7 +6122,7 @@ module GameRoomContent
       "id": "47a0dfefc2aa",
       "category": "czarodzieje",
       "level": "medium",
-      "prompt": "Marti Sodergren — kto z poniższych osób zagrał lub dubbingował tę postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Kto użyczył głosu Marti Sodergren w polskiej adaptacji dźwiękowej książek o Wiedźminie?",
       "correct": "Marzena Trybała",
       "wrong": [
         "Anna Ułas",
@@ -6205,7 +6206,7 @@ module GameRoomContent
       "id": "f7b346b40353",
       "category": "czarodzieje",
       "level": "medium",
-      "prompt": "Millegarda — kto był matką tej postaci w książkach z cyklu Wiedźmin?",
+      "prompt": "Millegarda — jak nazywała się jej matka według „Genealogii” Andrzeja Sapkowskiego?",
       "correct": "Hedwig z Malleore",
       "wrong": [
         "Hieronim Lasz",
@@ -6229,7 +6230,7 @@ module GameRoomContent
       "id": "fe543f4d1536",
       "category": "czarodzieje",
       "level": "medium",
-      "prompt": "Millegarda — kto był siostrą tej postaci w książkach z cyklu Wiedźmin?",
+      "prompt": "Millegarda — jak nazywała się jej siostra według „Genealogii” Andrzeja Sapkowskiego?",
       "correct": "Dalimira z Redanii",
       "wrong": [
         "Hen Gedymdeith",
@@ -6241,7 +6242,7 @@ module GameRoomContent
       "id": "f4a72d8194b4",
       "category": "czarodzieje",
       "level": "medium",
-      "prompt": "Millegarda — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Millegarda — kto z wymienionych był jej ojcem w „Genealogiach” Andrzeja Sapkowskiego?",
       "correct": "Vizimir II Sprawiedliwy",
       "wrong": [
         "Rigoberta z Lyrii",
@@ -6253,7 +6254,7 @@ module GameRoomContent
       "id": "261e55d8ccbf",
       "category": "czarodzieje",
       "level": "medium",
-      "prompt": "Millegarda — z którą z poniższych postaci była powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Millegarda — kto z wymienionych był jej bratem w „Genealogiach” Andrzeja Sapkowskiego?",
       "correct": "Radowid V Srogi",
       "wrong": [
         "Ida Emean",
@@ -6349,7 +6350,7 @@ module GameRoomContent
       "id": "2429c704d906",
       "category": "czarodzieje",
       "level": "medium",
-      "prompt": "Mozaïk — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Mozaïk — jak nazywała się jej mentorka w książkach o Wiedźminie?",
       "correct": "Lytta Neyd",
       "wrong": [
         "Aevenien",
@@ -6361,7 +6362,7 @@ module GameRoomContent
       "id": "9fa321bd300a",
       "category": "czarodzieje",
       "level": "medium",
-      "prompt": "Mozaïk — z którą z poniższych postaci była powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Mozaïk — jak nazywała się jej mentorka w książkach o Wiedźminie?",
       "correct": "Lytta Neyd",
       "wrong": [
         "Filippa Eilhart",
@@ -6505,7 +6506,7 @@ module GameRoomContent
       "id": "9d0a514715de",
       "category": "czarodzieje",
       "level": "medium",
-      "prompt": "Nimue — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Nimue — kto z wymienionych był jej ojcem w książkach o Wiedźminie?",
       "correct": "Wledyr",
       "wrong": [
         "Gundar",
@@ -6517,7 +6518,7 @@ module GameRoomContent
       "id": "ee8fede45e33",
       "category": "czarodzieje",
       "level": "medium",
-      "prompt": "Nimue — z którą z poniższych postaci była powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Nimue — jak nazywała się jej siostra w książkach o Wiedźminie?",
       "correct": "Orla",
       "wrong": [
         "Prawo",
@@ -6649,7 +6650,7 @@ module GameRoomContent
       "id": "ddbe741328ae",
       "category": "czarodzieje",
       "level": "medium",
-      "prompt": "Ortolan — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Ortolan — kto z wymienionych był jego asystentem w książkach o Wiedźminie?",
       "correct": "Sorel Degerlund",
       "wrong": [
         "Spacer po nadbrzeżu",
@@ -6661,7 +6662,7 @@ module GameRoomContent
       "id": "5606c1360bd0",
       "category": "czarodzieje",
       "level": "medium",
-      "prompt": "Ortolan — z którą z poniższych postaci była powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Ortolan — kto z wymienionych był jego asystentem w książkach o Wiedźminie?",
       "correct": "Sorel Degerlund",
       "wrong": [
         "Vanhemar",
@@ -6775,30 +6776,6 @@ module GameRoomContent
         "Coś się kończy, coś się zaczyna",
         "Wieża Jaskółki",
         "Wiedźmin. Historia fenomenu"
-      ]
-    },
-    {
-      "id": "d795362b5f40",
-      "category": "czarodzieje",
-      "level": "medium",
-      "prompt": "Raffard Biały — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
-      "correct": "Lylianna",
-      "wrong": [
-        "Sturla",
-        "Cassandra du Toile",
-        "Una"
-      ]
-    },
-    {
-      "id": "64bbd95fccca",
-      "category": "czarodzieje",
-      "level": "medium",
-      "prompt": "Raffard Biały — z którą z poniższych postaci była powiązana ta postać w grach z serii Wiedźmin?",
-      "correct": "Lylianna",
-      "wrong": [
-        "Jochen Brandt",
-        "Rejean",
-        "Król Rybak"
       ]
     },
     {
@@ -6985,7 +6962,7 @@ module GameRoomContent
       "id": "9bc0316a8e36",
       "category": "czarodzieje",
       "level": "medium",
-      "prompt": "Tetra Gilcrest/Netflix — z którą postacią jest powiązana ta postać?",
+      "prompt": "Który mag jest przodkiem Tetry Gilcrest w filmie animowanym „Wiedźmin: Zmora Wilka”?",
       "correct": "Jan Bekker",
       "wrong": [
         "Sigismund Dijkstra",
@@ -6997,7 +6974,7 @@ module GameRoomContent
       "id": "34e2c0c19680",
       "category": "czarodzieje",
       "level": "medium",
-      "prompt": "Tetra Gilcrest/Netflix — z którą z poniższych postaci była powiązana ta postać?",
+      "prompt": "Który mag jest przodkiem Tetry Gilcrest w filmie animowanym „Wiedźmin: Zmora Wilka”?",
       "correct": "Jan Bekker",
       "wrong": [
         "Renegat",
@@ -7045,7 +7022,7 @@ module GameRoomContent
       "id": "3ee2212dce7a",
       "category": "czarodzieje",
       "level": "medium",
-      "prompt": "Tiziana Frevi — z którą z poniższych postaci była powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Tiziana Frevi — kto z wymienionych był jej dawnym kochankiem w książkach o Wiedźminie?",
       "correct": "Geralt",
       "wrong": [
         "Triss Merigold",
@@ -7105,7 +7082,7 @@ module GameRoomContent
       "id": "473d4a1fd170",
       "category": "czarodzieje",
       "level": "medium",
-      "prompt": "Visenna — z którą postacią jest powiązana ta postać w ekranizacjach Wiedźmina?",
+      "prompt": "Visenna — kto z wymienionych był jej partnerem w opowiadaniu „Droga, z której się nie wraca”?",
       "correct": "Korin",
       "wrong": [
         "Aldona Lamch",
@@ -7117,7 +7094,7 @@ module GameRoomContent
       "id": "305ced376a87",
       "category": "czarodzieje",
       "level": "medium",
-      "prompt": "Visenna — z którą z poniższych postaci była powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Visenna — kto z wymienionych był jej synem w książkach o Wiedźminie?",
       "correct": "Geralt z Rivii",
       "wrong": [
         "de Noailles",
@@ -7273,12 +7250,12 @@ module GameRoomContent
       "id": "6ec1b3e449a5",
       "category": "czarodzieje",
       "level": "hard",
-      "prompt": "Abonde — do której z poniższych grup czarodziejów zalicza tę postać wiki?",
-      "correct": "Studentki Aretuzy",
+      "prompt": "Abonde — w jakiej szkole magii się kształciła według książek o Wiedźminie?",
+      "correct": "Aretuza",
       "wrong": [
-        "Kadra Ban Ard",
-        "Onejromanci",
-        "Wiedzący"
+        "Ban Ard",
+        "Kaer Morhen",
+        "Kaer Seren"
       ]
     },
     {
@@ -7321,7 +7298,7 @@ module GameRoomContent
       "id": "65a3608f6c74",
       "category": "czarodzieje",
       "level": "hard",
-      "prompt": "Abonde — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Abonde — jak nazywała się jej koleżanka w książkach o Wiedźminie?",
       "correct": "Nimue",
       "wrong": [
         "Narsi Blotka",
@@ -7333,7 +7310,7 @@ module GameRoomContent
       "id": "03cb4b73e1dd",
       "category": "czarodzieje",
       "level": "hard",
-      "prompt": "Abonde — z którą z poniższych postaci była powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Abonde — jak nazywała się jej koleżanka w książkach o Wiedźminie?",
       "correct": "Nimue",
       "wrong": [
         "Galanthea",
@@ -7360,7 +7337,7 @@ module GameRoomContent
       "prompt": "Adrianna — kto z poniższych osób zagrał lub dubbingował tę postać w grach z serii Wiedźmin?",
       "correct": "Barbara Melzer",
       "wrong": [
-        "Agata Gawrońska-Bauman]",
+        "Agata Gawrońska-Bauman",
         "Wojciech Machnicki",
         "Michalina Olszańska"
       ]
@@ -7453,12 +7430,12 @@ module GameRoomContent
       "id": "7ade45ce9ff6",
       "category": "czarodzieje",
       "level": "hard",
-      "prompt": "Albina Tottelkampf — do której z poniższych grup czarodziejów zalicza tę postać wiki?",
-      "correct": "Kadra Aretuzy",
+      "prompt": "W jakiej szkole nauczała Albina Tottelkampf, wspomniana w bestiariuszu gry Wiedźmin 3: Dziki Gon?",
+      "correct": "Aretuza",
       "wrong": [
-        "Członkinie Loży Czarodziejek",
-        "Onejromanci",
-        "Renegaci"
+        "Ban Ard",
+        "Kaer Morhen",
+        "Kaer Seren"
       ]
     },
     {
@@ -7561,7 +7538,7 @@ module GameRoomContent
       "id": "00777186c30b",
       "category": "czarodzieje",
       "level": "hard",
-      "prompt": "Aleksander — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Aleksander — jak nazywała się jego przyjaciółka w grach ze świata Wiedźmina?",
       "correct": "Keira Metz",
       "wrong": [
         "Lucien Monhart",
@@ -7573,7 +7550,7 @@ module GameRoomContent
       "id": "cf7a33932116",
       "category": "czarodzieje",
       "level": "hard",
-      "prompt": "Aleksander — z którą z poniższych postaci była powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Aleksander — jak nazywała się jego przyjaciółka w grach ze świata Wiedźmina?",
       "correct": "Keira Metz",
       "wrong": [
         "Tissaia de Vries",
@@ -7801,7 +7778,7 @@ module GameRoomContent
       "id": "7538a41df788",
       "category": "czarodzieje",
       "level": "hard",
-      "prompt": "Artur de Vleester — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Artur de Vleester — jak nazywała się jego była kochanka w grach ze świata Wiedźmina?",
       "correct": "Filippa Eilhart",
       "wrong": [
         "Guido Thyssen",
@@ -7813,7 +7790,7 @@ module GameRoomContent
       "id": "258a937050a6",
       "category": "czarodzieje",
       "level": "hard",
-      "prompt": "Artur de Vleester — z którą z poniższych postaci była powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Artur de Vleester — jak nazywała się jego była kochanka w grach ze świata Wiedźmina?",
       "correct": "Filippa Eilhart",
       "wrong": [
         "Radowid V Srogi",
@@ -7825,12 +7802,12 @@ module GameRoomContent
       "id": "0d662c81b7b5",
       "category": "czarodzieje",
       "level": "hard",
-      "prompt": "Augusta Wagner — do której z poniższych grup czarodziejów zalicza tę postać wiki?",
-      "correct": "Studentki Aretuzy",
+      "prompt": "Augusta Wagner — w jakiej szkole magii się kształciła według książek o Wiedźminie?",
+      "correct": "Aretuza",
       "wrong": [
-        "Członkinie Loży Czarodziejek",
-        "Renegaci",
-        "Onejromanci"
+        "Ban Ard",
+        "Kaer Morhen",
+        "Kaer Seren"
       ]
     },
     {
@@ -7921,7 +7898,7 @@ module GameRoomContent
       "id": "848c8eb2c75c",
       "category": "czarodzieje",
       "level": "hard",
-      "prompt": "Axel Raby — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Axel Raby — jak nazywała się jego przyjaciółka w książkach o Wiedźminie?",
       "correct": "Triss Merigold",
       "wrong": [
         "Gardenia Biberveldt",
@@ -7933,7 +7910,7 @@ module GameRoomContent
       "id": "7e7d0df66d31",
       "category": "czarodzieje",
       "level": "hard",
-      "prompt": "Axel Raby — z którą z poniższych postaci była powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Axel Raby — jak nazywała się jego przyjaciółka w książkach o Wiedźminie?",
       "correct": "Triss Merigold",
       "wrong": [
         "Felicja Cori",
@@ -8029,7 +8006,7 @@ module GameRoomContent
       "id": "7a193c109c77",
       "category": "czarodzieje",
       "level": "hard",
-      "prompt": "Carys — gdzie mieszkała ta postać w grach z serii Wiedźmin?",
+      "prompt": "Z jakiej miejscowości pochodzi Carys, twórca zaklęcia Carys’ Hail w The Witcher Role-Playing Game?",
       "correct": "Cintra",
       "wrong": [
         "Baccalá",
@@ -8041,7 +8018,7 @@ module GameRoomContent
       "id": "7bfa3a3165f8",
       "category": "czarodzieje",
       "level": "hard",
-      "prompt": "Carys — w której grze pojawia się ta postać?",
+      "prompt": "W której z wymienionych gier wspomniano Carys z Cintry, twórcę zaklęcia Carys’ Hail?",
       "correct": "The Witcher Role-Playing Game",
       "wrong": [
         "Wiedźmin: Gra Wyobraźni",
@@ -8053,7 +8030,7 @@ module GameRoomContent
       "id": "86277e2087bb",
       "category": "czarodzieje",
       "level": "hard",
-      "prompt": "Carys — w której z poniższych gier wystąpiła ta postać?",
+      "prompt": "W której z wymienionych gier opisano zaklęcie Carys’ Hail, nazwane na cześć Carys z Cintry?",
       "correct": "The Witcher Role-Playing Game",
       "wrong": [
         "Wojna Krwi: Wiedźmińskie Opowieści",
@@ -8077,7 +8054,7 @@ module GameRoomContent
       "id": "5d2e84d8cb62",
       "category": "czarodzieje",
       "level": "hard",
-      "prompt": "Condwiramurs Tilly — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Condwiramurs Tilly — jak nazywała się jej mentorka w książkach o Wiedźminie?",
       "correct": "Nimue",
       "wrong": [
         "Liam aep Muir Moss",
@@ -8281,12 +8258,12 @@ module GameRoomContent
       "id": "dece1e09eafd",
       "category": "czarodzieje",
       "level": "hard",
-      "prompt": "Ilona Laux-Antille — do której z poniższych grup czarodziejów zalicza tę postać wiki?",
-      "correct": "Studentki Aretuzy",
+      "prompt": "Ilona Laux-Antille — w jakiej szkole magii się kształciła według książek o Wiedźminie?",
+      "correct": "Aretuza",
       "wrong": [
-        "Renegaci",
-        "Kadra Ban Ard",
-        "Wiedzący"
+        "Ban Ard",
+        "Kaer Morhen",
+        "Kaer Seren"
       ]
     },
     {
@@ -8341,12 +8318,12 @@ module GameRoomContent
       "id": "1473a501702f",
       "category": "czarodzieje",
       "level": "hard",
-      "prompt": "Jade Glevissig — do której z poniższych grup czarodziejów zalicza tę postać wiki?",
-      "correct": "Studentki Aretuzy",
+      "prompt": "Jade Glevissig — w jakiej szkole magii się kształciła według książek o Wiedźminie?",
+      "correct": "Aretuza",
       "wrong": [
-        "Renegaci",
-        "Onejromanci",
-        "Wiedzący"
+        "Ban Ard",
+        "Kaer Morhen",
+        "Kaer Seren"
       ]
     },
     {
@@ -8521,7 +8498,7 @@ module GameRoomContent
       "id": "bd046e621935",
       "category": "czarodzieje",
       "level": "hard",
-      "prompt": "Królowa Zimy — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Królowa Zimy — jak nazywała się jej potomkini w niekanonicznych dodatkach „Czwartki z Wiedźminem” do gry fabularnej The Witcher?",
       "correct": "Shiadhal",
       "wrong": [
         "Krwawy Baron",
@@ -8533,7 +8510,7 @@ module GameRoomContent
       "id": "dbd1827a7df5",
       "category": "czarodzieje",
       "level": "hard",
-      "prompt": "Królowa Zimy — z którą z poniższych postaci była powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Królowa Zimy — jak nazywała się jej potomkini w niekanonicznych dodatkach „Czwartki z Wiedźminem” do gry fabularnej The Witcher?",
       "correct": "Shiadhal",
       "wrong": [
         "Artorius Vigo",
@@ -8593,12 +8570,12 @@ module GameRoomContent
       "id": "35b3c6c98d82",
       "category": "czarodzieje",
       "level": "hard",
-      "prompt": "Lylianna — do której z poniższych grup czarodziejów zalicza tę postać wiki?",
-      "correct": "Renegaci",
+      "prompt": "Jak określana jest Lylianna, czarodziejka działająca poza strukturami Bractwa w grze GWINT: Mag Renegat?",
+      "correct": "renegatka",
       "wrong": [
-        "Kadra Aretuzy",
-        "Członkinie Loży Czarodziejek",
-        "Rektorki Aretuzy"
+        "rektorka Aretuzy",
+        "członkini Loży Czarodziejek",
+        "rektorka Ban Ard"
       ]
     },
     {
@@ -8623,30 +8600,6 @@ module GameRoomContent
         "Cena neutralności",
         "The Witcher Battle Arena",
         "Reigns: The Witcher"
-      ]
-    },
-    {
-      "id": "fcd1a1687730",
-      "category": "czarodzieje",
-      "level": "hard",
-      "prompt": "Lylianna — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
-      "correct": "Raffard Biały",
-      "wrong": [
-        "Gaudemunda Thyssen",
-        "Reginald",
-        "Freixenet"
-      ]
-    },
-    {
-      "id": "c705882f6163",
-      "category": "czarodzieje",
-      "level": "hard",
-      "prompt": "Lylianna — z którą z poniższych postaci była powiązana ta postać w grach z serii Wiedźmin?",
-      "correct": "Raffard Biały",
-      "wrong": [
-        "Visenna",
-        "Rodallega Szkarłatny",
-        "pierwszy wiedźmin"
       ]
     },
     {
@@ -8749,7 +8702,7 @@ module GameRoomContent
       "id": "bc06255eb1a6",
       "category": "czarodzieje",
       "level": "hard",
-      "prompt": "Moritz Diefenthel — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Do której czarodziejki Moritz Diefenthel zalecał się w przeszłości, o czym można usłyszeć w grze Wiedźmin 3: Dziki Gon?",
       "correct": "Triss Merigold",
       "wrong": [
         "Pustelnik z Lac Cèlavy",
@@ -8761,7 +8714,7 @@ module GameRoomContent
       "id": "369de3d2873c",
       "category": "czarodzieje",
       "level": "hard",
-      "prompt": "Moritz Diefenthel — z którą z poniższych postaci była powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Do której czarodziejki Moritz Diefenthel zalecał się w przeszłości, o czym można usłyszeć w grze Wiedźmin 3: Dziki Gon?",
       "correct": "Triss Merigold",
       "wrong": [
         "Astrogarus",
@@ -8785,7 +8738,7 @@ module GameRoomContent
       "id": "4a6c456f9b6d",
       "category": "czarodzieje",
       "level": "hard",
-      "prompt": "Myra Baiss — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Myra Baiss — jak nazywała się jej koleżanka w grach ze świata Wiedźmina?",
       "correct": "Triss Merigold",
       "wrong": [
         "Samuel d'Arvegnac",
@@ -8797,7 +8750,7 @@ module GameRoomContent
       "id": "ec218d811693",
       "category": "czarodzieje",
       "level": "hard",
-      "prompt": "Myra Baiss — z którą z poniższych postaci była powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Myra Baiss — jak nazywała się jej koleżanka w grach ze świata Wiedźmina?",
       "correct": "Triss Merigold",
       "wrong": [
         "Sorel Degerlund",
@@ -8869,12 +8822,12 @@ module GameRoomContent
       "id": "311d865379b6",
       "category": "czarodzieje",
       "level": "hard",
-      "prompt": "Nora Wagner — do której z poniższych grup czarodziejów zalicza tę postać wiki?",
-      "correct": "Studentki Aretuzy",
+      "prompt": "Nora Wagner — w jakiej szkole magii się kształciła według książek o Wiedźminie?",
+      "correct": "Aretuza",
       "wrong": [
-        "Kadra Ban Ard",
-        "Renegaci",
-        "Onejromanci"
+        "Ban Ard",
+        "Kaer Morhen",
+        "Kaer Seren"
       ]
     },
     {
@@ -8908,7 +8861,7 @@ module GameRoomContent
       "prompt": "Operator Artefaktu — kto z poniższych osób zagrał lub dubbingował tę postać w grach z serii Wiedźmin?",
       "correct": "Tomasz Marzecki",
       "wrong": [
-        "Anna Kerth]",
+        "Anna Kerth",
         "Frida Gustavsson",
         "Lars Mikkelsen"
       ]
@@ -9157,7 +9110,7 @@ module GameRoomContent
       "id": "d1073c6717bb",
       "category": "czarodzieje",
       "level": "hard",
-      "prompt": "Simlas Finn aep Dabairr — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Simlas Finn aep Dabairr — jak nazywała się jego córka w grach ze świata Wiedźmina?",
       "correct": "Francesca Findabair",
       "wrong": [
         "Merineaevelth",
@@ -9169,7 +9122,7 @@ module GameRoomContent
       "id": "317d4fda3983",
       "category": "czarodzieje",
       "level": "hard",
-      "prompt": "Simlas Finn aep Dabairr — z którą z poniższych postaci była powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Simlas Finn aep Dabairr — jak nazywała się jego córka w grach ze świata Wiedźmina?",
       "correct": "Francesca Findabair",
       "wrong": [
         "Nimue",
@@ -9229,7 +9182,7 @@ module GameRoomContent
       "id": "2d61552e0456",
       "category": "czarodzieje",
       "level": "hard",
-      "prompt": "Tadrus Hen Lohsa — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Tadrus Hen Lohsa — kto z wymienionych był jego uczniem w niekanonicznych dodatkach „Czwartki z Wiedźminem” do gry fabularnej The Witcher?",
       "correct": "Vidar Holgersson",
       "wrong": [
         "Yazon Gibellini",
@@ -9241,7 +9194,7 @@ module GameRoomContent
       "id": "e12f716dad7e",
       "category": "czarodzieje",
       "level": "hard",
-      "prompt": "Tadrus Hen Lohsa — z którą z poniższych postaci była powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Tadrus Hen Lohsa — kto z wymienionych był jego przyjacielem w niekanonicznych dodatkach „Czwartki z Wiedźminem” do gry fabularnej The Witcher?",
       "correct": "Barney Brunn",
       "wrong": [
         "Czarodziej",
@@ -9265,7 +9218,7 @@ module GameRoomContent
       "id": "396716d8cc20",
       "category": "czarodzieje",
       "level": "hard",
-      "prompt": "Tiziana Frevi — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Tiziana Frevi — kto z wymienionych był jej dawnym kochankiem w książkach o Wiedźminie?",
       "correct": "Geralt",
       "wrong": [
         "Deianira",
@@ -9328,7 +9281,7 @@ module GameRoomContent
       "prompt": "Vanhemar — kto z poniższych osób zagrał lub dubbingował tę postać w grach z serii Wiedźmin?",
       "correct": "Wojciech Chorąży",
       "wrong": [
-        "Agata Gawrońska-Bauman]",
+        "Agata Gawrońska-Bauman",
         "Lars Mikkelsen",
         "Anna Gajewska"
       ],
@@ -9376,7 +9329,7 @@ module GameRoomContent
       "id": "50798ae287af",
       "category": "czarodzieje",
       "level": "hard",
-      "prompt": "Vanielle z Brugge — kto z poniższych osób zagrał lub dubbingował tę postać w grach z serii Wiedźmin?",
+      "prompt": "Kto wcielił się w Vanielle z Brugge w pierwszym sezonie serialu Netflixa „Wiedźmin”?",
       "correct": "Judit Fekete",
       "wrong": [
         "Anna Gajewska",
@@ -9475,7 +9428,7 @@ module GameRoomContent
       "id": "d54b7bd226f4",
       "category": "czarodzieje",
       "level": "hard",
-      "prompt": "Vidar Holgersson — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Vidar Holgersson — kto z wymienionych był jego mistrzem w niekanonicznych dodatkach „Czwartki z Wiedźminem” do gry fabularnej The Witcher?",
       "correct": "Tadrus Hen Lohsa",
       "wrong": [
         "Vizimir I Stary",
@@ -9487,7 +9440,7 @@ module GameRoomContent
       "id": "ee307f655217",
       "category": "czarodzieje",
       "level": "hard",
-      "prompt": "Vidar Holgersson — z którą z poniższych postaci była powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Vidar Holgersson — kto z wymienionych był jego mistrzem w niekanonicznych dodatkach „Czwartki z Wiedźminem” do gry fabularnej The Witcher?",
       "correct": "Tadrus Hen Lohsa",
       "wrong": [
         "Guślarka",
@@ -9499,12 +9452,12 @@ module GameRoomContent
       "id": "a65561ada190",
       "category": "czarodzieje",
       "level": "hard",
-      "prompt": "Violenta Suarez — do której z poniższych grup czarodziejów zalicza tę postać wiki?",
-      "correct": "Studentki Aretuzy",
+      "prompt": "Violenta Suarez — w jakiej szkole magii się kształciła według książek o Wiedźminie?",
+      "correct": "Aretuza",
       "wrong": [
-        "Członkinie Loży Czarodziejek",
-        "Wiedzący",
-        "Kadra Ban Ard"
+        "Ban Ard",
+        "Kaer Morhen",
+        "Kaer Seren"
       ]
     },
     {
@@ -9535,7 +9488,7 @@ module GameRoomContent
       "id": "97d6bcd1f35f",
       "category": "czarodzieje",
       "level": "hard",
-      "prompt": "Wiedźma z Rysiej Skały — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Wiedźma z Rysiej Skały — kto z wymienionych był jej byłym kochankiem w grach ze świata Wiedźmina?",
       "correct": "Gareth",
       "wrong": [
         "Caldemeyn",
@@ -9547,7 +9500,7 @@ module GameRoomContent
       "id": "4887d0e512c9",
       "category": "czarodzieje",
       "level": "hard",
-      "prompt": "Wiedźma z Rysiej Skały — z którą z poniższych postaci była powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Wiedźma z Rysiej Skały — kto z wymienionych był jej byłym kochankiem w grach ze świata Wiedźmina?",
       "correct": "Gareth",
       "wrong": [
         "Rejean",
@@ -9643,7 +9596,7 @@ module GameRoomContent
       "id": "4ab287a181fa",
       "category": "czarodzieje",
       "level": "hard",
-      "prompt": "Yoël Grethen — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Yoël Grethen — jak nazywała się jego przyjaciółka w książkach o Wiedźminie?",
       "correct": "Triss Merigold",
       "wrong": [
         "Oaeghen",
@@ -9655,7 +9608,7 @@ module GameRoomContent
       "id": "d9682d12cee8",
       "category": "czarodzieje",
       "level": "hard",
-      "prompt": "Yoël Grethen — z którą z poniższych postaci była powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Yoël Grethen — jak nazywała się jego przyjaciółka w książkach o Wiedźminie?",
       "correct": "Triss Merigold",
       "wrong": [
         "Herbert Stammelford",
@@ -13471,19 +13424,19 @@ module GameRoomContent
       "id": "74a52fd22210",
       "category": "geografia",
       "level": "medium",
-      "prompt": "Loredo — jakim rodzajem osady jest ta miejscowość w książkach z cyklu Wiedźmin?",
+      "prompt": "Jakim rodzajem osady jest Loredo, miejscowość wspomniana w powieści Chrzest ognia?",
       "correct": "wieś",
       "wrong": [
-        "stolica, miasto",
-        "wioska",
-        "Kovir i Poviss"
+        "miasto",
+        "twierdza",
+        "zamek"
       ]
     },
     {
       "id": "b22e943857b8",
       "category": "geografia",
       "level": "medium",
-      "prompt": "Loredo — w jakim państwie leży ta miejscowość w książkach z cyklu Wiedźmin?",
+      "prompt": "W jakim kraju leży wieś Loredo, wspomniana w powieści Chrzest ognia?",
       "correct": "Geso",
       "wrong": [
         "Dol Blathanna",
@@ -13495,7 +13448,7 @@ module GameRoomContent
       "id": "7b0b05c80ea6",
       "category": "geografia",
       "level": "medium",
-      "prompt": "Loredo — w jakim państwie leży to miasto w książkach z cyklu Wiedźmin?",
+      "prompt": "W którym z wymienionych krajów leży wieś Loredo z książek o Wiedźminie?",
       "correct": "Geso",
       "wrong": [
         "Poviss",
@@ -15811,7 +15764,7 @@ module GameRoomContent
       "id": "4f98c83f277a",
       "category": "mniej znane postacie",
       "level": "easy",
-      "prompt": "Adam Pangratt — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Adam Pangratt — jak nazywała się jego kochanka w książkach o Wiedźminie?",
       "correct": "Julia Abatemarco",
       "wrong": [
         "Yennefer",
@@ -15835,7 +15788,7 @@ module GameRoomContent
       "id": "82868e8fff9f",
       "category": "mniej znane postacie",
       "level": "easy",
-      "prompt": "Adam — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Adam — jak nazywała się jego ukochana w grach ze świata Wiedźmina?",
       "correct": "Alina",
       "wrong": [
         "Pavetta",
@@ -15859,7 +15812,7 @@ module GameRoomContent
       "id": "ad4f0735308c",
       "category": "mniej znane postacie",
       "level": "easy",
-      "prompt": "Adda Temerska — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Adda Temerska — kto z wymienionych był jej ojcem w książkach o Wiedźminie?",
       "correct": "Medell",
       "wrong": [
         "Benda",
@@ -15907,7 +15860,7 @@ module GameRoomContent
       "id": "4f3674af0937",
       "category": "mniej znane postacie",
       "level": "easy",
-      "prompt": "Addario Bach — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Addario Bach — kto z wymienionych był jego bliskim przyjacielem w książkach o Wiedźminie?",
       "correct": "Geralt z Rivii",
       "wrong": [
         "Vestibor Pyszny",
@@ -15979,7 +15932,7 @@ module GameRoomContent
       "id": "8ba38a985e10",
       "category": "mniej znane postacie",
       "level": "easy",
-      "prompt": "Aias Landaneu — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Aias Landaneu — jak nazywała się jego zwierzchniczka w materiałach do gry fabularnej „Wiedźmin: Gra Wyobraźni”?",
       "correct": "Cassandra du Toile",
       "wrong": [
         "Bartolomeo",
@@ -16051,7 +16004,7 @@ module GameRoomContent
       "id": "57de2713f659",
       "category": "mniej znane postacie",
       "level": "easy",
-      "prompt": "Aillaen — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Aillaen — kto z wymienionych był jej ojcem w grach ze świata Wiedźmina?",
       "correct": "Oaeghen",
       "wrong": [
         "Prorok Lebioda",
@@ -16135,7 +16088,7 @@ module GameRoomContent
       "id": "d511aa6a9938",
       "category": "mniej znane postacie",
       "level": "easy",
-      "prompt": "Aki II — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Aki II — kto z wymienionych był jego ojcem w grach ze świata Wiedźmina?",
       "correct": "Udalryk",
       "wrong": [
         "Oluf",
@@ -16159,7 +16112,7 @@ module GameRoomContent
       "id": "71605b41a2d5",
       "category": "mniej znane postacie",
       "level": "easy",
-      "prompt": "Aki — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Aki — kto z wymienionych był jego bratem w grach ze świata Wiedźmina?",
       "correct": "Udalryk",
       "wrong": [
         "Bienvenu La Louve",
@@ -16243,7 +16196,7 @@ module GameRoomContent
       "id": "a9cbb5e10b87",
       "category": "mniej znane postacie",
       "level": "easy",
-      "prompt": "Alina — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Alina — kto z wymienionych był jej ojcem w grach ze świata Wiedźmina?",
       "correct": "Tobias Hoffman",
       "wrong": [
         "Artis",
@@ -16291,7 +16244,7 @@ module GameRoomContent
       "id": "f53f283c446d",
       "category": "mniej znane postacie",
       "level": "easy",
-      "prompt": "Alvin — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Alvin — jak nazywała się jego przybrana matka w grach ze świata Wiedźmina?",
       "correct": "Karolina",
       "wrong": [
         "Durand Faucher-Plamondon de Savarin",
@@ -16351,7 +16304,7 @@ module GameRoomContent
       "id": "3a9cac0e3b3a",
       "category": "mniej znane postacie",
       "level": "easy",
-      "prompt": "Amavet — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Amavet — jak nazywała się jego matka w książkach o Wiedźminie?",
       "correct": "Riannon",
       "wrong": [
         "Correl",
@@ -16507,7 +16460,7 @@ module GameRoomContent
       "id": "cb2f5b7512f1",
       "category": "mniej znane postacie",
       "level": "easy",
-      "prompt": "Angoulême — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Angoulême — kto z wymienionych był jej towarzyszem w książkach o Wiedźminie?",
       "correct": "Geralt",
       "wrong": [
         "Fionnuala",
@@ -16651,7 +16604,7 @@ module GameRoomContent
       "id": "766caeb905d8",
       "category": "mniej znane postacie",
       "level": "easy",
-      "prompt": "Anna Stenger — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Anna Stenger — kto z wymienionych był jej mężem w grach ze świata Wiedźmina?",
       "correct": "Krwawy Baron",
       "wrong": [
         "Vattier de Rideaux",
@@ -17107,7 +17060,7 @@ module GameRoomContent
       "id": "a4a5d2574961",
       "category": "mniej znane postacie",
       "level": "easy",
-      "prompt": "Braenn — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Braenn — kto z wymienionych był jej mężem w książkach o Wiedźminie?",
       "correct": "Freixenet",
       "wrong": [
         "Alix van der Ermen",
@@ -17143,7 +17096,7 @@ module GameRoomContent
       "id": "5e4cb1afcefa",
       "category": "mniej znane postacie",
       "level": "easy",
-      "prompt": "Bram — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Bram — jak nazywała się jego kuzynka w grach ze świata Wiedźmina?",
       "correct": "Elza",
       "wrong": [
         "Becca",
@@ -17239,7 +17192,7 @@ module GameRoomContent
       "id": "da4107324a86",
       "category": "mniej znane postacie",
       "level": "easy",
-      "prompt": "Caesar Bilzen — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Caesar Bilzen — kto z wymienionych był jego przyjacielem w grach ze świata Wiedźmina?",
       "correct": "Zoltan Chivay",
       "wrong": [
         "Aegar",
@@ -17479,7 +17432,7 @@ module GameRoomContent
       "id": "a4a69fdb4b5b",
       "category": "mniej znane postacie",
       "level": "easy",
-      "prompt": "Carmen — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Carmen — kto z wymienionych był jej ojcem w grach ze świata Wiedźmina?",
       "correct": "Wielebny",
       "wrong": [
         "Aedireen",
@@ -17515,7 +17468,7 @@ module GameRoomContent
       "id": "1a3a583c4c40",
       "category": "mniej znane postacie",
       "level": "easy",
-      "prompt": "Carthia van Canten — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Carthia van Canten — kto z wymienionych był jej kochankiem w książkach o Wiedźminie?",
       "correct": "Vattier de Rideaux",
       "wrong": [
         "Coën",
@@ -17635,7 +17588,7 @@ module GameRoomContent
       "id": "cd87bfaa2abc",
       "category": "mniej znane postacie",
       "level": "easy",
-      "prompt": "Celina — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Celina — jak nazywała się jej siostra w grach ze świata Wiedźmina?",
       "correct": "Alina",
       "wrong": [
         "Carthia van Canten",
@@ -17707,7 +17660,7 @@ module GameRoomContent
       "id": "ff6e61f59058",
       "category": "mniej znane postacie",
       "level": "easy",
-      "prompt": "Cervia Herrada de Graffiacane — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Cervia Herrada de Graffiacane — kto z wymienionych był jej kochankiem w książkach o Wiedźminie?",
       "correct": "Artamon z Asguth",
       "wrong": [
         "Everden z Rinde",
@@ -17815,7 +17768,7 @@ module GameRoomContent
       "id": "394e26505ef0",
       "category": "mniej znane postacie",
       "level": "easy",
-      "prompt": "Chireadan — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Chireadan — kto z wymienionych był jego kuzynem w książkach o Wiedźminie?",
       "correct": "Errdil",
       "wrong": [
         "sołtys",
@@ -17863,7 +17816,7 @@ module GameRoomContent
       "id": "5b6316a9929e",
       "category": "mniej znane postacie",
       "level": "easy",
-      "prompt": "Chloe Stitz — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Chloe Stitz — kto z wymienionych był jej kochankiem w książkach o Wiedźminie?",
       "correct": "Stefan Skellen",
       "wrong": [
         "Simlas Finn aep Dabairr",
@@ -17983,7 +17936,7 @@ module GameRoomContent
       "id": "fc50459181db",
       "category": "mniej znane postacie",
       "level": "easy",
-      "prompt": "Codringher — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Codringher — kto z wymienionych był jego wspólnikiem w książkach o Wiedźminie?",
       "correct": "Fenn",
       "wrong": [
         "Hemdall",
@@ -18247,7 +18200,7 @@ module GameRoomContent
       "id": "5d7bfe77256b",
       "category": "mniej znane postacie",
       "level": "easy",
-      "prompt": "Dalimira — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Dalimira — kto z wymienionych był jej ojcem w książkach o Wiedźminie?",
       "correct": "Vizimir II Sprawiedliwy",
       "wrong": [
         "Liam aep Muir Moss",
@@ -18475,7 +18428,7 @@ module GameRoomContent
       "id": "72ecf0fa368b",
       "category": "mniej znane postacie",
       "level": "easy",
-      "prompt": "Dominik Houvenaghel — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Dominik Houvenaghel — kto z wymienionych był jego krewnym w książkach o Wiedźminie?",
       "correct": "Leo Bonhart",
       "wrong": [
         "Ukryty",
@@ -18511,7 +18464,7 @@ module GameRoomContent
       "id": "891fc19c29b4",
       "category": "mniej znane postacie",
       "level": "easy",
-      "prompt": "Donar an Hindar — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Donar an Hindar — kto z wymienionych był jego wnukiem w grach ze świata Wiedźmina?",
       "correct": "Otrygg",
       "wrong": [
         "sołtys",
@@ -18667,7 +18620,7 @@ module GameRoomContent
       "id": "a572dc7b3fe0",
       "category": "mniej znane postacie",
       "level": "easy",
-      "prompt": "Dudu — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Dudu — kto z wymienionych był jego przyjacielem w książkach o Wiedźminie?",
       "correct": "Geralt z Rivii",
       "wrong": [
         "Avallac'h",
@@ -18751,7 +18704,7 @@ module GameRoomContent
       "id": "84e3e2ec8846",
       "category": "mniej znane postacie",
       "level": "easy",
-      "prompt": "Duny — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Za syna którego władcy podaje się Duny w opowiadaniu „Kwestia ceny”?",
       "correct": "Akerspaark",
       "wrong": [
         "Hugo z Rivii",
@@ -19063,7 +19016,7 @@ module GameRoomContent
       "id": "8413978e436e",
       "category": "mniej znane postacie",
       "level": "easy",
-      "prompt": "Eleʼyas — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Eleʼyas — jak nazywała się jego kochanka w grach ze świata Wiedźmina?",
       "correct": "Miruna",
       "wrong": [
         "Dudu",
@@ -19123,7 +19076,7 @@ module GameRoomContent
       "id": "0d6b6acd0f92",
       "category": "mniej znane postacie",
       "level": "easy",
-      "prompt": "Elza — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Elza — kto z wymienionych był jej kuzynem w grach ze świata Wiedźmina?",
       "correct": "Bram",
       "wrong": [
         "Niedamir",
@@ -19195,7 +19148,7 @@ module GameRoomContent
       "id": "6bb2b1c1770b",
       "category": "mniej znane postacie",
       "level": "easy",
-      "prompt": "Emiel Regis — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Emiel Regis — kto z wymienionych był jego bratem krwi w grach ze świata Wiedźmina?",
       "correct": "Dettlaff van der Eretein",
       "wrong": [
         "Otto Thyssen",
@@ -19315,7 +19268,7 @@ module GameRoomContent
       "id": "83e33c99fc93",
       "category": "mniej znane postacie",
       "level": "easy",
-      "prompt": "Essi Daven — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Essi Daven — kto z wymienionych był jej przyjacielem w książkach o Wiedźminie?",
       "correct": "Jaskier",
       "wrong": [
         "Varnhagen",
@@ -19459,7 +19412,7 @@ module GameRoomContent
       "id": "fd0fd8a36cec",
       "category": "mniej znane postacie",
       "level": "easy",
-      "prompt": "Falas — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Falas — jak nazywała się jego żona w grach ze świata Wiedźmina?",
       "correct": "Ylona",
       "wrong": [
         "Arno Hardbottom",
@@ -19483,7 +19436,7 @@ module GameRoomContent
       "id": "a1734cfa17dc",
       "category": "mniej znane postacie",
       "level": "easy",
-      "prompt": "Falka Krwawa — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Falka Krwawa — kto z wymienionych był jej ojcem w książkach o Wiedźminie?",
       "correct": "Vridank Elf",
       "wrong": [
         "Klan Heymaey",
@@ -19603,7 +19556,7 @@ module GameRoomContent
       "id": "9222fd9c4924",
       "category": "mniej znane postacie",
       "level": "easy",
-      "prompt": "Fiona — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Fiona — kto z wymienionych był jej bratem w książkach o Wiedźminie?",
       "correct": "Amavet",
       "wrong": [
         "Hereward",
@@ -19771,7 +19724,7 @@ module GameRoomContent
       "id": "f65984a16f15",
       "category": "mniej znane postacie",
       "level": "easy",
-      "prompt": "Freixenet — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Freixenet — jak nazywała się jego żona w książkach o Wiedźminie?",
       "correct": "Braenn",
       "wrong": [
         "Filippa Eilhart",
@@ -19939,7 +19892,7 @@ module GameRoomContent
       "id": "57a253a65ac7",
       "category": "mniej znane postacie",
       "level": "easy",
-      "prompt": "Gedovius Trojdenida — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Gedovius Trojdenida — jak nazywała się jego żona w książkach o Wiedźminie?",
       "correct": "Gemma",
       "wrong": [
         "Rayla",
@@ -20071,7 +20024,7 @@ module GameRoomContent
       "id": "98500628c055",
       "category": "mniej znane postacie",
       "level": "easy",
-      "prompt": "Golan Vivaldi — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Golan Vivaldi — kto z wymienionych był jego przyjacielem w grach ze świata Wiedźmina?",
       "correct": "Zoltan Chivay",
       "wrong": [
         "Agda",
@@ -20215,7 +20168,7 @@ module GameRoomContent
       "id": "d8dcdf4b0580",
       "category": "mniej znane postacie",
       "level": "easy",
-      "prompt": "Gudrun Bjornsdottir — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Gudrun Bjornsdottir — jak nazywała się jej kochanka w grach ze świata Wiedźmina?",
       "correct": "Imke",
       "wrong": [
         "Vizimir I Stary",
@@ -20323,7 +20276,7 @@ module GameRoomContent
       "id": "369100f108d3",
       "category": "mniej znane postacie",
       "level": "easy",
-      "prompt": "Halbjorn — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Halbjorn — kto z wymienionych był jego stryjem w grach ze świata Wiedźmina?",
       "correct": "Holger Czarna Ręka",
       "wrong": [
         "sołtys",
@@ -20515,7 +20468,7 @@ module GameRoomContent
       "id": "b8204314db00",
       "category": "mniej znane postacie",
       "level": "easy",
-      "prompt": "Hector Hoyette — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Hector Hoyette — jak nazywała się jego zwierzchniczka w materiałach do gry fabularnej „Wiedźmin: Gra Wyobraźni”?",
       "correct": "Cassandra du Toile",
       "wrong": [
         "Brouver Hoog",
@@ -20539,7 +20492,7 @@ module GameRoomContent
       "id": "c491f7dc61f3",
       "category": "mniej znane postacie",
       "level": "easy",
-      "prompt": "Hemdall — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Hemdall — jak nazywała się jego żona w grach ze świata Wiedźmina?",
       "correct": "Heulyn",
       "wrong": [
         "Erland z Larvik",
@@ -20719,7 +20672,7 @@ module GameRoomContent
       "id": "1ec45ed88441",
       "category": "mniej znane postacie",
       "level": "easy",
-      "prompt": "Horm — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Horm — kto z wymienionych był jego ojcem w grach ze świata Wiedźmina?",
       "correct": "Akerspaark",
       "wrong": [
         "Polly",
@@ -20935,7 +20888,7 @@ module GameRoomContent
       "id": "b49ebe5d1732",
       "category": "mniej znane postacie",
       "level": "easy",
-      "prompt": "Imke — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Imke — jak nazywała się jej kochanka w grach ze świata Wiedźmina?",
       "correct": "Gudrun Bjornsdottir",
       "wrong": [
         "Visenna",
@@ -21055,7 +21008,7 @@ module GameRoomContent
       "id": "ad670461f009",
       "category": "mniej znane postacie",
       "level": "easy",
-      "prompt": "Ingmar — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Ingmar — kto z wymienionych był jego bratem w grach ze świata Wiedźmina?",
       "correct": "Torgeir Czerwony",
       "wrong": [
         "Tjalve",
@@ -21103,7 +21056,7 @@ module GameRoomContent
       "id": "246b1700f09d",
       "category": "mniej znane postacie",
       "level": "easy",
-      "prompt": "Iola Pierwsza — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Iola Pierwsza — jak nazywała się jej mentorka w książkach o Wiedźminie?",
       "correct": "Nenneke",
       "wrong": [
         "Adela Marta",
@@ -21187,7 +21140,7 @@ module GameRoomContent
       "id": "7197e827fea6",
       "category": "mniej znane postacie",
       "level": "easy",
-      "prompt": "Iorweth — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "W której przywódczyni powstania podkochuje się Iorweth w grze Wiedźmin 2: Zabójcy Królów?",
       "correct": "Saskia",
       "wrong": [
         "Vimme Vivaldi",
@@ -21283,7 +21236,7 @@ module GameRoomContent
       "id": "dffc0512b271",
       "category": "mniej znane postacie",
       "level": "easy",
-      "prompt": "Isengrim Faoiltiarna — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Z którym byłym szefem wywiadu Isengrim Faoiltiarna wyrusza w podróż pod koniec powieści „Pani Jeziora”?",
       "correct": "Sigismund Dijkstra",
       "wrong": [
         "Borch Trzy Kawki",
@@ -21355,7 +21308,7 @@ module GameRoomContent
       "id": "e5124b1e5c16",
       "category": "mniej znane postacie",
       "level": "easy",
-      "prompt": "Iskra — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Iskra — kto z wymienionych był jej kochankiem w książkach o Wiedźminie?",
       "correct": "Giselher",
       "wrong": [
         "Ulrik",
@@ -21415,7 +21368,7 @@ module GameRoomContent
       "id": "48ba096498ba",
       "category": "mniej znane postacie",
       "level": "easy",
-      "prompt": "Ithlinne — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Ithlinne — kto z wymienionych był jednym z jej rodziców w książkach o Wiedźminie?",
       "correct": "Aevenien",
       "wrong": [
         "Prorok Lebioda",
@@ -21463,7 +21416,7 @@ module GameRoomContent
       "id": "5062333b41aa",
       "category": "mniej znane postacie",
       "level": "easy",
-      "prompt": "Jakub Fenn — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Jakub Fenn — kto z wymienionych był jego współpracownikiem w książkach o Wiedźminie?",
       "correct": "Codringher",
       "wrong": [
         "Arno Hardbottom",
@@ -21511,7 +21464,7 @@ module GameRoomContent
       "id": "ccb36b7324a2",
       "category": "mniej znane postacie",
       "level": "easy",
-      "prompt": "Jakub de Aldersberg — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Jakub de Aldersberg — jak nazywała się jego przybrana matka w grach ze świata Wiedźmina?",
       "correct": "Karolina",
       "wrong": [
         "Wiedźmińska Szkoła Cechu Wilka",
@@ -21703,7 +21656,7 @@ module GameRoomContent
       "id": "806f39e914e4",
       "category": "mniej znane postacie",
       "level": "easy",
-      "prompt": "Jarre — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Jarre — jak nazywała się jego żona w książkach o Wiedźminie?",
       "correct": "Lucienne",
       "wrong": [
         "Alia",
@@ -21751,7 +21704,7 @@ module GameRoomContent
       "id": "4275f88db562",
       "category": "mniej znane postacie",
       "level": "easy",
-      "prompt": "Jaskier — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Jak nazywa się brat Jaskra w fanowskim filmie „Pół wieku poezji później”?",
       "correct": "Gustav de Lettenhove",
       "wrong": [
         "Triss Merigold",
@@ -21895,7 +21848,7 @@ module GameRoomContent
       "id": "2a10edd702c5",
       "category": "mniej znane postacie",
       "level": "easy",
-      "prompt": "Julia Abatemarco — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Julia Abatemarco — kto z wymienionych był jej mężem w książkach o Wiedźminie?",
       "correct": "Adam Pangratt",
       "wrong": [
         "Abelard Levesley",
@@ -21919,7 +21872,7 @@ module GameRoomContent
       "id": "dba2c619f05f",
       "category": "mniej znane postacie",
       "level": "easy",
-      "prompt": "Julian — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Jak nazywa się narzeczona kupca Juliana w czwartym akcie gry Wiedźmin?",
       "correct": "Alina",
       "wrong": [
         "Bertram Tauler",
@@ -22171,7 +22124,7 @@ module GameRoomContent
       "id": "12bc9edde17d",
       "category": "mniej znane postacie",
       "level": "easy",
-      "prompt": "Knut Okrutny — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Knut Okrutny — kto z wymienionych był jego ojcem w grach ze świata Wiedźmina?",
       "correct": "Oluf",
       "wrong": [
         "Falas",
@@ -22243,7 +22196,7 @@ module GameRoomContent
       "id": "ffff3529940d",
       "category": "mniej znane postacie",
       "level": "easy",
-      "prompt": "Korin — z którą postacią jest powiązana ta postać w ekranizacjach Wiedźmina?",
+      "prompt": "Korin — jak nazywała się jego partnerka w opowiadaniu „Droga, z której się nie wraca”?",
       "correct": "Visenna",
       "wrong": [
         "Eithné",
@@ -22315,7 +22268,7 @@ module GameRoomContent
       "id": "171dc74488ab",
       "category": "mniej znane postacie",
       "level": "easy",
-      "prompt": "Krwawy Baron — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Krwawy Baron — jak nazywała się jego żona w grach ze świata Wiedźmina?",
       "correct": "Anna Stenger",
       "wrong": [
         "Krucza Matka",
@@ -22363,7 +22316,7 @@ module GameRoomContent
       "id": "2aa9836eee60",
       "category": "mniej znane postacie",
       "level": "easy",
-      "prompt": "Król Rybak — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Król Rybak — jak nazywała się jego kochanka w książkach o Wiedźminie?",
       "correct": "Nimue",
       "wrong": [
         "Sven",
@@ -22519,7 +22472,7 @@ module GameRoomContent
       "id": "1f1a5bdf9d62",
       "category": "mniej znane postacie",
       "level": "easy",
-      "prompt": "Leo Bonhart — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Leo Bonhart — kto z wymienionych był jego krewnym w książkach o Wiedźminie?",
       "correct": "Houvenaghel",
       "wrong": [
         "Saskia",
@@ -22951,7 +22904,7 @@ module GameRoomContent
       "id": "ee5ed3d82302",
       "category": "mniej znane postacie",
       "level": "easy",
-      "prompt": "Meryn — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Meryn — jak nazywała się jego kochanka w grach ze świata Wiedźmina?",
       "correct": "Eveline Gallo",
       "wrong": [
         "Azar Javed",
@@ -23143,7 +23096,7 @@ module GameRoomContent
       "id": "8e13b46fcb59",
       "category": "mniej znane postacie",
       "level": "easy",
-      "prompt": "Milton de Peyrac-Peyran — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Milton de Peyrac-Peyran — kto z wymienionych był jego przyjacielem w grach ze świata Wiedźmina?",
       "correct": "Vladimir Crespi",
       "wrong": [
         "Hrabia Caldwell",
@@ -23215,7 +23168,7 @@ module GameRoomContent
       "id": "0ed7ddc2d509",
       "category": "mniej znane postacie",
       "level": "easy",
-      "prompt": "Milva — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Milva — kto z wymienionych był jej towarzyszem w książkach o Wiedźminie?",
       "correct": "Geralt",
       "wrong": [
         "Iris von Everec",
@@ -23299,7 +23252,7 @@ module GameRoomContent
       "id": "8baa2648a906",
       "category": "mniej znane postacie",
       "level": "easy",
-      "prompt": "Mistle — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Mistle — jak nazywała się jej partnerka w książkach o Wiedźminie?",
       "correct": "Ciri",
       "wrong": [
         "Stefan Skellen",
@@ -23347,7 +23300,7 @@ module GameRoomContent
       "id": "2da25fa5d5bb",
       "category": "mniej znane postacie",
       "level": "easy",
-      "prompt": "Molnar Giancardi — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Molnar Giancardi — kto z wymienionych był jego bliskim przyjacielem w książkach o Wiedźminie?",
       "correct": "Geralt z Rivii",
       "wrong": [
         "Hugo z Rivii",
@@ -23431,7 +23384,7 @@ module GameRoomContent
       "id": "53c6e83230cc",
       "category": "mniej znane postacie",
       "level": "easy",
-      "prompt": "Myrgtabrakke — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Jak nazywa się złoty smok, który broni Myrgtabrakke i jej potomstwa w opowiadaniu „Granica możliwości”?",
       "correct": "Villentretenmerth",
       "wrong": [
         "Primislavus don Stess",
@@ -23479,7 +23432,7 @@ module GameRoomContent
       "id": "1fa9095cf0de",
       "category": "mniej znane postacie",
       "level": "easy",
-      "prompt": "Myszowór — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Myszowór — kto z wymienionych był jego przyjacielem w książkach o Wiedźminie?",
       "correct": "Geralt z Rivii",
       "wrong": [
         "Dezmod",
@@ -23923,7 +23876,7 @@ module GameRoomContent
       "id": "289e6ca871eb",
       "category": "mniej znane postacie",
       "level": "easy",
-      "prompt": "Palamedes Drake — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Palamedes Drake — jak nazywała się jego zwierzchniczka w materiałach do gry fabularnej „Wiedźmin: Gra Wyobraźni”?",
       "correct": "Cassandra du Toile",
       "wrong": [
         "Krwawy Baron",
@@ -23995,7 +23948,7 @@ module GameRoomContent
       "id": "fa2db5ce815d",
       "category": "mniej znane postacie",
       "level": "easy",
-      "prompt": "Pani Jeziora — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Jak nazywa się kochanek czarodziejki Nimue, zwanej Panią Jeziora, w powieści „Pani Jeziora”?",
       "correct": "Król Rybak",
       "wrong": [
         "Eirik",
@@ -24103,7 +24056,7 @@ module GameRoomContent
       "id": "4e8210c091bd",
       "category": "mniej znane postacie",
       "level": "easy",
-      "prompt": "Pavetta — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Pavetta — kto z wymienionych był jej ojcem w książkach o Wiedźminie?",
       "correct": "Roegner",
       "wrong": [
         "Mikkjal",
@@ -24295,7 +24248,7 @@ module GameRoomContent
       "id": "5068a72454ed",
       "category": "mniej znane postacie",
       "level": "easy",
-      "prompt": "Priscilla — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Z którym bardem Priscilla tworzy parę w grze Wiedźmin 3: Dziki Gon?",
       "correct": "Jaskier",
       "wrong": [
         "Zaira",
@@ -24547,7 +24500,7 @@ module GameRoomContent
       "id": "dfdab0894873",
       "category": "mniej znane postacie",
       "level": "easy",
-      "prompt": "Rayla — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Rayla — kto z wymienionych był jej towarzyszem w książkach o Wiedźminie?",
       "correct": "Blaise",
       "wrong": [
         "Borch Trzy Kawki",
@@ -24643,7 +24596,7 @@ module GameRoomContent
       "id": "4bd49144fa7c",
       "category": "mniej znane postacie",
       "level": "easy",
-      "prompt": "Raynard Odo — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Z którą królową Raynard Odo może związać się w grze Wojna Krwi: Wiedźmińskie Opowieści?",
       "correct": "Meve",
       "wrong": [
         "Agrid",
@@ -24751,7 +24704,7 @@ module GameRoomContent
       "id": "05cd55e74437",
       "category": "mniej znane postacie",
       "level": "easy",
-      "prompt": "Renfri — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Renfri — kto z wymienionych był jej ojcem w książkach o Wiedźminie?",
       "correct": "Fredefalk",
       "wrong": [
         "Ervyll",
@@ -25363,7 +25316,7 @@ module GameRoomContent
       "id": "9502b311add9",
       "category": "mniej znane postacie",
       "level": "easy",
-      "prompt": "Shani — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Shani — kto z wymienionych był jej przyjacielem w grach ze świata Wiedźmina?",
       "correct": "Jawnut de Bogar",
       "wrong": [
         "Heulyn",
@@ -25615,7 +25568,7 @@ module GameRoomContent
       "id": "70bb60c991a3",
       "category": "mniej znane postacie",
       "level": "easy",
-      "prompt": "Sigismund Dijkstra — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Jak nazywa się córka Dijkstry w fanowskim filmie „Pół wieku poezji później”?",
       "correct": "Iriana van Troffke",
       "wrong": [
         "Erland z Larvik",
@@ -25699,7 +25652,7 @@ module GameRoomContent
       "id": "ce2f5212a040",
       "category": "mniej znane postacie",
       "level": "easy",
-      "prompt": "Skjall — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Skjall — jak nazywała się jego siostra w grach ze świata Wiedźmina?",
       "correct": "Astrid",
       "wrong": [
         "Radowid III Śmiały",
@@ -25891,12 +25844,12 @@ module GameRoomContent
       "id": "2c7525e3e88a",
       "category": "mniej znane postacie",
       "level": "easy",
-      "prompt": "Sukrus — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Do którego klanu należy Sukrus w grze Wiedźmin 3: Dziki Gon?",
       "correct": "Klan Tuirseach",
       "wrong": [
-        "Anna Stenger",
-        "Sara",
-        "Varnhagen"
+        "Klan Drummond",
+        "Klan an Craite",
+        "Klan Heymaey"
       ]
     },
     {
@@ -25939,7 +25892,7 @@ module GameRoomContent
       "id": "fbd0d5c0d74d",
       "category": "mniej znane postacie",
       "level": "easy",
-      "prompt": "Sylvia Anna — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Sylvia Anna — kto z wymienionych był jej kuzynem w grach ze świata Wiedźmina?",
       "correct": "Emhyr var Emreis",
       "wrong": [
         "Zakon Złotego Strzemienia",
@@ -26095,7 +26048,7 @@ module GameRoomContent
       "id": "34fd5868f8a9",
       "category": "mniej znane postacie",
       "level": "easy",
-      "prompt": "Ta, Która Wie — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Ta, Która Wie — jak nazywała się jej córka w grach ze świata Wiedźmina?",
       "correct": "Kuchta",
       "wrong": [
         "Wiedźmińska Szkoła Cechu Wilka",
@@ -26227,7 +26180,7 @@ module GameRoomContent
       "id": "dbb6e571a425",
       "category": "mniej znane postacie",
       "level": "easy",
-      "prompt": "Talar — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Talar — jak nazywała się jego była kochanka w grach ze świata Wiedźmina?",
       "correct": "Shani",
       "wrong": [
         "Jutta an Dimun",
@@ -26263,7 +26216,7 @@ module GameRoomContent
       "id": "2552f4cc4fd3",
       "category": "mniej znane postacie",
       "level": "easy",
-      "prompt": "Tamara Stenger — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Tamara Stenger — kto z wymienionych był jej ojcem w grach ze świata Wiedźmina?",
       "correct": "Krwawy Baron",
       "wrong": [
         "Anna Henrietta",
@@ -26383,7 +26336,7 @@ module GameRoomContent
       "id": "55c0f3b2b618",
       "category": "mniej znane postacie",
       "level": "easy",
-      "prompt": "Tobias Hoffman — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Tobias Hoffman — jak nazywała się jego córka w grach ze świata Wiedźmina?",
       "correct": "Alina",
       "wrong": [
         "Villentretenmerth",
@@ -26479,7 +26432,7 @@ module GameRoomContent
       "id": "a4adac51cc3e",
       "category": "mniej znane postacie",
       "level": "easy",
-      "prompt": "Torgeir Czerwony — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Torgeir Czerwony — kto z wymienionych był jego bratem w grach ze świata Wiedźmina?",
       "correct": "Ingmar",
       "wrong": [
         "Bienvenu La Louve",
@@ -26575,7 +26528,7 @@ module GameRoomContent
       "id": "a2f301f3e27a",
       "category": "mniej znane postacie",
       "level": "easy",
-      "prompt": "Toruviel — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Toruviel — kto z wymienionych był jednym z jej rodziców w książkach o Wiedźminie?",
       "correct": "Sihiel",
       "wrong": [
         "Keira Metz",
@@ -26587,7 +26540,7 @@ module GameRoomContent
       "id": "168b75454d0d",
       "category": "mniej znane postacie",
       "level": "easy",
-      "prompt": "Trojden — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Trojden — kto z wymienionych był jego bratem w książkach o Wiedźminie?",
       "correct": "Radowid I Wielki",
       "wrong": [
         "Madam Karoll",
@@ -26659,7 +26612,7 @@ module GameRoomContent
       "id": "c6d0af2602fc",
       "category": "mniej znane postacie",
       "level": "easy",
-      "prompt": "Valia — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Valia — kto z wymienionych był jej ojcem w książkach o Wiedźminie?",
       "correct": "Akerspaark",
       "wrong": [
         "Shani",
@@ -26779,7 +26732,7 @@ module GameRoomContent
       "id": "97cd386febf3",
       "category": "mniej znane postacie",
       "level": "easy",
-      "prompt": "Vattier de Rideaux — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Vattier de Rideaux — jak nazywała się jego kochanka w książkach o Wiedźminie?",
       "correct": "Carthia van Canten",
       "wrong": [
         "Caomhan Macha",
@@ -27151,7 +27104,7 @@ module GameRoomContent
       "id": "c6d5f8ae3e60",
       "category": "mniej znane postacie",
       "level": "easy",
-      "prompt": "Vilem — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Vilem — jak nazywała się jego matka w grach ze świata Wiedźmina?",
       "correct": "Meve",
       "wrong": [
         "Valdo",
@@ -27283,7 +27236,7 @@ module GameRoomContent
       "id": "1ab85a00f5cd",
       "category": "mniej znane postacie",
       "level": "easy",
-      "prompt": "Vincent Meis — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Jak nazywa się ukochana Vincenta Meisa, z którą może założyć rodzinę w grze Wiedźmin?",
       "correct": "Carmen",
       "wrong": [
         "Arno Hardbottom",
@@ -27415,7 +27368,7 @@ module GameRoomContent
       "id": "87dc95298ba1",
       "category": "mniej znane postacie",
       "level": "easy",
-      "prompt": "Vrygheff — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Jak nazywa się syn nilfgaardzkiego oficera Vrygheffa w grze Wojna Krwi: Wiedźmińskie Opowieści?",
       "correct": "Gaenor",
       "wrong": [
         "Ciechosław",
@@ -27703,7 +27656,7 @@ module GameRoomContent
       "id": "2f0cff612b4b",
       "category": "mniej znane postacie",
       "level": "easy",
-      "prompt": "Yaevinn — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Yaevinn — jak nazywała się jego kochanka w książkach o Wiedźminie?",
       "correct": "Toruviel",
       "wrong": [
         "Bertram Tauler",
@@ -27739,7 +27692,7 @@ module GameRoomContent
       "id": "52fd630d78a3",
       "category": "mniej znane postacie",
       "level": "easy",
-      "prompt": "Yanne — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Yanne — jak nazywała się jego siostra w grach ze świata Wiedźmina?",
       "correct": "Singe",
       "wrong": [
         "Villentretenmerth",
@@ -27907,7 +27860,7 @@ module GameRoomContent
       "id": "12b4e3eef554",
       "category": "mniej znane postacie",
       "level": "easy",
-      "prompt": "Zoltan Chivay — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Zoltan Chivay — jak nazywała się jego narzeczona w grach ze świata Wiedźmina?",
       "correct": "Eudora Breckenriggs",
       "wrong": [
         "Letho",
@@ -28087,7 +28040,7 @@ module GameRoomContent
       "id": "90ac2936260d",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Abelard Levesley — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Abelard Levesley — kto z wymienionych był jego podwładnym w książkach o Wiedźminie?",
       "correct": "Estevan Trillo da Cunha",
       "wrong": [
         "Vladimir Crespi",
@@ -28243,7 +28196,7 @@ module GameRoomContent
       "id": "c125546e1d60",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Agda — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Agda — kto z wymienionych był jej narzeczonym w grach ze świata Wiedźmina?",
       "correct": "Timmon",
       "wrong": [
         "Venger",
@@ -28363,7 +28316,7 @@ module GameRoomContent
       "id": "295572a9b178",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Agrid — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Agrid — kto z wymienionych był jej mężem w grach ze świata Wiedźmina?",
       "correct": "Ulrik",
       "wrong": [
         "Alix van der Ermen",
@@ -28375,7 +28328,7 @@ module GameRoomContent
       "id": "ea70d64ab02c",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Aideen — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Jak nazywa się siostra elfki Aideen w komiksie „Zdrada”?",
       "correct": "Fionnuala",
       "wrong": [
         "Alzur",
@@ -28459,7 +28412,7 @@ module GameRoomContent
       "id": "48af7ac24f26",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Ailidh — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Ailidh — jak nazywała się jej przełożona w książkach o Wiedźminie?",
       "correct": "Assumpta z Rivii",
       "wrong": [
         "Vridank Elf",
@@ -28483,7 +28436,7 @@ module GameRoomContent
       "id": "3835dbe50ee6",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Aine Dermott — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Aine Dermott — kto z wymienionych był jej kochankiem w książkach o Wiedźminie?",
       "correct": "Emhyr var Emreis",
       "wrong": [
         "Hrabia Caldwell",
@@ -28591,7 +28544,7 @@ module GameRoomContent
       "id": "2d8fa28a379b",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Aldona Lamch — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Aldona Lamch — kto z wymienionych był jej mężem w grach ze świata Wiedźmina?",
       "correct": "Jawnut de Bogar",
       "wrong": [
         "Morénn",
@@ -28735,7 +28688,7 @@ module GameRoomContent
       "id": "e99b70384fd6",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Amadis de Trastamara — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Amadis de Trastamara — jak nazywała się jego ukochana w książkach o Wiedźminie?",
       "correct": "Milva",
       "wrong": [
         "Erland z Larvik",
@@ -28747,7 +28700,7 @@ module GameRoomContent
       "id": "37cc5752db62",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Ameena — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Ameena — kto z wymienionych był jej kochankiem w komiksie „Córka płomienia”?",
       "correct": "Nibras",
       "wrong": [
         "Videmont",
@@ -28759,7 +28712,7 @@ module GameRoomContent
       "id": "8b3ab704daf8",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Anabelle — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Anabelle — kto z wymienionych był jej kochankiem w grach ze świata Wiedźmina?",
       "correct": "Graham",
       "wrong": [
         "Palmerin de Launfal",
@@ -28831,7 +28784,7 @@ module GameRoomContent
       "id": "eec77e290f90",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Anséis — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Anséis — kto z wymienionych był jego ojcem w grach ze świata Wiedźmina?",
       "correct": "Reginald",
       "wrong": [
         "Franciszek Bedlam",
@@ -28879,7 +28832,7 @@ module GameRoomContent
       "id": "1fcc16a960ba",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Antea Derris — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Antea Derris — kto z wymienionych był jej ojcem w książkach o Wiedźminie?",
       "correct": "Pyral Pratt",
       "wrong": [
         "Olaf",
@@ -28987,7 +28940,7 @@ module GameRoomContent
       "id": "144f0a6a35fa",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Aridea — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Aridea — kto z wymienionych był jej mężem w książkach o Wiedźminie?",
       "correct": "Fredefalk",
       "wrong": [
         "Książę var Emreis",
@@ -29059,7 +29012,7 @@ module GameRoomContent
       "id": "755e809fbdc7",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Arnjolf Ojcobójca — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Arnjolf Ojcobójca — kto z wymienionych był jego ojcem w grach ze świata Wiedźmina?",
       "correct": "Ulrik",
       "wrong": [
         "Joannis Deckerman",
@@ -29107,7 +29060,7 @@ module GameRoomContent
       "id": "0a766211e16a",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Arno Hardbottom — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Arno Hardbottom — jak nazywała się jego córka w książkach o Wiedźminie?",
       "correct": "Gardenia Biberveldt",
       "wrong": [
         "Artamon z Asguth",
@@ -29323,7 +29276,7 @@ module GameRoomContent
       "id": "1da7128bf04c",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Astrid — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Astrid — kto z wymienionych był jej bratem w grach ze świata Wiedźmina?",
       "correct": "Skjall",
       "wrong": [
         "Antoinette",
@@ -29443,7 +29396,7 @@ module GameRoomContent
       "id": "bee85dfb3a5c",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Baldwin z Gulety — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Baldwin z Gulety — kto z wymienionych był jego ojcem w grach ze świata Wiedźmina?",
       "correct": "Demawend",
       "wrong": [
         "Chorab",
@@ -29623,7 +29576,7 @@ module GameRoomContent
       "id": "6e91e0edf74f",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Bea — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Bea — kto z wymienionych był jej przyjacielem w grach ze świata Wiedźmina?",
       "correct": "Valdo",
       "wrong": [
         "Tjalve",
@@ -29743,7 +29696,7 @@ module GameRoomContent
       "id": "e66e26f197cb",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Beauregard Frick — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Beauregard Frick — kto z wymienionych był jego zleceniodawcą w książkach o Wiedźminie?",
       "correct": "Artamon z Asguth",
       "wrong": [
         "Otto Thyssen",
@@ -29839,7 +29792,7 @@ module GameRoomContent
       "id": "4727c92d0431",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Bergthora — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Bergthora — kto z wymienionych był jej mężem w grach ze świata Wiedźmina?",
       "correct": "Eirik",
       "wrong": [
         "Damroka",
@@ -30007,7 +29960,7 @@ module GameRoomContent
       "id": "b9643b59d136",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Britt — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Britt — kto z wymienionych był jej bratem w grach ze świata Wiedźmina?",
       "correct": "Kevan",
       "wrong": [
         "Yogin Pieters",
@@ -30019,7 +29972,7 @@ module GameRoomContent
       "id": "3cb0789f1595",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Broddr — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Broddr — kto z wymienionych był jego ojcem w grach ze świata Wiedźmina?",
       "correct": "Hemdall",
       "wrong": [
         "Kevan",
@@ -30103,7 +30056,7 @@ module GameRoomContent
       "id": "d36ae1598b39",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Brygida Papebrock — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Brygida Papebrock — kto z wymienionych był jej byłym kochankiem w grach ze świata Wiedźmina?",
       "correct": "Vernon Roche",
       "wrong": [
         "Teresa Lapin",
@@ -30199,7 +30152,7 @@ module GameRoomContent
       "id": "0b1021375bd6",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Caldemeyn — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Caldemeyn — jak nazywała się jego żona w książkach o Wiedźminie?",
       "correct": "Libusze",
       "wrong": [
         "Joannis Deckerman",
@@ -30271,7 +30224,7 @@ module GameRoomContent
       "id": "997994986151",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Casimir Bassi — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Casimir Bassi — jak nazywała się jego żona w grach ze świata Wiedźmina?",
       "correct": "Eufemia",
       "wrong": [
         "Borch Trzy Kawki",
@@ -30415,7 +30368,7 @@ module GameRoomContent
       "id": "be6e0ef083c6",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Cibor Ponti — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Cibor Ponti — kto z wymienionych był jego zleceniodawcą w książkach o Wiedźminie?",
       "correct": "Artamon z Asguth",
       "wrong": [
         "Matylda de Vermentino",
@@ -30439,7 +30392,7 @@ module GameRoomContent
       "id": "71c4ddda7db6",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Cinead var Anahid — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Cinead var Anahid — jak nazywała się jej matka w książkach o Wiedźminie?",
       "correct": "Eviva",
       "wrong": [
         "Fialka",
@@ -30487,7 +30440,7 @@ module GameRoomContent
       "id": "31170a73bf5d",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Clara aep Gwydolyn Gor — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Czyją kochanką była Clara aep Gwydolyn Gor, wspomniana w „Czasie pogardy”?",
       "correct": "Emhyr var Emreis",
       "wrong": [
         "Borys Prostak",
@@ -30511,7 +30464,7 @@ module GameRoomContent
       "id": "5f2b8696b79d",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Corbin — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Corbin — jak nazywała się jego kuzynka w grach ze świata Wiedźmina?",
       "correct": "Antoinette",
       "wrong": [
         "Vildkaarlowie",
@@ -30583,7 +30536,7 @@ module GameRoomContent
       "id": "f4e3d34613ae",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Czarny Kot i Czarny Pies — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Czarny Kot i Czarny Pies — jak nazywała się ich pani w grach ze świata Wiedźmina?",
       "correct": "Iris von Everec",
       "wrong": [
         "Narsi Blotka",
@@ -30703,7 +30656,7 @@ module GameRoomContent
       "id": "3a636fe6d575",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Dara — z którą postacią jest powiązana ta postać w ekranizacjach Wiedźmina?",
+      "prompt": "Której dziewczynie elf Dara pomaga podczas ucieczki w pierwszym sezonie serialu Netflixa „Wiedźmin”?",
       "correct": "Ciri",
       "wrong": [
         "sołtys",
@@ -30715,7 +30668,7 @@ module GameRoomContent
       "id": "d4b217273081",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Dayo — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Dayo — kto z wymienionych był jej kochankiem w komiksie „Córka płomienia”?",
       "correct": "Nibras",
       "wrong": [
         "Anto",
@@ -30823,7 +30776,7 @@ module GameRoomContent
       "id": "5c2415ab1740",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Derae — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Derae — jak nazywała się jej kochanka w grach ze świata Wiedźmina?",
       "correct": "Garwena",
       "wrong": [
         "Guido Thyssen",
@@ -30943,7 +30896,7 @@ module GameRoomContent
       "id": "f8e0dac14ed1",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Didier Hahn — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Didier Hahn — kto z wymienionych był jego krewnym w książkach o Wiedźminie?",
       "correct": "Beniamin Hunnicut",
       "wrong": [
         "Cystus von Wittan",
@@ -30979,7 +30932,7 @@ module GameRoomContent
       "id": "431eaa3b198c",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Diego Mars — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Diego Mars — kto z wymienionych był jego przełożonym w książkach o Wiedźminie?",
       "correct": "Sirius Vaikinen",
       "wrong": [
         "Ortolan",
@@ -31087,7 +31040,7 @@ module GameRoomContent
       "id": "f6cee696d14c",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Dragomir — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Dragomir — kto z wymienionych był jego ojcem w książkach o Wiedźminie?",
       "correct": "Trigla",
       "wrong": [
         "Maeglor",
@@ -31267,7 +31220,7 @@ module GameRoomContent
       "id": "332c28a9f1f5",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Einar — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Einar — kto z wymienionych był jego ojcem w grach ze świata Wiedźmina?",
       "correct": "Lugos Szalony",
       "wrong": [
         "Roderick de Wett",
@@ -31303,7 +31256,7 @@ module GameRoomContent
       "id": "cbb7f122a287",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Eirik — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Eirik — jak nazywała się jego żona w grach ze świata Wiedźmina?",
       "correct": "Bergthora",
       "wrong": [
         "Gardenia Biberveldt",
@@ -31351,7 +31304,7 @@ module GameRoomContent
       "id": "b5a366a8446c",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Elena Fiachra de Mersault — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Elena Fiachra de Mersault — kto z wymienionych był jej przełożonym w książkach o Wiedźminie?",
       "correct": "Luitpold Lindenbrog",
       "wrong": [
         "Falas",
@@ -31411,7 +31364,7 @@ module GameRoomContent
       "id": "ff4f76875efd",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Elihal — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Elihal — kto z wymienionych był jego przyjacielem w grach ze świata Wiedźmina?",
       "correct": "Jaskier",
       "wrong": [
         "Hierofant",
@@ -31603,7 +31556,7 @@ module GameRoomContent
       "id": "a3e0b5f2d7a9",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Errdil — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Errdil — kto z wymienionych był jego kuzynem w książkach o Wiedźminie?",
       "correct": "Chireadan",
       "wrong": [
         "Tissaia de Vries",
@@ -31675,7 +31628,7 @@ module GameRoomContent
       "id": "7b93a831824e",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Estevan Trillo da Cunha — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Estevan Trillo da Cunha — kto z wymienionych był jego przełożonym w książkach o Wiedźminie?",
       "correct": "Abelard Levesley",
       "wrong": [
         "Matylda de Vermentino",
@@ -31819,7 +31772,7 @@ module GameRoomContent
       "id": "c41446236deb",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Eveline Gallo — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Eveline Gallo — kto z wymienionych był jej kochankiem w grach ze świata Wiedźmina?",
       "correct": "Meryn",
       "wrong": [
         "Goidemar",
@@ -31867,7 +31820,7 @@ module GameRoomContent
       "id": "208f3e0f4cc3",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Eviva — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Eviva — kto z wymienionych był jej wnukiem w książkach o Wiedźminie?",
       "correct": "Cahir Mawr Dyffryn aep Ceallach",
       "wrong": [
         "Ervyll",
@@ -32071,7 +32024,7 @@ module GameRoomContent
       "id": "f4f1bfca3f3c",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Fenne — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "U kogo przez pewien czas mieszkała Fenne, wspomniana w opowiadaniu „Ziarno prawdy”?",
       "correct": "Nivellen",
       "wrong": [
         "Fionnuala",
@@ -32143,7 +32096,7 @@ module GameRoomContent
       "id": "ad184630629a",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Fervida — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Fervida — kto z wymienionych był jej pracodawcą w książkach o Wiedźminie?",
       "correct": "Pampinea Monteforte",
       "wrong": [
         "Ortolan",
@@ -32239,7 +32192,7 @@ module GameRoomContent
       "id": "a5bc6d0b91fc",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Flavia — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Flavia — jak nazywała się jej przełożona w książkach o Wiedźminie?",
       "correct": "Assumpta z Rivii",
       "wrong": [
         "Klara",
@@ -32383,7 +32336,7 @@ module GameRoomContent
       "id": "1118d6d2abd2",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "François le Goff — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "François le Goff — jak nazywała się jego narzeczona w grach ze świata Wiedźmina?",
       "correct": "Jacquette",
       "wrong": [
         "Agnes z Aedirn",
@@ -32455,7 +32408,7 @@ module GameRoomContent
       "id": "cdc675761d90",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Freya — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Freya — kto z wymienionych był jej mistrzem w książkach o Wiedźminie?",
       "correct": "Myszowór",
       "wrong": [
         "Anabelle",
@@ -32611,7 +32564,7 @@ module GameRoomContent
       "id": "c6e00b3c3bf7",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Gardenia Biberveldt — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Gardenia Biberveldt — kto z wymienionych był jej ojcem w książkach o Wiedźminie?",
       "correct": "Arno Hardbottom",
       "wrong": [
         "Brennan",
@@ -32683,7 +32636,7 @@ module GameRoomContent
       "id": "84b5bc4af872",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Garwena — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Garwena — jak nazywała się jej kochanka w grach ze świata Wiedźmina?",
       "correct": "Derae",
       "wrong": [
         "Caomhan Macha",
@@ -32935,7 +32888,7 @@ module GameRoomContent
       "id": "e4fb460e1918",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Grymmdjarr — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Grymmdjarr — kto z wymienionych był jego ojcem w grach ze świata Wiedźmina?",
       "correct": "Hemdall",
       "wrong": [
         "Sztormur Straszny",
@@ -33103,7 +33056,7 @@ module GameRoomContent
       "id": "3bb0ff5f9a5a",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Guthlaf — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Guthlaf — kto z wymienionych był jego ojcem w książkach o Wiedźminie?",
       "correct": "Sven",
       "wrong": [
         "Vimme Vivaldi",
@@ -33199,7 +33152,7 @@ module GameRoomContent
       "id": "f1454d768abb",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Harn — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Harn — kto z wymienionych był jego synem w grach ze świata Wiedźmina?",
       "correct": "Pat",
       "wrong": [
         "Carmen",
@@ -33343,7 +33296,7 @@ module GameRoomContent
       "id": "f68bb2a110ac",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Heulyn — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Heulyn — kto z wymienionych był jej partnerem w grach ze świata Wiedźmina?",
       "correct": "Hemdall",
       "wrong": [
         "Cassandra du Toile",
@@ -33415,7 +33368,7 @@ module GameRoomContent
       "id": "9f66a62dcc02",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Hippolyta — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Hippolyta — kto z wymienionych był jej pracodawcą w książkach o Wiedźminie?",
       "correct": "Pampinea Monteforte",
       "wrong": [
         "Vattier de Rideaux",
@@ -33583,7 +33536,7 @@ module GameRoomContent
       "id": "6e2007f4a570",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Hrabina Mignole — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Hrabina Mignole — kto z wymienionych był jej dawnym kochankiem w grach ze świata Wiedźmina?",
       "correct": "Vesemir",
       "wrong": [
         "Bolko",
@@ -33751,7 +33704,7 @@ module GameRoomContent
       "id": "de73975248e7",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Ilka — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "U kogo przez pewien czas mieszkała Ilka, wspomniana w opowiadaniu „Ziarno prawdy”?",
       "correct": "Nivellen",
       "wrong": [
         "Villentretenmerth",
@@ -34003,7 +33956,7 @@ module GameRoomContent
       "id": "d3abe459b3dd",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Irina Renarde — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Irina Renarde — kto z wymienionych był jej przyjacielem w grach ze świata Wiedźmina?",
       "correct": "Dudu",
       "wrong": [
         "Olgierd von Everec",
@@ -34255,7 +34208,7 @@ module GameRoomContent
       "id": "e2218b423bb7",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Jawnut de Bogar — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Jawnut de Bogar — jak nazywała się jego żona w grach ze świata Wiedźmina?",
       "correct": "Aldona Lamch",
       "wrong": [
         "Rayla",
@@ -34459,7 +34412,7 @@ module GameRoomContent
       "id": "3c84d8f3dd9a",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Jona — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Jona — kto z wymienionych był jej dawnym kochankiem w grach ze świata Wiedźmina?",
       "correct": "Lotar",
       "wrong": [
         "Klan Heymaey",
@@ -34591,7 +34544,7 @@ module GameRoomContent
       "id": "69ad163df51f",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Jutta an Dimun — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Który wojownik z Harviken bezskutecznie zalecał się do Jutty an Dimun w grze Wiedźmin 3: Dziki Gon?",
       "correct": "Gundar",
       "wrong": [
         "Uzurpator",
@@ -34639,7 +34592,7 @@ module GameRoomContent
       "id": "2010dbe56e97",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Kalis — z którą postacią jest powiązana ta postać w ekranizacjach Wiedźmina?",
+      "prompt": "Kalis — jak nazywała się jej córka w ekranizacjach Wiedźmina?",
       "correct": "Meve",
       "wrong": [
         "Osmund",
@@ -34711,7 +34664,7 @@ module GameRoomContent
       "id": "1ce9e541ad10",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Kari Nourred — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Kari Nourred — kto z wymienionych był jego zleceniodawcą w książkach o Wiedźminie?",
       "correct": "Artamon z Asguth",
       "wrong": [
         "Ylona",
@@ -34735,7 +34688,7 @@ module GameRoomContent
       "id": "e861b48e2c7b",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Karolina — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Karolina — kto z wymienionych był jej przybranym synem w grach ze świata Wiedźmina?",
       "correct": "Alvin",
       "wrong": [
         "Astrid",
@@ -34807,7 +34760,7 @@ module GameRoomContent
       "id": "c058214de867",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Kevan — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Kevan — jak nazywała się jego siostra w grach ze świata Wiedźmina?",
       "correct": "Britt",
       "wrong": [
         "Kalis",
@@ -35047,7 +35000,7 @@ module GameRoomContent
       "id": "3d5293955caf",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Królowa Nocy — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Królowa Nocy — kto z wymienionych był jej byłym kochankiem w grach ze świata Wiedźmina?",
       "correct": "Regis",
       "wrong": [
         "Olgierd von Everec",
@@ -35143,7 +35096,7 @@ module GameRoomContent
       "id": "7bc0fd68898e",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Lars — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Lars — jak nazywała się jego była kochanka w książkach o Wiedźminie?",
       "correct": "Margarita Laux-Antille",
       "wrong": [
         "Liam de Coronata",
@@ -35275,7 +35228,7 @@ module GameRoomContent
       "id": "11451b4a007c",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Liam de Coronata — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Z którą właścicielką winnicy Liam de Coronata może nawiązać współpracę i romans w dodatku Krew i Wino do gry Wiedźmin 3?",
       "correct": "Matylda de Vermentino",
       "wrong": [
         "Alan Korber",
@@ -35311,7 +35264,7 @@ module GameRoomContent
       "id": "0bf4362af12f",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Libusze — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Libusze — kto z wymienionych był jej mężem w książkach o Wiedźminie?",
       "correct": "Caldemeyn",
       "wrong": [
         "Eviva",
@@ -35479,7 +35432,7 @@ module GameRoomContent
       "id": "8871cc2cb771",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Lotar — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Lotar — kto z wymienionych był jego synem w grach ze świata Wiedźmina?",
       "correct": "Tjalve",
       "wrong": [
         "Corbett",
@@ -35623,7 +35576,7 @@ module GameRoomContent
       "id": "90cd54e6c3ae",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Lucienne — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Lucienne — kto z wymienionych był jej mężem w książkach o Wiedźminie?",
       "correct": "Jarre",
       "wrong": [
         "Topin",
@@ -35671,7 +35624,7 @@ module GameRoomContent
       "id": "0651e5ac1cb5",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Luitpold Lindenbrog — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Luitpold Lindenbrog — jak nazywała się jego druga żona w książkach o Wiedźminie?",
       "correct": "Deianira",
       "wrong": [
         "Lytta Neyd",
@@ -35791,7 +35744,7 @@ module GameRoomContent
       "id": "9fca14cf0a28",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Maraal — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Maraal — jak nazywała się jego kochanka w komiksie „Córka płomienia”?",
       "correct": "Zaira",
       "wrong": [
         "Rioghan Nieumarły",
@@ -35827,7 +35780,7 @@ module GameRoomContent
       "id": "05c6d1946d22",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Marabella — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Marabella — kto z wymienionych był jej byłym kochankiem w grach ze świata Wiedźmina?",
       "correct": "Jaskier",
       "wrong": [
         "Griffarin",
@@ -35935,7 +35888,7 @@ module GameRoomContent
       "id": "a027dba14ce4",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Marilka — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Marilka — kto z wymienionych był jej ojcem w książkach o Wiedźminie?",
       "correct": "Caldemeyn",
       "wrong": [
         "Palmerin de Launfal",
@@ -35995,7 +35948,7 @@ module GameRoomContent
       "id": "d9e9d0aab8af",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Matylda de Vermentino — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Z którym właścicielem winnicy Matylda de Vermentino może nawiązać współpracę i romans w dodatku Krew i Wino do gry Wiedźmin 3?",
       "correct": "Liam de Coronata",
       "wrong": [
         "Wiedźmińska Szkoła Cechu Wilka",
@@ -36031,7 +35984,7 @@ module GameRoomContent
       "id": "334957862513",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Mawr — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Mawr — jak nazywała się jej matka w książkach o Wiedźminie?",
       "correct": "Eviva",
       "wrong": [
         "Esterad Thyssen",
@@ -36091,7 +36044,7 @@ module GameRoomContent
       "id": "1bb7c766f0b2",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Maximus Nonius Makrinus — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Maximus Nonius Makrinus — kto z wymienionych był jego wrogiem w grach ze świata Wiedźmina?",
       "correct": "Cystus von Wittan",
       "wrong": [
         "Beniamin Hunnicut",
@@ -36187,7 +36140,7 @@ module GameRoomContent
       "id": "3855df3454fa",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Meritxell — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Meritxell — kto z wymienionych był jej zleceniodawcą w książkach o Wiedźminie?",
       "correct": "Artamon z Asguth",
       "wrong": [
         "Elza",
@@ -36199,7 +36152,7 @@ module GameRoomContent
       "id": "85ec02362906",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Merwina — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Merwina — kto z wymienionych był jej klientem w komiksie „Klątwa kruków”?",
       "correct": "Ostrit",
       "wrong": [
         "Zakon Złotego Strzemienia",
@@ -36331,7 +36284,7 @@ module GameRoomContent
       "id": "47cd69291a16",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Mikkel — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Mikkel — kto z wymienionych był jego bratem w grach ze świata Wiedźmina?",
       "correct": "Timmon",
       "wrong": [
         "Ulrik",
@@ -36367,12 +36320,12 @@ module GameRoomContent
       "id": "a7fbd6943a1b",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Mikkjal — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Do którego klanu należy Mikkjal w grze Wiedźmin 3: Dziki Gon?",
       "correct": "Klan Drummond",
       "wrong": [
-        "Narsi Blotka",
-        "Villentretenmerth",
-        "Klan Tuirseach"
+        "Klan Tuirseach",
+        "Klan an Craite",
+        "Klan Heymaey"
       ]
     },
     {
@@ -36475,7 +36428,7 @@ module GameRoomContent
       "id": "23a6c7e28a71",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Modolf — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Modolf — kto z wymienionych był jego ojcem w grach ze świata Wiedźmina?",
       "correct": "Hemdall",
       "wrong": [
         "Vizimir II Sprawiedliwy",
@@ -36499,7 +36452,7 @@ module GameRoomContent
       "id": "ded27b4aa36a",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Molly — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Molly — kto z wymienionych był jej byłym kochankiem w grach ze świata Wiedźmina?",
       "correct": "Jaskier",
       "wrong": [
         "Lucienne",
@@ -36607,7 +36560,7 @@ module GameRoomContent
       "id": "810a049f1906",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Moril — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Moril — kto z wymienionych był jej kochankiem w grach ze świata Wiedźmina?",
       "correct": "Seherim",
       "wrong": [
         "Gudrun",
@@ -36643,7 +36596,7 @@ module GameRoomContent
       "id": "db7e7740cb65",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Morénn — z którą postacią jest powiązana ta postać w ekranizacjach Wiedźmina?",
+      "prompt": "Morénn — jak nazywała się jej matka w ekranizacjach Wiedźmina?",
       "correct": "Eithné",
       "wrong": [
         "Olaf",
@@ -36715,7 +36668,7 @@ module GameRoomContent
       "id": "1fc9551baf10",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Munro Bruys — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Munro Bruys — kto z wymienionych był jego bliskim przyjacielem w książkach o Wiedźminie?",
       "correct": "Geralt z Rivii",
       "wrong": [
         "Wiedźmińska Szkoła Cechu Wilka",
@@ -36739,7 +36692,7 @@ module GameRoomContent
       "id": "69a0c813c87a",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Mysław — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Mysław — kto z wymienionych był jego dawnym kochankiem w grach ze świata Wiedźmina?",
       "correct": "Florian Verrieres",
       "wrong": [
         "Kurt Dysart",
@@ -36799,7 +36752,7 @@ module GameRoomContent
       "id": "f0fd0c75dd76",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Nadbor — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Nadbor — kto z wymienionych był jego ojcem w książkach o Wiedźminie?",
       "correct": "Yurga",
       "wrong": [
         "Anto",
@@ -36835,7 +36788,7 @@ module GameRoomContent
       "id": "b3c859dc66d2",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Narsi Blotka — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Narsi Blotka — kto z wymienionych był jej kochankiem w opowiadaniu „Skala powinności” z antologii „Szpony i kły”?",
       "correct": "Coën",
       "wrong": [
         "Timur Voronoff",
@@ -37123,7 +37076,7 @@ module GameRoomContent
       "id": "bcdab3570ab5",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Orla — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Orla — jak nazywała się jej siostra w książkach o Wiedźminie?",
       "correct": "Nimue",
       "wrong": [
         "Borys Prostak",
@@ -37171,7 +37124,7 @@ module GameRoomContent
       "id": "2640784c2ba7",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Ornesta — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Ornesta — kto z wymienionych był jej mężem w grach ze świata Wiedźmina?",
       "correct": "Ciechosław",
       "wrong": [
         "Ignacy Verrieres",
@@ -37219,7 +37172,7 @@ module GameRoomContent
       "id": "eb2bb9f3f506",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Ostrit — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Ostrit — jak nazywała się jego nałożnica w komiksie „Klątwa kruków”?",
       "correct": "Merwina",
       "wrong": [
         "Artamon z Asguth",
@@ -37231,7 +37184,7 @@ module GameRoomContent
       "id": "63599765d566",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Otkell — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Otkell — kto z wymienionych był jego ojcem w grach ze świata Wiedźmina?",
       "correct": "Hemdall",
       "wrong": [
         "Radowid III Śmiały",
@@ -37327,7 +37280,7 @@ module GameRoomContent
       "id": "f50fb350569a",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Otto Margulies — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Otto Margulies — kto z wymienionych był jego zleceniodawcą w książkach o Wiedźminie?",
       "correct": "Artamon z Asguth",
       "wrong": [
         "Oaeghen",
@@ -37375,7 +37328,7 @@ module GameRoomContent
       "id": "29876546bbcd",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Pampinea Monteforte — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Pampinea Monteforte — kto z wymienionych był jej sekretnym klientem w książkach o Wiedźminie?",
       "correct": "Timur Voronoff",
       "wrong": [
         "Gutram",
@@ -37423,7 +37376,7 @@ module GameRoomContent
       "id": "037d88e97c64",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Pat — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Pat — kto z wymienionych był jego ojcem w grach ze świata Wiedźmina?",
       "correct": "Harn",
       "wrong": [
         "Klan Brokvar",
@@ -37555,7 +37508,7 @@ module GameRoomContent
       "id": "76ad6ba7db60",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Percival Schuttenbach — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Percival Schuttenbach — kto z wymienionych był jego bliskim przyjacielem w książkach o Wiedźminie?",
       "correct": "Geralt z Rivii",
       "wrong": [
         "Wielebny",
@@ -37747,7 +37700,7 @@ module GameRoomContent
       "id": "bbe25c56cd65",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Polly — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Polly — kto z wymienionych był jej narzeczonym w grach ze świata Wiedźmina?",
       "correct": "Hubio",
       "wrong": [
         "Klan Heymaey",
@@ -37771,7 +37724,7 @@ module GameRoomContent
       "id": "f76a143eb58f",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Primula — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "U kogo przez pewien czas mieszkała Primula, wspomniana w opowiadaniu „Ziarno prawdy”?",
       "correct": "Nivellen",
       "wrong": [
         "Lytta Neyd",
@@ -37867,7 +37820,7 @@ module GameRoomContent
       "id": "0b4c32abb3d2",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Pyral Pratt — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Pyral Pratt — jak nazywała się jego córka w książkach o Wiedźminie?",
       "correct": "Antea Derris",
       "wrong": [
         "sołtys",
@@ -38059,7 +38012,7 @@ module GameRoomContent
       "id": "01d0dcb3972b",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Ramon du Lac — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Ramon du Lac — kto z wymienionych był jego przyjacielem w grach ze świata Wiedźmina?",
       "correct": "Vladimir Crespi",
       "wrong": [
         "Matylda de Vermentino",
@@ -38239,7 +38192,7 @@ module GameRoomContent
       "id": "07369d076e35",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Remko Chwalba — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Remko Chwalba — kto z wymienionych był jego zleceniodawcą w książkach o Wiedźminie?",
       "correct": "Artamon z Asguth",
       "wrong": [
         "Kaleb Menge",
@@ -38335,7 +38288,7 @@ module GameRoomContent
       "id": "a78ad64b04c3",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Rioghan Nieumarły — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Rioghan Nieumarły — jak nazywała się jego kochanka w grach ze świata Wiedźmina?",
       "correct": "Fucusya",
       "wrong": [
         "Teresa Lapin",
@@ -38599,7 +38552,7 @@ module GameRoomContent
       "id": "45fcc6c480c2",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Scholastyka — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Scholastyka — kto z wymienionych był jej byłym kochankiem w grach ze świata Wiedźmina?",
       "correct": "Jaskier",
       "wrong": [
         "Hjalmar Krzywogęby",
@@ -38671,7 +38624,7 @@ module GameRoomContent
       "id": "0cbe5f55cd05",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Seherim — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Seherim — jak nazywała się jego ukochana w grach ze świata Wiedźmina?",
       "correct": "Moril",
       "wrong": [
         "Pavetta",
@@ -38791,7 +38744,7 @@ module GameRoomContent
       "id": "ee54b3156e4a",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Shiadhal — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Shiadhal — kto z wymienionych był jej ojcem w niekanonicznych dodatkach „Czwartki z Wiedźminem” do gry fabularnej The Witcher?",
       "correct": "Shaerram Dorren",
       "wrong": [
         "Gudrun Bjornsdottir",
@@ -39019,7 +38972,7 @@ module GameRoomContent
       "id": "2a6aec52debb",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Sove — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Sove — kto z wymienionych był jego ojcem w grach ze świata Wiedźmina?",
       "correct": "Hemdall",
       "wrong": [
         "Imke",
@@ -39127,7 +39080,7 @@ module GameRoomContent
       "id": "63dace2a569d",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Sulik — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Sulik — kto z wymienionych był jego ojcem w książkach o Wiedźminie?",
       "correct": "Yurga",
       "wrong": [
         "Dudu",
@@ -39151,12 +39104,12 @@ module GameRoomContent
       "id": "0cb4d705a53b",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Sven z Ferlund — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Do którego klanu należy Sven z Ferlund w grze Wiedźmin 3: Dziki Gon?",
       "correct": "Klan an Craite",
       "wrong": [
-        "Houvenaghel",
-        "Vyr",
-        "Spacer po nadbrzeżu"
+        "Klan Tuirseach",
+        "Klan Drummond",
+        "Klan Heymaey"
       ]
     },
     {
@@ -39307,7 +39260,7 @@ module GameRoomContent
       "id": "9b0dcfe53f58",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Tea — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Tea — kto z wymienionych był jej towarzyszem w książkach o Wiedźminie?",
       "correct": "Borch Trzy Kawki",
       "wrong": [
         "Gerard Trojdenida",
@@ -39367,8 +39320,8 @@ module GameRoomContent
       "id": "b5246b50eea5",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Thorstein — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
-      "correct": "Postać w grze Wiedźmin Pogromca Potworów",
+      "prompt": "Komu kupiec Thorstein towarzyszy w grze Wiedźmin: Pogromca Potworów?",
+      "correct": "Główny bohater gry Wiedźmin: Pogromca Potworów",
       "wrong": [
         "Vizimir I Stary",
         "Ornesta",
@@ -39403,7 +39356,7 @@ module GameRoomContent
       "id": "527687f8640c",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Timmon — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Timmon — jak nazywała się jego narzeczona w grach ze świata Wiedźmina?",
       "correct": "Agda",
       "wrong": [
         "Pyral Pratt",
@@ -39451,7 +39404,7 @@ module GameRoomContent
       "id": "c9bbb640d41b",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Timur Voronoff — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Timur Voronoff — kto z wymienionych był jego partnerem biznesowym w książkach o Wiedźminie?",
       "correct": "Preston Holt",
       "wrong": [
         "Sztormur Straszny",
@@ -39535,7 +39488,7 @@ module GameRoomContent
       "id": "659331d412ea",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Tomira — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Tomira — kto z wymienionych był jej byłym kochankiem w grach ze świata Wiedźmina?",
       "correct": "Gosław",
       "wrong": [
         "Virfuril",
@@ -39583,7 +39536,7 @@ module GameRoomContent
       "id": "852d08a947b0",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Trigla — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Trigla — kto z wymienionych był jego synem w książkach o Wiedźminie?",
       "correct": "Dragomir",
       "wrong": [
         "Karen",
@@ -39643,7 +39596,7 @@ module GameRoomContent
       "id": "be0483d3c365",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Tyr — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Tyr — kto z wymienionych był jego ojcem w grach ze świata Wiedźmina?",
       "correct": "Hemdall",
       "wrong": [
         "Jutta an Dimun",
@@ -39691,7 +39644,7 @@ module GameRoomContent
       "id": "1a516d8a1634",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Ulf — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Ulf — kto z wymienionych był jego ojcem w grach ze świata Wiedźmina?",
       "correct": "Ulrik",
       "wrong": [
         "Primislavus don Stess",
@@ -39751,7 +39704,7 @@ module GameRoomContent
       "id": "92d3dde48453",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Ulrik — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Ulrik — jak nazywała się jego żona w grach ze świata Wiedźmina?",
       "correct": "Agrid",
       "wrong": [
         "Pyral Pratt",
@@ -39895,7 +39848,7 @@ module GameRoomContent
       "id": "a39b26312b89",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Vea — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Vea — kto z wymienionych był jej towarzyszem w książkach o Wiedźminie?",
       "correct": "Borch Trzy Kawki",
       "wrong": [
         "Sirius Vaikinen",
@@ -39907,7 +39860,7 @@ module GameRoomContent
       "id": "63c223ab4d1d",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Venimira — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "U kogo przez pewien czas mieszkała Venimira, wspomniana w opowiadaniu „Ziarno prawdy”?",
       "correct": "Nivellen",
       "wrong": [
         "Cassandra du Toile",
@@ -39943,7 +39896,7 @@ module GameRoomContent
       "id": "6edca7b1c51e",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Vereena — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Vereena — kto z wymienionych był jej kochankiem w książkach o Wiedźminie?",
       "correct": "Nivellen",
       "wrong": [
         "Artorius Vigo",
@@ -40003,7 +39956,7 @@ module GameRoomContent
       "id": "bc3b8bec3b5e",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Vespula — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Vespula — kto z wymienionych był jej byłym kochankiem w książkach o Wiedźminie?",
       "correct": "Jaskier",
       "wrong": [
         "Henselt",
@@ -40111,7 +40064,7 @@ module GameRoomContent
       "id": "e29be9eeb4c5",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Vivienne de Tabris — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Który rycerz jest zakochany w Vivienne de Tabris i może zostać jej partnerem w dodatku Krew i Wino do gry Wiedźmin 3?",
       "correct": "Guillaume de Launfal",
       "wrong": [
         "Kolgrim",
@@ -40951,7 +40904,7 @@ module GameRoomContent
       "id": "4e9ceef096e6",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Yazon Varda — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Yazon Varda — kto z wymienionych był jego przyjacielem w książkach o Wiedźminie?",
       "correct": "Zoltan Chivay",
       "wrong": [
         "Bractwo Czarodziejów",
@@ -41011,7 +40964,7 @@ module GameRoomContent
       "id": "b32f5996d69f",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Yorgen — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Yorgen — jak nazywała się jego córka w grach ze świata Wiedźmina?",
       "correct": "Agda",
       "wrong": [
         "Miruna",
@@ -41059,7 +41012,7 @@ module GameRoomContent
       "id": "a24f9f1f1b4b",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Yurga — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Yurga — jak nazywała się jego żona w książkach o Wiedźminie?",
       "correct": "Złotolitka",
       "wrong": [
         "Lambert Temerski",
@@ -41131,7 +41084,7 @@ module GameRoomContent
       "id": "6734d038a872",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Zaira — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Zaira — kto z wymienionych był jej kochankiem w komiksie „Córka płomienia”?",
       "correct": "Nibras",
       "wrong": [
         "Una",
@@ -41191,7 +41144,7 @@ module GameRoomContent
       "id": "007aa20d96eb",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Zdravka — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Zdravka — jak nazywała się jej przełożona w książkach o Wiedźminie?",
       "correct": "Assumpta z Rivii",
       "wrong": [
         "Marty Beaver",
@@ -41347,7 +41300,7 @@ module GameRoomContent
       "id": "c43aa2758187",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Zoë — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Zoë — kto z wymienionych był jej pracodawcą w książkach o Wiedźminie?",
       "correct": "Pampinea Monteforte",
       "wrong": [
         "Skadi",
@@ -41383,7 +41336,7 @@ module GameRoomContent
       "id": "fdbe7793bfea",
       "category": "mniej znane postacie",
       "level": "medium",
-      "prompt": "Złotolitka — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Złotolitka — kto z wymienionych był jej mężem w książkach o Wiedźminie?",
       "correct": "Yurga",
       "wrong": [
         "Ezra Metzgerkop",
@@ -41515,7 +41468,7 @@ module GameRoomContent
       "id": "ef9c20ff5e79",
       "category": "mniej znane postacie",
       "level": "hard",
-      "prompt": "Aegar — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Aegar — kto z wymienionych był jego przyjacielem w grach ze świata Wiedźmina?",
       "correct": "Valdo",
       "wrong": [
         "Gareth",
@@ -41563,7 +41516,7 @@ module GameRoomContent
       "id": "8cbb4f8b4290",
       "category": "mniej znane postacie",
       "level": "hard",
-      "prompt": "Aevenien — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Aevenien — jak nazywała się jej córka w książkach o Wiedźminie?",
       "correct": "Ithlinne",
       "wrong": [
         "Joannis Deckerman",
@@ -41755,7 +41708,7 @@ module GameRoomContent
       "id": "665e1dbeceb0",
       "category": "mniej znane postacie",
       "level": "hard",
-      "prompt": "Alyssandra Deviel — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Który hrabia korzystał z usług Alyssandry Deviel, o czym wspomniano w grze Wiedźmin 3: Dziki Gon?",
       "correct": "Roderick de Wett",
       "wrong": [
         "Klan Heymaey",
@@ -41911,7 +41864,7 @@ module GameRoomContent
       "id": "5787c3b3773b",
       "category": "mniej znane postacie",
       "level": "hard",
-      "prompt": "Annar — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Annar — kto z wymienionych był jego mistrzem w grach ze świata Wiedźmina?",
       "correct": "Aamad",
       "wrong": [
         "Udalryk",
@@ -42223,7 +42176,7 @@ module GameRoomContent
       "id": "70e94ea27af5",
       "category": "mniej znane postacie",
       "level": "hard",
-      "prompt": "Barney Brunn — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Barney Brunn — kto z wymienionych był jego przyjacielem w niekanonicznych dodatkach „Czwartki z Wiedźminem” do gry fabularnej The Witcher?",
       "correct": "Tadrus Hen Lohsa",
       "wrong": [
         "Ciechosław",
@@ -42295,7 +42248,7 @@ module GameRoomContent
       "id": "89bf1a3f1a25",
       "category": "mniej znane postacie",
       "level": "hard",
-      "prompt": "Beniamin Hunnicut — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Beniamin Hunnicut — kto z wymienionych był jego krewnym w książkach o Wiedźminie?",
       "correct": "Didier Hahn",
       "wrong": [
         "Hierofant",
@@ -42391,7 +42344,7 @@ module GameRoomContent
       "id": "728461b41c41",
       "category": "mniej znane postacie",
       "level": "hard",
-      "prompt": "Bezimienne postacie z opowiadania „Ziarno prawdy” — z którą postacią jest powiązana ta postać?",
+      "prompt": "Jak nazywał się kupiec, którego wraz z jego córką zabiła Vereena w opowiadaniu „Ziarno prawdy”?",
       "correct": "Asper",
       "wrong": [
         "Gosław",
@@ -42427,7 +42380,7 @@ module GameRoomContent
       "id": "9705c5214192",
       "category": "mniej znane postacie",
       "level": "hard",
-      "prompt": "Bjorn Stormursson — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Bjorn Stormursson — kto z wymienionych był jego ojcem w grach ze świata Wiedźmina?",
       "correct": "Sztormur Straszny",
       "wrong": [
         "Vitek",
@@ -42595,7 +42548,7 @@ module GameRoomContent
       "id": "3aa8b59b1417",
       "category": "mniej znane postacie",
       "level": "hard",
-      "prompt": "Britta — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Britta — jak nazywała się jej matka w książkach o Wiedźminie?",
       "correct": "Karen",
       "wrong": [
         "Benda",
@@ -42691,7 +42644,7 @@ module GameRoomContent
       "id": "c9b141b9619e",
       "category": "mniej znane postacie",
       "level": "hard",
-      "prompt": "Ciechosław — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Ciechosław — jak nazywała się jego żona w grach ze świata Wiedźmina?",
       "correct": "Ornesta",
       "wrong": [
         "Volker",
@@ -42955,7 +42908,7 @@ module GameRoomContent
       "id": "021847885500",
       "category": "mniej znane postacie",
       "level": "hard",
-      "prompt": "Daryl — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Daryl — kto z wymienionych był jego przełożonym w książkach o Wiedźminie?",
       "correct": "Bulava",
       "wrong": [
         "Lugos Szalony",
@@ -43963,7 +43916,7 @@ module GameRoomContent
       "id": "acfb16a98e43",
       "category": "mniej znane postacie",
       "level": "hard",
-      "prompt": "Fucusya — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Fucusya — kto z wymienionych był jej kochankiem w grach ze świata Wiedźmina?",
       "correct": "Rioghan Nieumarły",
       "wrong": [
         "Chireadan",
@@ -44083,7 +44036,7 @@ module GameRoomContent
       "id": "94ea449ec2b1",
       "category": "mniej znane postacie",
       "level": "hard",
-      "prompt": "Graham — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Graham — jak nazywała się jego kochanka w grach ze świata Wiedźmina?",
       "correct": "Anabelle",
       "wrong": [
         "Una",
@@ -44215,7 +44168,7 @@ module GameRoomContent
       "id": "e1986cf92fcf",
       "category": "mniej znane postacie",
       "level": "hard",
-      "prompt": "Gudrun — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Gudrun — jak nazywała się jej matka w książkach o Wiedźminie?",
       "correct": "Sturla",
       "wrong": [
         "Karen",
@@ -44251,7 +44204,7 @@ module GameRoomContent
       "id": "ad64b4e8b014",
       "category": "mniej znane postacie",
       "level": "hard",
-      "prompt": "Gundar — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Do której wojowniczki zaleca się Gundar w grze Wiedźmin 3: Dziki Gon?",
       "correct": "Jutta an Dimun",
       "wrong": [
         "Monsieur de Bourbeau",
@@ -44359,7 +44312,7 @@ module GameRoomContent
       "id": "ea5628b1f77f",
       "category": "mniej znane postacie",
       "level": "hard",
-      "prompt": "Hal — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Hal — kto z wymienionych był jego bratem w grach ze świata Wiedźmina?",
       "correct": "Sofus Byk",
       "wrong": [
         "Venger",
@@ -44419,7 +44372,7 @@ module GameRoomContent
       "id": "7e577ddc74c9",
       "category": "mniej znane postacie",
       "level": "hard",
-      "prompt": "Hanna — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Z którym wiedźminem może romansować Hanna, chłopka z Podgrodzia Wyzimy w grze Wiedźmin?",
       "correct": "Geralt",
       "wrong": [
         "Madame",
@@ -44551,7 +44504,7 @@ module GameRoomContent
       "id": "f2af34a30620",
       "category": "mniej znane postacie",
       "level": "hard",
-      "prompt": "Hubio — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Hubio — jak nazywała się jego narzeczona w grach ze świata Wiedźmina?",
       "correct": "Polly",
       "wrong": [
         "Torgeir Czerwony",
@@ -44647,7 +44600,7 @@ module GameRoomContent
       "id": "1c48bb13e61e",
       "category": "mniej znane postacie",
       "level": "hard",
-      "prompt": "Jacquette — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Jacquette — kto z wymienionych był jej narzeczonym w grach ze świata Wiedźmina?",
       "correct": "François le Goff",
       "wrong": [
         "Putzi",
@@ -44887,7 +44840,7 @@ module GameRoomContent
       "id": "0ff212798a98",
       "category": "mniej znane postacie",
       "level": "hard",
-      "prompt": "Joanna z Houtborga — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Joanna z Houtborga — kto z wymienionych był jej mężem w książkach o Wiedźminie?",
       "correct": "Vizimir I Stary",
       "wrong": [
         "Lord Carlisle",
@@ -44947,7 +44900,7 @@ module GameRoomContent
       "id": "3d57a42fc742",
       "category": "mniej znane postacie",
       "level": "hard",
-      "prompt": "Juan Pablo Vassermiller — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Która z wymienionych osób była rodzeństwem Juana Pabla Vassermillera, wspomnianym w opowiadaniu „Trochę poświęcenia”?",
       "correct": "Putzi",
       "wrong": [
         "Adalbert z Mariboru",
@@ -45199,7 +45152,7 @@ module GameRoomContent
       "id": "0da598d1cb7d",
       "category": "mniej znane postacie",
       "level": "hard",
-      "prompt": "Kochanek Koral — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Która czarodziejka zamieniła swego kochanka w jadeitową figurkę szlachcica, którą można odnaleźć w grze Wiedźmin 3?",
       "correct": "Lytta Neyd",
       "wrong": [
         "Reginald",
@@ -45451,7 +45404,7 @@ module GameRoomContent
       "id": "27481a3d7481",
       "category": "mniej znane postacie",
       "level": "hard",
-      "prompt": "Lanier — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Lanier — jak nazywała się jego córka w książkach o Wiedźminie?",
       "correct": "Jolie",
       "wrong": [
         "Hugo z Rivii",
@@ -45571,7 +45524,7 @@ module GameRoomContent
       "id": "6baccebe715e",
       "category": "mniej znane postacie",
       "level": "hard",
-      "prompt": "Letycja — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Letycja — kto z wymienionych był jej mężem w grach ze świata Wiedźmina?",
       "correct": "Bertram Tauler",
       "wrong": [
         "Artorius Vigo",
@@ -45763,7 +45716,7 @@ module GameRoomContent
       "id": "e1b749788788",
       "category": "mniej znane postacie",
       "level": "hard",
-      "prompt": "Ludvik — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Ludvik — kto z wymienionych był jego towarzyszem w grach ze świata Wiedźmina?",
       "correct": "Letho z Gulety",
       "wrong": [
         "Asper",
@@ -46327,7 +46280,7 @@ module GameRoomContent
       "id": "0bd1e2e4ce13",
       "category": "mniej znane postacie",
       "level": "hard",
-      "prompt": "Nachtigall Visser — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Nachtigall Visser — kto z wymienionych był jego pracodawcą w książkach o Wiedźminie?",
       "correct": "Cervia Herrada de Graffiacane",
       "wrong": [
         "Eviva",
@@ -46447,7 +46400,7 @@ module GameRoomContent
       "id": "76119ab73807",
       "category": "mniej znane postacie",
       "level": "hard",
-      "prompt": "Natanis — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Który rycerz miał romans z sukkubem Natanis, jak wynika z listów w dodatku Krew i Wino do gry Wiedźmin 3?",
       "correct": "Palmerin de Launfal",
       "wrong": [
         "Paweł",
@@ -46531,7 +46484,7 @@ module GameRoomContent
       "id": "293894a2fd3c",
       "category": "mniej znane postacie",
       "level": "hard",
-      "prompt": "Nenneke — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Którym wiedźminem Nenneke opiekuje się w świątyni Melitele w opowiadaniu „Głos rozsądku”?",
       "correct": "Geralt z Rivii",
       "wrong": [
         "Vernon Roche",
@@ -46747,7 +46700,7 @@ module GameRoomContent
       "id": "8f8c06a7f7d5",
       "category": "mniej znane postacie",
       "level": "hard",
-      "prompt": "Niebieskooka — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Niebieskooka — kto z wymienionych był jej bratem w grach ze świata Wiedźmina?",
       "correct": "Patrick z Weyze",
       "wrong": [
         "Tjalve",
@@ -46807,7 +46760,7 @@ module GameRoomContent
       "id": "2acb44ac2144",
       "category": "mniej znane postacie",
       "level": "hard",
-      "prompt": "Niellen — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Niellen — jak nazywała się jego żona w grach ze świata Wiedźmina?",
       "correct": "Hanna",
       "wrong": [
         "Filippa Eilhart",
@@ -46903,7 +46856,7 @@ module GameRoomContent
       "id": "5bc5555ddfd9",
       "category": "mniej znane postacie",
       "level": "hard",
-      "prompt": "Nimir — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Nimir — kto z wymienionych był jego bratem w książkach o Wiedźminie?",
       "correct": "Vyr",
       "wrong": [
         "Lylianna",
@@ -46963,7 +46916,7 @@ module GameRoomContent
       "id": "0953d1dcaf0e",
       "category": "mniej znane postacie",
       "level": "hard",
-      "prompt": "Nique — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Nique — kto z wymienionych był jej byłym kochankiem w książkach o Wiedźminie?",
       "correct": "Jaskier",
       "wrong": [
         "Chireadan",
@@ -47143,7 +47096,7 @@ module GameRoomContent
       "id": "9e67a9b1f48a",
       "category": "mniej znane postacie",
       "level": "hard",
-      "prompt": "Nivellen — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Nivellen — jak nazywała się jego kochanka w książkach o Wiedźminie?",
       "correct": "Fenne",
       "wrong": [
         "Pampinea Monteforte",
@@ -47419,7 +47372,7 @@ module GameRoomContent
       "id": "fd950262248f",
       "category": "mniej znane postacie",
       "level": "hard",
-      "prompt": "Paweł — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Jak nazywał się syn Pawła z Białego Sadu, zabity przez utopce przed wydarzeniami gry Wiedźmin 3?",
       "correct": "Vitek",
       "wrong": [
         "Moril",
@@ -47551,7 +47504,7 @@ module GameRoomContent
       "id": "e4928aa8ca5a",
       "category": "mniej znane postacie",
       "level": "hard",
-      "prompt": "Primian Grohot — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Primian Grohot — kto z wymienionych był jego przyjacielem w książkach o Wiedźminie?",
       "correct": "Frederik Vaikinen",
       "wrong": [
         "Aldona Lamch",
@@ -47575,7 +47528,7 @@ module GameRoomContent
       "id": "25039a0889c1",
       "category": "mniej znane postacie",
       "level": "hard",
-      "prompt": "Primislavus don Stessa — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Primislavus don Stessa — kto z wymienionych był jego kuzynem w grach ze świata Wiedźmina?",
       "correct": "Foltest",
       "wrong": [
         "Zakon Złotego Strzemienia",
@@ -47911,7 +47864,7 @@ module GameRoomContent
       "id": "d94df9ee8c7d",
       "category": "mniej znane postacie",
       "level": "hard",
-      "prompt": "Ronvid z Małego Łęgu — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Na czyją cześć Ronvid z Małego Łęgu postanowił stoczyć sto pojedynków w grze Wiedźmin 3: Dziki Gon?",
       "correct": "Panna Jagódka",
       "wrong": [
         "Damroka",
@@ -48187,7 +48140,7 @@ module GameRoomContent
       "id": "db6eeb5a2786",
       "category": "mniej znane postacie",
       "level": "hard",
-      "prompt": "Skadi — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Skadi — jak nazywała się jej matka w książkach o Wiedźminie?",
       "correct": "Una",
       "wrong": [
         "Drugan",
@@ -48271,7 +48224,7 @@ module GameRoomContent
       "id": "1de74d8576e5",
       "category": "mniej znane postacie",
       "level": "hard",
-      "prompt": "Sofus Byk — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Sofus Byk — kto z wymienionych był jego bratem w grach ze świata Wiedźmina?",
       "correct": "Hal",
       "wrong": [
         "Ortolan",
@@ -48451,7 +48404,7 @@ module GameRoomContent
       "id": "fe864e86e69a",
       "category": "mniej znane postacie",
       "level": "hard",
-      "prompt": "Sturla — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Sturla — jak nazywała się jej córka w książkach o Wiedźminie?",
       "correct": "Gudrun",
       "wrong": [
         "Eudora Breckenriggs",
@@ -48463,7 +48416,7 @@ module GameRoomContent
       "id": "87fb1fa3521b",
       "category": "mniej znane postacie",
       "level": "hard",
-      "prompt": "Sugo — z którą postacią jest powiązana ta postać w ekranizacjach Wiedźmina?",
+      "prompt": "Sugo — kto z wymienionych był jego ojcem w ekranizacjach Wiedźmina?",
       "correct": "Lord Carlisle",
       "wrong": [
         "Harn",
@@ -48775,7 +48728,7 @@ module GameRoomContent
       "id": "3ce076e639a7",
       "category": "mniej znane postacie",
       "level": "hard",
-      "prompt": "Thorleif — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Thorleif — kto z wymienionych był jego ojcem w grach ze świata Wiedźmina?",
       "correct": "Hauge Niedźwiedź",
       "wrong": [
         "Velerad",
@@ -48967,7 +48920,7 @@ module GameRoomContent
       "id": "4bca06ffef00",
       "category": "mniej znane postacie",
       "level": "hard",
-      "prompt": "Una — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Una — jak nazywała się jej córka w książkach o Wiedźminie?",
       "correct": "Skadi",
       "wrong": [
         "Gudrun",
@@ -49015,7 +48968,7 @@ module GameRoomContent
       "id": "d72e941ee1fc",
       "category": "mniej znane postacie",
       "level": "hard",
-      "prompt": "Valdo — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Valdo — kto z wymienionych był jego przyjacielem w grach ze świata Wiedźmina?",
       "correct": "Aegar",
       "wrong": [
         "Yon Bervoets",
@@ -49255,7 +49208,7 @@ module GameRoomContent
       "id": "cd7ea86544c8",
       "category": "mniej znane postacie",
       "level": "hard",
-      "prompt": "Vitek — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Jak nazywał się ojciec chłopca Vitka z Białego Sadu, zabitego przez utopce przed wydarzeniami gry Wiedźmin 3?",
       "correct": "Paweł",
       "wrong": [
         "Palmerin de Launfal",
@@ -49615,7 +49568,7 @@ module GameRoomContent
       "id": "d2c9695b8514",
       "category": "mniej znane postacie",
       "level": "hard",
-      "prompt": "Xymena — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Xymena — jak nazywała się jej kochanka w grach ze świata Wiedźmina?",
       "correct": "Seraphine",
       "wrong": [
         "Wiedźmińska Szkoła Cechu Wilka",
@@ -49699,7 +49652,7 @@ module GameRoomContent
       "id": "d595eb755b53",
       "category": "mniej znane postacie",
       "level": "hard",
-      "prompt": "Ylona — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Ylona — kto z wymienionych był jej mężem w grach ze świata Wiedźmina?",
       "correct": "Falas",
       "wrong": [
         "Adela Marta",
@@ -54451,7 +54404,7 @@ module GameRoomContent
       "id": "0a1528025c29",
       "category": "wiedźmini",
       "level": "easy",
-      "prompt": "Berengar — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Berengar — kto z wymienionych był jego mistrzem w grach ze świata Wiedźmina?",
       "correct": "Vesemir",
       "wrong": [
         "Drugan",
@@ -54511,7 +54464,7 @@ module GameRoomContent
       "id": "ee60188e5518",
       "category": "wiedźmini",
       "level": "easy",
-      "prompt": "Ciri — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Ciri — jak nazywała się jej matka w książkach o Wiedźminie?",
       "correct": "Pavetta",
       "wrong": [
         "Houvenaghel",
@@ -54571,7 +54524,7 @@ module GameRoomContent
       "id": "ebe4495e09b0",
       "category": "wiedźmini",
       "level": "easy",
-      "prompt": "Coën — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Coën — jak nazywała się jego kochanka w opowiadaniu „Skala powinności” z antologii „Szpony i kły”?",
       "correct": "Narsi Blotka",
       "wrong": [
         "Eithné",
@@ -54607,7 +54560,7 @@ module GameRoomContent
       "id": "8f90747cdbcc",
       "category": "wiedźmini",
       "level": "easy",
-      "prompt": "Eskel — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Eskel — kto z wymienionych był jego mentorem w książkach o Wiedźminie?",
       "correct": "Vesemir",
       "wrong": [
         "Haren Brogg",
@@ -54667,7 +54620,7 @@ module GameRoomContent
       "id": "46e12259b6e1",
       "category": "wiedźmini",
       "level": "easy",
-      "prompt": "Geralt z Rivii — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Geralt z Rivii — jak nazywała się jego matka w książkach o Wiedźminie?",
       "correct": "Visenna",
       "wrong": [
         "Lugos Szalony",
@@ -54703,7 +54656,7 @@ module GameRoomContent
       "id": "64aa203d0ab7",
       "category": "wiedźmini",
       "level": "easy",
-      "prompt": "Gerd — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Gerd — kto z wymienionych był jego przyjacielem w grach ze świata Wiedźmina?",
       "correct": "Torgeir Czerwony",
       "wrong": [
         "Panna Jagódka",
@@ -54739,7 +54692,7 @@ module GameRoomContent
       "id": "43b63d108102",
       "category": "wiedźmini",
       "level": "easy",
-      "prompt": "Kolgrim — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Kolgrim — kto z wymienionych był jego mentorem w grach ze świata Wiedźmina?",
       "correct": "Ivar Złe Oko",
       "wrong": [
         "Maeglor",
@@ -54799,7 +54752,7 @@ module GameRoomContent
       "id": "276da6e9f821",
       "category": "wiedźmini",
       "level": "easy",
-      "prompt": "Lambert — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Lambert — kto z wymienionych był jego mistrzem w książkach o Wiedźminie?",
       "correct": "Vesemir",
       "wrong": [
         "Agloval",
@@ -54871,7 +54824,7 @@ module GameRoomContent
       "id": "6eb541999f0e",
       "category": "wiedźmini",
       "level": "easy",
-      "prompt": "Letho z Gulety — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Letho z Gulety — kto z wymienionych był jego mistrzem w grach ze świata Wiedźmina?",
       "correct": "Kolgrim",
       "wrong": [
         "Kaleb Menge",
@@ -55003,7 +54956,7 @@ module GameRoomContent
       "id": "e0eb80a5e0d9",
       "category": "wiedźmini",
       "level": "easy",
-      "prompt": "Vesemir — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Z którą hrabiną Vesemir miał w przeszłości romans, wspominany w dodatku Serca z Kamienia do gry Wiedźmin 3?",
       "correct": "Hrabina Mignole",
       "wrong": [
         "Ithlinne",
@@ -55027,7 +54980,7 @@ module GameRoomContent
       "id": "e103a396f9a5",
       "category": "wiedźmini",
       "level": "medium",
-      "prompt": "Aiden — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Który wiedźmin był bliskim przyjacielem Aidena i szuka jego zabójców w grze Wiedźmin 3: Dziki Gon?",
       "correct": "Lambert",
       "wrong": [
         "Drugan",
@@ -55075,7 +55028,7 @@ module GameRoomContent
       "id": "7c68f1aea268",
       "category": "wiedźmini",
       "level": "medium",
-      "prompt": "Bertram Tauler — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Bertram Tauler — jak nazywała się jego żona w grach ze świata Wiedźmina?",
       "correct": "Letycja",
       "wrong": [
         "Pustelnik z Lac Cèlavy",
@@ -55219,7 +55172,7 @@ module GameRoomContent
       "id": "caa0f37d0920",
       "category": "wiedźmini",
       "level": "medium",
-      "prompt": "Egan — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Egan — kto z wymienionych był jego towarzyszem w grach ze świata Wiedźmina?",
       "correct": "Letho",
       "wrong": [
         "Volker",
@@ -55531,7 +55484,7 @@ module GameRoomContent
       "id": "915e43144818",
       "category": "wiedźmini",
       "level": "medium",
-      "prompt": "Serrit — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Serrit — kto z wymienionych był jego towarzyszem w grach ze świata Wiedźmina?",
       "correct": "Letho",
       "wrong": [
         "Drithelm",
@@ -55651,7 +55604,7 @@ module GameRoomContent
       "id": "035d033e639f",
       "category": "wiedźmini",
       "level": "hard",
-      "prompt": "Barmin — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Barmin — kto z wymienionych był jego uczniem w grach ze świata Wiedźmina?",
       "correct": "Vesemir",
       "wrong": [
         "Ylona",
@@ -55783,7 +55736,7 @@ module GameRoomContent
       "id": "c79018df8174",
       "category": "wiedźmini",
       "level": "hard",
-      "prompt": "Mistrz wiedźmiński — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Mistrz wiedźmiński — kto z wymienionych był jego uczniem w grze Wiedźmin: Pogromca Potworów?",
       "correct": "Vesemir",
       "wrong": [
         "Sofus Byk",
@@ -55831,7 +55784,7 @@ module GameRoomContent
       "id": "76308312f1e2",
       "category": "wiedźmini",
       "level": "hard",
-      "prompt": "Pierwszy wiedźmin — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Pierwszy wiedźmin — kto z wymienionych był jego przybranym ojcem w grze GWINT: Mag Renegat?",
       "correct": "Alzur",
       "wrong": [
         "Heulyn",
@@ -55843,7 +55796,7 @@ module GameRoomContent
       "id": "9a97a0bb3aef",
       "category": "wiedźmini",
       "level": "hard",
-      "prompt": "Postać w grze Wiedźmin: Pogromca Potworów — z którą postacią jest powiązana ta postać?",
+      "prompt": "Jak nazywa się kupiec towarzyszący głównemu bohaterowi gry Wiedźmin: Pogromca Potworów?",
       "correct": "Thorstein",
       "wrong": [
         "Primislavus don Stess",
@@ -55879,7 +55832,7 @@ module GameRoomContent
       "id": "0bf79da3d925",
       "category": "wiedźmini",
       "level": "hard",
-      "prompt": "Tajemniczy Wiedźmin Cechu Żmii — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Tajemniczy Wiedźmin Cechu Żmii — kto z wymienionych był jego towarzyszem w grach ze świata Wiedźmina?",
       "correct": "Letho",
       "wrong": [
         "Pampinea Monteforte",
@@ -55975,7 +55928,7 @@ module GameRoomContent
       "id": "44c96efc3176",
       "category": "władcy i królowie",
       "level": "easy",
-      "prompt": "Abdank — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Abdank — kto z wymienionych był jego ojcem w grach ze świata Wiedźmina?",
       "correct": "Dezmod",
       "wrong": [
         "Otrygg",
@@ -56131,7 +56084,7 @@ module GameRoomContent
       "id": "1bbeca59da1a",
       "category": "władcy i królowie",
       "level": "easy",
-      "prompt": "Anna Henrietta — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Anna Henrietta — jak nazywała się jej prababka w grach ze świata Wiedźmina?",
       "correct": "Adela Marta",
       "wrong": [
         "Jakub de Aldersberg",
@@ -56179,7 +56132,7 @@ module GameRoomContent
       "id": "54be2f585b03",
       "category": "władcy i królowie",
       "level": "easy",
-      "prompt": "Aristide Vermuellen — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Aristide Vermuellen — jak nazywała się jego żona w książkach o Wiedźminie?",
       "correct": "Gaudemunda Thyssen",
       "wrong": [
         "Iris von Everec",
@@ -56299,7 +56252,7 @@ module GameRoomContent
       "id": "4a5e9fc5ad57",
       "category": "władcy i królowie",
       "level": "easy",
-      "prompt": "Caitlyn z Kaedwen — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Caitlyn z Kaedwen — kto z wymienionych był jej mężem w „Genealogiach” Andrzeja Sapkowskiego?",
       "correct": "Vestibor Pyszny",
       "wrong": [
         "Luba",
@@ -56359,7 +56312,7 @@ module GameRoomContent
       "id": "8bd77c3a7337",
       "category": "władcy i królowie",
       "level": "easy",
-      "prompt": "Calanthe — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Calanthe — kto z wymienionych był jej ojcem w książkach o Wiedźminie?",
       "correct": "Dagorad",
       "wrong": [
         "Vladan Vasko",
@@ -56407,7 +56360,7 @@ module GameRoomContent
       "id": "d5ca2c56c8c5",
       "category": "władcy i królowie",
       "level": "easy",
-      "prompt": "Cedric — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Cedric — kto z wymienionych był jego ojcem w książkach o Wiedźminie?",
       "correct": "Goidemar",
       "wrong": [
         "Nenneke",
@@ -56479,7 +56432,7 @@ module GameRoomContent
       "id": "9c3b93050bca",
       "category": "władcy i królowie",
       "level": "easy",
-      "prompt": "Cirra — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Cirra — kto z wymienionych był jej ojcem w książkach o Wiedźminie?",
       "correct": "Correl",
       "wrong": [
         "Eviva",
@@ -56527,7 +56480,7 @@ module GameRoomContent
       "id": "f0cdd267e61a",
       "category": "władcy i królowie",
       "level": "easy",
-      "prompt": "Crach an Craite — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Crach an Craite — kto z wymienionych był jego synem w książkach o Wiedźminie?",
       "correct": "Hjalmar Krzywogęby",
       "wrong": [
         "Virfuril",
@@ -56599,7 +56552,7 @@ module GameRoomContent
       "id": "425a875e2f0a",
       "category": "władcy i królowie",
       "level": "easy",
-      "prompt": "Demawend — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Demawend — kto z wymienionych był jego ojcem w książkach o Wiedźminie?",
       "correct": "Virfuril",
       "wrong": [
         "Calanthe",
@@ -56683,7 +56636,7 @@ module GameRoomContent
       "id": "ee21972ec430",
       "category": "władcy i królowie",
       "level": "easy",
-      "prompt": "Eist Tuirseach — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Eist Tuirseach — jak nazywała się jego żona w książkach o Wiedźminie?",
       "correct": "Calanthe",
       "wrong": [
         "Baldwin Thyssen",
@@ -56719,7 +56672,7 @@ module GameRoomContent
       "id": "75110110689b",
       "category": "władcy i królowie",
       "level": "easy",
-      "prompt": "Elen — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Elen — kto z wymienionych był jej ojcem w „Genealogiach” Andrzeja Sapkowskiego?",
       "correct": "Benda",
       "wrong": [
         "Lylianna",
@@ -56983,7 +56936,7 @@ module GameRoomContent
       "id": "d2cf1dc69a6e",
       "category": "władcy i królowie",
       "level": "easy",
-      "prompt": "Fałszywa Ciri — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Fałszywa Ciri — kto z wymienionych był jej mężem w książkach o Wiedźminie?",
       "correct": "Emhyr var Emreis",
       "wrong": [
         "Yennefer z Vengerbergu",
@@ -57055,7 +57008,7 @@ module GameRoomContent
       "id": "dd66ed0e01d8",
       "category": "władcy i królowie",
       "level": "easy",
-      "prompt": "Foltest — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Foltest — jak nazywała się jego matka w książkach o Wiedźminie?",
       "correct": "Sancia z Sodden",
       "wrong": [
         "Vestibor Pyszny",
@@ -57067,7 +57020,7 @@ module GameRoomContent
       "id": "c705861b4b4d",
       "category": "władcy i królowie",
       "level": "easy",
-      "prompt": "Geddes — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Geddes — kto z wymienionych był jego ojcem w „Genealogiach” Andrzeja Sapkowskiego?",
       "correct": "Lambert Temerski",
       "wrong": [
         "Oaeghen",
@@ -57079,7 +57032,7 @@ module GameRoomContent
       "id": "8d1926714a3b",
       "category": "władcy i królowie",
       "level": "easy",
-      "prompt": "Gemma — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Gemma — kto z wymienionych był jej mężem w książkach o Wiedźminie?",
       "correct": "Gedovius Trojdenida",
       "wrong": [
         "Guido Thyssen",
@@ -57127,7 +57080,7 @@ module GameRoomContent
       "id": "c1db23ad838e",
       "category": "władcy i królowie",
       "level": "easy",
-      "prompt": "Goidemar — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Goidemar — kto z wymienionych był jego ojcem w książkach o Wiedźminie?",
       "correct": "Gardic",
       "wrong": [
         "Bram",
@@ -57151,7 +57104,7 @@ module GameRoomContent
       "id": "c547fa0e8e92",
       "category": "władcy i królowie",
       "level": "easy",
-      "prompt": "Hedwig z Malleore — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Hedwig z Malleore — kto z wymienionych był jej mężem w książkach o Wiedźminie?",
       "correct": "Vizimir II Sprawiedliwy",
       "wrong": [
         "Alia",
@@ -57271,7 +57224,7 @@ module GameRoomContent
       "id": "e1f21d3e641d",
       "category": "władcy i królowie",
       "level": "easy",
-      "prompt": "Hjalmar Krzywogęby — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Hjalmar Krzywogęby — kto z wymienionych był jego ojcem w książkach o Wiedźminie?",
       "correct": "Crach an Craite",
       "wrong": [
         "Calixte Moire",
@@ -57295,7 +57248,7 @@ module GameRoomContent
       "id": "d0f6ed0cc645",
       "category": "władcy i królowie",
       "level": "easy",
-      "prompt": "Jan Calveit — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Jan Calveit — kto z wymienionych był jego współpracownikiem w książkach o Wiedźminie?",
       "correct": "Houvenaghel",
       "wrong": [
         "Ylona",
@@ -57403,7 +57356,7 @@ module GameRoomContent
       "id": "68301f62f5b6",
       "category": "władcy i królowie",
       "level": "easy",
-      "prompt": "Maria Pulcheria — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Maria Pulcheria — kto z wymienionych był jej ojcem w „Genealogiach” Andrzeja Sapkowskiego?",
       "correct": "Geddes",
       "wrong": [
         "Tasak",
@@ -57427,7 +57380,7 @@ module GameRoomContent
       "id": "0969ca31619b",
       "category": "władcy i królowie",
       "level": "easy",
-      "prompt": "Medell — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Medell — kto z wymienionych był jego ojcem w książkach o Wiedźminie?",
       "correct": "Hugo z Rivii",
       "wrong": [
         "Agloval",
@@ -57487,7 +57440,7 @@ module GameRoomContent
       "id": "f133f64cb1b9",
       "category": "władcy i królowie",
       "level": "easy",
-      "prompt": "Meve — z którą postacią jest powiązana ta postać w ekranizacjach Wiedźmina?",
+      "prompt": "Meve — jak nazywała się jej matka w ekranizacjach Wiedźmina?",
       "correct": "Kalis",
       "wrong": [
         "Merineaevelth",
@@ -57655,7 +57608,7 @@ module GameRoomContent
       "id": "513308bd55f0",
       "category": "władcy i królowie",
       "level": "easy",
-      "prompt": "Radowid V Srogi — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Radowid V Srogi — kto z wymienionych był jego ojcem w książkach o Wiedźminie?",
       "correct": "Vizimir II Sprawiedliwy",
       "wrong": [
         "Calanthe",
@@ -57703,7 +57656,7 @@ module GameRoomContent
       "id": "e8029301a184",
       "category": "władcy i królowie",
       "level": "easy",
-      "prompt": "Riannon — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Riannon — kto z wymienionych był jej ojcem w książkach o Wiedźminie?",
       "correct": "Cregennan",
       "wrong": [
         "Margarita Laux-Antille",
@@ -57775,7 +57728,7 @@ module GameRoomContent
       "id": "8216fd5ed576",
       "category": "władcy i królowie",
       "level": "easy",
-      "prompt": "Roegner — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Roegner — jak nazywała się jego żona w książkach o Wiedźminie?",
       "correct": "Calanthe",
       "wrong": [
         "Milva",
@@ -57799,7 +57752,7 @@ module GameRoomContent
       "id": "a7c5951dac4a",
       "category": "władcy i królowie",
       "level": "easy",
-      "prompt": "Sancia z Sodden — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Sancia z Sodden — kto z wymienionych był jej ojcem w książkach o Wiedźminie?",
       "correct": "Gutram",
       "wrong": [
         "Arno Hardbottom",
@@ -57871,7 +57824,7 @@ module GameRoomContent
       "id": "e34d277de2a7",
       "category": "władcy i królowie",
       "level": "easy",
-      "prompt": "Saskia — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Jak nazywa się ojciec Saskii, którego tożsamość poznajemy w grze Wiedźmin 2: Zabójcy Królów?",
       "correct": "Borch Trzy Kawki",
       "wrong": [
         "Esterad Thyssen",
@@ -58111,7 +58064,7 @@ module GameRoomContent
       "id": "63930f4e1e76",
       "category": "władcy i królowie",
       "level": "easy",
-      "prompt": "Vizimir II Sprawiedliwy — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Vizimir II Sprawiedliwy — kto z wymienionych był jego ojcem w książkach o Wiedźminie?",
       "correct": "Heribert Kłótnik",
       "wrong": [
         "Beniamin Hunnicut",
@@ -58159,7 +58112,7 @@ module GameRoomContent
       "id": "196517be3f5f",
       "category": "władcy i królowie",
       "level": "easy",
-      "prompt": "Vridank Elf — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Vridank Elf — kto z wymienionych był jego ojcem w książkach o Wiedźminie?",
       "correct": "Radowid III Śmiały",
       "wrong": [
         "Merwina",
@@ -58219,7 +58172,7 @@ module GameRoomContent
       "id": "4f98b0fa0f26",
       "category": "władcy i królowie",
       "level": "easy",
-      "prompt": "Zuleyka — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Zuleyka — kto z wymienionych był jej mężem w książkach o Wiedźminie?",
       "correct": "Esterad Thyssen",
       "wrong": [
         "Agloval",
@@ -58240,18 +58193,6 @@ module GameRoomContent
       ]
     },
     {
-      "id": "ae3ff99566d9",
-      "category": "władcy i królowie",
-      "level": "medium",
-      "prompt": "Abrad Stary Dąb — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
-      "correct": "Sambuk",
-      "wrong": [
-        "Dorreniel",
-        "Jan Bekker",
-        "Kaleb Menge"
-      ]
-    },
-    {
       "id": "f47c781d1a63",
       "category": "władcy i królowie",
       "level": "medium",
@@ -58267,7 +58208,7 @@ module GameRoomContent
       "id": "9ff9905cbc4e",
       "category": "władcy i królowie",
       "level": "medium",
-      "prompt": "Adalbert z Mariboru — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Adalbert z Mariboru — kto z wymienionych był jego synem w materiałach do gry fabularnej „Wiedźmin: Gra Wyobraźni”?",
       "correct": "Lambert Temerski",
       "wrong": [
         "Korin",
@@ -58303,7 +58244,7 @@ module GameRoomContent
       "id": "86c87c13bb99",
       "category": "władcy i królowie",
       "level": "medium",
-      "prompt": "Adalia — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Adalia — kto z wymienionych był jej ojcem w książkach o Wiedźminie?",
       "correct": "Robert",
       "wrong": [
         "Nivellen",
@@ -58351,7 +58292,7 @@ module GameRoomContent
       "id": "d17a909c90f9",
       "category": "władcy i królowie",
       "level": "medium",
-      "prompt": "Adela Marta — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Adela Marta — kto z wymienionych był jej mężem w grach ze świata Wiedźmina?",
       "correct": "Książę var Emreis",
       "wrong": [
         "Dymitr",
@@ -58387,7 +58328,7 @@ module GameRoomContent
       "id": "f8501fe2fb55",
       "category": "władcy i królowie",
       "level": "medium",
-      "prompt": "Akerspaark — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Akerspaark — jak nazywała się jego córka w książkach o Wiedźminie?",
       "correct": "Alia",
       "wrong": [
         "Griffin",
@@ -58423,7 +58364,7 @@ module GameRoomContent
       "id": "dbc2d5d552f4",
       "category": "władcy i królowie",
       "level": "medium",
-      "prompt": "Becca — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Becca — kto z wymienionych był jej mężem w „Genealogiach” Andrzeja Sapkowskiego?",
       "correct": "Cerbin",
       "wrong": [
         "Azar Javed",
@@ -58471,7 +58412,7 @@ module GameRoomContent
       "id": "468c1ad0ecc5",
       "category": "władcy i królowie",
       "level": "medium",
-      "prompt": "Belohun — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Belohun — kto z wymienionych był jego ojcem w książkach o Wiedźminie?",
       "correct": "Osmyk",
       "wrong": [
         "Margarita Laux-Antille",
@@ -58507,7 +58448,7 @@ module GameRoomContent
       "id": "5d18b2059de9",
       "category": "władcy i królowie",
       "level": "medium",
-      "prompt": "Benda — z którą postacią jest powiązana ta postać w ekranizacjach Wiedźmina?",
+      "prompt": "Benda — kto z wymienionych był jego ojcem w „Genealogiach” Andrzeja Sapkowskiego?",
       "correct": "Dagread",
       "wrong": [
         "Estevan Trillo da Cunha",
@@ -58555,7 +58496,7 @@ module GameRoomContent
       "id": "2a7876368968",
       "category": "władcy i królowie",
       "level": "medium",
-      "prompt": "Blanka z Malleore — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Blanka z Malleore — kto z wymienionych był jej mężem w książkach o Wiedźminie?",
       "correct": "Baldwin Thyssen",
       "wrong": [
         "Sancia z Sodden",
@@ -58615,7 +58556,7 @@ module GameRoomContent
       "id": "88e2fead5449",
       "category": "władcy i królowie",
       "level": "medium",
-      "prompt": "Ceran — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Ceran — kto z wymienionych był jego ojcem w „Genealogiach” Andrzeja Sapkowskiego?",
       "correct": "Correl",
       "wrong": [
         "Krucza Matka",
@@ -58639,7 +58580,7 @@ module GameRoomContent
       "id": "103d481f5017",
       "category": "władcy i królowie",
       "level": "medium",
-      "prompt": "Cerbin — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Cerbin — jak nazywała się jego żona w „Genealogiach” Andrzeja Sapkowskiego?",
       "correct": "Becca",
       "wrong": [
         "Haren Brogg",
@@ -58687,7 +58628,7 @@ module GameRoomContent
       "id": "0c385c30d540",
       "category": "władcy i królowie",
       "level": "medium",
-      "prompt": "Cerro — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Cerro — kto z wymienionych był jej mężem w książkach o Wiedźminie?",
       "correct": "Vridank Elf",
       "wrong": [
         "Lucien Monhart",
@@ -58735,7 +58676,7 @@ module GameRoomContent
       "id": "feff9d7680f7",
       "category": "władcy i królowie",
       "level": "medium",
-      "prompt": "Coram I — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Coram I — kto z wymienionych był jego ojcem w książkach o Wiedźminie?",
       "correct": "Correl",
       "wrong": [
         "Haren Brogg",
@@ -58819,7 +58760,7 @@ module GameRoomContent
       "id": "291b7c69a295",
       "category": "władcy i królowie",
       "level": "medium",
-      "prompt": "Corbett — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Corbett — kto z wymienionych był jego ojcem w książkach o Wiedźminie?",
       "correct": "Coram II",
       "wrong": [
         "Jan Bekker",
@@ -58843,7 +58784,7 @@ module GameRoomContent
       "id": "cbabada94da0",
       "category": "władcy i królowie",
       "level": "medium",
-      "prompt": "Correl — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Correl — kto z wymienionych był jego ojcem w „Genealogiach” Andrzeja Sapkowskiego?",
       "correct": "Cerbin",
       "wrong": [
         "Ramon Tyrconnel",
@@ -58903,7 +58844,7 @@ module GameRoomContent
       "id": "6ccea88925ed",
       "category": "władcy i królowie",
       "level": "medium",
-      "prompt": "Dagorad — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Dagorad — kto z wymienionych był jego ojcem w książkach o Wiedźminie?",
       "correct": "Corbett",
       "wrong": [
         "Drithelm",
@@ -58951,7 +58892,7 @@ module GameRoomContent
       "id": "277c2ecb9281",
       "category": "władcy i królowie",
       "level": "medium",
-      "prompt": "Dagread — z którą postacią jest powiązana ta postać w ekranizacjach Wiedźmina?",
+      "prompt": "Dagread — kto z wymienionych był jego synem w „Genealogiach” Andrzeja Sapkowskiego?",
       "correct": "Benda",
       "wrong": [
         "Jawnut de Bogar",
@@ -58987,7 +58928,7 @@ module GameRoomContent
       "id": "9981b48461c7",
       "category": "władcy i królowie",
       "level": "medium",
-      "prompt": "Dambor Czarny — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Dambor Czarny — kto z wymienionych był jego ojcem w „Genealogiach” Andrzeja Sapkowskiego?",
       "correct": "Radowid I Wielki",
       "wrong": [
         "Zoltan Chivay",
@@ -59095,7 +59036,7 @@ module GameRoomContent
       "id": "8a3a4740a46d",
       "category": "władcy i królowie",
       "level": "medium",
-      "prompt": "Dezmod — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Dezmod — kto z wymienionych był jego synem w grach ze świata Wiedźmina?",
       "correct": "Abdank",
       "wrong": [
         "Eviva",
@@ -59179,7 +59120,7 @@ module GameRoomContent
       "id": "7c50af3c69c9",
       "category": "władcy i królowie",
       "level": "medium",
-      "prompt": "Eithné — z którą postacią jest powiązana ta postać w ekranizacjach Wiedźmina?",
+      "prompt": "Eithné — kto z wymienionych był jej dzieckiem w ekranizacjach Wiedźmina?",
       "correct": "Morénn",
       "wrong": [
         "Singe",
@@ -59239,7 +59180,7 @@ module GameRoomContent
       "id": "f6daa0f67bea",
       "category": "władcy i królowie",
       "level": "medium",
-      "prompt": "Ervyll — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Ervyll — jak nazywała się jego żona w książkach o Wiedźminie?",
       "correct": "Eliza",
       "wrong": [
         "Nivellen",
@@ -59275,7 +59216,7 @@ module GameRoomContent
       "id": "9c0481c37a36",
       "category": "władcy i królowie",
       "level": "medium",
-      "prompt": "Eschiva — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Eschiva — kto z wymienionych był jej mężem w „Genealogiach” Andrzeja Sapkowskiego?",
       "correct": "Correl",
       "wrong": [
         "Drugan",
@@ -59335,7 +59276,7 @@ module GameRoomContent
       "id": "9120587b38b9",
       "category": "władcy i królowie",
       "level": "medium",
-      "prompt": "Gardic — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Gardic — kto z wymienionych był jego ojcem w książkach o Wiedźminie?",
       "correct": "Geddes",
       "wrong": [
         "Dziadek",
@@ -59395,7 +59336,7 @@ module GameRoomContent
       "id": "fdf6edfff165",
       "category": "władcy i królowie",
       "level": "medium",
-      "prompt": "Gerard Trojdenida — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Gerard Trojdenida — jak nazywała się jego matka w książkach o Wiedźminie?",
       "correct": "Gemma",
       "wrong": [
         "Topin",
@@ -59455,7 +59396,7 @@ module GameRoomContent
       "id": "3b02a2b54a5f",
       "category": "władcy i królowie",
       "level": "medium",
-      "prompt": "Heribert Kłótnik — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Heribert Kłótnik — kto z wymienionych był jego ojcem w książkach o Wiedźminie?",
       "correct": "Radowid IV Łysy",
       "wrong": [
         "Shani",
@@ -59479,7 +59420,7 @@ module GameRoomContent
       "id": "ac1a90226398",
       "category": "władcy i królowie",
       "level": "medium",
-      "prompt": "Lambert Temerski — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Lambert Temerski — kto z wymienionych był jego ojcem w materiałach do gry fabularnej „Wiedźmin: Gra Wyobraźni”?",
       "correct": "Adalbert z Mariboru",
       "wrong": [
         "Alix van der Ermen",
@@ -59563,7 +59504,7 @@ module GameRoomContent
       "id": "305d7a4e0f26",
       "category": "władcy i królowie",
       "level": "medium",
-      "prompt": "Radowid I Wielki — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Który z wymienionych władców był przodkiem Radowida I Wielkiego według „Genealogii” Andrzeja Sapkowskiego?",
       "correct": "Sambuk",
       "wrong": [
         "Letho z Gulety",
@@ -59599,7 +59540,7 @@ module GameRoomContent
       "id": "09e21afd6e9c",
       "category": "władcy i królowie",
       "level": "medium",
-      "prompt": "Radowid II Żeglarz — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Radowid II Żeglarz — kto z wymienionych był jego ojcem w „Genealogiach” Andrzeja Sapkowskiego?",
       "correct": "Vestibor Pyszny",
       "wrong": [
         "Lambert Temerski",
@@ -59611,7 +59552,7 @@ module GameRoomContent
       "id": "0f9658ab6c00",
       "category": "władcy i królowie",
       "level": "medium",
-      "prompt": "Radowid IV Łysy — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Radowid IV Łysy — kto z wymienionych był jego ojcem w „Genealogiach” Andrzeja Sapkowskiego?",
       "correct": "Vizimir I Stary",
       "wrong": [
         "Franciszek Bedlam",
@@ -59671,7 +59612,7 @@ module GameRoomContent
       "id": "a8ae903c7a56",
       "category": "władcy i królowie",
       "level": "medium",
-      "prompt": "Rigoberta — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Rigoberta — kto z wymienionych był jej ojcem w „Genealogiach” Andrzeja Sapkowskiego?",
       "correct": "Egon",
       "wrong": [
         "Hanna",
@@ -59683,7 +59624,7 @@ module GameRoomContent
       "id": "c2e950d4399b",
       "category": "władcy i królowie",
       "level": "medium",
-      "prompt": "Sambuk — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Który z wymienionych władców był potomkiem Sambuka według „Genealogii” Andrzeja Sapkowskiego?",
       "correct": "Radowid I Wielki",
       "wrong": [
         "Klara",
@@ -59743,7 +59684,7 @@ module GameRoomContent
       "id": "6f50d3a7f58e",
       "category": "władcy i królowie",
       "level": "medium",
-      "prompt": "Stennis — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Stennis — kto z wymienionych był jego dziadkiem w grach ze świata Wiedźmina?",
       "correct": "Virfuril",
       "wrong": [
         "Samuel d'Arvegnac",
@@ -59779,7 +59720,7 @@ module GameRoomContent
       "id": "622c26878687",
       "category": "władcy i królowie",
       "level": "medium",
-      "prompt": "Svanrige Tuirseach — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Svanrige Tuirseach — kto z wymienionych był jego pradziadkiem w grach ze świata Wiedźmina?",
       "correct": "Torgeir Czerwony",
       "wrong": [
         "Skadi",
@@ -59851,7 +59792,7 @@ module GameRoomContent
       "id": "9196e8127460",
       "category": "władcy i królowie",
       "level": "medium",
-      "prompt": "Udalryk — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Udalryk — kto z wymienionych był jego bratem w grach ze świata Wiedźmina?",
       "correct": "Aki",
       "wrong": [
         "Eveline Gallo",
@@ -59887,7 +59828,7 @@ module GameRoomContent
       "id": "21a103b6f790",
       "category": "władcy i królowie",
       "level": "medium",
-      "prompt": "Vestibor Pyszny — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Vestibor Pyszny — kto z wymienionych był jego ojcem w „Genealogiach” Andrzeja Sapkowskiego?",
       "correct": "Dambor Czarny",
       "wrong": [
         "Eudora Breckenriggs",
@@ -59911,7 +59852,7 @@ module GameRoomContent
       "id": "bad821a05794",
       "category": "władcy i królowie",
       "level": "medium",
-      "prompt": "Virfuril — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Virfuril — kto z wymienionych był jego synem w książkach o Wiedźminie?",
       "correct": "Demawend",
       "wrong": [
         "Carthia van Canten",
@@ -59935,7 +59876,7 @@ module GameRoomContent
       "id": "0895e24d79f5",
       "category": "władcy i królowie",
       "level": "medium",
-      "prompt": "Vizimir I Stary — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Vizimir I Stary — kto z wymienionych był jego ojcem w „Genealogiach” Andrzeja Sapkowskiego?",
       "correct": "Radowid II Żeglarz",
       "wrong": [
         "Peter Saar Gwynlew",
@@ -59995,7 +59936,7 @@ module GameRoomContent
       "id": "a523f3e97104",
       "category": "władcy i królowie",
       "level": "hard",
-      "prompt": "Aedireen — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Aedireen — kto z wymienionych był jej dziadkiem w grach ze świata Wiedźmina?",
       "correct": "Venger",
       "wrong": [
         "Toruviel",
@@ -60031,7 +59972,7 @@ module GameRoomContent
       "id": "9f659be1c088",
       "category": "władcy i królowie",
       "level": "hard",
-      "prompt": "Agloval — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Agloval — jak nazywała się jego żona w książkach o Wiedźminie?",
       "correct": "Sh'eenaz",
       "wrong": [
         "Skjall",
@@ -60079,7 +60020,7 @@ module GameRoomContent
       "id": "c6791800154e",
       "category": "władcy i królowie",
       "level": "hard",
-      "prompt": "Beatrix z Koviru — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Beatrix z Koviru — kto z wymienionych był jej mężem w książkach o Wiedźminie?",
       "correct": "Vridank Elf",
       "wrong": [
         "Houvenaghel",
@@ -60139,7 +60080,7 @@ module GameRoomContent
       "id": "3cdaa53ad089",
       "category": "władcy i królowie",
       "level": "hard",
-      "prompt": "Brennan — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Jak nazywa się wuj Brennana w niekanonicznym opowiadaniu „Coś się kończy, coś się zaczyna”?",
       "correct": "Herwig",
       "wrong": [
         "Vestibor Pyszny",
@@ -60163,7 +60104,7 @@ module GameRoomContent
       "id": "af3037616537",
       "category": "władcy i królowie",
       "level": "hard",
-      "prompt": "Carezza Charbonneau — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Carezza Charbonneau — kto z wymienionych był jej kochankiem w „Genealogiach” Andrzeja Sapkowskiego?",
       "correct": "Geddes",
       "wrong": [
         "Triss Merigold",
@@ -60223,7 +60164,7 @@ module GameRoomContent
       "id": "4fad4a91e7c1",
       "category": "władcy i królowie",
       "level": "hard",
-      "prompt": "Denhard — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Denhard — kto z wymienionych był jego ojcem w książkach o Wiedźminie?",
       "correct": "Vridank Elf",
       "wrong": [
         "Ramon Tyrconnel",
@@ -60247,7 +60188,7 @@ module GameRoomContent
       "id": "4e0b9a083f0e",
       "category": "władcy i królowie",
       "level": "hard",
-      "prompt": "Egmund — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Egmund — kto z wymienionych był jego ojcem w książkach o Wiedźminie?",
       "correct": "Belohun",
       "wrong": [
         "Seraphine",
@@ -60259,7 +60200,7 @@ module GameRoomContent
       "id": "744f3b8acd05",
       "category": "władcy i królowie",
       "level": "hard",
-      "prompt": "Egon — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Egon — jak nazywała się jego córka w „Genealogiach” Andrzeja Sapkowskiego?",
       "correct": "Rigoberta z Lyrii",
       "wrong": [
         "Braenn",
@@ -60283,7 +60224,7 @@ module GameRoomContent
       "id": "a9a4858715b4",
       "category": "władcy i królowie",
       "level": "hard",
-      "prompt": "Ekkehard — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Ekkehard — kto z wymienionych był jego ojcem w książkach o Wiedźminie?",
       "correct": "Gutram",
       "wrong": [
         "Arcykapłan",
@@ -60307,7 +60248,7 @@ module GameRoomContent
       "id": "fbcc94a6f29d",
       "category": "władcy i królowie",
       "level": "hard",
-      "prompt": "Elmer — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Elmer — kto z wymienionych był jego ojcem w książkach o Wiedźminie?",
       "correct": "Belohun",
       "wrong": [
         "Saskia",
@@ -60379,7 +60320,7 @@ module GameRoomContent
       "id": "fafe61f60f91",
       "category": "władcy i królowie",
       "level": "hard",
-      "prompt": "Ethain — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Ethain — kto z wymienionych był jego bliskim przyjacielem w książkach o Wiedźminie?",
       "correct": "Jaskier",
       "wrong": [
         "Harald Psia Gęba",
@@ -60403,7 +60344,7 @@ module GameRoomContent
       "id": "c45b8952f980",
       "category": "władcy i królowie",
       "level": "hard",
-      "prompt": "Evermir — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Evermir — jak nazywała się jego córka w książkach o Wiedźminie?",
       "correct": "Fialka",
       "wrong": [
         "Trigla",
@@ -60439,7 +60380,7 @@ module GameRoomContent
       "id": "2381b337584d",
       "category": "władcy i królowie",
       "level": "hard",
-      "prompt": "Fialka — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Fialka — kto z wymienionych był jej ojcem w książkach o Wiedźminie?",
       "correct": "Evermir",
       "wrong": [
         "Sirius Vaikinen",
@@ -60475,7 +60416,7 @@ module GameRoomContent
       "id": "4fec34dcedf9",
       "category": "władcy i królowie",
       "level": "hard",
-      "prompt": "Fredefalk — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Fredefalk — jak nazywała się jego córka w książkach o Wiedźminie?",
       "correct": "Renfri",
       "wrong": [
         "Hubio",
@@ -60499,7 +60440,7 @@ module GameRoomContent
       "id": "c2a25db647eb",
       "category": "władcy i królowie",
       "level": "hard",
-      "prompt": "Gutram — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Gutram — kto z wymienionych był jego synem w książkach o Wiedźminie?",
       "correct": "Ekkehard",
       "wrong": [
         "Letycja",
@@ -60511,7 +60452,7 @@ module GameRoomContent
       "id": "5bc15b906c28",
       "category": "władcy i królowie",
       "level": "hard",
-      "prompt": "Heltmult — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Heltmult — kto z wymienionych był jego ojcem w książkach o Wiedźminie?",
       "correct": "Vridank Elf",
       "wrong": [
         "Lylianna",
@@ -60559,7 +60500,7 @@ module GameRoomContent
       "id": "aee1730cedda",
       "category": "władcy i królowie",
       "level": "hard",
-      "prompt": "Hereward — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Hereward — jak nazywała się jego żona w książkach o Wiedźminie?",
       "correct": "Ermella",
       "wrong": [
         "Abdank",
@@ -60583,7 +60524,7 @@ module GameRoomContent
       "id": "fbb0d2808fd2",
       "category": "władcy i królowie",
       "level": "hard",
-      "prompt": "Herwig — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Jak nazywa się siostrzeniec Herwiga w niekanonicznym opowiadaniu „Coś się kończy, coś się zaczyna”?",
       "correct": "Brennan",
       "wrong": [
         "Maeglor",
@@ -60691,7 +60632,7 @@ module GameRoomContent
       "id": "0943b8baa856",
       "category": "władcy i królowie",
       "level": "hard",
-      "prompt": "Ildiko Breckl — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Ildiko Breckl — kto z wymienionych był jej mężem w książkach o Wiedźminie?",
       "correct": "Viraxas",
       "wrong": [
         "Esterad Thyssen",
@@ -60739,7 +60680,7 @@ module GameRoomContent
       "id": "05e8967489b2",
       "category": "władcy i królowie",
       "level": "hard",
-      "prompt": "Karolina Roberta — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Karolina Roberta — jak nazywała się jej wnuczka w książkach o Wiedźminie?",
       "correct": "Anna Henrietta",
       "wrong": [
         "Stefan Skellen",
@@ -60787,7 +60728,7 @@ module GameRoomContent
       "id": "4dc5eb1bccd6",
       "category": "władcy i królowie",
       "level": "hard",
-      "prompt": "Kistrin — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Kistrin — kto z wymienionych był jego ojcem w książkach o Wiedźminie?",
       "correct": "Ervyll",
       "wrong": [
         "Abelard Levesley",
@@ -60919,7 +60860,7 @@ module GameRoomContent
       "id": "6f3099190688",
       "category": "władcy i królowie",
       "level": "hard",
-      "prompt": "Muriel Piękna Łotrzyca — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Muriel Piękna Łotrzyca — kto z wymienionych był jej ojcem w książkach o Wiedźminie?",
       "correct": "Amavet",
       "wrong": [
         "Marty Beaver",
@@ -60955,7 +60896,7 @@ module GameRoomContent
       "id": "6954116f2096",
       "category": "władcy i królowie",
       "level": "hard",
-      "prompt": "Mąż Ademarty — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Jak nazywała się księżna Toussaint, której bezimienny mąż był synem cesarza Nilfgaardu, według dodatku Krew i Wino do gry Wiedźmin 3?",
       "correct": "Adela Marta",
       "wrong": [
         "Putzi",
@@ -60991,7 +60932,7 @@ module GameRoomContent
       "id": "f2231dc4c9fc",
       "category": "władcy i królowie",
       "level": "hard",
-      "prompt": "Nibras — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Nibras — kto z wymienionych był jego synem w komiksie „Córka płomienia”?",
       "correct": "Sirvat",
       "wrong": [
         "Cynthia",
@@ -61075,7 +61016,7 @@ module GameRoomContent
       "id": "4720d8049882",
       "category": "władcy i królowie",
       "level": "hard",
-      "prompt": "Osmyk — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Osmyk — kto z wymienionych był jego synem w książkach o Wiedźminie?",
       "correct": "Belohun",
       "wrong": [
         "Klan Heymaey",
@@ -61195,7 +61136,7 @@ module GameRoomContent
       "id": "685d27762e30",
       "category": "władcy i królowie",
       "level": "hard",
-      "prompt": "Rajmund — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Rajmund — jak nazywała się jego żona w książkach o Wiedźminie?",
       "correct": "Anna Henrietta",
       "wrong": [
         "Wszerad",
@@ -61207,7 +61148,7 @@ module GameRoomContent
       "id": "b88557c346f5",
       "category": "władcy i królowie",
       "level": "hard",
-      "prompt": "Reginald — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Reginald — jak nazywała się jego żona w książkach o Wiedźminie?",
       "correct": "Meve",
       "wrong": [
         "Fredefalk",
@@ -61243,7 +61184,7 @@ module GameRoomContent
       "id": "6b71b853e454",
       "category": "władcy i królowie",
       "level": "hard",
-      "prompt": "Robert — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Robert — jak nazywała się jego żona w książkach o Wiedźminie?",
       "correct": "Muriel Piękna Łotrzyca",
       "wrong": [
         "Milva",
@@ -61303,7 +61244,7 @@ module GameRoomContent
       "id": "673090444bcb",
       "category": "władcy i królowie",
       "level": "hard",
-      "prompt": "Sh'eenaz — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Sh'eenaz — kto z wymienionych był jej mężem w książkach o Wiedźminie?",
       "correct": "Agloval",
       "wrong": [
         "Yzga Reihrin",
@@ -61363,7 +61304,7 @@ module GameRoomContent
       "id": "b13d32b8d559",
       "category": "władcy i królowie",
       "level": "hard",
-      "prompt": "Sylvana — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Sylvana — kto z wymienionych był jej mężem w książkach o Wiedźminie?",
       "correct": "Fredefalk",
       "wrong": [
         "Wszechbóg",
@@ -61411,7 +61352,7 @@ module GameRoomContent
       "id": "cde6ec782a23",
       "category": "władcy i królowie",
       "level": "hard",
-      "prompt": "Venger — z którą postacią jest powiązana ta postać w grach z serii Wiedźmin?",
+      "prompt": "Venger — jak nazywała się jego wnuczka w grach ze świata Wiedźmina?",
       "correct": "Aedireen",
       "wrong": [
         "Fionnuala",
@@ -61579,7 +61520,7 @@ module GameRoomContent
       "id": "938bf2bc2012",
       "category": "władcy i królowie",
       "level": "hard",
-      "prompt": "Viraxas — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Viraxas — kto z wymienionych był jego ojcem w książkach o Wiedźminie?",
       "correct": "Belohun",
       "wrong": [
         "Braenn",
@@ -61663,7 +61604,7 @@ module GameRoomContent
       "id": "a98e81536cfb",
       "category": "władcy i królowie",
       "level": "hard",
-      "prompt": "Xander — z którą postacią jest powiązana ta postać w książkach z cyklu Wiedźmin?",
+      "prompt": "Xander — kto z wymienionych był jego ojcem w książkach o Wiedźminie?",
       "correct": "Belohun",
       "wrong": [
         "Vladimir Crespi",
@@ -61686,7 +61627,7 @@ module GameRoomContent
   ],
   "source": "https://github.com/budyn1211/elten-game-room/blob/efa6e640a57901e7b01e5ac2158e84f1c3375435/content/quiz_witcher_pl.rb"
 }
-QUIZ_DATA_0336bd29566432960496da574fed26a1ebaa0d0a2eb4d22d006c94d3b6798b81
+QUIZ_DATA_cdeebe6bb532c1d98f9e4898c886a1d77ecee382ad3607df62a94bcb339f45c6
     end
   end
 end

@@ -9,24 +9,24 @@ witcher_sets = [
     set_id: "quiz.witcher",
     title: "Wiedźmin",
     scope: :all,
-    entry_count: 5137,
-    checksum: "c104a75104dfda0ce20a61251041a83365146afdf6130ced473a5f169e7f74dc"
+    entry_count: 5132,
+    checksum: "c59f28827d46cc36dbf0893eed96365abc351d7b8d76dbee3f77baabb8dff39f"
   },
   {
     id: "quiz.witcher.g.pl",
     set_id: "quiz.witcher.g",
     title: "Wiedźmin — gry",
     scope: :games,
-    entry_count: 2670,
-    checksum: "9be427e26ba5ffc48ebe658834b043195920235be40521ce4ff92fc4b0055ab6"
+    entry_count: 2668,
+    checksum: "60fe568f5239d93b29a2685b1b93e5b81f9576e0952290e878f77e7d73f85b2f"
   },
   {
     id: "quiz.witcher.b.pl",
     set_id: "quiz.witcher.b",
     title: "Wiedźmin — książki i ekranizacje",
     scope: :books_screen,
-    entry_count: 2467,
-    checksum: "5156e03a11471a837cf9d8f760bc376fa79e732c9c7e620ee291666876883be8"
+    entry_count: 2464,
+    checksum: "7fb4a930a341ba985020ab460dbd996c8155945b730ad8dbbe70c371accb65b7"
   }
 ].freeze
 
@@ -37,7 +37,7 @@ witcher_sets.each do |definition|
     set_id: definition.fetch(:set_id),
     kind: :quiz,
     language_id: "pl-PL",
-    version: 4,
+    version: 6,
     title: definition.fetch(:title),
     game_ids: ["quiz"],
     license: "CC BY-SA 3.0 (Fandom, Wiedźmin Wiki)",

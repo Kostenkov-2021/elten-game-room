@@ -1,21 +1,150 @@
 {
- "source":"games/ludo.rb",
- "sections":[
-  {"id":"route","title":{"en":"Bring all four pawns home","pl":"Doprowadź do mety cztery pionki"},"paragraphs":[
-   {"en":"Ludo is a race for two to four players. Everyone has four pawns waiting in a base. You roll a die to bring them onto the track and move them around the board. The first player to bring all four to the finish wins.","pl":"Chińczyk jest wyścigiem dla dwóch do czterech osób. Każda ma cztery pionki czekające w bazie. Rzuty kością pozwalają wyprowadzać je na tor i przesuwać po planszy. Wygrywa ten, kto jako pierwszy doprowadzi wszystkie cztery do mety."},
-   {"en":"The shared track has 52 squares. Players enter at squares 1, 14, 27 and 40 in seating order. The numbering wraps from 52 back to 1, so everyone travels the same distance. After the shared track, each pawn enters its owner's private six-square home lane. Opponents cannot enter that lane. Its last square is the finish, and a finished pawn does not move again.","pl":"Wspólny tor ma 52 pola. Gracze wchodzą na niego kolejno na polach 1, 14, 27 i 40. Po polu 52 znów jest pole 1, więc każdy pokonuje taką samą drogę. Po wspólnym torze pionek wchodzi na własną, sześciopolową ścieżkę do domu. Przeciwnicy nie mogą na nią wejść. Ostatnie pole to meta, a pionek, który do niej dotrze, już się nie porusza."}
-  ]},
-  {"id":"roll","title":{"en":"A roll gives one pawn a move","pl":"Jeden rzut, jeden pionek"},"paragraphs":[
-   {"en":"Roll the die, then use its whole result for one pawn. You cannot split the number between pawns. When several pawns can move, choose one of the offered destinations. When only one can move, the program moves it automatically. If no pawn can move, your turn normally ends.","pl":"Rzuć kością, a potem wykorzystaj cały wynik dla jednego pionka. Nie dzieli się oczek między kilka pionków. Gdy ruszyć może kilka, wybierz jedno z proponowanych miejsc docelowych. Gdy ruch ma tylko jeden pionek, program przesunie go automatycznie. Jeśli żaden nie może się ruszyć, tura zwykle się kończy."},
-   {"en":"Landing on an opponent's pawn sends it back to its base, unless the square is one of the four safe entry squares. Pawns on those entry squares cannot be captured. With blockades enabled, two opposing pawns sharing a track square also stop you from moving through or landing there. Your own pair does not block your other pawns; bringing a pawn out of the base is treated separately.","pl":"Wejście na pionek przeciwnika odsyła go do bazy, chyba że stoi na jednym z czterech bezpiecznych pól wejściowych. Pionków na tych polach nie da się zbić. Przy włączonych blokadach dwa pionki przeciwnika na jednym polu toru uniemożliwiają również przejście przez nie i zatrzymanie się tam. Własna para nie blokuje twoich pozostałych pionków; samo wyprowadzanie pionka z bazy jest traktowane osobno."}
-  ]},
-  {"id":"options","title":{"en":"What the five checkboxes change","pl":"Co zmienia pięć opcji"},"paragraphs":[
-   {"en":"A 6 is required to leave the base is on by default. A six lets you place a pawn on its entry square; it does not then advance another six squares. With this option off, any roll lets you enter the track.","pl":"Domyślnie do wyjścia z bazy potrzebna jest szóstka. Pozwala ona postawić pionek na polu wejściowym, bez dodatkowego przesuwania o sześć pól. Po wyłączeniu tej opcji na tor można wyjść po dowolnym rzucie."},
-   {"en":"Roll again after a 6 is on by default. After resolving a six you get another roll, even if that six could not move a pawn. Turning it off makes a six end the turn like any other result.","pl":"Dodatkowy rzut po szóstce jest domyślnie włączony. Po rozpatrzeniu szóstki rzucasz ponownie, nawet jeśli nie dało się nią poruszyć pionkiem. Po wyłączeniu tej opcji szóstka kończy turę tak samo jak inne wyniki."},
-   {"en":"An exact roll is required to reach the finish is on by default. A pawn two squares from the finish needs a two: a larger result cannot move it. With this option off, an overshooting roll also takes the pawn to the finish.","pl":"Domyślnie do wejścia na metę potrzebny jest dokładny wynik. Pionek stojący dwa pola przed metą potrzebuje dwójki; większy wynik nie pozwoli nim ruszyć. Po wyłączeniu tej zasady wynik przekraczający potrzebną odległość również doprowadza pionek do mety."},
-   {"en":"Three consecutive sixes lose the turn is on by default. The third six ends your turn without a move for that roll. Moves made after the first two sixes stay on the board: they are not undone.","pl":"Trzy kolejne szóstki domyślnie powodują utratę tury. Po trzeciej szóstce nie wykonujesz już ruchu z tego rzutu. Ruchy wykonane po dwóch wcześniejszych szóstkach pozostają na planszy; program ich nie cofa."},
-   {"en":"Two pawns of one player form a blockade is on by default. Turning it off removes the restrictions caused by opposing pairs on the track. It does not remove safe entry squares or change the length of the route.","pl":"Blokady tworzone przez dwa pionki jednego gracza są domyślnie włączone. Ich wyłączenie usuwa ograniczenia związane z parami przeciwnika na torze. Nie usuwa bezpiecznych pól wejściowych ani nie zmienia długości trasy."}
-  ]},
-  {"id":"controls","title":{"en":"Game keyboard shortcuts","pl":"Skróty klawiszowe gry"},"paragraphs":[{"en":"1: read your pawns; for an observer, read the first player's pawns.","pl":"1: odczytaj swoje pionki; u obserwatora pionki pierwszego gracza."},{"en":"2: read the next player's pawns in seating order.","pl":"2: odczytaj pionki następnego gracza według miejsc przy stole."},{"en":"3: read the next player's pawns, if present.","pl":"3: odczytaj pionki kolejnego gracza, jeśli uczestniczy w grze."},{"en":"4: read the last player's pawns at a four-player table.","pl":"4: odczytaj pionki ostatniego gracza przy czteroosobowym stole."},{"en":"Arrows: choose an available pawn move.","pl":"Strzałki: wybierz dostępny ruch pionkiem."},{"en":"Enter: roll the die or confirm a pawn move.","pl":"Enter: rzuć kością lub potwierdź ruch pionkiem."},{"en":"D: read who rolled last and the result, without rolling again.","pl":"D: odczytaj nick osoby, która rzucała ostatnio, oraz wynik, bez ponownego rzutu."},{"en":"V: browse your pawns.","pl":"V: przeglądaj swoje pionki."},{"en":"Shift+V: browse everyone's pawns in track order, then home lanes, bases and finished pawns.","pl":"Shift+V: przeglądaj pionki wszystkich według pól wspólnego toru, a dalej ścieżek do domu, baz i mety."},{"en":"P: read your unfinished pawn positions, including the base.","pl":"P: odczytaj pozycje swoich pionków poza metą, także w bazie."},{"en":"Shift+P: read opponents' unfinished pawn positions, including their bases.","pl":"Shift+P: odczytaj pozycje pionków przeciwników poza metą, także w bazach."},{"en":"T: read whose turn it is.","pl":"T: odczytaj, czyja jest tura."}]}
- ]
+  "source": "games/ludo.rb",
+  "sections": [
+    {
+      "id": "route",
+      "title": {
+        "en": "Bring all four pawns home",
+        "pl": "Doprowadź do mety cztery pionki"
+      },
+      "paragraphs": [
+        {
+          "en": "Ludo is a race for two to four players. Everyone has four pawns waiting in a base. You roll a die to bring them onto the track and move them around the board. The first player to bring all four to the finish wins.",
+          "pl": "Chińczyk jest wyścigiem dla dwóch do czterech osób. Każda ma cztery pionki czekające w bazie. Rzuty kością pozwalają wyprowadzać je na tor i przesuwać po planszy. Wygrywa ten, kto jako pierwszy doprowadzi wszystkie cztery do mety."
+        },
+        {
+          "en": "The shared track has 52 squares. Players enter at squares 1, 14, 27 and 40 in seating order. The numbering wraps from 52 back to 1, so everyone travels the same distance. After the shared track, each pawn enters its owner's private six-square home lane. Opponents cannot enter that lane. Its last square is the finish, and a finished pawn does not move again.",
+          "pl": "Wspólny tor ma 52 pola. Gracze wchodzą na niego kolejno na polach 1, 14, 27 i 40. Po polu 52 znów jest pole 1, więc każdy pokonuje taką samą drogę. Po wspólnym torze pionek wchodzi na własną, sześciopolową ścieżkę do domu. Przeciwnicy nie mogą na nią wejść. Ostatnie pole to meta, a pionek, który do niej dotrze, już się nie porusza."
+        }
+      ]
+    },
+    {
+      "id": "roll",
+      "title": {
+        "en": "A roll gives one pawn a move",
+        "pl": "Jeden rzut, jeden pionek"
+      },
+      "paragraphs": [
+        {
+          "en": "Roll the die, then use its whole result for one pawn. You cannot split the number between pawns. When several pawns can move, choose one of the offered destinations. When only one can move, the program moves it automatically. If no pawn can move, your turn normally ends.",
+          "pl": "Rzuć kością, a potem wykorzystaj cały wynik dla jednego pionka. Nie dzieli się oczek między kilka pionków. Gdy ruszyć może kilka, wybierz jedno z proponowanych miejsc docelowych. Gdy ruch ma tylko jeden pionek, program przesunie go automatycznie. Jeśli żaden nie może się ruszyć, tura zwykle się kończy."
+        },
+        {
+          "en": "Landing on an opponent's pawn sends it back to its base, unless the square is one of the four safe entry squares. Pawns on those entry squares cannot be captured. With blockades enabled, two opposing pawns sharing a track square also stop you from moving through or landing there. Your own pair does not block your other pawns; bringing a pawn out of the base is treated separately.",
+          "pl": "Wejście na pionek przeciwnika odsyła go do bazy, chyba że stoi na jednym z czterech bezpiecznych pól wejściowych. Pionków na tych polach nie da się zbić. Przy włączonych blokadach dwa pionki przeciwnika na jednym polu toru uniemożliwiają również przejście przez nie i zatrzymanie się tam. Własna para nie blokuje twoich pozostałych pionków; samo wyprowadzanie pionka z bazy jest traktowane osobno."
+        }
+      ]
+    },
+    {
+      "id": "options",
+      "title": {
+        "en": "What the table options change",
+        "pl": "Co zmieniają ustawienia stołu"
+      },
+      "paragraphs": [
+        {
+          "en": "By default, a 6 or a 1 lets you bring a pawn out of the base onto its entry square, with no further movement. A 1 does not grant another roll. Turn off the option for a 1 to require a 6; turn off the restriction on leaving the base to allow any roll. These choices never force you to leave the base if another pawn can move.",
+          "pl": "Domyślnie po szóstce lub jedynce możesz wyprowadzić pionek z bazy na pole wejściowe, bez dodatkowego przesuwania. Jedynka nie daje kolejnego rzutu. Wyłącz opcję wyjścia po jedynce, jeśli chcesz wychodzić tylko po szóstce. Wyłączenie ograniczenia wyników pozwala wychodzić po dowolnym rzucie. Nie musisz wyprowadzać pionka z bazy, jeżeli masz inny legalny ruch."
+        },
+        {
+          "en": "Roll again after a 6 is on by default. After resolving a six you get another roll, even if that six could not move a pawn. Turning it off makes a six end the turn like any other result.",
+          "pl": "Dodatkowy rzut po szóstce jest domyślnie włączony. Po rozpatrzeniu szóstki rzucasz ponownie, nawet jeśli nie dało się nią poruszyć pionkiem. Po wyłączeniu tej opcji szóstka kończy turę tak samo jak inne wyniki."
+        },
+        {
+          "en": "An exact roll is required to reach the finish is on by default. A pawn two squares from the finish needs a two: a larger result cannot move it. With this option off, an overshooting roll also takes the pawn to the finish.",
+          "pl": "Domyślnie do wejścia na metę potrzebny jest dokładny wynik. Pionek stojący dwa pola przed metą potrzebuje dwójki; większy wynik nie pozwoli nim ruszyć. Po wyłączeniu tej zasady wynik przekraczający potrzebną odległość również doprowadza pionek do mety."
+        },
+        {
+          "en": "Three consecutive sixes lose the turn is on by default. The third six ends your turn without a move for that roll. Moves made after the first two sixes stay on the board: they are not undone.",
+          "pl": "Trzy kolejne szóstki domyślnie powodują utratę tury. Po trzeciej szóstce nie wykonujesz już ruchu z tego rzutu. Ruchy wykonane po dwóch wcześniejszych szóstkach pozostają na planszy; program ich nie cofa."
+        },
+        {
+          "en": "Two pawns of one player form a blockade is on by default. Turning it off removes the restrictions caused by opposing pairs on the track. It does not remove safe entry squares or change the length of the route.",
+          "pl": "Blokady tworzone przez dwa pionki jednego gracza są domyślnie włączone. Ich wyłączenie usuwa ograniczenia związane z parami przeciwnika na torze. Nie usuwa bezpiecznych pól wejściowych ani nie zmienia długości trasy."
+        }
+      ]
+    },
+    {
+      "id": "presentation",
+      "title": {
+        "en": "Names or colours",
+        "pl": "Nazwy lub kolory"
+      },
+      "paragraphs": [
+        {
+          "en": "Positions are read with the player first, followed by the square, without pawn numbers. Ctrl+C switches between player names and colours. C always reads who has each colour. Red, blue, yellow and green follow the fixed seats at the table. Your choice is saved on this computer for future tables; it does not change other people's settings or the game history.",
+          "pl": "Pozycje są odczytywane od gracza, a potem podawane jest pole, bez numerowania pionków. Ctrl+C przełącza nazwy graczy i kolory. C zawsze podaje, kto ma jaki kolor. Czerwony, niebieski, żółty i zielony odpowiadają kolejnym stałym miejscom przy stole. Wybrany sposób prezentacji jest zapamiętywany na tym komputerze dla kolejnych stołów. Nie zmienia ustawień innych osób ani historii gry."
+        }
+      ]
+    },
+    {
+      "id": "controls",
+      "title": {
+        "en": "Game keyboard shortcuts",
+        "pl": "Skróty klawiszowe gry"
+      },
+      "paragraphs": [
+        {
+          "en": "1: read your pawns; for an observer, read the first player's pawns.",
+          "pl": "1: odczytaj swoje pionki; u obserwatora pionki pierwszego gracza."
+        },
+        {
+          "en": "2: read the next player's pawns in seating order.",
+          "pl": "2: odczytaj pionki następnego gracza według miejsc przy stole."
+        },
+        {
+          "en": "3: read the next player's pawns, if present.",
+          "pl": "3: odczytaj pionki kolejnego gracza, jeśli uczestniczy w grze."
+        },
+        {
+          "en": "4: read the last player's pawns at a four-player table.",
+          "pl": "4: odczytaj pionki ostatniego gracza przy czteroosobowym stole."
+        },
+        {
+          "en": "Arrows: choose an available pawn move.",
+          "pl": "Strzałki: wybierz dostępny ruch pionkiem."
+        },
+        {
+          "en": "Enter: roll the die or confirm a pawn move.",
+          "pl": "Enter: rzuć kością lub potwierdź ruch pionkiem."
+        },
+        {
+          "en": "C: read each player's colour.",
+          "pl": "C: odczytaj kolory graczy."
+        },
+        {
+          "en": "Ctrl+C: switch between player names and colours.",
+          "pl": "Ctrl+C: przełącz nazwy graczy i kolory."
+        },
+        {
+          "en": "D: read who rolled last and the result, without rolling again.",
+          "pl": "D: odczytaj nick osoby, która rzucała ostatnio, oraz wynik, bez ponownego rzutu."
+        },
+        {
+          "en": "V: browse your pawns.",
+          "pl": "V: przeglądaj swoje pionki."
+        },
+        {
+          "en": "Shift+V: browse everyone's pawns in track order, then home lanes, bases and finished pawns.",
+          "pl": "Shift+V: przeglądaj pionki wszystkich według pól wspólnego toru, a dalej ścieżek do domu, baz i mety."
+        },
+        {
+          "en": "P: read your unfinished pawn positions, including the base.",
+          "pl": "P: odczytaj pozycje swoich pionków poza metą, także w bazie."
+        },
+        {
+          "en": "Shift+P: read opponents' unfinished pawn positions, including their bases.",
+          "pl": "Shift+P: odczytaj pozycje pionków przeciwników poza metą, także w bazach."
+        },
+        {
+          "en": "S: read how many pawns each player has finished.",
+          "pl": "S: odczytaj, ile pionków każdy gracz doprowadził do mety."
+        },
+        {
+          "en": "T: read whose turn it is.",
+          "pl": "T: odczytaj, czyja jest tura."
+        }
+      ]
+    }
+  ]
 }

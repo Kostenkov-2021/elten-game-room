@@ -65,7 +65,7 @@ assert(
   packs.map(&:title) == ["Wiedźmin", "Wiedźmin — gry", "Wiedźmin — książki i ekranizacje"],
   "the Polish Witcher set names are wrong"
 )
-assert(packs.all? { |pack| pack.version == 4 }, "a Witcher set did not receive data version 4")
+assert(packs.all? { |pack| pack.version == 6 }, "a Witcher set did not receive data version 6")
 
 full, games, books_screen = packs.map(&:data)
 full_questions = full.fetch("questions")
@@ -80,8 +80,27 @@ restored_decisions = recovery.fetch("decisions").select do |row|
 end
 retained_decisions = audit.fetch("decisions").reject { |row| row.fetch("decision") == "remove" } + restored_decisions
 retained_by_id = retained_decisions.to_h { |row| [row.fetch("id"), row] }
-expected_media = retained_decisions.group_by { |row| row.fetch("medium") }.transform_values(&:length)
-assert(full_questions.length == retained_decisions.length, "the full Witcher set does not match the factual audit")
+forum_corrections = JSON.parse(File.read(File.expand_path('../docs/QUIZ_FORUM_CORRECTIONS_239.json', __dir__), encoding: 'UTF-8')).fetch('quiz.witcher.pl').to_h { |row| [row.fetch('id'), row] }
+forum_corrections.each_value do |correction|
+  row = retained_by_id.fetch(correction.fetch('id'))
+  assert(row.fetch('reviewed') == correction.fetch('before'), 'Forum correction lost its audited baseline')
+  row['reviewed'] = correction.fetch('after')
+end
+semantic_corrections = JSON.parse(File.read(File.expand_path('../docs/QUIZ_SEMANTIC_CORRECTIONS_239.json', __dir__), encoding: 'UTF-8')).fetch('changes')
+semantic_corrections.select { |r| r.fetch('pack_id') == 'quiz.witcher.pl' }.each do |correction|
+  id = correction.fetch('id')
+  row = retained_by_id.fetch(id)
+  assert(row.fetch('reviewed') == correction.fetch('before'), 'Semantic correction lost its audited baseline')
+  assert(row.fetch('medium') == correction.fetch('medium_before'), 'Medium correction lost its audited baseline') if correction.key?('medium_before')
+  if correction.fetch('after')
+    row['reviewed'] = correction.fetch('after')
+    row['medium'] = correction.fetch('medium_after') if correction.key?('medium_after')
+  else
+    retained_by_id.delete(id)
+  end
+end
+expected_media = retained_by_id.values.group_by { |row| row.fetch("medium") }.transform_values(&:length)
+assert(full_questions.length == retained_by_id.length, "the full Witcher set does not match the factual audit and corrections")
 assert(game_questions.length == expected_media.fetch("g"), "the game set has the wrong size")
 assert(book_screen_questions.length == expected_media.fetch("b", 0) + expected_media.fetch("s", 0), "the books and screen set has the wrong size")
 
@@ -95,7 +114,7 @@ assert((game_ids & book_screen_ids).empty?, "a question belongs to both detailed
 assert((game_ids + book_screen_ids).sort == full_ids.sort, "the detailed sets do not partition all retained IDs")
 
 classification = GameRoomContent::WitcherPolishMediumData.load
-assert(classification.fetch("version") == 4, "the medium map has the wrong data version")
+assert(classification.fetch("version") == 6, "the medium map has the wrong data version")
 assert(classification.fetch("media").keys.sort == full_ids.sort, "the medium map does not cover every question")
 assert(classification.fetch("media").values.tally == expected_media, "the reviewed medium totals do not match the audit")
 assert(game_ids.all? { |id| classification.fetch("media").fetch(id) == "g" }, "the game set contains another medium")

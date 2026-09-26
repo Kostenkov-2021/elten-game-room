@@ -2,6 +2,7 @@ require 'digest'
 require_relative 'operation'
 require_relative 'protocol'
 require_relative 'metrics'
+require_relative 'p2p_options'
 
 module GameRoomRealtime
   # The only owner of Game Room's Communications endpoint. Sessions remain
@@ -24,13 +25,25 @@ module GameRoomRealtime
       @accepting_invitation = @accepted_invitation_key = nil
       @resource_lock = Mutex.new
       @metrics = Metrics.new(clock: clock)
+      @p2p_session_options = P2POptions.session_options({})
     end
 
     def host?; @owner.casecmp?(@viewer); end
     def connected?; @session != nil && @session.state == :open && @endpoint && !@endpoint.closed?; end
 
-    # Native latency is the latest client-to-relay UDP RTT, in seconds.
-    # fast_path? checks its freshness. This only reads memory: never open an
+    def configure_p2p(options)
+      return if @closed
+      requested = P2POptions.session_options(options)
+      return if requested == @p2p_session_options
+      @p2p_session_options = requested
+      # Normally configured before session creation. If options change while
+      # setup is pending, use the existing generation-safe reconnect path.
+      reconnect(reason: 'P2POptionsChanged') if @session || @work.kind == :session
+    end
+
+    # Native latency is the client-to-relay UDP RTT; p2p_status reports the
+    # actual route and direct RTT separately for each current participant.
+    # Both are cached, with freshness checked by the host. Never open an
     # endpoint, send probes or dispatch callbacks just to answer a shortcut.
     # nil means no active connection; nil relay_udp_ms means no valid UDP RTT
     # (e.g. TCP fallback), not zero latency or a measured TCP/peer round trip.
@@ -41,7 +54,19 @@ module GameRoomRealtime
       latency = endpoint.latency if endpoint.respond_to?(:latency) &&
         endpoint.respond_to?(:fast_path?) && endpoint.fast_path?
       milliseconds = (latency * 1000).round if latency.is_a?(Numeric) && latency.finite? && latency >= 0
-      { relay_udp_ms: milliseconds }
+      sample = { relay_udp_ms: milliseconds }
+      if session.respond_to?(:p2p) && session.p2p != :off && session.respond_to?(:p2p_status)
+        paths = session.p2p_status
+        sample[:peers] = session.participants.filter_map do |participant|
+          next if participant.id == session.self_id || !authorized?(participant.user)
+          path = paths[participant.id] || {}
+          direct = path[:transport] == :p2p
+          rtt = path[:latency]
+          peer_ms = (rtt * 1000).round if direct && rtt.is_a?(Numeric) && rtt.finite? && rtt >= 0
+          { user: participant.user, transport: direct ? :p2p : :relay, p2p_ms: peer_ms }
+        end
+      end
+      sample
     end
 
     def tick
@@ -114,8 +139,9 @@ module GameRoomRealtime
         @next_retry = now + 1.0
         endpoint = @endpoint
         generation = @generation
+        p2p_options = @p2p_session_options
         @work.start(:session) do
-          session = endpoint.create_session(metadata: metadata, capacity: 32, public: false, encryption: 192)
+          session = endpoint.create_session(metadata: metadata, capacity: 32, public: false, encryption: 192, **p2p_options)
           if @closed || generation != @generation
             session.close
             nil

@@ -1,9 +1,10 @@
 # encoding: UTF-8
+# Generated from the reviewed semantic corrections; see docs/QUIZ_SEMANTIC_CORRECTIONS_239.json.
 require 'json'
 module GameRoomContent
   module Packa0830f585cc4689a1e2a6335
     def self.load
-      JSON.parse(<<'QUIZ_DATA_bc6b16c37ee40100368a83e1441e1b0ae5bcfef80b8a3f2c55833bd495a797c1')
+      JSON.parse(<<'QUIZ_DATA_de967eeb75e541daafef43bc73abd974df17d97c3a6e9adfc667f8ef7ff567be')
 {
   "questions": [
     {
@@ -22,7 +23,7 @@ module GameRoomContent
       "id": "75cf8b541940",
       "category": "chemia",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Adolf von Baeyer?",
+      "prompt": "Którego z wymienionych państw był poddanym Adolf von Baeyer?",
       "correct": "Cesarstwo Niemieckie",
       "wrong": [
         "Szwecja",
@@ -130,7 +131,7 @@ module GameRoomContent
       "id": "32825bbf8b01",
       "category": "chemia",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Alfred Nobel?",
+      "prompt": "Którego z wymienionych państw był obywatelem Alfred Nobel?",
       "correct": "Szwecja",
       "wrong": [
         "Niemcy",
@@ -226,7 +227,7 @@ module GameRoomContent
       "id": "97176ec6a4f7",
       "category": "chemia",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Anders Celsius?",
+      "prompt": "Którego z wymienionych państw był obywatelem Anders Celsius?",
       "correct": "Szwecja",
       "wrong": [
         "Izrael",
@@ -274,7 +275,7 @@ module GameRoomContent
       "id": "c9efbfd9beb6",
       "category": "chemia",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Carl Scheele?",
+      "prompt": "Którego z wymienionych państw był obywatelem Carl Scheele?",
       "correct": "Szwecja",
       "wrong": [
         "Republika Zjednoczonych Prowincji",
@@ -346,7 +347,7 @@ module GameRoomContent
       "id": "cddb00abc3b7",
       "category": "chemia",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Dmitrij Mendelejew?",
+      "prompt": "Którego z wymienionych państw był poddanym Dmitrij Mendelejew?",
       "correct": "Imperium Rosyjskie",
       "wrong": [
         "Zjednoczone Królestwo Wielkiej Brytanii i Irlandii",
@@ -454,7 +455,7 @@ module GameRoomContent
       "id": "5d6ac2895a58",
       "category": "chemia",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Eduard Buchner?",
+      "prompt": "Którego z wymienionych państw był poddanym Eduard Buchner?",
       "correct": "Cesarstwo Niemieckie",
       "wrong": [
         "Elektorat Hesji",
@@ -514,7 +515,7 @@ module GameRoomContent
       "id": "d3084abc245d",
       "category": "chemia",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Emmanuelle Charpentier?",
+      "prompt": "Którego z wymienionych państw jest lub była obywatelką Emmanuelle Charpentier?",
       "correct": "Francja",
       "wrong": [
         "Święte Cesarstwo Rzymskie",
@@ -526,7 +527,7 @@ module GameRoomContent
       "id": "6880e96748cf",
       "category": "chemia",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Ernest Rutherford?",
+      "prompt": "Z którego kraju pochodził fizyk Ernest Rutherford?",
       "correct": "Nowa Zelandia",
       "wrong": [
         "Rzeczpospolita Obojga Narodów",
@@ -550,7 +551,7 @@ module GameRoomContent
       "id": "408fccf23957",
       "category": "chemia",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Frances Arnold?",
+      "prompt": "Którego z wymienionych państw jest lub była obywatelką Frances Arnold?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Szwecja",
@@ -598,7 +599,7 @@ module GameRoomContent
       "id": "d803103a14e3",
       "category": "chemia",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Francis William Aston?",
+      "prompt": "Którego z wymienionych państw był obywatelem Francis William Aston?",
       "correct": "Wielka Brytania",
       "wrong": [
         "Królestwo Hanoweru",
@@ -718,7 +719,7 @@ module GameRoomContent
       "id": "27d236b7fe8d",
       "category": "chemia",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Frederick Soddy?",
+      "prompt": "Którego z wymienionych państw był obywatelem Frederick Soddy?",
       "correct": "Wielka Brytania",
       "wrong": [
         "Holandia",
@@ -838,7 +839,7 @@ module GameRoomContent
       "id": "2fd72f640abe",
       "category": "chemia",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Frédéric Joliot-Curie?",
+      "prompt": "Którego z wymienionych państw był obywatelem Frédéric Joliot-Curie?",
       "correct": "Francja",
       "wrong": [
         "Chiny",
@@ -886,7 +887,7 @@ module GameRoomContent
       "id": "260ec970f502",
       "category": "chemia",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Gabriel Fahrenheit?",
+      "prompt": "Którego z wymienionych państw był obywatelem Gabriel Fahrenheit?",
       "correct": "Rzeczpospolita Obojga Narodów",
       "wrong": [
         "Zjednoczone Królestwo Wielkiej Brytanii i Irlandii",
@@ -970,7 +971,7 @@ module GameRoomContent
       "id": "ddcaafd556c8",
       "category": "chemia",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Glenn Theodore Seaborg?",
+      "prompt": "Którego z wymienionych państw był obywatelem Glenn Theodore Seaborg?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Zjednoczone Królestwo Włoch",
@@ -1018,7 +1019,7 @@ module GameRoomContent
       "id": "eb835836ecfc",
       "category": "chemia",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Gustav Kirchhoff?",
+      "prompt": "Którego z wymienionych państw był poddanym Gustav Kirchhoff?",
       "correct": "Królestwo Prus",
       "wrong": [
         "Chile",
@@ -1078,7 +1079,7 @@ module GameRoomContent
       "id": "cd6e8966a792",
       "category": "chemia",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Hans Christian Ørsted?",
+      "prompt": "Którego z wymienionych państw był poddanym Hans Christian Ørsted?",
       "correct": "Królestwo Danii",
       "wrong": [
         "Cesarstwo Austrii",
@@ -1102,7 +1103,7 @@ module GameRoomContent
       "id": "026d19180cfe",
       "category": "chemia",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Harold Clayton Urey?",
+      "prompt": "Którego z wymienionych państw był obywatelem Harold Clayton Urey?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Królestwo Hanoweru",
@@ -1126,7 +1127,7 @@ module GameRoomContent
       "id": "91b6164944b0",
       "category": "chemia",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Henri Becquerel?",
+      "prompt": "Którego z wymienionych państw był obywatelem Henri Becquerel?",
       "correct": "Francja",
       "wrong": [
         "Zjednoczone Królestwo Wielkiej Brytanii i Irlandii",
@@ -1174,7 +1175,7 @@ module GameRoomContent
       "id": "555faa58d980",
       "category": "chemia",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Henri Moissan?",
+      "prompt": "Którego z wymienionych państw był obywatelem Henri Moissan?",
       "correct": "Francja",
       "wrong": [
         "Chile",
@@ -1390,7 +1391,7 @@ module GameRoomContent
       "id": "b4243de9fd6e",
       "category": "chemia",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Irène Joliot-Curie?",
+      "prompt": "Którego z wymienionych państw była obywatelką Irène Joliot-Curie?",
       "correct": "Francja",
       "wrong": [
         "Kanada",
@@ -1438,7 +1439,7 @@ module GameRoomContent
       "id": "95a0294f1664",
       "category": "chemia",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Iwan Pawłow?",
+      "prompt": "Którego z wymienionych państw był obywatelem Iwan Pawłow?",
       "correct": "Związek Socjalistycznych Republik Radzieckich",
       "wrong": [
         "Chile",
@@ -1486,7 +1487,7 @@ module GameRoomContent
       "id": "00922f7fe230",
       "category": "chemia",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Jacobus van ’t Hoff?",
+      "prompt": "Którego z wymienionych państw był obywatelem Jacobus van ’t Hoff?",
       "correct": "Holandia",
       "wrong": [
         "Argentyna",
@@ -1558,7 +1559,7 @@ module GameRoomContent
       "id": "f5716d4f4e58",
       "category": "chemia",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie James Watt?",
+      "prompt": "Z której części Wielkiej Brytanii pochodził James Watt?",
       "correct": "Szkocja",
       "wrong": [
         "Republika Zjednoczonych Prowincji",
@@ -1606,7 +1607,7 @@ module GameRoomContent
       "id": "9b0ef3c42391",
       "category": "chemia",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Jean Perrin?",
+      "prompt": "Którego z wymienionych państw był obywatelem Jean Perrin?",
       "correct": "Francja",
       "wrong": [
         "Zjednoczone Królestwo Wielkiej Brytanii i Irlandii",
@@ -1654,7 +1655,7 @@ module GameRoomContent
       "id": "ebafff76d5e6",
       "category": "chemia",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Jennifer Doudna?",
+      "prompt": "Którego z wymienionych państw jest lub była obywatelką Jennifer Doudna?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Wielkie Księstwo Hesji",
@@ -1738,7 +1739,7 @@ module GameRoomContent
       "id": "9068f84f2072",
       "category": "chemia",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Johannes Diderik van der Waals?",
+      "prompt": "Którego z wymienionych państw był obywatelem Johannes Diderik van der Waals?",
       "correct": "Holandia",
       "wrong": [
         "Królestwo Prus",
@@ -1798,7 +1799,7 @@ module GameRoomContent
       "id": "0fbb1a71c6f7",
       "category": "chemia",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie John Dalton?",
+      "prompt": "Którego z wymienionych państw był poddanym John Dalton?",
       "correct": "Zjednoczone Królestwo Wielkiej Brytanii i Irlandii",
       "wrong": [
         "Austria",
@@ -1810,7 +1811,7 @@ module GameRoomContent
       "id": "7fde0ca41dab",
       "category": "chemia",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Jöns Jacob Berzelius?",
+      "prompt": "Którego z wymienionych państw był obywatelem Jöns Jacob Berzelius?",
       "correct": "Szwecja",
       "wrong": [
         "Norwegia",
@@ -1858,24 +1859,24 @@ module GameRoomContent
       "id": "e6399dcc46ac",
       "category": "chemia",
       "level": "easy",
-      "prompt": "Lek (−)-nikotyna — na jaką chorobę się go stosuje?",
-      "correct": "wrzodziejące zapalenie jelita grubego",
+      "prompt": "W jakim celu stosuje się nikotynową terapię zastępczą?",
+      "correct": "aby ułatwić rzucenie palenia",
       "wrong": [
-        "Gorączka krwotoczna krymsko-kongijska",
-        "zespół Wolffa-Parkinsona-White’a",
-        "zaburzenia obsesyjno-kompulsyjne"
+        "aby wyleczyć wrzodziejące zapalenie jelita grubego",
+        "aby usunąć zakażenie grzybicze",
+        "aby wyrównać niedobór żelaza"
       ]
     },
     {
       "id": "6f15f484153a",
       "category": "chemia",
       "level": "easy",
-      "prompt": "Lek bizmut — na jaką chorobę się go stosuje?",
-      "correct": "choroba bakteryjna",
+      "prompt": "Przeciwko której bakterii stosuje się związki bizmutu jako składnik terapii skojarzonej zakażenia żołądka?",
+      "correct": "Helicobacter pylori",
       "wrong": [
-        "rak trzustki",
-        "kandydoza pochwy",
-        "zawał"
+        "Clostridium tetani",
+        "Mycobacterium tuberculosis",
+        "Vibrio cholerae"
       ]
     },
     {
@@ -1906,12 +1907,12 @@ module GameRoomContent
       "id": "763095034a68",
       "category": "chemia",
       "level": "easy",
-      "prompt": "Lek kokaina — na jaką chorobę się go stosuje?",
-      "correct": "kaszel",
+      "prompt": "Jakie zastosowanie medyczne ma roztwór chlorowodorku kokainy dopuszczony przez amerykańską FDA?",
+      "correct": "miejscowe znieczulenie błony śluzowej nosa podczas zabiegów",
       "wrong": [
-        "niedokrwistość",
-        "Padaczka skroniowa",
-        "zgaga"
+        "leczenie przewlekłego kaszlu",
+        "obniżanie cholesterolu",
+        "zwalczanie pasożytów jelitowych"
       ]
     },
     {
@@ -1930,12 +1931,12 @@ module GameRoomContent
       "id": "24117e50f35b",
       "category": "chemia",
       "level": "easy",
-      "prompt": "Lek lit — na jaką chorobę się go stosuje?",
-      "correct": "zaburzenia schizoafektywne",
+      "prompt": "W leczeniu której z wymienionych chorób psychicznych stosuje się sole litu jako stabilizatory nastroju?",
+      "correct": "choroba afektywna dwubiegunowa",
       "wrong": [
-        "pelagra",
-        "zaparcie",
-        "krzywica"
+        "klaustrofobia",
+        "anoreksja",
+        "demencja naczyniowa"
       ]
     },
     {
@@ -1954,12 +1955,12 @@ module GameRoomContent
       "id": "e1f1f004a68e",
       "category": "chemia",
       "level": "easy",
-      "prompt": "Lek morfina — na jaką chorobę się go stosuje?",
-      "correct": "fibromialgia",
+      "prompt": "W jakim celu stosuje się morfinę?",
+      "correct": "łagodzenie silnego bólu",
       "wrong": [
-        "Zespół Klinefeltera",
-        "zapalenie",
-        "ból głowy"
+        "leczenie grzybicy skóry",
+        "zwalczanie pasożytów jelitowych",
+        "wyrównanie niedoboru żelaza"
       ]
     },
     {
@@ -2026,7 +2027,7 @@ module GameRoomContent
       "id": "2e927a9f7021",
       "category": "chemia",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Linus Pauling?",
+      "prompt": "Którego z wymienionych państw był obywatelem Linus Pauling?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Rzesza Niemiecka",
@@ -2122,7 +2123,7 @@ module GameRoomContent
       "id": "b5ee548902fa",
       "category": "chemia",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Louis Pasteur?",
+      "prompt": "Którego z wymienionych państw był obywatelem Louis Pasteur?",
       "correct": "Francja",
       "wrong": [
         "Cesarstwo Austrii",
@@ -2458,7 +2459,7 @@ module GameRoomContent
       "id": "5ca204e9cd92",
       "category": "chemia",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Nils Gustaf Dalén?",
+      "prompt": "Którego z wymienionych państw był obywatelem Nils Gustaf Dalén?",
       "correct": "Szwecja",
       "wrong": [
         "Rzesza Niemiecka",
@@ -2650,7 +2651,7 @@ module GameRoomContent
       "id": "37cf1a280523",
       "category": "chemia",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Pierre Curie?",
+      "prompt": "Którego z wymienionych państw był obywatelem Pierre Curie?",
       "correct": "Francja",
       "wrong": [
         "Wielkie Księstwo Hesji",
@@ -10102,7 +10103,7 @@ module GameRoomContent
       "id": "ba584660f639",
       "category": "chemia",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Robert Bunsen?",
+      "prompt": "Którego z wymienionych państw był poddanym Robert Bunsen?",
       "correct": "Królestwo Prus",
       "wrong": [
         "Japonia",
@@ -10210,7 +10211,7 @@ module GameRoomContent
       "id": "79ecaf675c71",
       "category": "chemia",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Svante Arrhenius?",
+      "prompt": "Którego z wymienionych państw był obywatelem Svante Arrhenius?",
       "correct": "Szwecja",
       "wrong": [
         "Królestwo Bawarii",
@@ -10270,7 +10271,7 @@ module GameRoomContent
       "id": "d928203d8001",
       "category": "chemia",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Tu Youyou?",
+      "prompt": "Którego z wymienionych państw jest lub była obywatelką Tu Youyou?",
       "correct": "Chińska Republika Ludowa",
       "wrong": [
         "Zjednoczone Królestwo Włoch",
@@ -10306,7 +10307,7 @@ module GameRoomContent
       "id": "2973996bf5d8",
       "category": "chemia",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Victor Grignard?",
+      "prompt": "Którego z wymienionych państw był obywatelem Victor Grignard?",
       "correct": "Francja",
       "wrong": [
         "Cesarstwo Niemieckie",
@@ -10366,7 +10367,7 @@ module GameRoomContent
       "id": "f484513e5e91",
       "category": "chemia",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Walther Bothe?",
+      "prompt": "Którego z wymienionych państw był obywatelem Walther Bothe?",
       "correct": "Niemcy",
       "wrong": [
         "Chińska Republika Ludowa",
@@ -10474,7 +10475,7 @@ module GameRoomContent
       "id": "c6b23bc46f87",
       "category": "chemia",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie William Henry Bragg?",
+      "prompt": "Którego z wymienionych państw był obywatelem William Henry Bragg?",
       "correct": "Wielka Brytania",
       "wrong": [
         "Hiszpania",
@@ -10582,7 +10583,7 @@ module GameRoomContent
       "id": "1968256c8093",
       "category": "chemia",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie William Ramsay?",
+      "prompt": "Którego z wymienionych państw był poddanym William Ramsay?",
       "correct": "Zjednoczone Królestwo Wielkiej Brytanii i Irlandii",
       "wrong": [
         "Królestwo Bawarii",
@@ -10834,7 +10835,7 @@ module GameRoomContent
       "id": "e5d7715c8f90",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Aaron Ciechanover?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Aaron Ciechanover?",
       "correct": "Izrael",
       "wrong": [
         "Święte Cesarstwo Rzymskie",
@@ -10882,7 +10883,7 @@ module GameRoomContent
       "id": "5378653c7d61",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Aaron Klug?",
+      "prompt": "Którego z wymienionych państw był obywatelem Aaron Klug?",
       "correct": "Wielka Brytania",
       "wrong": [
         "Chiny",
@@ -10930,7 +10931,7 @@ module GameRoomContent
       "id": "4b0ff62872c7",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Adolf Butenandt?",
+      "prompt": "Którego z wymienionych państw był obywatelem Adolf Butenandt?",
       "correct": "Niemcy",
       "wrong": [
         "Japonia",
@@ -10966,7 +10967,7 @@ module GameRoomContent
       "id": "8c58e25e145c",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Adolf Otto Reinhold Windaus?",
+      "prompt": "Którego z wymienionych państw był obywatelem Adolf Otto Reinhold Windaus?",
       "correct": "Niemcy",
       "wrong": [
         "Królestwo Hanoweru",
@@ -11026,7 +11027,7 @@ module GameRoomContent
       "id": "4ad637a7058d",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Akira Suzuki?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Akira Suzuki?",
       "correct": "Japonia",
       "wrong": [
         "Królestwo Wirtembergii",
@@ -11074,7 +11075,7 @@ module GameRoomContent
       "id": "b731807e80c3",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Akira Yoshino?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Akira Yoshino?",
       "correct": "Japonia",
       "wrong": [
         "Elektorat Hesji",
@@ -11098,7 +11099,7 @@ module GameRoomContent
       "id": "949acbf512e0",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Alan Heeger?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Alan Heeger?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Australia",
@@ -11158,7 +11159,7 @@ module GameRoomContent
       "id": "6c0195cf7051",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Albrecht Kossel?",
+      "prompt": "Którego z wymienionych państw był obywatelem Albrecht Kossel?",
       "correct": "Niemcy",
       "wrong": [
         "Wielka Brytania",
@@ -11230,7 +11231,7 @@ module GameRoomContent
       "id": "d9b91c30bf9f",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Aleksandr Oparin?",
+      "prompt": "Którego z wymienionych państw był obywatelem Aleksandr Oparin?",
       "correct": "Związek Socjalistycznych Republik Radzieckich",
       "wrong": [
         "Wielka Brytania",
@@ -11266,7 +11267,7 @@ module GameRoomContent
       "id": "c69e374c047a",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Alexander R. Todd?",
+      "prompt": "Którego z wymienionych państw był obywatelem Alexander R. Todd?",
       "correct": "Wielka Brytania",
       "wrong": [
         "Argentyna",
@@ -11302,7 +11303,7 @@ module GameRoomContent
       "id": "7e0f6f0db4d9",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Alfred Day Hershey?",
+      "prompt": "Którego z wymienionych państw był obywatelem Alfred Day Hershey?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Elektorat Hesji",
@@ -11458,7 +11459,7 @@ module GameRoomContent
       "id": "3dab006cd38d",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Arne Tiselius?",
+      "prompt": "Którego z wymienionych państw był obywatelem Arne Tiselius?",
       "correct": "Szwecja",
       "wrong": [
         "Zjednoczone Królestwo Włoch",
@@ -11542,7 +11543,7 @@ module GameRoomContent
       "id": "119c58cfe861",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Arthur Harden?",
+      "prompt": "Którego z wymienionych państw był obywatelem Arthur Harden?",
       "correct": "Wielka Brytania",
       "wrong": [
         "Japonia",
@@ -11578,7 +11579,7 @@ module GameRoomContent
       "id": "37ada83c1f40",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Arthur Kornberg?",
+      "prompt": "Którego z wymienionych państw był obywatelem Arthur Kornberg?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Królestwo Bawarii",
@@ -11662,7 +11663,7 @@ module GameRoomContent
       "id": "71a3d4862ff7",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie August Kekulé?",
+      "prompt": "Którego z wymienionych państw był poddanym August Kekulé?",
       "correct": "Królestwo Prus",
       "wrong": [
         "Australia",
@@ -11734,7 +11735,7 @@ module GameRoomContent
       "id": "7bc00d0c1d0c",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Barry Sharpless?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Barry Sharpless?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Cesarstwo Niemieckie",
@@ -11770,7 +11771,7 @@ module GameRoomContent
       "id": "6088b1a8bd59",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Ben Feringa?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Ben Feringa?",
       "correct": "Holandia",
       "wrong": [
         "Argentyna",
@@ -11866,7 +11867,7 @@ module GameRoomContent
       "id": "2f67aafa7c17",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Bernardo Houssay?",
+      "prompt": "Którego z wymienionych państw był obywatelem Bernardo Houssay?",
       "correct": "Argentyna",
       "wrong": [
         "Czechosłowacja",
@@ -11914,7 +11915,7 @@ module GameRoomContent
       "id": "42db95898bb0",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Brian Kobilka?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Brian Kobilka?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Chińska Republika Ludowa",
@@ -11974,7 +11975,7 @@ module GameRoomContent
       "id": "b6822a91b8cd",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Carl Bosch?",
+      "prompt": "Którego z wymienionych państw był obywatelem Carl Bosch?",
       "correct": "Rzesza Niemiecka",
       "wrong": [
         "Francja",
@@ -12034,7 +12035,7 @@ module GameRoomContent
       "id": "ee46adc6e731",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Carolyn R. Bertozzi?",
+      "prompt": "Którego z wymienionych państw jest lub była obywatelką Carolyn R. Bertozzi?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Zjednoczone Królestwo Włoch",
@@ -12070,7 +12071,7 @@ module GameRoomContent
       "id": "6ce4e32a0a1b",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Charles Goodyear?",
+      "prompt": "Którego z wymienionych państw był obywatelem Charles Goodyear?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Norwegia",
@@ -12094,7 +12095,7 @@ module GameRoomContent
       "id": "2e3805512382",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Christian Boehmer Anfinsen?",
+      "prompt": "Którego z wymienionych państw był obywatelem Christian Boehmer Anfinsen?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Węgry",
@@ -12154,7 +12155,7 @@ module GameRoomContent
       "id": "d69026729dea",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Christian de Duve?",
+      "prompt": "Którego z wymienionych państw był obywatelem Christian de Duve?",
       "correct": "Belgia",
       "wrong": [
         "Królestwo Wirtembergii",
@@ -12178,7 +12179,7 @@ module GameRoomContent
       "id": "bd101ae302ca",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Christiane Nüsslein-Volhard?",
+      "prompt": "Którego z wymienionych państw jest lub była obywatelką Christiane Nüsslein-Volhard?",
       "correct": "Niemcy",
       "wrong": [
         "Królestwo Saksonii",
@@ -12214,7 +12215,7 @@ module GameRoomContent
       "id": "52d8f0d99c0a",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Cyril Hinshelwood?",
+      "prompt": "Którego z wymienionych państw był obywatelem Cyril Hinshelwood?",
       "correct": "Wielka Brytania",
       "wrong": [
         "Izrael",
@@ -12298,7 +12299,7 @@ module GameRoomContent
       "id": "d70eb9a9c1cf",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Demis Hassabis?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Demis Hassabis?",
       "correct": "Wielka Brytania",
       "wrong": [
         "Holandia",
@@ -12322,7 +12323,7 @@ module GameRoomContent
       "id": "cf7be92f6c2d",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Derek Barton?",
+      "prompt": "Którego z wymienionych państw był obywatelem Derek Barton?",
       "correct": "Wielka Brytania",
       "wrong": [
         "Szwecja",
@@ -12370,7 +12371,7 @@ module GameRoomContent
       "id": "cb888d9d23bb",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Edward Adelbert Doisy?",
+      "prompt": "Którego z wymienionych państw był obywatelem Edward Adelbert Doisy?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Królestwo Saksonii",
@@ -12418,7 +12419,7 @@ module GameRoomContent
       "id": "da97edc29103",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Edward Calvin Kendall?",
+      "prompt": "Którego z wymienionych państw był obywatelem Edward Calvin Kendall?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Rosja",
@@ -12478,7 +12479,7 @@ module GameRoomContent
       "id": "5246f56c1351",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Elias James Corey?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Elias James Corey?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Rzesza Niemiecka",
@@ -12538,7 +12539,7 @@ module GameRoomContent
       "id": "52cdc3902ed1",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Eric Betzig?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Eric Betzig?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Królestwo Danii",
@@ -12586,7 +12587,7 @@ module GameRoomContent
       "id": "671296067788",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Ernst Fischer?",
+      "prompt": "Którego z wymienionych państw był obywatelem Ernst Fischer?",
       "correct": "Niemcy",
       "wrong": [
         "Cesarstwo Niemieckie",
@@ -12670,7 +12671,7 @@ module GameRoomContent
       "id": "4709b19555e0",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Frank Macfarlane Burnet?",
+      "prompt": "Którego z wymienionych państw był obywatelem Frank Macfarlane Burnet?",
       "correct": "Australia",
       "wrong": [
         "Norwegia",
@@ -12706,7 +12707,7 @@ module GameRoomContent
       "id": "cbd3fb40c425",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Frank Sherwood Rowland?",
+      "prompt": "Którego z wymienionych państw był obywatelem Frank Sherwood Rowland?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Niemcy",
@@ -12790,7 +12791,7 @@ module GameRoomContent
       "id": "b35eba3bb6b1",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Frederick Hopkins?",
+      "prompt": "Którego z wymienionych państw był obywatelem Frederick Hopkins?",
       "correct": "Wielka Brytania",
       "wrong": [
         "Królestwo Wirtembergii",
@@ -12850,7 +12851,7 @@ module GameRoomContent
       "id": "ac3d64205746",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Friedrich Bergius?",
+      "prompt": "Którego z wymienionych państw był obywatelem Friedrich Bergius?",
       "correct": "Niemcy",
       "wrong": [
         "Brazylia",
@@ -12970,7 +12971,7 @@ module GameRoomContent
       "id": "a0bd123cd7a4",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Frits Zernike?",
+      "prompt": "Którego z wymienionych państw był obywatelem Frits Zernike?",
       "correct": "Holandia",
       "wrong": [
         "Czechosłowacja",
@@ -13078,7 +13079,7 @@ module GameRoomContent
       "id": "9551372dbeb2",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Georg Wittig?",
+      "prompt": "Którego z wymienionych państw był obywatelem Georg Wittig?",
       "correct": "Niemcy",
       "wrong": [
         "Stany Zjednoczone",
@@ -13138,7 +13139,7 @@ module GameRoomContent
       "id": "68d9821912af",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie George Porter?",
+      "prompt": "Którego z wymienionych państw był obywatelem George Porter?",
       "correct": "Wielka Brytania",
       "wrong": [
         "Wielkie Księstwo Oldenburga",
@@ -13162,7 +13163,7 @@ module GameRoomContent
       "id": "a46629dfe8dc",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie George Wald?",
+      "prompt": "Którego z wymienionych państw był obywatelem George Wald?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Wielka Brytania",
@@ -13198,7 +13199,7 @@ module GameRoomContent
       "id": "d5e16140bc62",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie George Washington Carver?",
+      "prompt": "Którego z wymienionych państw był obywatelem George Washington Carver?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Szwecja",
@@ -13234,7 +13235,7 @@ module GameRoomContent
       "id": "c156340f66a0",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Gerald Edelman?",
+      "prompt": "Którego z wymienionych państw był obywatelem Gerald Edelman?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Australia",
@@ -13294,7 +13295,7 @@ module GameRoomContent
       "id": "dba27c14da4f",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Gerhard Domagk?",
+      "prompt": "Którego z wymienionych państw był obywatelem Gerhard Domagk?",
       "correct": "Niemcy",
       "wrong": [
         "Imperium Rosyjskie",
@@ -13318,7 +13319,7 @@ module GameRoomContent
       "id": "c2326acb7783",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Gerhard Ertl?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Gerhard Ertl?",
       "correct": "Niemcy",
       "wrong": [
         "Saksonia-Weimar-Eisenach",
@@ -13366,7 +13367,7 @@ module GameRoomContent
       "id": "324a0d775664",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Gilbert Newton Lewis?",
+      "prompt": "Którego z wymienionych państw był obywatelem Gilbert Newton Lewis?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Królestwo Hanoweru",
@@ -13474,7 +13475,7 @@ module GameRoomContent
       "id": "880400b0ed9e",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Gordon E. Moore?",
+      "prompt": "Którego z wymienionych państw był obywatelem Gordon E. Moore?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Francja",
@@ -13654,7 +13655,7 @@ module GameRoomContent
       "id": "5e43df5a4de6",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Harold Kroto?",
+      "prompt": "Którego z wymienionych państw był obywatelem Harold Kroto?",
       "correct": "Wielka Brytania",
       "wrong": [
         "Węgry",
@@ -13726,7 +13727,7 @@ module GameRoomContent
       "id": "93222ab954dc",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Henri Louis Le Chatelier?",
+      "prompt": "Którego z wymienionych państw był obywatelem Henri Louis Le Chatelier?",
       "correct": "Francja",
       "wrong": [
         "Szwecja",
@@ -13750,7 +13751,7 @@ module GameRoomContent
       "id": "6c40018827ac",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Henrik Dam?",
+      "prompt": "Którego z wymienionych państw był poddanym Henrik Dam?",
       "correct": "Królestwo Danii",
       "wrong": [
         "Szwecja",
@@ -13786,7 +13787,7 @@ module GameRoomContent
       "id": "4859a6ce44ff",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Henry Moseley?",
+      "prompt": "Którego z wymienionych państw był poddanym Henry Moseley?",
       "correct": "Zjednoczone Królestwo Wielkiej Brytanii i Irlandii",
       "wrong": [
         "Niemcy",
@@ -13798,7 +13799,7 @@ module GameRoomContent
       "id": "98cc4a9b47a6",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Henry Taube?",
+      "prompt": "Którego z wymienionych państw był obywatelem Henry Taube?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Królestwo Wielkiej Brytanii",
@@ -13882,7 +13883,7 @@ module GameRoomContent
       "id": "5d72f14ece11",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Hideki Shirakawa?",
+      "prompt": "Którego z wymienionych państw był obywatelem Hideki Shirakawa?",
       "correct": "Japonia",
       "wrong": [
         "Hiszpania",
@@ -13966,7 +13967,7 @@ module GameRoomContent
       "id": "10665dfc0351",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Irwin Rose?",
+      "prompt": "Którego z wymienionych państw był obywatelem Irwin Rose?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Królestwo Saksonii",
@@ -13978,7 +13979,7 @@ module GameRoomContent
       "id": "ecf5aa6c145a",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie J. Michael Bishop?",
+      "prompt": "Którego z wymienionych państw był obywatelem J. Michael Bishop?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Królestwo Bawarii",
@@ -13990,7 +13991,7 @@ module GameRoomContent
       "id": "f2358cbbf398",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Jakow Borysowicz Zeldowicz?",
+      "prompt": "Którego z wymienionych państw był obywatelem Jakow Borysowicz Zeldowicz?",
       "correct": "Związek Socjalistycznych Republik Radzieckich",
       "wrong": [
         "Stany Zjednoczone",
@@ -14098,7 +14099,7 @@ module GameRoomContent
       "id": "bf5c863841a0",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie James Dewar?",
+      "prompt": "Którego z wymienionych państw był poddanym James Dewar?",
       "correct": "Zjednoczone Królestwo Wielkiej Brytanii i Irlandii",
       "wrong": [
         "Rosja",
@@ -14134,7 +14135,7 @@ module GameRoomContent
       "id": "4dccd61ca930",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie James Lovelock?",
+      "prompt": "Którego z wymienionych państw był obywatelem James Lovelock?",
       "correct": "Wielka Brytania",
       "wrong": [
         "Norwegia",
@@ -14146,7 +14147,7 @@ module GameRoomContent
       "id": "56893470e7b1",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie James W. Black?",
+      "prompt": "Którego z wymienionych państw był obywatelem James W. Black?",
       "correct": "Wielka Brytania",
       "wrong": [
         "Imperium Rosyjskie",
@@ -14194,7 +14195,7 @@ module GameRoomContent
       "id": "9ee1d217c766",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Jaroslav Heyrovský?",
+      "prompt": "Którego z wymienionych państw był obywatelem Jaroslav Heyrovský?",
       "correct": "Czechosłowacja",
       "wrong": [
         "Królestwo Danii",
@@ -14242,7 +14243,7 @@ module GameRoomContent
       "id": "8d4ba73d6666",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Jean Dausset?",
+      "prompt": "Którego z wymienionych państw był obywatelem Jean Dausset?",
       "correct": "Francja",
       "wrong": [
         "Rosja",
@@ -14266,7 +14267,7 @@ module GameRoomContent
       "id": "207894aa6a2b",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Jean-Marie Lehn?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Jean-Marie Lehn?",
       "correct": "Francja",
       "wrong": [
         "Węgry",
@@ -14290,7 +14291,7 @@ module GameRoomContent
       "id": "61d21c8bdccf",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Jean-Pierre Sauvage?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Jean-Pierre Sauvage?",
       "correct": "Francja",
       "wrong": [
         "Stany Zjednoczone",
@@ -14326,7 +14327,7 @@ module GameRoomContent
       "id": "f69756f1375c",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Jens Skou?",
+      "prompt": "Którego z wymienionych państw był poddanym Jens Skou?",
       "correct": "Królestwo Danii",
       "wrong": [
         "Królestwo Wirtembergii",
@@ -14350,7 +14351,7 @@ module GameRoomContent
       "id": "e22d113b4cbc",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Jerome Karle?",
+      "prompt": "Którego z wymienionych państw był obywatelem Jerome Karle?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Nowa Zelandia",
@@ -14422,7 +14423,7 @@ module GameRoomContent
       "id": "f9584c97cc98",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Johannes Fibiger?",
+      "prompt": "Którego z wymienionych państw był poddanym Johannes Fibiger?",
       "correct": "Królestwo Danii",
       "wrong": [
         "Szkocja",
@@ -14458,7 +14459,7 @@ module GameRoomContent
       "id": "7988ad8c3797",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie John Ernest Walker?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem John Ernest Walker?",
       "correct": "Wielka Brytania",
       "wrong": [
         "Norwegia",
@@ -14494,7 +14495,7 @@ module GameRoomContent
       "id": "0d5763c8f62c",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie John Fenn?",
+      "prompt": "Którego z wymienionych państw był obywatelem John Fenn?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Norwegia",
@@ -14542,7 +14543,7 @@ module GameRoomContent
       "id": "02e8e49beb4b",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie John Franklin Enders?",
+      "prompt": "Którego z wymienionych państw był obywatelem John Franklin Enders?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Elektorat Hesji",
@@ -14626,7 +14627,7 @@ module GameRoomContent
       "id": "532c5c907160",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie John Kendrew?",
+      "prompt": "Którego z wymienionych państw był obywatelem John Kendrew?",
       "correct": "Wielka Brytania",
       "wrong": [
         "Argentyna",
@@ -14698,7 +14699,7 @@ module GameRoomContent
       "id": "152a3a9ea78f",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie John Pople?",
+      "prompt": "Którego z wymienionych państw był obywatelem John Pople?",
       "correct": "Wielka Brytania",
       "wrong": [
         "Rzeczpospolita Obojga Narodów",
@@ -14710,7 +14711,7 @@ module GameRoomContent
       "id": "597679726583",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie John Sulston?",
+      "prompt": "Którego z wymienionych państw był obywatelem John Sulston?",
       "correct": "Wielka Brytania",
       "wrong": [
         "Republika Zjednoczonych Prowincji",
@@ -14746,7 +14747,7 @@ module GameRoomContent
       "id": "fc368401d96f",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie John Warcup Cornforth?",
+      "prompt": "Którego z wymienionych państw był obywatelem John Warcup Cornforth?",
       "correct": "Australia",
       "wrong": [
         "Królestwo Hanoweru",
@@ -14794,7 +14795,7 @@ module GameRoomContent
       "id": "9a5494f62cc5",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Joseph Black?",
+      "prompt": "Którego z wymienionych państw był poddanym Joseph Black?",
       "correct": "Królestwo Wielkiej Brytanii",
       "wrong": [
         "Japonia",
@@ -14890,7 +14891,7 @@ module GameRoomContent
       "id": "15baaccf5518",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Josiah Willard Gibbs?",
+      "prompt": "Którego z wymienionych państw był obywatelem Josiah Willard Gibbs?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Japonia",
@@ -14926,7 +14927,7 @@ module GameRoomContent
       "id": "de8a7f25e97f",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Julius Robert von Mayer?",
+      "prompt": "Którego z wymienionych państw był poddanym Julius Robert von Mayer?",
       "correct": "Królestwo Wirtembergii",
       "wrong": [
         "Królestwo Wielkiej Brytanii",
@@ -14974,7 +14975,7 @@ module GameRoomContent
       "id": "21b263839aec",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Karl Ziegler?",
+      "prompt": "Którego z wymienionych państw był obywatelem Karl Ziegler?",
       "correct": "Niemcy",
       "wrong": [
         "Królestwo Saksonii",
@@ -15166,7 +15167,7 @@ module GameRoomContent
       "id": "995bf4d3dc37",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Kurt Alder?",
+      "prompt": "Którego z wymienionych państw był obywatelem Kurt Alder?",
       "correct": "Niemcy",
       "wrong": [
         "Rosja",
@@ -15214,7 +15215,7 @@ module GameRoomContent
       "id": "5d5e174c6d21",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Kurt Wüthrich?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Kurt Wüthrich?",
       "correct": "Szwajcaria",
       "wrong": [
         "Austria",
@@ -15238,7 +15239,7 @@ module GameRoomContent
       "id": "92235bd71c1c",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Kōichi Tanaka?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Kōichi Tanaka?",
       "correct": "Japonia",
       "wrong": [
         "Królestwo Bawarii",
@@ -15373,7 +15374,7 @@ module GameRoomContent
       "prompt": "Lek L-glutamina — na jaką chorobę się go stosuje?",
       "correct": "Zespół krótkiego jelita",
       "wrong": [
-        "homoseksualność",
+        "krótkowzroczność",
         "kandydoza pochwy",
         "schizofrenia"
       ]
@@ -15382,24 +15383,24 @@ module GameRoomContent
       "id": "a707edc4e80a",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Lek Psychoterapia poznawczo–behawioralna — na jaką chorobę się go stosuje?",
+      "prompt": "W leczeniu którego z wymienionych problemów zdrowotnych stosuje się psychoterapię poznawczo-behawioralną?",
       "correct": "zaburzenia obsesyjno-kompulsyjne",
       "wrong": [
         "przedawkowanie opioidów",
         "jaskra",
-        "Zaburzenia snu"
+        "osteoporoza"
       ]
     },
     {
       "id": "729d70d8ac0d",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Lek adenozyna — na jaką chorobę się go stosuje?",
-      "correct": "zespół Wolffa-Parkinsona-White’a",
+      "prompt": "Do przerywania którego z wymienionych zaburzeń rytmu serca stosuje się dożylną adenozynę?",
+      "correct": "napadowy częstoskurcz nadkomorowy",
       "wrong": [
-        "fibromialgia",
-        "reumatoidalne zapalenie stawów",
-        "zaburzenia obsesyjno-kompulsyjne"
+        "migotanie komór",
+        "asystolia",
+        "bradykardia zatokowa"
       ]
     },
     {
@@ -15502,12 +15503,12 @@ module GameRoomContent
       "id": "7f82cdc3af36",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Lek tlenek diazotu — na jaką chorobę się go stosuje?",
-      "correct": "zawał",
+      "prompt": "Do czego wykorzystuje się podtlenek azotu w medycynie?",
+      "correct": "łagodzenie bólu i wspomaganie znieczulenia",
       "wrong": [
-        "miastenia",
-        "Gorączka krwotoczna krymsko-kongijska",
-        "łojotokowe zapalenie skóry"
+        "rozpuszczanie zakrzepów",
+        "leczenie zakażeń bakteryjnych",
+        "wyrównywanie niedoboru żelaza"
       ]
     },
     {
@@ -15598,7 +15599,7 @@ module GameRoomContent
       "id": "eacf4facebf8",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Lothar Meyer?",
+      "prompt": "Którego z wymienionych państw był poddanym Lothar Meyer?",
       "correct": "Wielkie Księstwo Oldenburga",
       "wrong": [
         "Republika Zjednoczonych Prowincji",
@@ -15670,7 +15671,7 @@ module GameRoomContent
       "id": "a35f21edfc3e",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie M. Stanley Whittingham?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem M. Stanley Whittingham?",
       "correct": "Wielka Brytania",
       "wrong": [
         "Czechosłowacja",
@@ -15706,7 +15707,7 @@ module GameRoomContent
       "id": "e62cd4df754e",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Manfred Eigen?",
+      "prompt": "Którego z wymienionych państw był obywatelem Manfred Eigen?",
       "correct": "Niemcy",
       "wrong": [
         "Szwecja",
@@ -15802,7 +15803,7 @@ module GameRoomContent
       "id": "c5553ced225d",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Marshall Nirenberg?",
+      "prompt": "Którego z wymienionych państw był obywatelem Marshall Nirenberg?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Hiszpania",
@@ -15838,7 +15839,7 @@ module GameRoomContent
       "id": "8b80fad9b9bf",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Martin Chalfie?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Martin Chalfie?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Szkocja",
@@ -16006,7 +16007,7 @@ module GameRoomContent
       "id": "e1f367129acb",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Michael Smith?",
+      "prompt": "Którego z wymienionych państw był obywatelem Michael Smith?",
       "correct": "Kanada",
       "wrong": [
         "Cesarstwo Austrii",
@@ -16690,7 +16691,7 @@ module GameRoomContent
       "id": "a704c298c0c9",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Odd Hassel?",
+      "prompt": "Którego z wymienionych państw był obywatelem Odd Hassel?",
       "correct": "Norwegia",
       "wrong": [
         "Imperium Rosyjskie",
@@ -16762,7 +16763,7 @@ module GameRoomContent
       "id": "bda9559e059a",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Otto Diels?",
+      "prompt": "Którego z wymienionych państw był obywatelem Otto Diels?",
       "correct": "Niemcy",
       "wrong": [
         "Nowa Zelandia",
@@ -16858,7 +16859,7 @@ module GameRoomContent
       "id": "0331fed4843a",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Otto Wallach?",
+      "prompt": "Którego z wymienionych państw był poddanym Otto Wallach?",
       "correct": "Cesarstwo Niemieckie",
       "wrong": [
         "Rosja",
@@ -16942,7 +16943,7 @@ module GameRoomContent
       "id": "486204dee476",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Paul Boyer?",
+      "prompt": "Którego z wymienionych państw był obywatelem Paul Boyer?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Holandia",
@@ -17014,7 +17015,7 @@ module GameRoomContent
       "id": "c15240739a55",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Paul Flory?",
+      "prompt": "Którego z wymienionych państw był obywatelem Paul Flory?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Czechosłowacja",
@@ -17062,7 +17063,7 @@ module GameRoomContent
       "id": "3c8406d8f1c7",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Paul Hermann Müller?",
+      "prompt": "Którego z wymienionych państw był obywatelem Paul Hermann Müller?",
       "correct": "Szwajcaria",
       "wrong": [
         "Belgia",
@@ -17110,7 +17111,7 @@ module GameRoomContent
       "id": "1c35ad2195cf",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Paul Karrer?",
+      "prompt": "Którego z wymienionych państw był obywatelem Paul Karrer?",
       "correct": "Szwajcaria",
       "wrong": [
         "Holandia",
@@ -17158,7 +17159,7 @@ module GameRoomContent
       "id": "7426aeaa4173",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Paul Langevin?",
+      "prompt": "Którego z wymienionych państw był obywatelem Paul Langevin?",
       "correct": "Francja",
       "wrong": [
         "Cesarstwo Niemieckie",
@@ -17182,7 +17183,7 @@ module GameRoomContent
       "id": "d4658b3627d4",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Paul Lauterbur?",
+      "prompt": "Którego z wymienionych państw był obywatelem Paul Lauterbur?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Brazylia",
@@ -17206,7 +17207,7 @@ module GameRoomContent
       "id": "b77636abf615",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Paul Modrich?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Paul Modrich?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Szwajcaria",
@@ -17230,7 +17231,7 @@ module GameRoomContent
       "id": "e217c3ce2d6e",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Paul Nurse?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Paul Nurse?",
       "correct": "Wielka Brytania",
       "wrong": [
         "Szwajcaria",
@@ -17266,7 +17267,7 @@ module GameRoomContent
       "id": "0441387a109f",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Paul Sabatier?",
+      "prompt": "Którego z wymienionych państw był obywatelem Paul Sabatier?",
       "correct": "Francja",
       "wrong": [
         "Królestwo Prus",
@@ -17326,7 +17327,7 @@ module GameRoomContent
       "id": "86679592966e",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Peter Agre?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Peter Agre?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Cesarstwo Austrii",
@@ -17362,7 +17363,7 @@ module GameRoomContent
       "id": "5861517df218",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Peter D. Mitchell?",
+      "prompt": "Którego z wymienionych państw był obywatelem Peter D. Mitchell?",
       "correct": "Wielka Brytania",
       "wrong": [
         "Chile",
@@ -17410,7 +17411,7 @@ module GameRoomContent
       "id": "ed3d08f5976b",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Raymond Davis?",
+      "prompt": "Którego z wymienionych państw był obywatelem Raymond Davis?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Wielkie Księstwo Hesji",
@@ -17458,7 +17459,7 @@ module GameRoomContent
       "id": "0539e04fb9f2",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Richard Ernst?",
+      "prompt": "Którego z wymienionych państw był obywatelem Richard Ernst?",
       "correct": "Szwajcaria",
       "wrong": [
         "Francja",
@@ -17662,7 +17663,7 @@ module GameRoomContent
       "id": "2e2588af9b16",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Richard Schrock?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Richard Schrock?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Francja",
@@ -17746,7 +17747,7 @@ module GameRoomContent
       "id": "6fc4bca07818",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Richard Zsigmondy?",
+      "prompt": "Którego z wymienionych państw był obywatelem Richard Zsigmondy?",
       "correct": "Austria",
       "wrong": [
         "Japonia",
@@ -17782,7 +17783,7 @@ module GameRoomContent
       "id": "48051a9ad56e",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Robert Bruce Merrifield?",
+      "prompt": "Którego z wymienionych państw był obywatelem Robert Bruce Merrifield?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Imperium Rosyjskie",
@@ -17806,7 +17807,7 @@ module GameRoomContent
       "id": "baddfc03a9d1",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Robert Curl?",
+      "prompt": "Którego z wymienionych państw był obywatelem Robert Curl?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Holandia",
@@ -17818,7 +17819,7 @@ module GameRoomContent
       "id": "e99143c59556",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Robert Furchgott?",
+      "prompt": "Którego z wymienionych państw był obywatelem Robert Furchgott?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Cesarstwo Austrii",
@@ -17854,7 +17855,7 @@ module GameRoomContent
       "id": "5e6a33d49767",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Robert Huber?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Robert Huber?",
       "correct": "Niemcy",
       "wrong": [
         "Królestwo Hanoweru",
@@ -17902,7 +17903,7 @@ module GameRoomContent
       "id": "810c50a77695",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Robert Lefkowitz?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Robert Lefkowitz?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Saksonia-Weimar-Eisenach",
@@ -18010,7 +18011,7 @@ module GameRoomContent
       "id": "9865e5d62014",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Robert William Holley?",
+      "prompt": "Którego z wymienionych państw był obywatelem Robert William Holley?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Rzeczpospolita Obojga Narodów",
@@ -18082,7 +18083,7 @@ module GameRoomContent
       "id": "a47e1e03d696",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Roderick MacKinnon?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Roderick MacKinnon?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Królestwo Danii",
@@ -18190,7 +18191,7 @@ module GameRoomContent
       "id": "822db1ca5f3e",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Ronald George Wreyford Norrish?",
+      "prompt": "Którego z wymienionych państw był obywatelem Ronald George Wreyford Norrish?",
       "correct": "Wielka Brytania",
       "wrong": [
         "Saksonia-Weimar-Eisenach",
@@ -18238,7 +18239,7 @@ module GameRoomContent
       "id": "406214f9cd13",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Ryōji Noyori?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Ryōji Noyori?",
       "correct": "Japonia",
       "wrong": [
         "Królestwo Wirtembergii",
@@ -18286,7 +18287,7 @@ module GameRoomContent
       "id": "580676c0ec3f",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Samuel Hahnemann?",
+      "prompt": "Którego z wymienionych państw był poddanym Samuel Hahnemann?",
       "correct": "Królestwo Prus",
       "wrong": [
         "Święte Cesarstwo Rzymskie",
@@ -18322,7 +18323,7 @@ module GameRoomContent
       "id": "8b0acc7c1590",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Satoshi Ōmura?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Satoshi Ōmura?",
       "correct": "Japonia",
       "wrong": [
         "Rosja",
@@ -18418,7 +18419,7 @@ module GameRoomContent
       "id": "794b2c45b3c9",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Sune Bergström?",
+      "prompt": "Którego z wymienionych państw był obywatelem Sune Bergström?",
       "correct": "Szwecja",
       "wrong": [
         "Cesarstwo Austrii",
@@ -18454,7 +18455,7 @@ module GameRoomContent
       "id": "758813d74c9f",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Susumu Tonegawa?",
+      "prompt": "Którego z wymienionych państw był obywatelem Susumu Tonegawa?",
       "correct": "Japonia",
       "wrong": [
         "Węgry",
@@ -18550,7 +18551,7 @@ module GameRoomContent
       "id": "4bfe3d97e73b",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Theodor Svedberg?",
+      "prompt": "Którego z wymienionych państw był obywatelem Theodor Svedberg?",
       "correct": "Szwecja",
       "wrong": [
         "Wielkie Księstwo Oldenburga",
@@ -18622,7 +18623,7 @@ module GameRoomContent
       "id": "123ea193e5b9",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Theodore William Richards?",
+      "prompt": "Którego z wymienionych państw był obywatelem Theodore William Richards?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Czechosłowacja",
@@ -18646,7 +18647,7 @@ module GameRoomContent
       "id": "afa4d4b57de8",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Thomas Cech?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Thomas Cech?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Szwajcaria",
@@ -18682,7 +18683,7 @@ module GameRoomContent
       "id": "61c2d2cf8ac6",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Thomas Steitz?",
+      "prompt": "Którego z wymienionych państw był obywatelem Thomas Steitz?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Izrael",
@@ -18730,7 +18731,7 @@ module GameRoomContent
       "id": "7d4d00018979",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Tomas Lindahl?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Tomas Lindahl?",
       "correct": "Szwecja",
       "wrong": [
         "Hiszpania",
@@ -18754,7 +18755,7 @@ module GameRoomContent
       "id": "53a466ca3694",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Ulf von Euler?",
+      "prompt": "Którego z wymienionych państw był obywatelem Ulf von Euler?",
       "correct": "Szwecja",
       "wrong": [
         "Królestwo Hanoweru",
@@ -18790,7 +18791,7 @@ module GameRoomContent
       "id": "ed6aa15bb056",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Vincent du Vigneaud?",
+      "prompt": "Którego z wymienionych państw był obywatelem Vincent du Vigneaud?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Święte Cesarstwo Rzymskie",
@@ -18886,7 +18887,7 @@ module GameRoomContent
       "id": "6c7f695b2282",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Walter Gilbert?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Walter Gilbert?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Związek Socjalistycznych Republik Radzieckich",
@@ -19006,7 +19007,7 @@ module GameRoomContent
       "id": "62aec1beecfc",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Willard Libby?",
+      "prompt": "Którego z wymienionych państw był obywatelem Willard Libby?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Holandia",
@@ -19042,7 +19043,7 @@ module GameRoomContent
       "id": "9e57cbbe425c",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie William Crookes?",
+      "prompt": "Którego z wymienionych państw był poddanym William Crookes?",
       "correct": "Zjednoczone Królestwo Wielkiej Brytanii i Irlandii",
       "wrong": [
         "Chińska Republika Ludowa",
@@ -19102,7 +19103,7 @@ module GameRoomContent
       "id": "dffb441fde13",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie William Howard Stein?",
+      "prompt": "Którego z wymienionych państw był obywatelem William Howard Stein?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Austria",
@@ -19138,7 +19139,7 @@ module GameRoomContent
       "id": "2cac01dbb517",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie William Hyde Wollaston?",
+      "prompt": "Którego z wymienionych państw był poddanym William Hyde Wollaston?",
       "correct": "Zjednoczone Królestwo Wielkiej Brytanii i Irlandii",
       "wrong": [
         "Królestwo Hanoweru",
@@ -19174,7 +19175,7 @@ module GameRoomContent
       "id": "0466f568c300",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie William Knowles?",
+      "prompt": "Którego z wymienionych państw był obywatelem William Knowles?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Wielka Brytania",
@@ -19234,7 +19235,7 @@ module GameRoomContent
       "id": "bc904e2b5844",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie William Moerner?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem William Moerner?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Chińska Republika Ludowa",
@@ -19258,7 +19259,7 @@ module GameRoomContent
       "id": "2c9c6a6955a5",
       "category": "chemia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Yves Chauvin?",
+      "prompt": "Którego z wymienionych państw był obywatelem Yves Chauvin?",
       "correct": "Francja",
       "wrong": [
         "Czechosłowacja",
@@ -19750,7 +19751,7 @@ module GameRoomContent
       "id": "e6bfb4616fdd",
       "category": "chemia",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Benjamin List?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Benjamin List?",
       "correct": "Niemcy",
       "wrong": [
         "Czechosłowacja",
@@ -20218,7 +20219,7 @@ module GameRoomContent
       "id": "be93a40362dc",
       "category": "chemia",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Geoffrey Wilkinson?",
+      "prompt": "Którego z wymienionych państw był obywatelem Geoffrey Wilkinson?",
       "correct": "Wielka Brytania",
       "wrong": [
         "Izrael",
@@ -20314,7 +20315,7 @@ module GameRoomContent
       "id": "e85500764905",
       "category": "chemia",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Georges J. F. Köhler?",
+      "prompt": "Którego z wymienionych państw był obywatelem Georges J. F. Köhler?",
       "correct": "Niemcy",
       "wrong": [
         "Cesarstwo Niemieckie",
@@ -20410,7 +20411,7 @@ module GameRoomContent
       "id": "bfa3cbc01c0c",
       "category": "chemia",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Gregory P. Winter?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Gregory P. Winter?",
       "correct": "Wielka Brytania",
       "wrong": [
         "Szwecja",
@@ -20602,7 +20603,7 @@ module GameRoomContent
       "id": "481b3936793a",
       "category": "chemia",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Jacques Dubochet?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Jacques Dubochet?",
       "correct": "Szwajcaria",
       "wrong": [
         "Elektorat Hesji",
@@ -20926,12 +20927,12 @@ module GameRoomContent
       "id": "54b2fb6dd628",
       "category": "chemia",
       "level": "hard",
-      "prompt": "Lek Fenacetyna — na jaką chorobę się go stosuje?",
-      "correct": "ból",
+      "prompt": "W jakim celu dawniej stosowano fenacetynę, później wycofaną z wielu rynków?",
+      "correct": "łagodzenie bólu i obniżanie gorączki",
       "wrong": [
-        "zgaga",
-        "glistnica",
-        "dyspepsja"
+        "leczenie grzybicy",
+        "usuwanie pasożytów jelitowych",
+        "obniżanie cholesterolu"
       ]
     },
     {
@@ -20950,12 +20951,12 @@ module GameRoomContent
       "id": "bb0804074f96",
       "category": "chemia",
       "level": "hard",
-      "prompt": "Lek Metoklopramid — na jaką chorobę się go stosuje?",
-      "correct": "dyspepsja",
+      "prompt": "Które objawy łagodzi metoklopramid?",
+      "correct": "nudności i wymioty",
       "wrong": [
-        "choroba niedokrwienna serca",
-        "zaburzenia schizoafektywne",
-        "stwardnienie rozsiane"
+        "utrata słuchu i szumy uszne",
+        "suchość skóry i pękanie paznokci",
+        "krótkowzroczność i astygmatyzm"
       ]
     },
     {
@@ -20998,7 +20999,7 @@ module GameRoomContent
       "id": "bc40c6288ac9",
       "category": "chemia",
       "level": "hard",
-      "prompt": "Lek Pomostowanie aortalno-wieńcowe — na jaką chorobę się go stosuje?",
+      "prompt": "W leczeniu której choroby wykonuje się pomostowanie aortalno-wieńcowe, czyli operację wszczepienia bypassów?",
       "correct": "choroba niedokrwienna serca",
       "wrong": [
         "nudności",
@@ -21022,12 +21023,12 @@ module GameRoomContent
       "id": "8aae6cfe012c",
       "category": "chemia",
       "level": "hard",
-      "prompt": "Lek Tamoksyfen — na jaką chorobę się go stosuje?",
-      "correct": "rak trzustki",
+      "prompt": "W leczeniu którego z wymienionych nowotworów stosuje się tamoksyfen?",
+      "correct": "hormonozależny rak piersi",
       "wrong": [
-        "zaburzenia obsesyjno-kompulsyjne",
-        "kaszel",
-        "zapalenie stawów"
+        "rak trzustki",
+        "rak jelita grubego",
+        "czerniak"
       ]
     },
     {
@@ -21130,12 +21131,12 @@ module GameRoomContent
       "id": "1519c6441fd1",
       "category": "chemia",
       "level": "hard",
-      "prompt": "Lek benzoesan sodu — na jaką chorobę się go stosuje?",
-      "correct": "ból głowy",
+      "prompt": "Po co podaje się benzoesan sodu z fenylooctanem sodu w niektórych zaburzeniach cyklu mocznikowego?",
+      "correct": "aby obniżyć niebezpiecznie wysokie stężenie amoniaku we krwi",
       "wrong": [
-        "Gorączka krwotoczna krymsko-kongijska",
-        "zapalenie ucha zewnętrznego",
-        "gorączka krwotoczna Ebola"
+        "aby podnieść stężenie amoniaku we krwi",
+        "aby rozpuścić kamienie żółciowe",
+        "aby usunąć zakażenie wirusowe"
       ]
     },
     {
@@ -21166,12 +21167,12 @@ module GameRoomContent
       "id": "aac0697d592a",
       "category": "chemia",
       "level": "hard",
-      "prompt": "Lek buspiron — na jaką chorobę się go stosuje?",
-      "correct": "niepełnosprawność intelektualna",
+      "prompt": "W leczeniu których zaburzeń stosuje się buspiron?",
+      "correct": "zaburzenia lękowe",
       "wrong": [
-        "zespół Wolffa-Parkinsona-White’a",
-        "zaburzenia obsesyjno-kompulsyjne",
-        "padaczka"
+        "głuchota wrodzona",
+        "kamica nerkowa",
+        "cukrzyca typu 1"
       ]
     },
     {
@@ -21202,12 +21203,12 @@ module GameRoomContent
       "id": "05b3b13f1667",
       "category": "chemia",
       "level": "hard",
-      "prompt": "Lek chlorek cynku — na jaką chorobę się go stosuje?",
-      "correct": "przeziębienie",
+      "prompt": "Dlaczego chlorek cynku dodaje się do roztworów do żywienia pozajelitowego?",
+      "correct": "aby zapobiegać niedoborowi cynku",
       "wrong": [
-        "świerzb",
-        "choroba wrzodowa",
-        "zaparcie"
+        "aby leczyć zakażenie grypowe",
+        "aby obniżać poziom tlenu we krwi",
+        "aby rozpuścić kamienie żółciowe"
       ]
     },
     {
@@ -21226,7 +21227,7 @@ module GameRoomContent
       "id": "43196e358538",
       "category": "chemia",
       "level": "hard",
-      "prompt": "Lek chlorpromazyna — na jaką chorobę się go stosuje?",
+      "prompt": "W leczeniu której z poniższych chorób zakaźnych chlorpromazyna bywa stosowana pomocniczo?",
       "correct": "tężec",
       "wrong": [
         "zaburzenia depresyjne",
@@ -21238,12 +21239,12 @@ module GameRoomContent
       "id": "14e8dc36e899",
       "category": "chemia",
       "level": "hard",
-      "prompt": "Lek defibrylacja — na jaką chorobę się go stosuje?",
+      "prompt": "Które z wymienionych zaburzeń rytmu serca wymaga defibrylacji?",
       "correct": "migotanie komór",
       "wrong": [
-        "choroba bakteryjna",
-        "homoseksualność",
-        "niepłodność"
+        "bradykardia zatokowa bez objawów",
+        "blok przedsionkowo-komorowy pierwszego stopnia",
+        "miarowy rytm zatokowy"
       ]
     },
     {
@@ -21274,12 +21275,12 @@ module GameRoomContent
       "id": "015ecb810616",
       "category": "chemia",
       "level": "hard",
-      "prompt": "Lek disulfiram — na jaką chorobę się go stosuje?",
-      "correct": "Retinopatia barwnikowa",
+      "prompt": "W leczeniu którego uzależnienia może być stosowany disulfiram?",
+      "correct": "uzależnienie od alkoholu",
       "wrong": [
-        "zespół nabytego niedoboru odporności",
-        "kaszel",
-        "cukrzyca"
+        "uzależnienie od nikotyny",
+        "uzależnienie od kofeiny",
+        "uzależnienie od opioidów"
       ]
     },
     {
@@ -21346,12 +21347,12 @@ module GameRoomContent
       "id": "56f39b1afd78",
       "category": "chemia",
       "level": "hard",
-      "prompt": "Lek fototerapia — na jaką chorobę się go stosuje?",
-      "correct": "Zaburzenia snu",
+      "prompt": "Przy jakim problemie lekarz może zalecić terapię jasnym światłem w celu przestawienia zegara biologicznego?",
+      "correct": "zaburzenia rytmu okołodobowego",
       "wrong": [
-        "choroba niedokrwienna serca",
-        "Padaczka skroniowa",
-        "zawał"
+        "złamanie kości udowej",
+        "kamica pęcherzyka żółciowego",
+        "zapalenie wyrostka robaczkowego"
       ]
     },
     {
@@ -21382,24 +21383,24 @@ module GameRoomContent
       "id": "374a15af2e52",
       "category": "chemia",
       "level": "hard",
-      "prompt": "Lek halotan — na jaką chorobę się go stosuje?",
-      "correct": "astma oskrzelowa",
+      "prompt": "Do jakiej grupy środków medycznych należy halotan?",
+      "correct": "wziewne środki znieczulenia ogólnego",
       "wrong": [
-        "dyspepsja",
-        "świerzb",
-        "zakażenie układu moczowego"
+        "antybiotyki przeciwbakteryjne",
+        "leki przeciwgrzybicze",
+        "leki obniżające poziom cholesterolu"
       ]
     },
     {
       "id": "00c83b23d744",
       "category": "chemia",
       "level": "hard",
-      "prompt": "Lek hydromorfon — na jaką chorobę się go stosuje?",
-      "correct": "kaszel",
+      "prompt": "W jakim celu stosuje się hydromorfon?",
+      "correct": "łagodzenie silnego bólu",
       "wrong": [
-        "rak trzustki",
-        "pelagra",
-        "gruźlica"
+        "leczenie grzybicy skóry",
+        "zwalczanie pasożytów jelitowych",
+        "wyrównanie niedoboru żelaza"
       ]
     },
     {
@@ -21646,24 +21647,24 @@ module GameRoomContent
       "id": "47127bace89e",
       "category": "chemia",
       "level": "hard",
-      "prompt": "Lek octan wapnia — na jaką chorobę się go stosuje?",
-      "correct": "osteoporoza",
+      "prompt": "Po co stosuje się octan wapnia u pacjentów ze schyłkową niewydolnością nerek?",
+      "correct": "aby obniżyć zbyt duże stężenie fosforanów we krwi",
       "wrong": [
-        "zgaga",
-        "zespół nabytego niedoboru odporności",
-        "pelagra"
+        "aby usunąć zakażenie wirusowe",
+        "aby rozpuścić kamienie nerkowe",
+        "aby zwiększyć stężenie fosforanów we krwi"
       ]
     },
     {
       "id": "87c1a695e7c0",
       "category": "chemia",
       "level": "hard",
-      "prompt": "Lek oksykodon — na jaką chorobę się go stosuje?",
-      "correct": "fibromialgia",
+      "prompt": "W jakim celu stosuje się oksykodon?",
+      "correct": "łagodzenie silnego bólu",
       "wrong": [
-        "białaczka",
-        "przemijający atak niedokrwienny",
-        "gruźlica"
+        "leczenie grzybicy skóry",
+        "zwalczanie pasożytów jelitowych",
+        "wyrównanie niedoboru żelaza"
       ]
     },
     {
@@ -21778,8 +21779,8 @@ module GameRoomContent
       "id": "3fb4b86e08dc",
       "category": "chemia",
       "level": "hard",
-      "prompt": "Lek remdesiwir — na jaką chorobę się go stosuje?",
-      "correct": "gorączka krwotoczna Ebola",
+      "prompt": "Do leczenia której choroby dopuszczono w Unii Europejskiej remdesiwir, sprzedawany jako Veklury?",
+      "correct": "COVID-19",
       "wrong": [
         "zaburzenia obsesyjno-kompulsyjne",
         "cukrzyca",
@@ -21835,27 +21836,15 @@ module GameRoomContent
       ]
     },
     {
-      "id": "09559cfc46fe",
-      "category": "chemia",
-      "level": "hard",
-      "prompt": "Lek terapia konwersyjna — na jaką chorobę się go stosuje?",
-      "correct": "homoseksualność",
-      "wrong": [
-        "świerzb",
-        "przemijający atak niedokrwienny",
-        "przeziębienie"
-      ]
-    },
-    {
       "id": "d83089ed21af",
       "category": "chemia",
       "level": "hard",
-      "prompt": "Lek trazodon — na jaką chorobę się go stosuje?",
-      "correct": "majaczenie",
+      "prompt": "W leczeniu którego z wymienionych zaburzeń stosuje się przeciwdepresyjny lek trazodon?",
+      "correct": "depresja",
       "wrong": [
-        "choroba bakteryjna",
-        "malaria",
-        "przemijający atak niedokrwienny"
+        "zapalenie wyrostka robaczkowego",
+        "gruźlica",
+        "wrodzona hemofilia"
       ]
     },
     {
@@ -21903,19 +21892,19 @@ module GameRoomContent
       "wrong": [
         "Gorączka krwotoczna krymsko-kongijska",
         "zapalenie ucha zewnętrznego",
-        "homoseksualność"
+        "krótkowzroczność"
       ]
     },
     {
       "id": "aa673d4d2609",
       "category": "chemia",
       "level": "hard",
-      "prompt": "Lek węglan litu — na jaką chorobę się go stosuje?",
-      "correct": "zaburzenia schizoafektywne",
+      "prompt": "W leczeniu której z wymienionych chorób stosuje się węglan litu jako stabilizator nastroju?",
+      "correct": "choroba afektywna dwubiegunowa",
       "wrong": [
-        "choroba Parkinsona",
-        "malaria",
-        "dyspepsja"
+        "klaustrofobia",
+        "anoreksja",
+        "demencja naczyniowa"
       ]
     },
     {
@@ -27094,7 +27083,7 @@ module GameRoomContent
       "id": "052e8724675e",
       "category": "chemia",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Morten Meldal?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Morten Meldal?",
       "correct": "Królestwo Danii",
       "wrong": [
         "Szwecja",
@@ -27418,7 +27407,7 @@ module GameRoomContent
       "id": "076ea7234184",
       "category": "chemia",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Richard Henderson?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Richard Henderson?",
       "correct": "Wielka Brytania",
       "wrong": [
         "Królestwo Hiszpanii",
@@ -27442,7 +27431,7 @@ module GameRoomContent
       "id": "69ae1496e58b",
       "category": "chemia",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Rodney Robert Porter?",
+      "prompt": "Którego z wymienionych państw był obywatelem Rodney Robert Porter?",
       "correct": "Wielka Brytania",
       "wrong": [
         "Węgry",
@@ -27586,7 +27575,7 @@ module GameRoomContent
       "id": "dd074a526779",
       "category": "chemia",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Susumu Kitagawa?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Susumu Kitagawa?",
       "correct": "Japonia",
       "wrong": [
         "Czechosłowacja",
@@ -57259,7 +57248,7 @@ module GameRoomContent
       "id": "03d526338059",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Hokeista Gordie Howe?",
+      "prompt": "Którego z wymienionych państw był obywatelem Gordie Howe?",
       "correct": "Kanada",
       "wrong": [
         "Bułgaria",
@@ -57271,7 +57260,7 @@ module GameRoomContent
       "id": "718edcafe3c6",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Hokeista Sidney Crosby?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Sidney Crosby?",
       "correct": "Kanada",
       "wrong": [
         "Norwegia",
@@ -57283,7 +57272,7 @@ module GameRoomContent
       "id": "a2a5d6e5fc43",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Hokeista Walerij Charłamow?",
+      "prompt": "Którego z wymienionych państw był obywatelem Walerij Charłamow?",
       "correct": "Związek Socjalistycznych Republik Radzieckich",
       "wrong": [
         "Cesarstwo Wielkiej Japonii",
@@ -57418,7 +57407,7 @@ module GameRoomContent
       "id": "9ff8415f3ef7",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Kierowca Carlos Sainz Jr?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Carlos Sainz Jr?",
       "correct": "Hiszpania",
       "wrong": [
         "Francja",
@@ -57430,7 +57419,7 @@ module GameRoomContent
       "id": "260c0fd0082d",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Kierowca Daniel Ricciardo?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Daniel Ricciardo?",
       "correct": "Australia",
       "wrong": [
         "Hiszpania",
@@ -57442,7 +57431,7 @@ module GameRoomContent
       "id": "183165503b8b",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Kierowca Esteban Ocon?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Esteban Ocon?",
       "correct": "Francja",
       "wrong": [
         "Kanada",
@@ -57454,7 +57443,7 @@ module GameRoomContent
       "id": "5a1d25eb1d68",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Kierowca Jackie Stewart?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Jackie Stewart?",
       "correct": "Wielka Brytania",
       "wrong": [
         "Ukraina",
@@ -57466,7 +57455,7 @@ module GameRoomContent
       "id": "db8dfb0aa1fb",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Kierowca Kimi Räikkönen?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Kimi Räikkönen?",
       "correct": "Finlandia",
       "wrong": [
         "Słowenia",
@@ -57478,7 +57467,7 @@ module GameRoomContent
       "id": "d48f8ac0506c",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Kierowca Lewis Hamilton?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Lewis Hamilton?",
       "correct": "Wielka Brytania",
       "wrong": [
         "Zjednoczone Emiraty Arabskie",
@@ -57490,7 +57479,7 @@ module GameRoomContent
       "id": "9d04316e65e4",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Kierowca Nico Hülkenberg?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Nico Hülkenberg?",
       "correct": "Niemcy",
       "wrong": [
         "Południowa Afryka",
@@ -57502,7 +57491,7 @@ module GameRoomContent
       "id": "a10d94cefa04",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Kierowca Nigel Mansell?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Nigel Mansell?",
       "correct": "Wielka Brytania",
       "wrong": [
         "Słowenia",
@@ -57514,7 +57503,7 @@ module GameRoomContent
       "id": "7b2d4b1a46bd",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Kierowca Pedro de la Rosa?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Pedro de la Rosa?",
       "correct": "Hiszpania",
       "wrong": [
         "Nowa Zelandia",
@@ -57526,7 +57515,7 @@ module GameRoomContent
       "id": "08542f713b03",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Kierowca Sebastian Vettel?",
+      "prompt": "Z którego kraju pochodzi kierowca Formuły 1 Sebastian Vettel?",
       "correct": "Niemcy",
       "wrong": [
         "Turcja",
@@ -57538,7 +57527,7 @@ module GameRoomContent
       "id": "71290079506a",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Kierowca Stirling Moss?",
+      "prompt": "Którego z wymienionych państw był obywatelem Stirling Moss?",
       "correct": "Wielka Brytania",
       "wrong": [
         "Australia",
@@ -57550,7 +57539,7 @@ module GameRoomContent
       "id": "975788b8aa05",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Kierowca Stoffel Vandoorne?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Stoffel Vandoorne?",
       "correct": "Belgia",
       "wrong": [
         "Serbia",
@@ -57562,7 +57551,7 @@ module GameRoomContent
       "id": "47a102344a36",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Kierowca Valtteri Bottas?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Valtteri Bottas?",
       "correct": "Finlandia",
       "wrong": [
         "Cypr",
@@ -57574,7 +57563,7 @@ module GameRoomContent
       "id": "a261d1f2db12",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Kierowca Zhou Guanyu?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Zhou Guanyu?",
       "correct": "Chińska Republika Ludowa",
       "wrong": [
         "Arabia Saudyjska",
@@ -58026,7 +58015,7 @@ module GameRoomContent
       "id": "fb01fdc7ebdf",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Koszykarz Allen Iverson?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Allen Iverson?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Japonia",
@@ -58038,7 +58027,7 @@ module GameRoomContent
       "id": "ce72fdcc32b2",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Koszykarz Andre Iguodala?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Andre Iguodala?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Grecja",
@@ -58050,7 +58039,7 @@ module GameRoomContent
       "id": "65c82991830a",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Koszykarz Bojan Bogdanović?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Bojan Bogdanović?",
       "correct": "Chorwacja",
       "wrong": [
         "Wielka Brytania",
@@ -58062,7 +58051,7 @@ module GameRoomContent
       "id": "c861d086da08",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Koszykarz Carmelo Anthony?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Carmelo Anthony?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Wielka Brytania",
@@ -58074,7 +58063,7 @@ module GameRoomContent
       "id": "570e7b7332e2",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Koszykarz Chauncey Billups?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Chauncey Billups?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Polska",
@@ -58086,7 +58075,7 @@ module GameRoomContent
       "id": "b6b67f6cb3e3",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Koszykarz Chris Bosh?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Chris Bosh?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Włochy",
@@ -58098,7 +58087,7 @@ module GameRoomContent
       "id": "e8ef3dc6e3de",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Koszykarz Chris Paul?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Chris Paul?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Norwegia",
@@ -58110,7 +58099,7 @@ module GameRoomContent
       "id": "01e429426f9f",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Koszykarz David Robinson?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem David Robinson?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Bułgaria",
@@ -58122,7 +58111,7 @@ module GameRoomContent
       "id": "bd1498a0941e",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Koszykarz Derrick Rose?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Derrick Rose?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Polska",
@@ -58134,7 +58123,7 @@ module GameRoomContent
       "id": "e77ac01b0a38",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Koszykarz Devin Booker?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Devin Booker?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Grecja",
@@ -58146,7 +58135,7 @@ module GameRoomContent
       "id": "d3db253a93f1",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Koszykarz Dirk Nowitzki?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Dirk Nowitzki?",
       "correct": "Niemcy",
       "wrong": [
         "Stany Zjednoczone",
@@ -58158,7 +58147,7 @@ module GameRoomContent
       "id": "63d17250a923",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Koszykarz Draymond Green?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Draymond Green?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Nowa Zelandia",
@@ -58170,7 +58159,7 @@ module GameRoomContent
       "id": "acd37d5d969f",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Koszykarz Dwyane Wade?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Dwyane Wade?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Brazylia",
@@ -58182,7 +58171,7 @@ module GameRoomContent
       "id": "092df87a9e70",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Koszykarz Gilbert Arenas?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Gilbert Arenas?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Grecja",
@@ -58194,7 +58183,7 @@ module GameRoomContent
       "id": "693f885cc064",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Koszykarz Hedo Türkoğlu?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Hedo Türkoğlu?",
       "correct": "Turcja",
       "wrong": [
         "Austria",
@@ -58206,7 +58195,7 @@ module GameRoomContent
       "id": "811e7d54a4bc",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Koszykarz Isiah Thomas?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Isiah Thomas?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Ukraina",
@@ -58218,7 +58207,7 @@ module GameRoomContent
       "id": "87912cf1857a",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Koszykarz James Harden?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem James Harden?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Szwajcaria",
@@ -58230,7 +58219,7 @@ module GameRoomContent
       "id": "a94f7f716052",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Koszykarz Jason Kidd?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Jason Kidd?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Cypr",
@@ -58242,7 +58231,7 @@ module GameRoomContent
       "id": "4cce4b38bf4e",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Koszykarz Jerry West?",
+      "prompt": "Którego z wymienionych państw był obywatelem Jerry West?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Ukraina",
@@ -58254,7 +58243,7 @@ module GameRoomContent
       "id": "9a57ba312a3c",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Koszykarz Jimmy Butler?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Jimmy Butler?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Słowacja",
@@ -58266,7 +58255,7 @@ module GameRoomContent
       "id": "120811fab6d0",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Koszykarz John Havlicek?",
+      "prompt": "Którego z wymienionych państw był obywatelem John Havlicek?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Australia",
@@ -58278,7 +58267,7 @@ module GameRoomContent
       "id": "9ef3632f1e5a",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Koszykarz John Stockton?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem John Stockton?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Finlandia",
@@ -58290,7 +58279,7 @@ module GameRoomContent
       "id": "ce60033096d2",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Koszykarz Kevin Love?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Kevin Love?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Cypr",
@@ -58302,7 +58291,7 @@ module GameRoomContent
       "id": "24ca59cc4f40",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Koszykarz Klay Thompson?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Klay Thompson?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Serbia",
@@ -58314,7 +58303,7 @@ module GameRoomContent
       "id": "d4aecc595484",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Koszykarz Kobe Bryant?",
+      "prompt": "Którego z wymienionych państw był obywatelem Kobe Bryant?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Finlandia",
@@ -58326,7 +58315,7 @@ module GameRoomContent
       "id": "ab6eee9a5557",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Koszykarz Lamar Odom?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Lamar Odom?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Chorwacja",
@@ -58338,7 +58327,7 @@ module GameRoomContent
       "id": "577e4c829e64",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Koszykarz Larry Bird?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Larry Bird?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Kazachstan",
@@ -58350,7 +58339,7 @@ module GameRoomContent
       "id": "62fdb7e8b226",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Koszykarz Luka Dončić?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Luka Dončić?",
       "correct": "Słowenia",
       "wrong": [
         "Argentyna",
@@ -58362,7 +58351,7 @@ module GameRoomContent
       "id": "462644fdb32f",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Koszykarz Marc Gasol?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Marc Gasol?",
       "correct": "Hiszpania",
       "wrong": [
         "Turcja",
@@ -58374,7 +58363,7 @@ module GameRoomContent
       "id": "42d88a47a7b6",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Koszykarz Moses Malone?",
+      "prompt": "Którego z wymienionych państw był obywatelem Moses Malone?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Nowa Zelandia",
@@ -58386,7 +58375,7 @@ module GameRoomContent
       "id": "ee0b4becb2f0",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Koszykarz Nikola Jokić?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Nikola Jokić?",
       "correct": "Serbia",
       "wrong": [
         "Norwegia",
@@ -58398,7 +58387,7 @@ module GameRoomContent
       "id": "825804f662bb",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Koszykarz Oscar Robertson?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Oscar Robertson?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Japonia",
@@ -58410,7 +58399,7 @@ module GameRoomContent
       "id": "6a8dc6505d67",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Koszykarz Paul George?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Paul George?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Zjednoczone Emiraty Arabskie",
@@ -58422,7 +58411,7 @@ module GameRoomContent
       "id": "f8f42e14c5f1",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Koszykarz Paul Pierce?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Paul Pierce?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Włochy",
@@ -58434,7 +58423,7 @@ module GameRoomContent
       "id": "18c61c6fbbd5",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Koszykarz Phil Jackson?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Phil Jackson?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Słowacja",
@@ -58446,7 +58435,7 @@ module GameRoomContent
       "id": "5519d105b3e3",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Koszykarz Rajon Rondo?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Rajon Rondo?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Słowacja",
@@ -58458,7 +58447,7 @@ module GameRoomContent
       "id": "2f196d048f12",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Koszykarz Ricky Rubio?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Ricky Rubio?",
       "correct": "Hiszpania",
       "wrong": [
         "Bangladesz",
@@ -58470,7 +58459,7 @@ module GameRoomContent
       "id": "6ab9bffe097f",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Koszykarz Russell Westbrook?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Russell Westbrook?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Grecja",
@@ -58482,7 +58471,7 @@ module GameRoomContent
       "id": "72d4283e8b0d",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Koszykarz Tim Duncan?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Tim Duncan?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Brazylia",
@@ -58494,7 +58483,7 @@ module GameRoomContent
       "id": "0de97c04e407",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Koszykarz Tracy McGrady?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Tracy McGrady?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Belgia",
@@ -58506,7 +58495,7 @@ module GameRoomContent
       "id": "3a9ced2c9bc5",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Koszykarz Victor Wembanyama?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Victor Wembanyama?",
       "correct": "Francja",
       "wrong": [
         "Kanada",
@@ -58518,7 +58507,7 @@ module GameRoomContent
       "id": "ac1fa9205616",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Koszykarz Vince Carter?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Vince Carter?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Wielka Brytania",
@@ -58530,7 +58519,7 @@ module GameRoomContent
       "id": "578eb777d28b",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Koszykarz Yao Ming?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Yao Ming?",
       "correct": "Chińska Republika Ludowa",
       "wrong": [
         "Ukraina",
@@ -62478,7 +62467,7 @@ module GameRoomContent
       "id": "a30893d7e92d",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Skoczek Adam Małysz?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Adam Małysz?",
       "correct": "Polska",
       "wrong": [
         "Korea Południowa",
@@ -62502,7 +62491,7 @@ module GameRoomContent
       "id": "36595ab6ceaa",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Skoczek Kamil Stoch?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Kamil Stoch?",
       "correct": "Polska",
       "wrong": [
         "Grecja",
@@ -62586,7 +62575,7 @@ module GameRoomContent
       "id": "f1e9da57ea38",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Skoczek Simon Ammann?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Simon Ammann?",
       "correct": "Szwajcaria",
       "wrong": [
         "Francja",
@@ -64470,7 +64459,7 @@ module GameRoomContent
       "id": "54532e8094ee",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Tenisista Alexander Zverev?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Alexander Zverev?",
       "correct": "Niemcy",
       "wrong": [
         "Australia",
@@ -64494,7 +64483,7 @@ module GameRoomContent
       "id": "0b23b12107cb",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Tenisista Andre Agassi?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Andre Agassi?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Niemcy",
@@ -64578,7 +64567,7 @@ module GameRoomContent
       "id": "c999645a4233",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Tenisista Björn Borg?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Björn Borg?",
       "correct": "Szwecja",
       "wrong": [
         "Czechy",
@@ -64626,7 +64615,7 @@ module GameRoomContent
       "id": "a76afa71f36b",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Tenisista Carlos Moyá?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Carlos Moyá?",
       "correct": "Hiszpania",
       "wrong": [
         "Austria",
@@ -64650,7 +64639,7 @@ module GameRoomContent
       "id": "25f5c3a59536",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Tenisista Daniił Miedwiediew?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Daniił Miedwiediew?",
       "correct": "Rosja",
       "wrong": [
         "Niemcy",
@@ -64770,7 +64759,7 @@ module GameRoomContent
       "id": "bcf53c9e9523",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Tenisista Fernando González?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Fernando González?",
       "correct": "Chile",
       "wrong": [
         "Indonezja",
@@ -64830,7 +64819,7 @@ module GameRoomContent
       "id": "fc625b246075",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Tenisista Gilles Simon?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Gilles Simon?",
       "correct": "Francja",
       "wrong": [
         "Urugwaj",
@@ -64914,7 +64903,7 @@ module GameRoomContent
       "id": "75ed9eeb4955",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Tenisista Gustavo Kuerten?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Gustavo Kuerten?",
       "correct": "Brazylia",
       "wrong": [
         "Słowacja",
@@ -64998,7 +64987,7 @@ module GameRoomContent
       "id": "5eae59aeb2d8",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Tenisista Janko Tipsarević?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Janko Tipsarević?",
       "correct": "Serbia",
       "wrong": [
         "Zjednoczone Emiraty Arabskie",
@@ -65010,7 +64999,7 @@ module GameRoomContent
       "id": "587f03f738fd",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Tenisista Jannik Sinner?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Jannik Sinner?",
       "correct": "Włochy",
       "wrong": [
         "Turcja",
@@ -65034,7 +65023,7 @@ module GameRoomContent
       "id": "644af90facb6",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Tenisista Jewgienij Kafielnikow?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Jewgienij Kafielnikow?",
       "correct": "Rosja",
       "wrong": [
         "Indie",
@@ -65058,7 +65047,7 @@ module GameRoomContent
       "id": "0baa1ec1f91a",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Tenisista Jim Courier?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Jim Courier?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Francja",
@@ -65082,7 +65071,7 @@ module GameRoomContent
       "id": "2dda45b6505d",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Tenisista Jimmy Connors?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Jimmy Connors?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Niemcy",
@@ -65130,7 +65119,7 @@ module GameRoomContent
       "id": "044bcaa3bbb2",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Tenisista John Isner?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem John Isner?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Czechy",
@@ -65178,7 +65167,7 @@ module GameRoomContent
       "id": "2e4926664e1d",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Tenisista John Newcombe?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem John Newcombe?",
       "correct": "Australia",
       "wrong": [
         "Belgia",
@@ -65214,7 +65203,7 @@ module GameRoomContent
       "id": "67c8012a958e",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Tenisista Juan Martín del Potro?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Juan Martín del Potro?",
       "correct": "Argentyna",
       "wrong": [
         "Zjednoczone Emiraty Arabskie",
@@ -65238,7 +65227,7 @@ module GameRoomContent
       "id": "7a2534bafcaf",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Tenisista Kei Nishikori?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Kei Nishikori?",
       "correct": "Japonia",
       "wrong": [
         "Niemcy",
@@ -65262,7 +65251,7 @@ module GameRoomContent
       "id": "7f190f581492",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Tenisista Ken Rosewall?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Ken Rosewall?",
       "correct": "Australia",
       "wrong": [
         "Białoruś",
@@ -65274,7 +65263,7 @@ module GameRoomContent
       "id": "727116056730",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Tenisista Leander Paes?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Leander Paes?",
       "correct": "Indie",
       "wrong": [
         "Chorwacja",
@@ -65298,7 +65287,7 @@ module GameRoomContent
       "id": "8e9f6372f2ed",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Tenisista Lleyton Hewitt?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Lleyton Hewitt?",
       "correct": "Australia",
       "wrong": [
         "Japonia",
@@ -65322,7 +65311,7 @@ module GameRoomContent
       "id": "965d460b21af",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Tenisista Mahesh Bhupathi?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Mahesh Bhupathi?",
       "correct": "Indie",
       "wrong": [
         "Togo",
@@ -65382,7 +65371,7 @@ module GameRoomContent
       "id": "3f1ed840b6c8",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Tenisista Marcelo Ríos?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Marcelo Ríos?",
       "correct": "Chile",
       "wrong": [
         "Turcja",
@@ -65394,7 +65383,7 @@ module GameRoomContent
       "id": "08a3327d3c6d",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Tenisista Mardy Fish?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Mardy Fish?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Chorwacja",
@@ -65430,7 +65419,7 @@ module GameRoomContent
       "id": "75079e347245",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Tenisista Markos Pagdatis?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Markos Pagdatis?",
       "correct": "Cypr",
       "wrong": [
         "Japonia",
@@ -65466,7 +65455,7 @@ module GameRoomContent
       "id": "cb1bf7e6491d",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Tenisista Michael Chang?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Michael Chang?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Arabia Saudyjska",
@@ -65490,7 +65479,7 @@ module GameRoomContent
       "id": "ffc21d3b8753",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Tenisista Milos Raonic?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Milos Raonic?",
       "correct": "Kanada",
       "wrong": [
         "Holandia",
@@ -65550,7 +65539,7 @@ module GameRoomContent
       "id": "69420609db95",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Tenisista Paolo Maldini?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Paolo Maldini?",
       "correct": "Włochy",
       "wrong": [
         "Grecja",
@@ -65574,7 +65563,7 @@ module GameRoomContent
       "id": "fe52575b074b",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Tenisista Patrick Rafter?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Patrick Rafter?",
       "correct": "Australia",
       "wrong": [
         "Indonezja",
@@ -65622,7 +65611,7 @@ module GameRoomContent
       "id": "0733e8acc893",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Tenisista Pete Sampras?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Pete Sampras?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Norwegia",
@@ -65646,7 +65635,7 @@ module GameRoomContent
       "id": "bfe174992090",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Tenisista Rafael Nadal?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Rafael Nadal?",
       "correct": "Hiszpania",
       "wrong": [
         "Austria",
@@ -65694,7 +65683,7 @@ module GameRoomContent
       "id": "969211f4c19c",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Tenisista René Lacoste?",
+      "prompt": "Którego z wymienionych państw był obywatelem René Lacoste?",
       "correct": "Francja",
       "wrong": [
         "Norwegia",
@@ -65706,7 +65695,7 @@ module GameRoomContent
       "id": "bd0e192a46fc",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Tenisista Richard Gasquet?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Richard Gasquet?",
       "correct": "Francja",
       "wrong": [
         "Finlandia",
@@ -65754,7 +65743,7 @@ module GameRoomContent
       "id": "1d3bd945e6d3",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Tenisista Rod Laver?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Rod Laver?",
       "correct": "Australia",
       "wrong": [
         "Holandia",
@@ -65790,7 +65779,7 @@ module GameRoomContent
       "id": "d49e947b026e",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Tenisista Sam Querrey?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Sam Querrey?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Słowenia",
@@ -65826,7 +65815,7 @@ module GameRoomContent
       "id": "7bdc52fd9e75",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Tenisista Stefan Edberg?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Stefan Edberg?",
       "correct": "Szwecja",
       "wrong": [
         "Turcja",
@@ -65910,7 +65899,7 @@ module GameRoomContent
       "id": "5a9e04db58af",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Tenisista Tommy Robredo?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Tommy Robredo?",
       "correct": "Hiszpania",
       "wrong": [
         "Chorwacja",
@@ -65922,7 +65911,7 @@ module GameRoomContent
       "id": "ec53b1aebb93",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Tenisista Tomáš Berdych?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Tomáš Berdych?",
       "correct": "Czechy",
       "wrong": [
         "Norwegia",
@@ -65946,7 +65935,7 @@ module GameRoomContent
       "id": "94d4bd8ea348",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Tenisista William Tilden?",
+      "prompt": "Którego z wymienionych państw był obywatelem William Tilden?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Austria",
@@ -65982,7 +65971,7 @@ module GameRoomContent
       "id": "7e87e22f878d",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Tenisistka Agnieszka Radwańska?",
+      "prompt": "Którego z wymienionych państw jest lub była obywatelką Agnieszka Radwańska?",
       "correct": "Polska",
       "wrong": [
         "Ukraina",
@@ -66006,7 +65995,7 @@ module GameRoomContent
       "id": "6261059bdf3e",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Tenisistka Amélie Mauresmo?",
+      "prompt": "Którego z wymienionych państw jest lub była obywatelką Amélie Mauresmo?",
       "correct": "Francja",
       "wrong": [
         "Czechy",
@@ -66018,7 +66007,7 @@ module GameRoomContent
       "id": "f1063475d1b7",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Tenisistka Ana Ivanović?",
+      "prompt": "Którego z wymienionych państw jest lub była obywatelką Ana Ivanović?",
       "correct": "Serbia",
       "wrong": [
         "Kanada",
@@ -66042,7 +66031,7 @@ module GameRoomContent
       "id": "05d8a281bdd1",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Tenisistka Anastasija Myskina?",
+      "prompt": "Którego z wymienionych państw jest lub była obywatelką Anastasija Myskina?",
       "correct": "Rosja",
       "wrong": [
         "Japonia",
@@ -66066,7 +66055,7 @@ module GameRoomContent
       "id": "0af5aa39da4c",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Tenisistka Anastasija Pawluczenkowa?",
+      "prompt": "Którego z wymienionych państw jest lub była obywatelką Anastasija Pawluczenkowa?",
       "correct": "Rosja",
       "wrong": [
         "Urugwaj",
@@ -66078,7 +66067,7 @@ module GameRoomContent
       "id": "42fa055b7886",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Tenisistka Angelique Kerber?",
+      "prompt": "Którego z wymienionych państw jest lub była obywatelką Angelique Kerber?",
       "correct": "Niemcy",
       "wrong": [
         "Austria",
@@ -66102,7 +66091,7 @@ module GameRoomContent
       "id": "1218425d593a",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Tenisistka Anna Czakwetadze?",
+      "prompt": "Którego z wymienionych państw jest lub była obywatelką Anna Czakwetadze?",
       "correct": "Rosja",
       "wrong": [
         "Japonia",
@@ -66126,7 +66115,7 @@ module GameRoomContent
       "id": "fdfd7c7151f0",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Tenisistka Arantxa Sánchez Vicario?",
+      "prompt": "Którego z wymienionych państw jest lub była obywatelką Arantxa Sánchez Vicario?",
       "correct": "Hiszpania",
       "wrong": [
         "Zjednoczone Emiraty Arabskie",
@@ -66150,7 +66139,7 @@ module GameRoomContent
       "id": "b286309130c7",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Tenisistka Aryna Sabalenka?",
+      "prompt": "Którego z wymienionych państw jest lub była obywatelką Aryna Sabalenka?",
       "correct": "Białoruś",
       "wrong": [
         "Indie",
@@ -66174,7 +66163,7 @@ module GameRoomContent
       "id": "2b13e36d396a",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Tenisistka Ashleigh Barty?",
+      "prompt": "Którego z wymienionych państw jest lub była obywatelką Ashleigh Barty?",
       "correct": "Australia",
       "wrong": [
         "Brazylia",
@@ -66198,7 +66187,7 @@ module GameRoomContent
       "id": "e018a7be5f29",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Tenisistka Bianca Andreescu?",
+      "prompt": "Którego z wymienionych państw jest lub była obywatelką Bianca Andreescu?",
       "correct": "Kanada",
       "wrong": [
         "Japonia",
@@ -66234,7 +66223,7 @@ module GameRoomContent
       "id": "2e12386529b0",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Tenisistka Chris Evert?",
+      "prompt": "Którego z wymienionych państw jest lub była obywatelką Chris Evert?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Zjednoczone Emiraty Arabskie",
@@ -66258,7 +66247,7 @@ module GameRoomContent
       "id": "665dfc242d45",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Tenisistka Coco Gauff?",
+      "prompt": "Którego z wymienionych państw jest lub była obywatelką Coco Gauff?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Zjednoczone Emiraty Arabskie",
@@ -66282,7 +66271,7 @@ module GameRoomContent
       "id": "0a23c37adda0",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Tenisistka Conchita Martínez?",
+      "prompt": "Którego z wymienionych państw jest lub była obywatelką Conchita Martínez?",
       "correct": "Hiszpania",
       "wrong": [
         "Niemcy",
@@ -66294,7 +66283,7 @@ module GameRoomContent
       "id": "ac12a0f296af",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Tenisistka Daniela Hantuchová?",
+      "prompt": "Którego z wymienionych państw jest lub była obywatelką Daniela Hantuchová?",
       "correct": "Słowacja",
       "wrong": [
         "Południowa Afryka",
@@ -66306,7 +66295,7 @@ module GameRoomContent
       "id": "688eb4029390",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Tenisistka Dinara Safina?",
+      "prompt": "Którego z wymienionych państw jest lub była obywatelką Dinara Safina?",
       "correct": "Rosja",
       "wrong": [
         "Finlandia",
@@ -66330,7 +66319,7 @@ module GameRoomContent
       "id": "8b8bbe25c2c7",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Tenisistka Dominika Cibulková?",
+      "prompt": "Którego z wymienionych państw jest lub była obywatelką Dominika Cibulková?",
       "correct": "Słowacja",
       "wrong": [
         "Austria",
@@ -66342,7 +66331,7 @@ module GameRoomContent
       "id": "ed662b9bfa71",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Tenisistka Elina Switolina?",
+      "prompt": "Którego z wymienionych państw jest lub była obywatelką Elina Switolina?",
       "correct": "Ukraina",
       "wrong": [
         "Białoruś",
@@ -66366,7 +66355,7 @@ module GameRoomContent
       "id": "bd8252b480a2",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Tenisistka Eugenie Bouchard?",
+      "prompt": "Którego z wymienionych państw jest lub była obywatelką Eugenie Bouchard?",
       "correct": "Kanada",
       "wrong": [
         "Kazachstan",
@@ -66378,7 +66367,7 @@ module GameRoomContent
       "id": "b98e04e53ab3",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Tenisistka Evonne Goolagong?",
+      "prompt": "Którego z wymienionych państw jest lub była obywatelką Evonne Goolagong?",
       "correct": "Australia",
       "wrong": [
         "Czechy",
@@ -66402,7 +66391,7 @@ module GameRoomContent
       "id": "b0c8f1d15625",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Tenisistka Flavia Pennetta?",
+      "prompt": "Którego z wymienionych państw jest lub była obywatelką Flavia Pennetta?",
       "correct": "Włochy",
       "wrong": [
         "Czechy",
@@ -66426,7 +66415,7 @@ module GameRoomContent
       "id": "5c25e55ed0c6",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Tenisistka Francesca Schiavone?",
+      "prompt": "Którego z wymienionych państw jest lub była obywatelką Francesca Schiavone?",
       "correct": "Włochy",
       "wrong": [
         "Południowa Afryka",
@@ -66474,7 +66463,7 @@ module GameRoomContent
       "id": "c4217590c713",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Tenisistka Iga Świątek?",
+      "prompt": "Którego z wymienionych państw jest lub była obywatelką Iga Świątek?",
       "correct": "Polska",
       "wrong": [
         "Indie",
@@ -66510,7 +66499,7 @@ module GameRoomContent
       "id": "0f591afdcc17",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Tenisistka Jelena Diemientjewa?",
+      "prompt": "Którego z wymienionych państw jest lub była obywatelką Jelena Diemientjewa?",
       "correct": "Rosja",
       "wrong": [
         "Białoruś",
@@ -66546,7 +66535,7 @@ module GameRoomContent
       "id": "4d4682864fa1",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Tenisistka Jelena Rybakina?",
+      "prompt": "Którego z wymienionych państw jest lub była obywatelką Jelena Rybakina?",
       "correct": "Kazachstan",
       "wrong": [
         "Holandia",
@@ -66570,7 +66559,7 @@ module GameRoomContent
       "id": "bc08f2b1c0d3",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Tenisistka Jelena Wiesnina?",
+      "prompt": "Którego z wymienionych państw jest lub była obywatelką Jelena Wiesnina?",
       "correct": "Rosja",
       "wrong": [
         "Grecja",
@@ -66582,7 +66571,7 @@ module GameRoomContent
       "id": "bc5dbfbbeb04",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Tenisistka Jennifer Capriati?",
+      "prompt": "Którego z wymienionych państw jest lub była obywatelką Jennifer Capriati?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Włochy",
@@ -66606,7 +66595,7 @@ module GameRoomContent
       "id": "8465162d52c9",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Tenisistka Jeļena Ostapenko?",
+      "prompt": "Którego z wymienionych państw jest lub była obywatelką Jeļena Ostapenko?",
       "correct": "Łotwa",
       "wrong": [
         "Japonia",
@@ -66630,7 +66619,7 @@ module GameRoomContent
       "id": "9d6c47cee9bf",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Tenisistka Justine Henin?",
+      "prompt": "Którego z wymienionych państw jest lub była obywatelką Justine Henin?",
       "correct": "Belgia",
       "wrong": [
         "Namibia",
@@ -66654,7 +66643,7 @@ module GameRoomContent
       "id": "cd19412f4b58",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Tenisistka Kim Clijsters?",
+      "prompt": "Którego z wymienionych państw jest lub była obywatelką Kim Clijsters?",
       "correct": "Belgia",
       "wrong": [
         "Finlandia",
@@ -66678,7 +66667,7 @@ module GameRoomContent
       "id": "a8b36c41050d",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Tenisistka Kristina Mladenovic?",
+      "prompt": "Którego z wymienionych państw jest lub była obywatelką Kristina Mladenovic?",
       "correct": "Francja",
       "wrong": [
         "Hiszpania",
@@ -66690,7 +66679,7 @@ module GameRoomContent
       "id": "0ce8eb5cb60e",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Tenisistka Li Na?",
+      "prompt": "Którego z wymienionych państw jest lub była obywatelką Li Na?",
       "correct": "Chińska Republika Ludowa",
       "wrong": [
         "Białoruś",
@@ -66714,7 +66703,7 @@ module GameRoomContent
       "id": "7f1faf1a4429",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Tenisistka Lindsay Davenport?",
+      "prompt": "Którego z wymienionych państw jest lub była obywatelką Lindsay Davenport?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Rumunia",
@@ -66726,7 +66715,7 @@ module GameRoomContent
       "id": "c12c1316d8fd",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Tenisistka Madison Keys?",
+      "prompt": "Którego z wymienionych państw jest lub była obywatelką Madison Keys?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Słowenia",
@@ -66750,7 +66739,7 @@ module GameRoomContent
       "id": "7a3851098b59",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Tenisistka Margaret Smith Court?",
+      "prompt": "Którego z wymienionych państw jest lub była obywatelką Margaret Smith Court?",
       "correct": "Australia",
       "wrong": [
         "Czechy",
@@ -66774,7 +66763,7 @@ module GameRoomContent
       "id": "ee406878174b",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Tenisistka Marija Kirilenko?",
+      "prompt": "Którego z wymienionych państw jest lub była obywatelką Marija Kirilenko?",
       "correct": "Rosja",
       "wrong": [
         "Kanada",
@@ -66810,7 +66799,7 @@ module GameRoomContent
       "id": "d1a62a9c0ada",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Tenisistka Marion Bartoli?",
+      "prompt": "Którego z wymienionych państw jest lub była obywatelką Marion Bartoli?",
       "correct": "Francja",
       "wrong": [
         "Cypr",
@@ -66882,7 +66871,7 @@ module GameRoomContent
       "id": "4f5cb24d1ce3",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Tenisistka Nadieżda Pietrowa?",
+      "prompt": "Którego z wymienionych państw jest lub była obywatelką Nadieżda Pietrowa?",
       "correct": "Rosja",
       "wrong": [
         "Wielka Brytania",
@@ -66906,7 +66895,7 @@ module GameRoomContent
       "id": "3d2bbdab68c2",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Tenisistka Naomi Ōsaka?",
+      "prompt": "Którego z wymienionych państw jest lub była obywatelką Naomi Ōsaka?",
       "correct": "Japonia",
       "wrong": [
         "Zjednoczone Emiraty Arabskie",
@@ -66930,7 +66919,7 @@ module GameRoomContent
       "id": "21d604bb4d58",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Tenisistka Peng Shuai?",
+      "prompt": "Którego z wymienionych państw jest lub była obywatelką Peng Shuai?",
       "correct": "Chińska Republika Ludowa",
       "wrong": [
         "Chorwacja",
@@ -66942,7 +66931,7 @@ module GameRoomContent
       "id": "a71967961298",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Tenisistka Petra Kvitová?",
+      "prompt": "Którego z wymienionych państw jest lub była obywatelką Petra Kvitová?",
       "correct": "Czechy",
       "wrong": [
         "Francja",
@@ -66966,7 +66955,7 @@ module GameRoomContent
       "id": "ddc587308782",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Tenisistka Sabine Lisicki?",
+      "prompt": "Którego z wymienionych państw jest lub była obywatelką Sabine Lisicki?",
       "correct": "Niemcy",
       "wrong": [
         "Kamerun",
@@ -66990,7 +66979,7 @@ module GameRoomContent
       "id": "77356c8a4ccc",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Tenisistka Samantha Stosur?",
+      "prompt": "Którego z wymienionych państw jest lub była obywatelką Samantha Stosur?",
       "correct": "Australia",
       "wrong": [
         "Chorwacja",
@@ -67014,7 +67003,7 @@ module GameRoomContent
       "id": "0414f9cf2849",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Tenisistka Sania Mirza?",
+      "prompt": "Którego z wymienionych państw jest lub była obywatelką Sania Mirza?",
       "correct": "Indie",
       "wrong": [
         "Słowenia",
@@ -67038,7 +67027,7 @@ module GameRoomContent
       "id": "e7face48105f",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Tenisistka Sara Errani?",
+      "prompt": "Którego z wymienionych państw jest lub była obywatelką Sara Errani?",
       "correct": "Włochy",
       "wrong": [
         "Urugwaj",
@@ -67062,7 +67051,7 @@ module GameRoomContent
       "id": "e6be73433344",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Tenisistka Simona Halep?",
+      "prompt": "Którego z wymienionych państw jest lub była obywatelką Simona Halep?",
       "correct": "Rumunia",
       "wrong": [
         "Kazachstan",
@@ -67086,7 +67075,7 @@ module GameRoomContent
       "id": "49368ced8816",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Tenisistka Sloane Stephens?",
+      "prompt": "Którego z wymienionych państw jest lub była obywatelką Sloane Stephens?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Japonia",
@@ -67122,7 +67111,7 @@ module GameRoomContent
       "id": "6f47f0d8dfdd",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Tenisistka Suzanne Lenglen?",
+      "prompt": "Którego z wymienionych państw była obywatelką Suzanne Lenglen?",
       "correct": "Francja",
       "wrong": [
         "Urugwaj",
@@ -67134,7 +67123,7 @@ module GameRoomContent
       "id": "ce01bcbe74dd",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Tenisistka Swietłana Kuzniecowa?",
+      "prompt": "Którego z wymienionych państw jest lub była obywatelką Swietłana Kuzniecowa?",
       "correct": "Rosja",
       "wrong": [
         "Turcja",
@@ -67158,7 +67147,7 @@ module GameRoomContent
       "id": "68956d931a78",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Tenisistka Tracy Austin?",
+      "prompt": "Którego z wymienionych państw jest lub była obywatelką Tracy Austin?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Belgia",
@@ -67182,7 +67171,7 @@ module GameRoomContent
       "id": "f9431e2963c1",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Tenisistka Wiera Zwonariowa?",
+      "prompt": "Którego z wymienionych państw jest lub była obywatelką Wiera Zwonariowa?",
       "correct": "Rosja",
       "wrong": [
         "Czechy",
@@ -67206,7 +67195,7 @@ module GameRoomContent
       "id": "e8e7bc02e089",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Tenisistka Wiktoryja Azaranka?",
+      "prompt": "Którego z wymienionych państw jest lub była obywatelką Wiktoryja Azaranka?",
       "correct": "Białoruś",
       "wrong": [
         "Bahrajn",
@@ -67230,7 +67219,7 @@ module GameRoomContent
       "id": "2269c5c81b4d",
       "category": "sport",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Tenisistka Zheng Jie?",
+      "prompt": "Którego z wymienionych państw jest lub była obywatelką Zheng Jie?",
       "correct": "Chińska Republika Ludowa",
       "wrong": [
         "Szwecja",
@@ -67284,7 +67273,7 @@ module GameRoomContent
       "id": "091c3c7e951a",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Alessandro Zanardi?",
+      "prompt": "Którego z wymienionych państw był obywatelem Alessandro Zanardi?",
       "correct": "Włochy",
       "wrong": [
         "Japonia",
@@ -67320,7 +67309,7 @@ module GameRoomContent
       "id": "68b30c5fa82f",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Hokeista Bobby Hull?",
+      "prompt": "Którego z wymienionych państw był obywatelem Bobby Hull?",
       "correct": "Kanada",
       "wrong": [
         "Australia",
@@ -67332,7 +67321,7 @@ module GameRoomContent
       "id": "8c7f68052f0e",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Hokeista Bobby Orr?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Bobby Orr?",
       "correct": "Kanada",
       "wrong": [
         "Nowa Zelandia",
@@ -67344,7 +67333,7 @@ module GameRoomContent
       "id": "66784b0462ed",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Hokeista Börje Salming?",
+      "prompt": "Którego z wymienionych państw był obywatelem Börje Salming?",
       "correct": "Szwecja",
       "wrong": [
         "Brazylia",
@@ -67356,7 +67345,7 @@ module GameRoomContent
       "id": "1d547bd7bc44",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Hokeista Carey Price?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Carey Price?",
       "correct": "Kanada",
       "wrong": [
         "Cypr",
@@ -67368,7 +67357,7 @@ module GameRoomContent
       "id": "30722e66da01",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Hokeista Connor McDavid?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Connor McDavid?",
       "correct": "Kanada",
       "wrong": [
         "Kazachstan",
@@ -67380,7 +67369,7 @@ module GameRoomContent
       "id": "5c8f201b717f",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Hokeista Daniel Alfredsson?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Daniel Alfredsson?",
       "correct": "Szwecja",
       "wrong": [
         "Boliwia",
@@ -67392,7 +67381,7 @@ module GameRoomContent
       "id": "2a4adc46be9e",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Hokeista David Pastrňák?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem David Pastrňák?",
       "correct": "Czechy",
       "wrong": [
         "Łotwa",
@@ -67404,7 +67393,7 @@ module GameRoomContent
       "id": "a58507f63400",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Hokeista Drew Doughty?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Drew Doughty?",
       "correct": "Kanada",
       "wrong": [
         "Wielka Brytania",
@@ -67416,7 +67405,7 @@ module GameRoomContent
       "id": "14be3db63483",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Hokeista Eric Lindros?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Eric Lindros?",
       "correct": "Kanada",
       "wrong": [
         "Brazylia",
@@ -67428,7 +67417,7 @@ module GameRoomContent
       "id": "4652c9058b90",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Hokeista Guy Lafleur?",
+      "prompt": "Którego z wymienionych państw był obywatelem Guy Lafleur?",
       "correct": "Kanada",
       "wrong": [
         "Brazylia",
@@ -67440,7 +67429,7 @@ module GameRoomContent
       "id": "0f8160b81562",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Hokeista Henrik Lundqvist?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Henrik Lundqvist?",
       "correct": "Szwecja",
       "wrong": [
         "Polska",
@@ -67452,7 +67441,7 @@ module GameRoomContent
       "id": "c0ebe93fd6f9",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Hokeista Henrik Sedin?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Henrik Sedin?",
       "correct": "Szwecja",
       "wrong": [
         "Urugwaj",
@@ -67464,7 +67453,7 @@ module GameRoomContent
       "id": "da51fd114a4c",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Hokeista Henrik Zetterberg?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Henrik Zetterberg?",
       "correct": "Szwecja",
       "wrong": [
         "Haiti",
@@ -67476,7 +67465,7 @@ module GameRoomContent
       "id": "9402a9c3bca8",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Hokeista Jack Hughes?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Jack Hughes?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Wielka Brytania",
@@ -67488,7 +67477,7 @@ module GameRoomContent
       "id": "16efcfaa3b5e",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Hokeista Jari Kurri?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Jari Kurri?",
       "correct": "Finlandia",
       "wrong": [
         "Wielka Brytania",
@@ -67500,7 +67489,7 @@ module GameRoomContent
       "id": "a8f7e0842e11",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Hokeista Jarome Iginla?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Jarome Iginla?",
       "correct": "Kanada",
       "wrong": [
         "Słowacja",
@@ -67512,7 +67501,7 @@ module GameRoomContent
       "id": "6b991dfab728",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Hokeista Jean Béliveau?",
+      "prompt": "Którego z wymienionych państw był obywatelem Jean Béliveau?",
       "correct": "Kanada",
       "wrong": [
         "Nowa Zelandia",
@@ -67524,7 +67513,7 @@ module GameRoomContent
       "id": "0365da4f0a11",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Hokeista Joe Sakic?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Joe Sakic?",
       "correct": "Kanada",
       "wrong": [
         "Polska",
@@ -67536,7 +67525,7 @@ module GameRoomContent
       "id": "c448000827f4",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Hokeista Jonathan Toews?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Jonathan Toews?",
       "correct": "Kanada",
       "wrong": [
         "Brazylia",
@@ -67548,7 +67537,7 @@ module GameRoomContent
       "id": "6477ed5cc9dc",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Hokeista Kiriłł Kaprizow?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Kiriłł Kaprizow?",
       "correct": "Rosja",
       "wrong": [
         "Brazylia",
@@ -67560,7 +67549,7 @@ module GameRoomContent
       "id": "077b8b7bd5c3",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Hokeista Leon Draisaitl?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Leon Draisaitl?",
       "correct": "Niemcy",
       "wrong": [
         "Urugwaj",
@@ -67572,7 +67561,7 @@ module GameRoomContent
       "id": "6cb5eef59253",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Hokeista Marc-André Fleury?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Marc-André Fleury?",
       "correct": "Kanada",
       "wrong": [
         "Szwecja",
@@ -67584,7 +67573,7 @@ module GameRoomContent
       "id": "a3c91f09cd7f",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Hokeista Marián Hossa?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Marián Hossa?",
       "correct": "Słowacja",
       "wrong": [
         "Argentyna",
@@ -67596,7 +67585,7 @@ module GameRoomContent
       "id": "26be16720cf1",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Hokeista Mark Messier?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Mark Messier?",
       "correct": "Kanada",
       "wrong": [
         "Turcja",
@@ -67608,7 +67597,7 @@ module GameRoomContent
       "id": "baa989cadf31",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Hokeista Martin St. Louis?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Martin St. Louis?",
       "correct": "Kanada",
       "wrong": [
         "Chile",
@@ -67620,7 +67609,7 @@ module GameRoomContent
       "id": "6e224c4bf2ec",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Hokeista Mats Sundin?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Mats Sundin?",
       "correct": "Szwecja",
       "wrong": [
         "Singapur",
@@ -67632,7 +67621,7 @@ module GameRoomContent
       "id": "c65842ff2bc1",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Hokeista Maurice Richard?",
+      "prompt": "Którego z wymienionych państw był obywatelem Maurice Richard?",
       "correct": "Kanada",
       "wrong": [
         "Łotwa",
@@ -67644,7 +67633,7 @@ module GameRoomContent
       "id": "612de2c3283f",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Hokeista Mike Modano?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Mike Modano?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Finlandia",
@@ -67656,7 +67645,7 @@ module GameRoomContent
       "id": "2c37f1ed9590",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Hokeista Mike Smith?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Mike Smith?",
       "correct": "Kanada",
       "wrong": [
         "Wielka Brytania",
@@ -67668,7 +67657,7 @@ module GameRoomContent
       "id": "3aabadedae46",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Hokeista Nathan MacKinnon?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Nathan MacKinnon?",
       "correct": "Kanada",
       "wrong": [
         "Szwecja",
@@ -67680,7 +67669,7 @@ module GameRoomContent
       "id": "59f9e5b33e68",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Hokeista Nicklas Lidström?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Nicklas Lidström?",
       "correct": "Szwecja",
       "wrong": [
         "Czechy",
@@ -67692,7 +67681,7 @@ module GameRoomContent
       "id": "aa6cfa82b32e",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Hokeista Patrick Kane?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Patrick Kane?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Włochy",
@@ -67704,7 +67693,7 @@ module GameRoomContent
       "id": "d1213e04be28",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Hokeista Patrick Roy?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Patrick Roy?",
       "correct": "Kanada",
       "wrong": [
         "Argentyna",
@@ -67716,7 +67705,7 @@ module GameRoomContent
       "id": "5ff31cd257eb",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Hokeista Paul Kariya?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Paul Kariya?",
       "correct": "Kanada",
       "wrong": [
         "Chile",
@@ -67728,7 +67717,7 @@ module GameRoomContent
       "id": "98a1ba9436a2",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Hokeista Peter Forsberg?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Peter Forsberg?",
       "correct": "Szwecja",
       "wrong": [
         "Chorwacja",
@@ -67740,7 +67729,7 @@ module GameRoomContent
       "id": "084be44d7775",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Hokeista Phil Esposito?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Phil Esposito?",
       "correct": "Kanada",
       "wrong": [
         "Norwegia",
@@ -67752,7 +67741,7 @@ module GameRoomContent
       "id": "57c200c0dd62",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Hokeista Roberto Luongo?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Roberto Luongo?",
       "correct": "Kanada",
       "wrong": [
         "Hiszpania",
@@ -67764,7 +67753,7 @@ module GameRoomContent
       "id": "5dd1134b18ab",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Hokeista Saku Koivu?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Saku Koivu?",
       "correct": "Finlandia",
       "wrong": [
         "Indie",
@@ -67776,7 +67765,7 @@ module GameRoomContent
       "id": "459021ce7ff7",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Hokeista Scott Niedermayer?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Scott Niedermayer?",
       "correct": "Kanada",
       "wrong": [
         "Cypr",
@@ -67788,7 +67777,7 @@ module GameRoomContent
       "id": "7fffda6c323a",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Hokeista Siergiej Makarow?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Siergiej Makarow?",
       "correct": "Rosja",
       "wrong": [
         "Polska",
@@ -67800,7 +67789,7 @@ module GameRoomContent
       "id": "0b58096a82ad",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Hokeista Siergiej Moziakin?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Siergiej Moziakin?",
       "correct": "Rosja",
       "wrong": [
         "Turcja",
@@ -67812,7 +67801,7 @@ module GameRoomContent
       "id": "14e60569b3bd",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Hokeista Steve Yzerman?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Steve Yzerman?",
       "correct": "Kanada",
       "wrong": [
         "Serbia",
@@ -67824,7 +67813,7 @@ module GameRoomContent
       "id": "bbb28dcc8786",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Hokeista Sven Johansson?",
+      "prompt": "Którego z wymienionych państw był obywatelem Sven Johansson?",
       "correct": "Szwecja",
       "wrong": [
         "Chile",
@@ -67836,7 +67825,7 @@ module GameRoomContent
       "id": "28f3c0c3b13d",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Hokeista Tuukka Rask?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Tuukka Rask?",
       "correct": "Finlandia",
       "wrong": [
         "Ukraina",
@@ -67848,7 +67837,7 @@ module GameRoomContent
       "id": "6877569064a5",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Hokeista Wsiewołod Bobrow?",
+      "prompt": "Którego z wymienionych państw był obywatelem Wsiewołod Bobrow?",
       "correct": "Związek Socjalistycznych Republik Radzieckich",
       "wrong": [
         "Królestwo Jugosławii",
@@ -67875,7 +67864,7 @@ module GameRoomContent
       "id": "cc6b02ef508c",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Kierowca Adrián Campos?",
+      "prompt": "Którego z wymienionych państw był obywatelem Adrián Campos?",
       "correct": "Hiszpania",
       "wrong": [
         "Grecja",
@@ -67887,7 +67876,7 @@ module GameRoomContent
       "id": "1760134732ea",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Kierowca Alessandro Zanardi?",
+      "prompt": "Którego z wymienionych państw był obywatelem Alessandro Zanardi?",
       "correct": "Włochy",
       "wrong": [
         "Serbia",
@@ -67899,7 +67888,7 @@ module GameRoomContent
       "id": "452f3ee15e6b",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Kierowca Brendon Hartley?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Brendon Hartley?",
       "correct": "Nowa Zelandia",
       "wrong": [
         "Chile",
@@ -67911,7 +67900,7 @@ module GameRoomContent
       "id": "229c63cadafc",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Kierowca Hideki Noda?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Hideki Noda?",
       "correct": "Japonia",
       "wrong": [
         "Włochy",
@@ -67923,7 +67912,7 @@ module GameRoomContent
       "id": "f45a09137c11",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Kierowca Jaime Alguersuari?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Jaime Alguersuari?",
       "correct": "Hiszpania",
       "wrong": [
         "Brazylia",
@@ -67935,7 +67924,7 @@ module GameRoomContent
       "id": "903663df721c",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Kierowca Jo Siffert?",
+      "prompt": "Którego z wymienionych państw był obywatelem Jo Siffert?",
       "correct": "Szwajcaria",
       "wrong": [
         "Urugwaj",
@@ -67947,7 +67936,7 @@ module GameRoomContent
       "id": "57d0cb709d04",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Kierowca Jolyon Palmer?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Jolyon Palmer?",
       "correct": "Wielka Brytania",
       "wrong": [
         "Kanada",
@@ -67959,7 +67948,7 @@ module GameRoomContent
       "id": "f4776bb8d43d",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Kierowca Ken Kavanagh?",
+      "prompt": "Którego z wymienionych państw był obywatelem Ken Kavanagh?",
       "correct": "Australia",
       "wrong": [
         "Czechy",
@@ -67971,7 +67960,7 @@ module GameRoomContent
       "id": "965e48f6b0cb",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Kierowca Luis Pérez-Sala?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Luis Pérez-Sala?",
       "correct": "Hiszpania",
       "wrong": [
         "Serbia",
@@ -67983,7 +67972,7 @@ module GameRoomContent
       "id": "95f436a07017",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Kierowca Nino Vaccarella?",
+      "prompt": "Którego z wymienionych państw był obywatelem Nino Vaccarella?",
       "correct": "Włochy",
       "wrong": [
         "Szwecja",
@@ -67995,7 +67984,7 @@ module GameRoomContent
       "id": "76233530bd10",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Kierowca Olivier Gendebien?",
+      "prompt": "Którego z wymienionych państw był obywatelem Olivier Gendebien?",
       "correct": "Belgia",
       "wrong": [
         "Australia",
@@ -68007,7 +67996,7 @@ module GameRoomContent
       "id": "0fe357a86853",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Kierowca Pascal Wehrlein?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Pascal Wehrlein?",
       "correct": "Niemcy",
       "wrong": [
         "Nowa Zelandia",
@@ -68019,7 +68008,7 @@ module GameRoomContent
       "id": "22e61bf8203e",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Kierowca Paul di Resta?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Paul di Resta?",
       "correct": "Wielka Brytania",
       "wrong": [
         "Finlandia",
@@ -68031,7 +68020,7 @@ module GameRoomContent
       "id": "c5d938153ea7",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Kierowca Philippe Streiff?",
+      "prompt": "Którego z wymienionych państw był obywatelem Philippe Streiff?",
       "correct": "Francja",
       "wrong": [
         "Słowacja",
@@ -68043,7 +68032,7 @@ module GameRoomContent
       "id": "15c584af2322",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Kierowca Rio Haryanto?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Rio Haryanto?",
       "correct": "Indonezja",
       "wrong": [
         "Rumunia",
@@ -68055,7 +68044,7 @@ module GameRoomContent
       "id": "0a4cb326bc91",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Kierowca Roberto Merhi?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Roberto Merhi?",
       "correct": "Hiszpania",
       "wrong": [
         "Serbia",
@@ -68067,7 +68056,7 @@ module GameRoomContent
       "id": "c8324eb614ac",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Kierowca Toto Wolff?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Toto Wolff?",
       "correct": "Austria",
       "wrong": [
         "Ukraina",
@@ -68079,7 +68068,7 @@ module GameRoomContent
       "id": "9297240e31f7",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Kierowca Àlex Soler-Roig?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Àlex Soler-Roig?",
       "correct": "Hiszpania",
       "wrong": [
         "Belgia",
@@ -68187,7 +68176,7 @@ module GameRoomContent
       "id": "fade5ad31ec0",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Koszykarz Bill Walton?",
+      "prompt": "Którego z wymienionych państw był obywatelem Bill Walton?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Łotwa",
@@ -68199,7 +68188,7 @@ module GameRoomContent
       "id": "f41287c58b3a",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Koszykarz Dominique Wilkins?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Dominique Wilkins?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Japonia",
@@ -68211,7 +68200,7 @@ module GameRoomContent
       "id": "d77babe8fb0a",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Koszykarz Gary Payton?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Gary Payton?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Chorwacja",
@@ -68223,7 +68212,7 @@ module GameRoomContent
       "id": "449f0bdad42c",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Koszykarz Juan Carlos Navarro?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Juan Carlos Navarro?",
       "correct": "Hiszpania",
       "wrong": [
         "Szwecja",
@@ -68235,7 +68224,7 @@ module GameRoomContent
       "id": "f96a57bdb38c",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Koszykarz Lenny Wilkens?",
+      "prompt": "Którego z wymienionych państw był obywatelem Lenny Wilkens?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Urugwaj",
@@ -68247,7 +68236,7 @@ module GameRoomContent
       "id": "36a948462eaa",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Koszykarz Rasheed Wallace?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Rasheed Wallace?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Polska",
@@ -68259,7 +68248,7 @@ module GameRoomContent
       "id": "bf554ce9ee04",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Koszykarz Rudy Gobert?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Rudy Gobert?",
       "correct": "Francja",
       "wrong": [
         "Białoruś",
@@ -68271,7 +68260,7 @@ module GameRoomContent
       "id": "ee7a0cf5be38",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Koszykarz Steve Kerr?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Steve Kerr?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Chile",
@@ -71319,7 +71308,7 @@ module GameRoomContent
       "id": "2a8494cc4fce",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Siatkarz Aleksandar Atanasijević?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Aleksandar Atanasijević?",
       "correct": "Serbia",
       "wrong": [
         "Meksyk",
@@ -71355,7 +71344,7 @@ module GameRoomContent
       "id": "e65cfa10b6a4",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Siatkarz Aleksandr Wołkow?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Aleksandr Wołkow?",
       "correct": "Rosja",
       "wrong": [
         "Serbia",
@@ -71391,7 +71380,7 @@ module GameRoomContent
       "id": "6816791df7f2",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Siatkarz Andrea Anastasi?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Andrea Anastasi?",
       "correct": "Włochy",
       "wrong": [
         "Polska",
@@ -71415,7 +71404,7 @@ module GameRoomContent
       "id": "080204ead14e",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Siatkarz Andrea Giani?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Andrea Giani?",
       "correct": "Włochy",
       "wrong": [
         "Hiszpania",
@@ -71451,7 +71440,7 @@ module GameRoomContent
       "id": "84a0cfcdec3f",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Siatkarz Barthélémy Chinenyeze?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Barthélémy Chinenyeze?",
       "correct": "Francja",
       "wrong": [
         "Maroko",
@@ -71499,7 +71488,7 @@ module GameRoomContent
       "id": "4e5280e9b1a8",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Siatkarz Bartosz Kurek?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Bartosz Kurek?",
       "correct": "Polska",
       "wrong": [
         "Niemcy",
@@ -71523,7 +71512,7 @@ module GameRoomContent
       "id": "b641241dcb18",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Siatkarz Bernardo Rezende?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Bernardo Rezende?",
       "correct": "Brazylia",
       "wrong": [
         "Hiszpania",
@@ -71619,7 +71608,7 @@ module GameRoomContent
       "id": "1df708f7b2c6",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Siatkarz Cristian Savani?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Cristian Savani?",
       "correct": "Włochy",
       "wrong": [
         "Polska",
@@ -71655,7 +71644,7 @@ module GameRoomContent
       "id": "cac0a0110e47",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Siatkarz Daniel Castellani?",
+      "prompt": "Którego z wymienionych państw był obywatelem Daniel Castellani?",
       "correct": "Argentyna",
       "wrong": [
         "Brazylia",
@@ -71679,7 +71668,7 @@ module GameRoomContent
       "id": "c9f7b24cacd5",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Siatkarz Dante Amaral?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Dante Amaral?",
       "correct": "Brazylia",
       "wrong": [
         "Holandia",
@@ -71715,7 +71704,7 @@ module GameRoomContent
       "id": "9eb3c404e2b1",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Siatkarz David Lee (siatkarz)?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem David Lee (siatkarz)?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Brazylia",
@@ -71823,7 +71812,7 @@ module GameRoomContent
       "id": "e72b94344d1d",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Siatkarz Earvin Ngapeth?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Earvin Ngapeth?",
       "correct": "Francja",
       "wrong": [
         "Grecja",
@@ -71859,7 +71848,7 @@ module GameRoomContent
       "id": "23a05d0f88b3",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Siatkarz Emanuele Birarelli?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Emanuele Birarelli?",
       "correct": "Włochy",
       "wrong": [
         "Irlandia Północna",
@@ -72051,7 +72040,7 @@ module GameRoomContent
       "id": "92f06c020564",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Siatkarz Julio Velasco?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Julio Velasco?",
       "correct": "Argentyna",
       "wrong": [
         "Rumunia",
@@ -72111,7 +72100,7 @@ module GameRoomContent
       "id": "53abcdb8f69e",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Siatkarz Lorenzo Bernardi?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Lorenzo Bernardi?",
       "correct": "Włochy",
       "wrong": [
         "Stany Zjednoczone",
@@ -72147,7 +72136,7 @@ module GameRoomContent
       "id": "e5eb0f55d4e4",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Siatkarz Luigi Mastrangelo?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Luigi Mastrangelo?",
       "correct": "Włochy",
       "wrong": [
         "Libia",
@@ -72171,7 +72160,7 @@ module GameRoomContent
       "id": "5074e3a0c61e",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Siatkarz Maksim Michajłow?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Maksim Michajłow?",
       "correct": "Rosja",
       "wrong": [
         "Chińska Republika Ludowa",
@@ -72207,7 +72196,7 @@ module GameRoomContent
       "id": "6dd166936220",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Siatkarz Mariusz Wlazły?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Mariusz Wlazły?",
       "correct": "Polska",
       "wrong": [
         "Hiszpania",
@@ -72243,7 +72232,7 @@ module GameRoomContent
       "id": "2d0bf6cb6031",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Siatkarz Matej Kazijski?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Matej Kazijski?",
       "correct": "Bułgaria",
       "wrong": [
         "Stany Zjednoczone",
@@ -72303,7 +72292,7 @@ module GameRoomContent
       "id": "ba238f250b41",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Siatkarz Micah Christenson?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Micah Christenson?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Niemcy",
@@ -72339,7 +72328,7 @@ module GameRoomContent
       "id": "2386fa1f7414",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Siatkarz Michał Kubiak?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Michał Kubiak?",
       "correct": "Polska",
       "wrong": [
         "Węgry",
@@ -72375,7 +72364,7 @@ module GameRoomContent
       "id": "4d20dc37f3dc",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Siatkarz Michel Constantin?",
+      "prompt": "Którego z wymienionych państw był obywatelem Michel Constantin?",
       "correct": "Francja",
       "wrong": [
         "Iran",
@@ -72387,7 +72376,7 @@ module GameRoomContent
       "id": "7a377320bd6c",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Siatkarz Murilo Endres?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Murilo Endres?",
       "correct": "Brazylia",
       "wrong": [
         "Madagaskar",
@@ -72423,7 +72412,7 @@ module GameRoomContent
       "id": "67d3c2f4883b",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Siatkarz Nikola Grbić?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Nikola Grbić?",
       "correct": "Serbia",
       "wrong": [
         "Bułgaria",
@@ -72459,7 +72448,7 @@ module GameRoomContent
       "id": "8c691c718206",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Siatkarz Nikołaj Apalikow?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Nikołaj Apalikow?",
       "correct": "Rosja",
       "wrong": [
         "Japonia",
@@ -72591,7 +72580,7 @@ module GameRoomContent
       "id": "d2e96055908d",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Siatkarz Saeid Marouf?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Saeid Marouf?",
       "correct": "Iran",
       "wrong": [
         "Kanada",
@@ -72615,7 +72604,7 @@ module GameRoomContent
       "id": "9b585c1f1c9c",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Siatkarz Siergiej Grankin?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Siergiej Grankin?",
       "correct": "Rosja",
       "wrong": [
         "Luksemburg",
@@ -72663,7 +72652,7 @@ module GameRoomContent
       "id": "6ee230903e7c",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Siatkarz Simone Giannelli?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Simone Giannelli?",
       "correct": "Włochy",
       "wrong": [
         "Holandia",
@@ -72687,7 +72676,7 @@ module GameRoomContent
       "id": "8983108ea101",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Siatkarz Sérgio Dutra Santos?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Sérgio Dutra Santos?",
       "correct": "Brazylia",
       "wrong": [
         "Wielka Brytania",
@@ -72723,7 +72712,7 @@ module GameRoomContent
       "id": "ef631279a151",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Siatkarz Vladimir Grbić?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Vladimir Grbić?",
       "correct": "Serbia",
       "wrong": [
         "Francja",
@@ -72771,7 +72760,7 @@ module GameRoomContent
       "id": "47d9691b0fb0",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Siatkarz William G. Morgan?",
+      "prompt": "Którego z wymienionych państw był obywatelem William G. Morgan?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Rumunia",
@@ -72819,7 +72808,7 @@ module GameRoomContent
       "id": "928fbfbedd91",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Skoczek Anders Bardal?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Anders Bardal?",
       "correct": "Norwegia",
       "wrong": [
         "Ukraina",
@@ -72843,7 +72832,7 @@ module GameRoomContent
       "id": "628a9fa1fc51",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Skoczek Anders Jacobsen?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Anders Jacobsen?",
       "correct": "Norwegia",
       "wrong": [
         "Sudan",
@@ -72867,7 +72856,7 @@ module GameRoomContent
       "id": "2e75403f0cbb",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Skoczek Andreas Felder?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Andreas Felder?",
       "correct": "Austria",
       "wrong": [
         "Estonia",
@@ -72879,7 +72868,7 @@ module GameRoomContent
       "id": "81ec0364ea73",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Skoczek Andreas Goldberger?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Andreas Goldberger?",
       "correct": "Austria",
       "wrong": [
         "Kenia",
@@ -72903,7 +72892,7 @@ module GameRoomContent
       "id": "ccc1615a1b0b",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Skoczek Andreas Kofler?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Andreas Kofler?",
       "correct": "Austria",
       "wrong": [
         "Włochy",
@@ -72927,7 +72916,7 @@ module GameRoomContent
       "id": "9532142385a8",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Skoczek Andreas Stjernen?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Andreas Stjernen?",
       "correct": "Norwegia",
       "wrong": [
         "Włochy",
@@ -72951,7 +72940,7 @@ module GameRoomContent
       "id": "4227f217158e",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Skoczek Andreas Wellinger?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Andreas Wellinger?",
       "correct": "Niemcy",
       "wrong": [
         "Austria",
@@ -72975,7 +72964,7 @@ module GameRoomContent
       "id": "f3453e46459d",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Skoczek Andreas Widhölzl?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Andreas Widhölzl?",
       "correct": "Austria",
       "wrong": [
         "Ukraina",
@@ -72999,7 +72988,7 @@ module GameRoomContent
       "id": "a4201fdf2bd4",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Skoczek Anssi Koivuranta?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Anssi Koivuranta?",
       "correct": "Finlandia",
       "wrong": [
         "Rumunia",
@@ -73035,7 +73024,7 @@ module GameRoomContent
       "id": "1e7d15656de0",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Skoczek Anže Lanišek?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Anže Lanišek?",
       "correct": "Słowenia",
       "wrong": [
         "Finlandia",
@@ -73059,7 +73048,7 @@ module GameRoomContent
       "id": "4834e01c90cc",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Skoczek Arnfinn Bergmann?",
+      "prompt": "Którego z wymienionych państw był obywatelem Arnfinn Bergmann?",
       "correct": "Norwegia",
       "wrong": [
         "Surinam",
@@ -73095,7 +73084,7 @@ module GameRoomContent
       "id": "0d6cae756014",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Skoczek Bill Demong?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Bill Demong?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Austria",
@@ -73143,7 +73132,7 @@ module GameRoomContent
       "id": "bea70f35b10a",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Skoczek Bjørn Einar Romøren?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Bjørn Einar Romøren?",
       "correct": "Norwegia",
       "wrong": [
         "Sudan Południowy",
@@ -73167,7 +73156,7 @@ module GameRoomContent
       "id": "ae5d428b64e5",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Skoczek Daiki Itō?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Daiki Itō?",
       "correct": "Japonia",
       "wrong": [
         "Chińska Republika Ludowa",
@@ -73179,7 +73168,7 @@ module GameRoomContent
       "id": "241f7ba22cce",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Skoczek Daniel-André Tande?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Daniel-André Tande?",
       "correct": "Norwegia",
       "wrong": [
         "Chińska Republika Ludowa",
@@ -73203,7 +73192,7 @@ module GameRoomContent
       "id": "51ae0ac3a42f",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Skoczek Dawid Kubacki?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Dawid Kubacki?",
       "correct": "Polska",
       "wrong": [
         "Bułgaria",
@@ -73239,7 +73228,7 @@ module GameRoomContent
       "id": "d9368b576d1e",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Skoczek Dieter Thoma?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Dieter Thoma?",
       "correct": "Niemcy",
       "wrong": [
         "Finlandia",
@@ -73275,7 +73264,7 @@ module GameRoomContent
       "id": "7b0107e1127a",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Skoczek Domen Prevc?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Domen Prevc?",
       "correct": "Słowenia",
       "wrong": [
         "Szwecja",
@@ -73311,7 +73300,7 @@ module GameRoomContent
       "id": "21029b139311",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Skoczek Ernst Vettori?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Ernst Vettori?",
       "correct": "Austria",
       "wrong": [
         "Estonia",
@@ -73395,7 +73384,7 @@ module GameRoomContent
       "id": "111318a93552",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Skoczek Gregor Schlierenzauer?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Gregor Schlierenzauer?",
       "correct": "Austria",
       "wrong": [
         "Turcja",
@@ -73467,7 +73456,7 @@ module GameRoomContent
       "id": "bcc6ff3b5dd9",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Skoczek Jacob Tullin Thams?",
+      "prompt": "Którego z wymienionych państw był obywatelem Jacob Tullin Thams?",
       "correct": "Norwegia",
       "wrong": [
         "Stany Zjednoczone",
@@ -73527,7 +73516,7 @@ module GameRoomContent
       "id": "f933ecebcbc1",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Skoczek Janne Ahonen?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Janne Ahonen?",
       "correct": "Finlandia",
       "wrong": [
         "Japonia",
@@ -73563,7 +73552,7 @@ module GameRoomContent
       "id": "72c8e968757e",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Skoczek Janne Happonen?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Janne Happonen?",
       "correct": "Finlandia",
       "wrong": [
         "Monako",
@@ -73707,7 +73696,7 @@ module GameRoomContent
       "id": "e028e6d42edc",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Skoczek Johan Remen Evensen?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Johan Remen Evensen?",
       "correct": "Norwegia",
       "wrong": [
         "Kazachstan",
@@ -73731,7 +73720,7 @@ module GameRoomContent
       "id": "630e7a896671",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Skoczek Johann Forfang?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Johann Forfang?",
       "correct": "Norwegia",
       "wrong": [
         "Mołdawia",
@@ -73779,7 +73768,7 @@ module GameRoomContent
       "id": "83158c80e7e8",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Skoczek Karl Geiger?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Karl Geiger?",
       "correct": "Niemcy",
       "wrong": [
         "Norwegia",
@@ -73803,7 +73792,7 @@ module GameRoomContent
       "id": "459845d7513d",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Skoczek Kazuyoshi Funaki?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Kazuyoshi Funaki?",
       "correct": "Japonia",
       "wrong": [
         "Kanada",
@@ -73839,7 +73828,7 @@ module GameRoomContent
       "id": "657c5d6ae5f8",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Skoczek Lars Bystøl?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Lars Bystøl?",
       "correct": "Norwegia",
       "wrong": [
         "Stany Zjednoczone",
@@ -73863,7 +73852,7 @@ module GameRoomContent
       "id": "38874e8ce374",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Skoczek Manuel Fettner?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Manuel Fettner?",
       "correct": "Austria",
       "wrong": [
         "Egipt",
@@ -73887,7 +73876,7 @@ module GameRoomContent
       "id": "ba9168c4005e",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Skoczek Mario Stecher?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Mario Stecher?",
       "correct": "Austria",
       "wrong": [
         "Norwegia",
@@ -73911,7 +73900,7 @@ module GameRoomContent
       "id": "c21d38e5a345",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Skoczek Marius Lindvik?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Marius Lindvik?",
       "correct": "Norwegia",
       "wrong": [
         "Południowa Afryka",
@@ -73923,7 +73912,7 @@ module GameRoomContent
       "id": "28f42413aa90",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Skoczek Markus Eisenbichler?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Markus Eisenbichler?",
       "correct": "Niemcy",
       "wrong": [
         "Demokratyczna Republika Konga",
@@ -73935,7 +73924,7 @@ module GameRoomContent
       "id": "73df0f590df4",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Skoczek Martin Höllwarth?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Martin Höllwarth?",
       "correct": "Austria",
       "wrong": [
         "Kanada",
@@ -73959,7 +73948,7 @@ module GameRoomContent
       "id": "74daee3e7954",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Skoczek Martin Koch?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Martin Koch?",
       "correct": "Austria",
       "wrong": [
         "Bośnia i Hercegowina",
@@ -73983,7 +73972,7 @@ module GameRoomContent
       "id": "dd959b7b9a38",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Skoczek Martin Schmitt?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Martin Schmitt?",
       "correct": "Niemcy",
       "wrong": [
         "Czechy",
@@ -73995,7 +73984,7 @@ module GameRoomContent
       "id": "6a8f6c78bdbe",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Skoczek Masahiko Harada?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Masahiko Harada?",
       "correct": "Japonia",
       "wrong": [
         "Kanada",
@@ -74019,7 +74008,7 @@ module GameRoomContent
       "id": "94fec909167c",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Skoczek Matti Hautamäki?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Matti Hautamäki?",
       "correct": "Finlandia",
       "wrong": [
         "Chińska Republika Ludowa",
@@ -74043,7 +74032,7 @@ module GameRoomContent
       "id": "cb42b1833732",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Skoczek Michael Hayböck?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Michael Hayböck?",
       "correct": "Austria",
       "wrong": [
         "Wielka Brytania",
@@ -74067,7 +74056,7 @@ module GameRoomContent
       "id": "26198ad452c2",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Skoczek Michael Uhrmann?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Michael Uhrmann?",
       "correct": "Niemcy",
       "wrong": [
         "Czechy",
@@ -74091,7 +74080,7 @@ module GameRoomContent
       "id": "9e5a42338e3c",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Skoczek Niilo Halonen?",
+      "prompt": "Którego z wymienionych państw był obywatelem Niilo Halonen?",
       "correct": "Finlandia",
       "wrong": [
         "Wietnam",
@@ -74115,7 +74104,7 @@ module GameRoomContent
       "id": "d7e6e15a630a",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Skoczek Noriaki Kasai?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Noriaki Kasai?",
       "correct": "Japonia",
       "wrong": [
         "Włochy",
@@ -74139,7 +74128,7 @@ module GameRoomContent
       "id": "a11105124f17",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Skoczek Oddbjørn Hagen?",
+      "prompt": "Którego z wymienionych państw był obywatelem Oddbjørn Hagen?",
       "correct": "Norwegia",
       "wrong": [
         "Czechy",
@@ -74175,7 +74164,7 @@ module GameRoomContent
       "id": "b9a84b4b68ba",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Skoczek Peter Prevc?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Peter Prevc?",
       "correct": "Słowenia",
       "wrong": [
         "Austria",
@@ -74211,7 +74200,7 @@ module GameRoomContent
       "id": "4d23b2b257ed",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Skoczek Piotr Żyła?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Piotr Żyła?",
       "correct": "Polska",
       "wrong": [
         "Norwegia",
@@ -74247,7 +74236,7 @@ module GameRoomContent
       "id": "dbe8a887c639",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Skoczek Primož Peterka?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Primož Peterka?",
       "correct": "Słowenia",
       "wrong": [
         "Estonia",
@@ -74283,7 +74272,7 @@ module GameRoomContent
       "id": "06235108eb63",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Skoczek Primož Ulaga?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Primož Ulaga?",
       "correct": "Słowenia",
       "wrong": [
         "Łotwa",
@@ -74307,7 +74296,7 @@ module GameRoomContent
       "id": "b215ffe02ae9",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Skoczek Richard Freitag?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Richard Freitag?",
       "correct": "Niemcy",
       "wrong": [
         "Kanada",
@@ -74331,7 +74320,7 @@ module GameRoomContent
       "id": "869751063151",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Skoczek Roar Ljøkelsøy?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Roar Ljøkelsøy?",
       "correct": "Norwegia",
       "wrong": [
         "Chińska Republika Ludowa",
@@ -74355,7 +74344,7 @@ module GameRoomContent
       "id": "f4b697291646",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Skoczek Robert Johansson?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Robert Johansson?",
       "correct": "Norwegia",
       "wrong": [
         "Estonia",
@@ -74379,7 +74368,7 @@ module GameRoomContent
       "id": "ebcb3886c8a7",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Skoczek Robert Kranjec?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Robert Kranjec?",
       "correct": "Słowenia",
       "wrong": [
         "Trynidad i Tobago",
@@ -74391,7 +74380,7 @@ module GameRoomContent
       "id": "baf1082bb1ef",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Skoczek Ryōyū Kobayashi?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Ryōyū Kobayashi?",
       "correct": "Japonia",
       "wrong": [
         "Chińska Republika Ludowa",
@@ -74415,7 +74404,7 @@ module GameRoomContent
       "id": "879d18386721",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Skoczek Severin Freund?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Severin Freund?",
       "correct": "Niemcy",
       "wrong": [
         "Rumunia",
@@ -74451,7 +74440,7 @@ module GameRoomContent
       "id": "6ad5f0a09e07",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Skoczek Stefan Kraft?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Stefan Kraft?",
       "correct": "Austria",
       "wrong": [
         "Węgry",
@@ -74499,7 +74488,7 @@ module GameRoomContent
       "id": "74145b513e8d",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Skoczek Takanobu Okabe?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Takanobu Okabe?",
       "correct": "Japonia",
       "wrong": [
         "Rosja",
@@ -74523,7 +74512,7 @@ module GameRoomContent
       "id": "9eb42f9a0e6a",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Skoczek Thomas Diethart?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Thomas Diethart?",
       "correct": "Austria",
       "wrong": [
         "Curaçao",
@@ -74535,7 +74524,7 @@ module GameRoomContent
       "id": "3eb02f135c69",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Skoczek Thomas Morgenstern?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Thomas Morgenstern?",
       "correct": "Austria",
       "wrong": [
         "Panama",
@@ -74607,7 +74596,7 @@ module GameRoomContent
       "id": "b7bc49e1b8f3",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Skoczek Timi Zajc?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Timi Zajc?",
       "correct": "Słowenia",
       "wrong": [
         "Polska",
@@ -74619,7 +74608,7 @@ module GameRoomContent
       "id": "774a5422631f",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Skoczek Tom Hilde?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Tom Hilde?",
       "correct": "Norwegia",
       "wrong": [
         "Estonia",
@@ -74751,7 +74740,7 @@ module GameRoomContent
       "id": "6899b0907719",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Skoczek Wojciech Fortuna?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Wojciech Fortuna?",
       "correct": "Polska",
       "wrong": [
         "Bośnia i Hercegowina",
@@ -74775,7 +74764,7 @@ module GameRoomContent
       "id": "e45a89c1998b",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Skoczek Wolfgang Loitzl?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Wolfgang Loitzl?",
       "correct": "Austria",
       "wrong": [
         "Węgry",
@@ -74811,7 +74800,7 @@ module GameRoomContent
       "id": "c2623e2a6b96",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Skoczkini Anna Odine Strøm?",
+      "prompt": "Którego z wymienionych państw jest lub była obywatelką Anna Odine Strøm?",
       "correct": "Norwegia",
       "wrong": [
         "Austria",
@@ -74835,7 +74824,7 @@ module GameRoomContent
       "id": "c1469be7202c",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Skoczkini Carina Vogt?",
+      "prompt": "Którego z wymienionych państw jest lub była obywatelką Carina Vogt?",
       "correct": "Niemcy",
       "wrong": [
         "Polska",
@@ -74859,7 +74848,7 @@ module GameRoomContent
       "id": "eba77d295612",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Skoczkini Chiara Kreuzer?",
+      "prompt": "Którego z wymienionych państw jest lub była obywatelką Chiara Kreuzer?",
       "correct": "Austria",
       "wrong": [
         "Kazachstan",
@@ -74883,7 +74872,7 @@ module GameRoomContent
       "id": "1419cde2c9b3",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Skoczkini Coline Mattel?",
+      "prompt": "Którego z wymienionych państw jest lub była obywatelką Coline Mattel?",
       "correct": "Francja",
       "wrong": [
         "Wielka Brytania",
@@ -74907,7 +74896,7 @@ module GameRoomContent
       "id": "f20bf72bca1a",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Skoczkini Daniela Iraschko-Stolz?",
+      "prompt": "Którego z wymienionych państw jest lub była obywatelką Daniela Iraschko-Stolz?",
       "correct": "Austria",
       "wrong": [
         "Japonia",
@@ -74931,7 +74920,7 @@ module GameRoomContent
       "id": "b6dd690542cb",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Skoczkini Ema Klinec?",
+      "prompt": "Którego z wymienionych państw jest lub była obywatelką Ema Klinec?",
       "correct": "Słowenia",
       "wrong": [
         "Czechy",
@@ -74955,7 +74944,7 @@ module GameRoomContent
       "id": "149fd8678664",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Skoczkini Katharina Althaus?",
+      "prompt": "Którego z wymienionych państw jest lub była obywatelką Katharina Althaus?",
       "correct": "Niemcy",
       "wrong": [
         "Wielka Brytania",
@@ -74979,7 +74968,7 @@ module GameRoomContent
       "id": "ca1dfb68d22e",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Skoczkini Maren Lundby?",
+      "prompt": "Którego z wymienionych państw jest lub była obywatelką Maren Lundby?",
       "correct": "Norwegia",
       "wrong": [
         "Tanzania",
@@ -75003,7 +74992,7 @@ module GameRoomContent
       "id": "ebff6514ddbf",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Skoczkini Nika Prevc?",
+      "prompt": "Którego z wymienionych państw jest lub była obywatelką Nika Prevc?",
       "correct": "Słowenia",
       "wrong": [
         "Stany Zjednoczone",
@@ -75027,7 +75016,7 @@ module GameRoomContent
       "id": "b11e4848ab24",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Skoczkini Nika Vodan?",
+      "prompt": "Którego z wymienionych państw jest lub była obywatelką Nika Vodan?",
       "correct": "Słowenia",
       "wrong": [
         "Włochy",
@@ -75051,7 +75040,7 @@ module GameRoomContent
       "id": "098fe35d344d",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Skoczkini Sara Takanashi?",
+      "prompt": "Którego z wymienionych państw jest lub była obywatelką Sara Takanashi?",
       "correct": "Japonia",
       "wrong": [
         "Stany Zjednoczone",
@@ -75075,7 +75064,7 @@ module GameRoomContent
       "id": "8b5336627af6",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Skoczkini Sarah Hendrickson?",
+      "prompt": "Którego z wymienionych państw jest lub była obywatelką Sarah Hendrickson?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Chińska Republika Ludowa",
@@ -75099,7 +75088,7 @@ module GameRoomContent
       "id": "9e64bc74c052",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Skoczkini Urša Bogataj?",
+      "prompt": "Którego z wymienionych państw jest lub była obywatelką Urša Bogataj?",
       "correct": "Słowenia",
       "wrong": [
         "Bośnia i Hercegowina",
@@ -76323,7 +76312,7 @@ module GameRoomContent
       "id": "6924914c22e3",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Tatyana McFadden?",
+      "prompt": "Którego z wymienionych państw jest lub była obywatelką Tatyana McFadden?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Hiszpania",
@@ -76383,7 +76372,7 @@ module GameRoomContent
       "id": "37b764cd45ef",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Tenisista Bob Bryan?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Bob Bryan?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Chorwacja",
@@ -76407,7 +76396,7 @@ module GameRoomContent
       "id": "c365034b1614",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Tenisista Casper Ruud?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Casper Ruud?",
       "correct": "Norwegia",
       "wrong": [
         "Rumunia",
@@ -76431,7 +76420,7 @@ module GameRoomContent
       "id": "4dcf265ae625",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Tenisista Dmitrij Tursunow?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Dmitrij Tursunow?",
       "correct": "Rosja",
       "wrong": [
         "Serbia",
@@ -76443,7 +76432,7 @@ module GameRoomContent
       "id": "8c391df3c611",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Tenisista Ernests Gulbis?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Ernests Gulbis?",
       "correct": "Łotwa",
       "wrong": [
         "Nowa Zelandia",
@@ -76467,7 +76456,7 @@ module GameRoomContent
       "id": "d48dc46d4c37",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Tenisista Gastón Gaudio?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Gastón Gaudio?",
       "correct": "Argentyna",
       "wrong": [
         "Jamajka",
@@ -76491,7 +76480,7 @@ module GameRoomContent
       "id": "8ea9be9cd987",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Tenisista Ivo Karlović?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Ivo Karlović?",
       "correct": "Chorwacja",
       "wrong": [
         "Bułgaria",
@@ -76503,7 +76492,7 @@ module GameRoomContent
       "id": "a6e7fc93dc4a",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Tenisista Jack Sock?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Jack Sock?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Białoruś",
@@ -76551,7 +76540,7 @@ module GameRoomContent
       "id": "ec98ff64b074",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Tenisista Jonas Björkman?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Jonas Björkman?",
       "correct": "Szwecja",
       "wrong": [
         "Cypr",
@@ -76611,7 +76600,7 @@ module GameRoomContent
       "id": "6fdfbb865ddd",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Tenisista Mike Bryan?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Mike Bryan?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Azerbejdżan",
@@ -76623,7 +76612,7 @@ module GameRoomContent
       "id": "cfe93e106ed0",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Tenisista Nick Kyrgios?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Nick Kyrgios?",
       "correct": "Australia",
       "wrong": [
         "Grecja",
@@ -76635,7 +76624,7 @@ module GameRoomContent
       "id": "c716b708fc7b",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Tenisista Nicolas Mahut?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Nicolas Mahut?",
       "correct": "Francja",
       "wrong": [
         "Bułgaria",
@@ -76647,7 +76636,7 @@ module GameRoomContent
       "id": "f00feef83c39",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Tenisista Nicolás Almagro?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Nicolás Almagro?",
       "correct": "Hiszpania",
       "wrong": [
         "Grecja",
@@ -76695,7 +76684,7 @@ module GameRoomContent
       "id": "2ee14f42b75d",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Tenisista Richard Krajicek?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Richard Krajicek?",
       "correct": "Holandia",
       "wrong": [
         "Chińska Republika Ludowa",
@@ -76707,7 +76696,7 @@ module GameRoomContent
       "id": "da20efcde336",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Tenisista Sergi Bruguera?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Sergi Bruguera?",
       "correct": "Hiszpania",
       "wrong": [
         "Finlandia",
@@ -76731,7 +76720,7 @@ module GameRoomContent
       "id": "827d1788b5b5",
       "category": "sport",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Tenisista Tim Henman?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Tim Henman?",
       "correct": "Wielka Brytania",
       "wrong": [
         "Nowa Zelandia",
@@ -77403,7 +77392,7 @@ module GameRoomContent
       "id": "47f37d935aa0",
       "category": "sport",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Asila Mirzayorova?",
+      "prompt": "Którego z wymienionych państw jest lub była obywatelką Asila Mirzayorova?",
       "correct": "Uzbekistan",
       "wrong": [
         "Włochy",
@@ -77427,7 +77416,7 @@ module GameRoomContent
       "id": "7168514b1842",
       "category": "sport",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Asya Miller?",
+      "prompt": "Którego z wymienionych państw jest lub była obywatelką Asya Miller?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Uzbekistan",
@@ -77487,7 +77476,7 @@ module GameRoomContent
       "id": "2c4a86843e2a",
       "category": "sport",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Francesca Porcellato?",
+      "prompt": "Którego z wymienionych państw jest lub była obywatelką Francesca Porcellato?",
       "correct": "Włochy",
       "wrong": [
         "Uzbekistan",
@@ -77523,7 +77512,7 @@ module GameRoomContent
       "id": "47cb6c707522",
       "category": "sport",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Jade Etherington?",
+      "prompt": "Którego z wymienionych państw jest lub była obywatelką Jade Etherington?",
       "correct": "Wielka Brytania",
       "wrong": [
         "Japonia",
@@ -77547,7 +77536,7 @@ module GameRoomContent
       "id": "50ddf106f93a",
       "category": "sport",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Jonnie Peacock?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Jonnie Peacock?",
       "correct": "Wielka Brytania",
       "wrong": [
         "Japonia",
@@ -78231,7 +78220,7 @@ module GameRoomContent
       "id": "0a86a5e91548",
       "category": "sport",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Lisa Banta?",
+      "prompt": "Którego z wymienionych państw jest lub była obywatelką Lisa Banta?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Brazylia",
@@ -78279,7 +78268,7 @@ module GameRoomContent
       "id": "f62abd1ca5ab",
       "category": "sport",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Martina Willing?",
+      "prompt": "Którego z wymienionych państw jest lub była obywatelką Martina Willing?",
       "correct": "Niemcy",
       "wrong": [
         "Ukraina",
@@ -78723,7 +78712,7 @@ module GameRoomContent
       "id": "e7dea4bd28da",
       "category": "sport",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Siatkarz Aleksiej Kazakow?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Aleksiej Kazakow?",
       "correct": "Rosja",
       "wrong": [
         "Iran",
@@ -78759,7 +78748,7 @@ module GameRoomContent
       "id": "e076c62630c2",
       "category": "sport",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Siatkarz Aleksiej Kuleszow?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Aleksiej Kuleszow?",
       "correct": "Rosja",
       "wrong": [
         "Holandia",
@@ -78771,7 +78760,7 @@ module GameRoomContent
       "id": "ed8e6ccd2347",
       "category": "sport",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Siatkarz Aleksiej Obmoczajew?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Aleksiej Obmoczajew?",
       "correct": "Rosja",
       "wrong": [
         "Seszele",
@@ -78795,7 +78784,7 @@ module GameRoomContent
       "id": "fc22ef351b31",
       "category": "sport",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Siatkarz Aleksiej Wierbow?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Aleksiej Wierbow?",
       "correct": "Rosja",
       "wrong": [
         "Holandia",
@@ -78855,7 +78844,7 @@ module GameRoomContent
       "id": "2c7a3bfa2e64",
       "category": "sport",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Siatkarz Alessandro Michieletto?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Alessandro Michieletto?",
       "correct": "Włochy",
       "wrong": [
         "Kuba",
@@ -78879,7 +78868,7 @@ module GameRoomContent
       "id": "0a5febd669f2",
       "category": "sport",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Siatkarz Alexander Brouwer?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Alexander Brouwer?",
       "correct": "Holandia",
       "wrong": [
         "Łotwa",
@@ -78903,7 +78892,7 @@ module GameRoomContent
       "id": "744b95948ef7",
       "category": "sport",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Siatkarz Anders Mol?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Anders Mol?",
       "correct": "Norwegia",
       "wrong": [
         "Brazylia",
@@ -78927,7 +78916,7 @@ module GameRoomContent
       "id": "b083f63ef63b",
       "category": "sport",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Siatkarz Anderson Rodrigues?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Anderson Rodrigues?",
       "correct": "Brazylia",
       "wrong": [
         "Holandia",
@@ -78951,7 +78940,7 @@ module GameRoomContent
       "id": "b4bc2c1fc1a9",
       "category": "sport",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Siatkarz Andrea Gardini?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Andrea Gardini?",
       "correct": "Włochy",
       "wrong": [
         "Chińska Republika Ludowa",
@@ -78999,7 +78988,7 @@ module GameRoomContent
       "id": "57590d09a735",
       "category": "sport",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Siatkarz Andrea Sartoretti?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Andrea Sartoretti?",
       "correct": "Włochy",
       "wrong": [
         "Portugalia",
@@ -79023,7 +79012,7 @@ module GameRoomContent
       "id": "270df40b4363",
       "category": "sport",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Siatkarz Andrea Zorzi?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Andrea Zorzi?",
       "correct": "Włochy",
       "wrong": [
         "Estonia",
@@ -79047,7 +79036,7 @@ module GameRoomContent
       "id": "9042a2a8bcc9",
       "category": "sport",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Siatkarz Andrija Gerić?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Andrija Gerić?",
       "correct": "Serbia",
       "wrong": [
         "Mołdawia",
@@ -79071,7 +79060,7 @@ module GameRoomContent
       "id": "00c387680364",
       "category": "sport",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Siatkarz Andrzej Niemczyk?",
+      "prompt": "Którego z wymienionych państw był obywatelem Andrzej Niemczyk?",
       "correct": "Polska",
       "wrong": [
         "Azerbejdżan",
@@ -79083,7 +79072,7 @@ module GameRoomContent
       "id": "91329cfb2b6c",
       "category": "sport",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Siatkarz André Nascimento?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem André Nascimento?",
       "correct": "Brazylia",
       "wrong": [
         "Azerbejdżan",
@@ -79119,7 +79108,7 @@ module GameRoomContent
       "id": "3e973f043093",
       "category": "sport",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Siatkarz Antoine Brizard?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Antoine Brizard?",
       "correct": "Francja",
       "wrong": [
         "Stany Zjednoczone",
@@ -79167,7 +79156,7 @@ module GameRoomContent
       "id": "607eaf674cea",
       "category": "sport",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Siatkarz Antonin Rouzier?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Antonin Rouzier?",
       "correct": "Francja",
       "wrong": [
         "Szwecja",
@@ -79191,7 +79180,7 @@ module GameRoomContent
       "id": "3045c0655b54",
       "category": "sport",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Siatkarz Bas van de Goor?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Bas van de Goor?",
       "correct": "Holandia",
       "wrong": [
         "Kuba",
@@ -79215,7 +79204,7 @@ module GameRoomContent
       "id": "fd91683c1b4b",
       "category": "sport",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Siatkarz Benjamin Toniutti?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Benjamin Toniutti?",
       "correct": "Francja",
       "wrong": [
         "Grecja",
@@ -79275,7 +79264,7 @@ module GameRoomContent
       "id": "040188a6eaca",
       "category": "sport",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Siatkarz Bob Ctvrtlik?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Bob Ctvrtlik?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Irlandia Północna",
@@ -79287,7 +79276,7 @@ module GameRoomContent
       "id": "a3a49e694df8",
       "category": "sport",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Siatkarz Bojan Janić?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Bojan Janić?",
       "correct": "Serbia",
       "wrong": [
         "Malezja",
@@ -79299,7 +79288,7 @@ module GameRoomContent
       "id": "962d46fde4d4",
       "category": "sport",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Siatkarz Bruno Lima?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Bruno Lima?",
       "correct": "Argentyna",
       "wrong": [
         "Węgry",
@@ -79311,7 +79300,7 @@ module GameRoomContent
       "id": "7a503057823c",
       "category": "sport",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Siatkarz Craig Buck?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Craig Buck?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Łotwa",
@@ -79347,7 +79336,7 @@ module GameRoomContent
       "id": "b133d8f63477",
       "category": "sport",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Siatkarz Cwetan Sokołow?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Cwetan Sokołow?",
       "correct": "Bułgaria",
       "wrong": [
         "Rumunia",
@@ -79383,7 +79372,7 @@ module GameRoomContent
       "id": "0afe70a046c1",
       "category": "sport",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Siatkarz Daryl Bultor?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Daryl Bultor?",
       "correct": "Francja",
       "wrong": [
         "Stany Zjednoczone",
@@ -79419,7 +79408,7 @@ module GameRoomContent
       "id": "11516d875145",
       "category": "sport",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Siatkarz Dmitrij Iljinych?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Dmitrij Iljinych?",
       "correct": "Rosja",
       "wrong": [
         "Bułgaria",
@@ -79455,7 +79444,7 @@ module GameRoomContent
       "id": "1373b6696ebe",
       "category": "sport",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Siatkarz Douglas Souza da Silva?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Douglas Souza da Silva?",
       "correct": "Brazylia",
       "wrong": [
         "Królestwo Danii",
@@ -79491,7 +79480,7 @@ module GameRoomContent
       "id": "4b841b59805e",
       "category": "sport",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Siatkarz Dragan Stanković?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Dragan Stanković?",
       "correct": "Serbia",
       "wrong": [
         "Włochy",
@@ -79539,7 +79528,7 @@ module GameRoomContent
       "id": "45bec870076a",
       "category": "sport",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Siatkarz Erik Shoji?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Erik Shoji?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Szwecja",
@@ -79599,7 +79588,7 @@ module GameRoomContent
       "id": "8838e85f41af",
       "category": "sport",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Siatkarz Fabian Drzyzga?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Fabian Drzyzga?",
       "correct": "Polska",
       "wrong": [
         "Łotwa",
@@ -79635,7 +79624,7 @@ module GameRoomContent
       "id": "d234537f908d",
       "category": "sport",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Siatkarz Facundo Conte?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Facundo Conte?",
       "correct": "Argentyna",
       "wrong": [
         "Dania",
@@ -79683,7 +79672,7 @@ module GameRoomContent
       "id": "da894e0533f0",
       "category": "sport",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Siatkarz Frederic Winters?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Frederic Winters?",
       "correct": "Kanada",
       "wrong": [
         "Rosja",
@@ -79719,7 +79708,7 @@ module GameRoomContent
       "id": "34abe6fb40b5",
       "category": "sport",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Siatkarz Garrett Muagututia?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Garrett Muagututia?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Hiszpania",
@@ -79731,7 +79720,7 @@ module GameRoomContent
       "id": "3d6831b5127f",
       "category": "sport",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Siatkarz Gavin Schmitt?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Gavin Schmitt?",
       "correct": "Kanada",
       "wrong": [
         "Estonia",
@@ -79791,7 +79780,7 @@ module GameRoomContent
       "id": "35f5454de90f",
       "category": "sport",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Siatkarz Gustavo Endres?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Gustavo Endres?",
       "correct": "Brazylia",
       "wrong": [
         "Kanada",
@@ -79827,7 +79816,7 @@ module GameRoomContent
       "id": "88f49f0e0a7a",
       "category": "sport",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Siatkarz Hugo Conte?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Hugo Conte?",
       "correct": "Argentyna",
       "wrong": [
         "Mongolia",
@@ -79851,7 +79840,7 @@ module GameRoomContent
       "id": "dcc3d3ce61fc",
       "category": "sport",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Siatkarz Iván Castellani?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Iván Castellani?",
       "correct": "Argentyna",
       "wrong": [
         "Węgry",
@@ -79935,7 +79924,7 @@ module GameRoomContent
       "id": "a0c545e9cf26",
       "category": "sport",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Siatkarz Jonas Reckermann?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Jonas Reckermann?",
       "correct": "Niemcy",
       "wrong": [
         "Norwegia",
@@ -80019,7 +80008,7 @@ module GameRoomContent
       "id": "11ed3fbe33d9",
       "category": "sport",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Siatkarz Jungo Morita?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Jungo Morita?",
       "correct": "Japonia",
       "wrong": [
         "Serbia",
@@ -80043,7 +80032,7 @@ module GameRoomContent
       "id": "2d3d8b8ff390",
       "category": "sport",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Siatkarz Jurij Bierieżko?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Jurij Bierieżko?",
       "correct": "Rosja",
       "wrong": [
         "Portugalia",
@@ -80079,7 +80068,7 @@ module GameRoomContent
       "id": "c661b33b7e70",
       "category": "sport",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Siatkarz Jurij Czesnokow?",
+      "prompt": "Którego z wymienionych państw był obywatelem Jurij Czesnokow?",
       "correct": "Związek Socjalistycznych Republik Radzieckich",
       "wrong": [
         "Cesarstwo Niemieckie",
@@ -80115,7 +80104,7 @@ module GameRoomContent
       "id": "e5525b827719",
       "category": "sport",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Siatkarz Kawika Shoji?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Kawika Shoji?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Brazylia",
@@ -80151,7 +80140,7 @@ module GameRoomContent
       "id": "482b5edde20b",
       "category": "sport",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Siatkarz Keith Erickson?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Keith Erickson?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Norwegia",
@@ -80235,7 +80224,7 @@ module GameRoomContent
       "id": "2f53cb72ed5e",
       "category": "sport",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Siatkarz Leandro Vissotto Neves?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Leandro Vissotto Neves?",
       "correct": "Brazylia",
       "wrong": [
         "Chińska Republika Ludowa",
@@ -80283,7 +80272,7 @@ module GameRoomContent
       "id": "6580cac46a5d",
       "category": "sport",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Siatkarz Luca Vettori?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Luca Vettori?",
       "correct": "Włochy",
       "wrong": [
         "Chile",
@@ -80343,7 +80332,7 @@ module GameRoomContent
       "id": "135add1503ef",
       "category": "sport",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Siatkarz Luciano De Cecco?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Luciano De Cecco?",
       "correct": "Argentyna",
       "wrong": [
         "Brazylia",
@@ -80367,7 +80356,7 @@ module GameRoomContent
       "id": "9127f1b91dcc",
       "category": "sport",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Siatkarz Marcin Możdżonek?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Marcin Możdżonek?",
       "correct": "Polska",
       "wrong": [
         "Wielka Brytania",
@@ -80391,7 +80380,7 @@ module GameRoomContent
       "id": "33c75155dace",
       "category": "sport",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Siatkarz Marcus Böhme?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Marcus Böhme?",
       "correct": "Niemcy",
       "wrong": [
         "Liechtenstein",
@@ -80667,7 +80656,7 @@ module GameRoomContent
       "id": "dc85053b7f3b",
       "category": "sport",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Siatkarz Mārtiņš Pļaviņš?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Mārtiņš Pļaviņš?",
       "correct": "Łotwa",
       "wrong": [
         "Hiszpania",
@@ -80703,7 +80692,7 @@ module GameRoomContent
       "id": "1d84775feb60",
       "category": "sport",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Siatkarz Nalbert Bitencourt?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Nalbert Bitencourt?",
       "correct": "Brazylia",
       "wrong": [
         "Szwecja",
@@ -80727,7 +80716,7 @@ module GameRoomContent
       "id": "ae653901a10a",
       "category": "sport",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Siatkarz Nicolas Le Goff?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Nicolas Le Goff?",
       "correct": "Francja",
       "wrong": [
         "Kanada",
@@ -80835,7 +80824,7 @@ module GameRoomContent
       "id": "30a593d60dfa",
       "category": "sport",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Siatkarz Paul Lotman?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Paul Lotman?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Holandia",
@@ -80859,7 +80848,7 @@ module GameRoomContent
       "id": "35d0b584290d",
       "category": "sport",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Siatkarz Paweł Zagumny?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Paweł Zagumny?",
       "correct": "Polska",
       "wrong": [
         "Finlandia",
@@ -80883,7 +80872,7 @@ module GameRoomContent
       "id": "07212c64b784",
       "category": "sport",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Siatkarz Paweł Zatorski?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Paweł Zatorski?",
       "correct": "Polska",
       "wrong": [
         "Irak",
@@ -80931,7 +80920,7 @@ module GameRoomContent
       "id": "233c16daee58",
       "category": "sport",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Siatkarz Pierre Barouh?",
+      "prompt": "Którego z wymienionych państw był obywatelem Pierre Barouh?",
       "correct": "Francja",
       "wrong": [
         "Holandia",
@@ -80967,7 +80956,7 @@ module GameRoomContent
       "id": "a1f1fcd03c2b",
       "category": "sport",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Siatkarz Raúl Lozano?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Raúl Lozano?",
       "correct": "Argentyna",
       "wrong": [
         "Boliwia",
@@ -81039,7 +81028,7 @@ module GameRoomContent
       "id": "bc9748fe3b90",
       "category": "sport",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Siatkarz Richard Lambourne?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Richard Lambourne?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Rosja",
@@ -81051,7 +81040,7 @@ module GameRoomContent
       "id": "2f3e440619ba",
       "category": "sport",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Siatkarz Roberlandy Simón Aties?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Roberlandy Simón Aties?",
       "correct": "Kuba",
       "wrong": [
         "Serbia",
@@ -81087,7 +81076,7 @@ module GameRoomContent
       "id": "7a65ac342834",
       "category": "sport",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Siatkarz Rodrigo Santana?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Rodrigo Santana?",
       "correct": "Brazylia",
       "wrong": [
         "Estonia",
@@ -81111,7 +81100,7 @@ module GameRoomContent
       "id": "9ed15408c07d",
       "category": "sport",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Siatkarz Russell Holmes?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Russell Holmes?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Iran",
@@ -81123,7 +81112,7 @@ module GameRoomContent
       "id": "3b83101af95e",
       "category": "sport",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Siatkarz Ryan Millar?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Ryan Millar?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Wielka Brytania",
@@ -81135,7 +81124,7 @@ module GameRoomContent
       "id": "da725dae0710",
       "category": "sport",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Siatkarz Samuele Papi?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Samuele Papi?",
       "correct": "Włochy",
       "wrong": [
         "Wielka Brytania",
@@ -81207,7 +81196,7 @@ module GameRoomContent
       "id": "13b85339df29",
       "category": "sport",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Siatkarz Scott Fortune?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Scott Fortune?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Indie",
@@ -81219,7 +81208,7 @@ module GameRoomContent
       "id": "7bb2dc349b60",
       "category": "sport",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Siatkarz Scott Touzinsky?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Scott Touzinsky?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Liechtenstein",
@@ -81231,7 +81220,7 @@ module GameRoomContent
       "id": "3a7abc53f572",
       "category": "sport",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Siatkarz Sean Rooney?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Sean Rooney?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Grecja",
@@ -81255,7 +81244,7 @@ module GameRoomContent
       "id": "7e739a37dd1c",
       "category": "sport",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Siatkarz Sebastián Solé?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Sebastián Solé?",
       "correct": "Argentyna",
       "wrong": [
         "Serbia",
@@ -81291,7 +81280,7 @@ module GameRoomContent
       "id": "09015377c96e",
       "category": "sport",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Siatkarz Slobodan Kovač?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Slobodan Kovač?",
       "correct": "Serbia",
       "wrong": [
         "Turcja",
@@ -81351,7 +81340,7 @@ module GameRoomContent
       "id": "235dd45f237d",
       "category": "sport",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Siatkarz Steve Timmons?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Steve Timmons?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Liechtenstein",
@@ -81387,7 +81376,7 @@ module GameRoomContent
       "id": "98ad3af33979",
       "category": "sport",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Siatkarz Stéphane Antiga?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Stéphane Antiga?",
       "correct": "Francja",
       "wrong": [
         "Grecja",
@@ -81471,7 +81460,7 @@ module GameRoomContent
       "id": "da9411aa969f",
       "category": "sport",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Siatkarz Teodor Sałparow?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Teodor Sałparow?",
       "correct": "Bułgaria",
       "wrong": [
         "Norwegia",
@@ -81495,7 +81484,7 @@ module GameRoomContent
       "id": "d769ae1056a8",
       "category": "sport",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Siatkarz Thiago Alves?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Thiago Alves?",
       "correct": "Brazylia",
       "wrong": [
         "Hiszpania",
@@ -81519,7 +81508,7 @@ module GameRoomContent
       "id": "6e53bf284b36",
       "category": "sport",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Siatkarz Thomas Jaeschke?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Thomas Jaeschke?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Holandia",
@@ -81531,7 +81520,7 @@ module GameRoomContent
       "id": "9154c3d7fd0c",
       "category": "sport",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Siatkarz Todor Aleksijew?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Todor Aleksijew?",
       "correct": "Bułgaria",
       "wrong": [
         "Holandia",
@@ -81555,7 +81544,7 @@ module GameRoomContent
       "id": "50fd17b6214f",
       "category": "sport",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Siatkarz Tomasz Wójtowicz?",
+      "prompt": "Którego z wymienionych państw był obywatelem Tomasz Wójtowicz?",
       "correct": "Polska",
       "wrong": [
         "San Marino",
@@ -81591,7 +81580,7 @@ module GameRoomContent
       "id": "9ebd8951f42b",
       "category": "sport",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Siatkarz Torey Defalco?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Torey Defalco?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Rumunia",
@@ -81603,7 +81592,7 @@ module GameRoomContent
       "id": "4976531af631",
       "category": "sport",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Siatkarz Trévor Clévenot?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Trévor Clévenot?",
       "correct": "Francja",
       "wrong": [
         "Kanada",
@@ -81627,7 +81616,7 @@ module GameRoomContent
       "id": "a9918c7c5ea7",
       "category": "sport",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Siatkarz Uroš Kovačević?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Uroš Kovačević?",
       "correct": "Serbia",
       "wrong": [
         "Szwecja",
@@ -81663,7 +81652,7 @@ module GameRoomContent
       "id": "ecc9225934e7",
       "category": "sport",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Siatkarz Vigor Bovolenta?",
+      "prompt": "Którego z wymienionych państw był obywatelem Vigor Bovolenta?",
       "correct": "Włochy",
       "wrong": [
         "Węgry",
@@ -81711,7 +81700,7 @@ module GameRoomContent
       "id": "cc117c18b0ea",
       "category": "sport",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Siatkarz Vlado Petković?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Vlado Petković?",
       "correct": "Serbia",
       "wrong": [
         "Walia",
@@ -81747,7 +81736,7 @@ module GameRoomContent
       "id": "e8d5aedc2a19",
       "category": "sport",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Siatkarz Wiaczesław Zajcew?",
+      "prompt": "Którego z wymienionych państw był obywatelem Wiaczesław Zajcew?",
       "correct": "Związek Socjalistycznych Republik Radzieckich",
       "wrong": [
         "Czechosłowacja",
@@ -81771,7 +81760,7 @@ module GameRoomContent
       "id": "a0238685ad9c",
       "category": "sport",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Siatkarz Wiktor Poletajew?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Wiktor Poletajew?",
       "correct": "Rosja",
       "wrong": [
         "Estonia",
@@ -81795,7 +81784,7 @@ module GameRoomContent
       "id": "91d0e5de5c6c",
       "category": "sport",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Siatkarz Yacine Louati?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Yacine Louati?",
       "correct": "Francja",
       "wrong": [
         "Grecja",
@@ -81819,7 +81808,7 @@ module GameRoomContent
       "id": "adbb8d727ccd",
       "category": "sport",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Siatkarz Éder Carbonera?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Éder Carbonera?",
       "correct": "Brazylia",
       "wrong": [
         "Indonezja",
@@ -81831,7 +81820,7 @@ module GameRoomContent
       "id": "4d0d51817434",
       "category": "sport",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Siatkarz Élie Chouraqui?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Élie Chouraqui?",
       "correct": "Francja",
       "wrong": [
         "Rumunia",
@@ -82647,7 +82636,7 @@ module GameRoomContent
       "id": "0594d58589b3",
       "category": "sport",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Skoczkini Elena Runggaldier?",
+      "prompt": "Którego z wymienionych państw jest lub była obywatelką Elena Runggaldier?",
       "correct": "Włochy",
       "wrong": [
         "Słowenia",
@@ -82671,7 +82660,7 @@ module GameRoomContent
       "id": "5837dd0f2cfb",
       "category": "sport",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Skoczkini Nozomi Maruyama?",
+      "prompt": "Którego z wymienionych państw jest lub była obywatelką Nozomi Maruyama?",
       "correct": "Japonia",
       "wrong": [
         "Słowenia",
@@ -83955,7 +83944,7 @@ module GameRoomContent
       "id": "0b44147f137a",
       "category": "sport",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Sumit Antil?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Sumit Antil?",
       "correct": "Indie",
       "wrong": [
         "Francja",
@@ -84891,7 +84880,7 @@ module GameRoomContent
       "id": "85a64395b51e",
       "category": "wiara i religia",
       "level": "easy",
-      "prompt": "Afrodyta — kto był małżonkiem tego bóstwa?",
+      "prompt": "Afrodyta — jak nazywał się jej mąż w mitologii?",
       "correct": "Hefajstos",
       "wrong": [
         "Hyperion",
@@ -84987,7 +84976,7 @@ module GameRoomContent
       "id": "ae9d82355f21",
       "category": "wiara i religia",
       "level": "easy",
-      "prompt": "Amon — kto był małżonkiem tego bóstwa?",
+      "prompt": "Amon — jak nazywała się jego żona w mitologii?",
       "correct": "Mut",
       "wrong": [
         "Persefona",
@@ -85143,7 +85132,7 @@ module GameRoomContent
       "id": "4414fdb18f6c",
       "category": "wiara i religia",
       "level": "easy",
-      "prompt": "Ares — kto był małżonkiem tego bóstwa?",
+      "prompt": "Która bogini była kochanką Aresa w historii o sieci Hefajstosa opisanej w „Odysei”?",
       "correct": "Afrodyta",
       "wrong": [
         "Telemach",
@@ -85209,18 +85198,6 @@ module GameRoomContent
         "Ea (bóg)",
         "Jowisz",
         "Pallas"
-      ]
-    },
-    {
-      "id": "1d1d6d91bd9e",
-      "category": "wiara i religia",
-      "level": "easy",
-      "prompt": "Baal — kto był małżonkiem tego bóstwa?",
-      "correct": "Astarte",
-      "wrong": [
-        "Tetyda",
-        "Wulkan",
-        "Śiwa"
       ]
     },
     {
@@ -85359,7 +85336,7 @@ module GameRoomContent
       "id": "7b0e6d8c22e8",
       "category": "wiara i religia",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Biskup Albert Wielki?",
+      "prompt": "Którego z wymienionych państw był poddanym Albert Wielki?",
       "correct": "Święte Cesarstwo Rzymskie",
       "wrong": [
         "Imperium Rosyjskie",
@@ -85371,7 +85348,7 @@ module GameRoomContent
       "id": "4a5e0e414ee0",
       "category": "wiara i religia",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Biskup Atanazy Wielki?",
+      "prompt": "W którym z wymienionych państw działał Atanazy Wielki?",
       "correct": "starożytny Rzym",
       "wrong": [
         "Kalifat Kordoby",
@@ -85383,7 +85360,7 @@ module GameRoomContent
       "id": "970cc5d2a9a5",
       "category": "wiara i religia",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Biskup Benedykt XII?",
+      "prompt": "Którego z wymienionych państw był obywatelem Benedykt XII?",
       "correct": "Francja",
       "wrong": [
         "Indie",
@@ -85395,7 +85372,7 @@ module GameRoomContent
       "id": "394f8dfb89de",
       "category": "wiara i religia",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Biskup Cyryl I?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Cyryl I?",
       "correct": "Rosja",
       "wrong": [
         "Rzeczpospolita Obojga Narodów",
@@ -85407,7 +85384,7 @@ module GameRoomContent
       "id": "8595e825364a",
       "category": "wiara i religia",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Biskup Euzebiusz z Cezarei?",
+      "prompt": "W którym z wymienionych państw działał Euzebiusz z Cezarei?",
       "correct": "starożytny Rzym",
       "wrong": [
         "Królestwo Portugalii",
@@ -85419,7 +85396,7 @@ module GameRoomContent
       "id": "d6a0af8344ef",
       "category": "wiara i religia",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Biskup George Berkeley?",
+      "prompt": "Którego z wymienionych państw był poddanym George Berkeley?",
       "correct": "Królestwo Irlandii",
       "wrong": [
         "Almorawidzi",
@@ -85431,7 +85408,7 @@ module GameRoomContent
       "id": "afd929682b89",
       "category": "wiara i religia",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Biskup Grzegorz z Nazjanzu?",
+      "prompt": "W którym z wymienionych państw działał Grzegorz z Nazjanzu?",
       "correct": "starożytny Rzym",
       "wrong": [
         "Czechosłowacja",
@@ -85443,7 +85420,7 @@ module GameRoomContent
       "id": "c6a15ac7296a",
       "category": "wiara i religia",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Biskup Ignacy Antiocheński?",
+      "prompt": "W którym z wymienionych państw działał Ignacy Antiocheński?",
       "correct": "starożytny Rzym",
       "wrong": [
         "Gwinea",
@@ -85455,19 +85432,19 @@ module GameRoomContent
       "id": "2d0afef71238",
       "category": "wiara i religia",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Biskup Ireneusz z Lyonu?",
-      "correct": "Azja",
+      "prompt": "Z którego regionu pochodził Ireneusz z Lyonu?",
+      "correct": "Azja Mniejsza",
       "wrong": [
-        "Królestwo Polskie (1385–1569)",
-        "Gwinea",
-        "Almorawidzi"
+        "Półwysep Iberyjski",
+        "Półwysep Apeniński",
+        "Półwysep Skandynawski"
       ]
     },
     {
       "id": "c7ffbfeb10eb",
       "category": "wiara i religia",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Biskup Jan Chryzostom?",
+      "prompt": "W którym z wymienionych państw działał Jan Chryzostom?",
       "correct": "Cesarstwo Bizantyńskie",
       "wrong": [
         "Iran",
@@ -85479,7 +85456,7 @@ module GameRoomContent
       "id": "46c6e0f4c5b9",
       "category": "wiara i religia",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Biskup Jan XXIII?",
+      "prompt": "Którego z wymienionych państw był obywatelem Jan XXIII?",
       "correct": "Włochy",
       "wrong": [
         "Polska",
@@ -85491,7 +85468,7 @@ module GameRoomContent
       "id": "45ca8a920f07",
       "category": "wiara i religia",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Biskup Klemens VI?",
+      "prompt": "Którego z wymienionych państw był obywatelem Klemens VI?",
       "correct": "Francja",
       "wrong": [
         "Brazylia",
@@ -85503,7 +85480,7 @@ module GameRoomContent
       "id": "43c35c2fd9cb",
       "category": "wiara i religia",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Biskup Marcin z Tours?",
+      "prompt": "W którym z wymienionych państw działał Marcin z Tours?",
       "correct": "starożytny Rzym",
       "wrong": [
         "starożytne Ateny",
@@ -85515,24 +85492,12 @@ module GameRoomContent
       "id": "97c3b7cd5628",
       "category": "wiara i religia",
       "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Biskup Mikołaj z Miry?",
+      "prompt": "W którym z wymienionych państw działał Mikołaj z Miry?",
       "correct": "starożytny Rzym",
       "wrong": [
         "kalifat Umajjadów",
         "Brabancja",
         "Księstwo Bawarii"
-      ]
-    },
-    {
-      "id": "832ccdf6d5c1",
-      "category": "wiara i religia",
-      "level": "easy",
-      "prompt": "Jakie obywatelstwo przypisano osobie Biskup Telesfor?",
-      "correct": "Italia",
-      "wrong": [
-        "Czechosłowacja",
-        "Królestwo Czech",
-        "Królestwo Bawarii"
       ]
     },
     {
@@ -85551,7 +85516,7 @@ module GameRoomContent
       "id": "92e4df98b51c",
       "category": "wiara i religia",
       "level": "easy",
-      "prompt": "Brahma — kto był małżonkiem tego bóstwa?",
+      "prompt": "Brahma — jak nazywała się jego żona w mitologii?",
       "correct": "Saraswati",
       "wrong": [
         "Daejra",
@@ -85767,7 +85732,7 @@ module GameRoomContent
       "id": "5076fc344d93",
       "category": "wiara i religia",
       "level": "easy",
-      "prompt": "Dionizos — kto był małżonkiem tego bóstwa?",
+      "prompt": "Dionizos — jak nazywała się jego żona w mitologii?",
       "correct": "Ariadna",
       "wrong": [
         "Wulkan",
@@ -85959,7 +85924,7 @@ module GameRoomContent
       "id": "583912e5be50",
       "category": "wiara i religia",
       "level": "easy",
-      "prompt": "Freja — kto był małżonkiem tego bóstwa?",
+      "prompt": "Freja — jak nazywał się jej mąż w mitologii?",
       "correct": "Óðr",
       "wrong": [
         "Afrodyta",
@@ -86079,7 +86044,7 @@ module GameRoomContent
       "id": "e9e0c9e971eb",
       "category": "wiara i religia",
       "level": "easy",
-      "prompt": "Hades — kto był małżonkiem tego bóstwa?",
+      "prompt": "Hades — jak nazywała się jego żona w mitologii?",
       "correct": "Persefona",
       "wrong": [
         "Hefajstos",
@@ -86151,7 +86116,7 @@ module GameRoomContent
       "id": "165b6a337894",
       "category": "wiara i religia",
       "level": "easy",
-      "prompt": "Hera — kto był małżonkiem tego bóstwa?",
+      "prompt": "Hera — jak nazywał się jej mąż w mitologii?",
       "correct": "Zeus",
       "wrong": [
         "Jowisz",
@@ -86259,7 +86224,7 @@ module GameRoomContent
       "id": "5d69f65997ac",
       "category": "wiara i religia",
       "level": "easy",
-      "prompt": "Horus — kto był małżonkiem tego bóstwa?",
+      "prompt": "Która z wymienionych bogiń bywała przedstawiana jako małżonka Horusa w wierzeniach egipskich?",
       "correct": "Hathor",
       "wrong": [
         "Renenutet",
@@ -86319,7 +86284,7 @@ module GameRoomContent
       "id": "b58e25c7639c",
       "category": "wiara i religia",
       "level": "easy",
-      "prompt": "Izyda — kto był małżonkiem tego bóstwa?",
+      "prompt": "Izyda — jak nazywał się jej mąż w mitologii?",
       "correct": "Ozyrys",
       "wrong": [
         "Nerio",
@@ -86571,7 +86536,7 @@ module GameRoomContent
       "id": "e97f65be60e8",
       "category": "wiara i religia",
       "level": "easy",
-      "prompt": "Jowisz — kto był małżonkiem tego bóstwa?",
+      "prompt": "Jowisz — jak nazywała się jego żona w mitologii?",
       "correct": "Junona",
       "wrong": [
         "Prozerpina",
@@ -86619,7 +86584,7 @@ module GameRoomContent
       "id": "249d1048fc39",
       "category": "wiara i religia",
       "level": "easy",
-      "prompt": "Junona — kto był małżonkiem tego bóstwa?",
+      "prompt": "Junona — jak nazywał się jej mąż w mitologii?",
       "correct": "Jowisz",
       "wrong": [
         "Sif",
@@ -86679,7 +86644,7 @@ module GameRoomContent
       "id": "e362e3ae955e",
       "category": "wiara i religia",
       "level": "easy",
-      "prompt": "Kali — kto był małżonkiem tego bóstwa?",
+      "prompt": "Kali — jak nazywał się jej mąż w mitologii?",
       "correct": "Śiwa",
       "wrong": [
         "Hyperion",
@@ -86943,7 +86908,7 @@ module GameRoomContent
       "id": "f4ac145f227b",
       "category": "wiara i religia",
       "level": "easy",
-      "prompt": "Kirke — kto był małżonkiem tego bóstwa?",
+      "prompt": "Kogo poślubiła Kirke według zakończenia „Telegonii”, starożytnej kontynuacji „Odysei”?",
       "correct": "Telemach",
       "wrong": [
         "Wulkan",
@@ -87063,7 +87028,7 @@ module GameRoomContent
       "id": "18e4ac656a10",
       "category": "wiara i religia",
       "level": "easy",
-      "prompt": "Kronos — kto był małżonkiem tego bóstwa?",
+      "prompt": "Kronos — jak nazywała się jego żona w mitologii?",
       "correct": "Reja",
       "wrong": [
         "Rukmini",
@@ -87303,7 +87268,7 @@ module GameRoomContent
       "id": "515cc2cace8b",
       "category": "wiara i religia",
       "level": "easy",
-      "prompt": "Lakszmi — kto był małżonkiem tego bóstwa?",
+      "prompt": "Lakszmi — jak nazywał się jej mąż w mitologii?",
       "correct": "Wisznu",
       "wrong": [
         "Junona",
@@ -87363,7 +87328,7 @@ module GameRoomContent
       "id": "573a7e736758",
       "category": "wiara i religia",
       "level": "easy",
-      "prompt": "Loki — kto był małżonkiem tego bóstwa?",
+      "prompt": "Loki — jak nazywała się jego żona w mitologii?",
       "correct": "Sigyn",
       "wrong": [
         "Wisznu",
@@ -87495,7 +87460,7 @@ module GameRoomContent
       "id": "4e45bfa5ddb7",
       "category": "wiara i religia",
       "level": "easy",
-      "prompt": "Mars — kto był małżonkiem tego bóstwa?",
+      "prompt": "Jak nazywa się bogini określana jako żona Marsa w cytacie z Plauta przytoczonym przez Aulusa Gelliusza?",
       "correct": "Nerio",
       "wrong": [
         "Set",
@@ -87723,7 +87688,7 @@ module GameRoomContent
       "id": "97ad565f0400",
       "category": "wiara i religia",
       "level": "easy",
-      "prompt": "Nyks — kto był małżonkiem tego bóstwa?",
+      "prompt": "Z którym bóstwem Nyks miała Eter i Hemerę według „Teogonii” Hezjoda?",
       "correct": "Ereb",
       "wrong": [
         "Sif",
@@ -87747,7 +87712,7 @@ module GameRoomContent
       "id": "34cc7fbe233b",
       "category": "wiara i religia",
       "level": "easy",
-      "prompt": "Odyn — kto był małżonkiem tego bóstwa?",
+      "prompt": "Kto był żoną Odyna w mitologii nordyckiej?",
       "correct": "Frigg",
       "wrong": [
         "Telemach",
@@ -87819,7 +87784,7 @@ module GameRoomContent
       "id": "cc5b4da8edc0",
       "category": "wiara i religia",
       "level": "easy",
-      "prompt": "Ozyrys — kto był małżonkiem tego bóstwa?",
+      "prompt": "Ozyrys — jak nazywała się jego żona w mitologii?",
       "correct": "Izyda",
       "wrong": [
         "Afrodyta",
@@ -89991,7 +89956,7 @@ module GameRoomContent
       "id": "705ffab7a9c9",
       "category": "wiara i religia",
       "level": "easy",
-      "prompt": "Parwati — kto był małżonkiem tego bóstwa?",
+      "prompt": "Parwati — jak nazywał się jej mąż w mitologii?",
       "correct": "Śiwa",
       "wrong": [
         "Hathor",
@@ -90015,7 +89980,7 @@ module GameRoomContent
       "id": "8ea06b66210c",
       "category": "wiara i religia",
       "level": "easy",
-      "prompt": "Persefona — kto był małżonkiem tego bóstwa?",
+      "prompt": "Persefona — jak nazywał się jej mąż w mitologii?",
       "correct": "Hades",
       "wrong": [
         "Set",
@@ -90039,7 +90004,7 @@ module GameRoomContent
       "id": "3d9114a506d5",
       "category": "wiara i religia",
       "level": "easy",
-      "prompt": "Perseusz — kto był małżonkiem tego bóstwa?",
+      "prompt": "Jak nazywała się żona herosa Perseusza w mitologii greckiej?",
       "correct": "Andromeda",
       "wrong": [
         "Gaja",
@@ -90135,7 +90100,7 @@ module GameRoomContent
       "id": "a1f0cbe0ec96",
       "category": "wiara i religia",
       "level": "easy",
-      "prompt": "Pluton — kto był małżonkiem tego bóstwa?",
+      "prompt": "Pluton — jak nazywała się jego żona w mitologii?",
       "correct": "Prozerpina",
       "wrong": [
         "Óðr",
@@ -90219,7 +90184,7 @@ module GameRoomContent
       "id": "5a220dd064b0",
       "category": "wiara i religia",
       "level": "easy",
-      "prompt": "Reja — kto był małżonkiem tego bóstwa?",
+      "prompt": "Reja — jak nazywał się jej mąż w mitologii?",
       "correct": "Kronos",
       "wrong": [
         "Reja",
@@ -90351,7 +90316,7 @@ module GameRoomContent
       "id": "c5fe342ae41a",
       "category": "wiara i religia",
       "level": "easy",
-      "prompt": "Saraswati — kto był małżonkiem tego bóstwa?",
+      "prompt": "Saraswati — jak nazywał się jej mąż w mitologii?",
       "correct": "Brahma",
       "wrong": [
         "Thot",
@@ -90363,7 +90328,7 @@ module GameRoomContent
       "id": "01a66aa33ff0",
       "category": "wiara i religia",
       "level": "easy",
-      "prompt": "Saturn — kto był małżonkiem tego bóstwa?",
+      "prompt": "Saturn — jak nazywała się jego żona w mitologii?",
       "correct": "Ops",
       "wrong": [
         "Sif",
@@ -90495,7 +90460,7 @@ module GameRoomContent
       "id": "f94b2214903d",
       "category": "wiara i religia",
       "level": "easy",
-      "prompt": "Tartar — kto był małżonkiem tego bóstwa?",
+      "prompt": "Z którą boginią Tartar spłodził Tyfona według „Teogonii” Hezjoda?",
       "correct": "Gaja",
       "wrong": [
         "Ozyrys",
@@ -90531,7 +90496,7 @@ module GameRoomContent
       "id": "6de2eff73a0e",
       "category": "wiara i religia",
       "level": "easy",
-      "prompt": "Temida — kto był małżonkiem tego bóstwa?",
+      "prompt": "Który bóg poślubił Temidę i miał z nią Hory według „Teogonii” Hezjoda?",
       "correct": "Zeus",
       "wrong": [
         "Ariadna",
@@ -90603,7 +90568,7 @@ module GameRoomContent
       "id": "bc59ad8171f3",
       "category": "wiara i religia",
       "level": "easy",
-      "prompt": "Thor — kto był małżonkiem tego bóstwa?",
+      "prompt": "Thor — jak nazywała się jego żona w mitologii?",
       "correct": "Sif",
       "wrong": [
         "Mut",
@@ -90639,7 +90604,7 @@ module GameRoomContent
       "id": "6cd46d32a075",
       "category": "wiara i religia",
       "level": "easy",
-      "prompt": "Uranos — kto był małżonkiem tego bóstwa?",
+      "prompt": "Która bogini była partnerką Uranosa i matką tytanów w mitologii greckiej?",
       "correct": "Gaja",
       "wrong": [
         "Geb",
@@ -90675,7 +90640,7 @@ module GameRoomContent
       "id": "a32cf22e68d2",
       "category": "wiara i religia",
       "level": "easy",
-      "prompt": "Wenus — kto był małżonkiem tego bóstwa?",
+      "prompt": "Wenus — jak nazywał się jej mąż w mitologii?",
       "correct": "Wulkan",
       "wrong": [
         "Okeanos",
@@ -90711,7 +90676,7 @@ module GameRoomContent
       "id": "062774cb575c",
       "category": "wiara i religia",
       "level": "easy",
-      "prompt": "Wisznu — kto był małżonkiem tego bóstwa?",
+      "prompt": "Wisznu — jak nazywała się jego żona w mitologii?",
       "correct": "Lakszmi",
       "wrong": [
         "Brahma",
@@ -91035,7 +91000,7 @@ module GameRoomContent
       "id": "ffe0c9afca16",
       "category": "wiara i religia",
       "level": "medium",
-      "prompt": "Baldur — kto był małżonkiem tego bóstwa?",
+      "prompt": "Baldur — jak nazywała się jego żona w mitologii?",
       "correct": "Nanna",
       "wrong": [
         "Prozerpina",
@@ -91755,7 +91720,7 @@ module GameRoomContent
       "id": "cc0e863aa8ff",
       "category": "wiara i religia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Biskup Aleksander z Aleksandrii?",
+      "prompt": "W którym z wymienionych państw działał Aleksander z Aleksandrii?",
       "correct": "starożytny Rzym",
       "wrong": [
         "Strathclyde (królestwo)",
@@ -91767,7 +91732,7 @@ module GameRoomContent
       "id": "910cb4de5814",
       "category": "wiara i religia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Biskup Awitus?",
+      "prompt": "W którym z wymienionych państw działał Awitus?",
       "correct": "starożytny Rzym",
       "wrong": [
         "Republika Florencka",
@@ -91779,7 +91744,7 @@ module GameRoomContent
       "id": "89cf087d6806",
       "category": "wiara i religia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Biskup Baldassare Castiglione?",
+      "prompt": "Którego z wymienionych państw był poddanym Baldassare Castiglione?",
       "correct": "Księstwo Mediolanu",
       "wrong": [
         "Królestwo Armenii",
@@ -91791,7 +91756,7 @@ module GameRoomContent
       "id": "0afdb15d37f2",
       "category": "wiara i religia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Biskup Carl Adolph Agardh?",
+      "prompt": "Którego z wymienionych państw był obywatelem Carl Adolph Agardh?",
       "correct": "Szwecja",
       "wrong": [
         "Indonezja",
@@ -91803,7 +91768,7 @@ module GameRoomContent
       "id": "134256bf3ff5",
       "category": "wiara i religia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Biskup Carlos Filipe Ximenes Belo?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Carlos Filipe Ximenes Belo?",
       "correct": "Timor Wschodni",
       "wrong": [
         "Austria",
@@ -91815,7 +91780,7 @@ module GameRoomContent
       "id": "ac5990115cb9",
       "category": "wiara i religia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Biskup Cyprian z Kartaginy?",
+      "prompt": "W którym z wymienionych państw działał Cyprian z Kartaginy?",
       "correct": "starożytny Rzym",
       "wrong": [
         "kalifat Umajjadów",
@@ -91827,19 +91792,19 @@ module GameRoomContent
       "id": "44882ff4dcb7",
       "category": "wiara i religia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Biskup Dionizy Areopagita?",
-      "correct": "starożytne Ateny",
+      "prompt": "W którym mieście Dionizy Areopagita nawrócił się pod wpływem nauczania Pawła według Dziejów Apostolskich?",
+      "correct": "Ateny",
       "wrong": [
-        "Królestwo Bawarii",
-        "Zjednoczone Królestwo Włoch",
-        "Austria"
+        "Rzym",
+        "Efez",
+        "Antiochia"
       ]
     },
     {
       "id": "643c819e4a0b",
       "category": "wiara i religia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Biskup Eustacjusz z Tesaloniki?",
+      "prompt": "W którym z wymienionych państw działał Eustacjusz z Tesaloniki?",
       "correct": "Cesarstwo Bizantyńskie",
       "wrong": [
         "Wielcy Seldżucy",
@@ -91851,7 +91816,7 @@ module GameRoomContent
       "id": "edd883364a51",
       "category": "wiara i religia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Biskup Fernando Lugo?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Fernando Lugo?",
       "correct": "Paragwaj",
       "wrong": [
         "Kanada",
@@ -91863,7 +91828,7 @@ module GameRoomContent
       "id": "79cb8241a562",
       "category": "wiara i religia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Biskup Fulton John Sheen?",
+      "prompt": "Którego z wymienionych państw był obywatelem Fulton John Sheen?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Japonia",
@@ -91875,7 +91840,7 @@ module GameRoomContent
       "id": "904719bfb44d",
       "category": "wiara i religia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Biskup Gerhard Ludwig Müller?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Gerhard Ludwig Müller?",
       "correct": "Niemcy",
       "wrong": [
         "Timor Wschodni",
@@ -91887,7 +91852,7 @@ module GameRoomContent
       "id": "2a6271f0ebc8",
       "category": "wiara i religia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Biskup Hilary z Poitiers?",
+      "prompt": "W którym z wymienionych państw działał Hilary z Poitiers?",
       "correct": "starożytny Rzym",
       "wrong": [
         "Szwecja",
@@ -91899,7 +91864,7 @@ module GameRoomContent
       "id": "d13a46ba7994",
       "category": "wiara i religia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Biskup Ignacy Krasicki?",
+      "prompt": "Którego z wymienionych państw był obywatelem Ignacy Krasicki?",
       "correct": "Rzeczpospolita Obojga Narodów",
       "wrong": [
         "Egipt",
@@ -91911,7 +91876,7 @@ module GameRoomContent
       "id": "aad095ad1b2e",
       "category": "wiara i religia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Biskup Jacques-Bénigne Bossuet?",
+      "prompt": "Którego z wymienionych państw był obywatelem Jacques-Bénigne Bossuet?",
       "correct": "Francja",
       "wrong": [
         "Zjednoczone Królestwo Włoch",
@@ -91923,7 +91888,7 @@ module GameRoomContent
       "id": "6884008ac090",
       "category": "wiara i religia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Biskup Jan z Salisbury?",
+      "prompt": "Którego z wymienionych państw był poddanym Jan z Salisbury?",
       "correct": "Królestwo Anglii",
       "wrong": [
         "Słowacja",
@@ -91935,7 +91900,7 @@ module GameRoomContent
       "id": "bb53cbeda8af",
       "category": "wiara i religia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Biskup January z Benewentu?",
+      "prompt": "W którym z wymienionych państw działał January z Benewentu?",
       "correct": "starożytny Rzym",
       "wrong": [
         "Czechosłowacja",
@@ -91947,7 +91912,7 @@ module GameRoomContent
       "id": "8761623fe1d0",
       "category": "wiara i religia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Biskup Joseph Butler?",
+      "prompt": "Którego z wymienionych państw był poddanym Joseph Butler?",
       "correct": "Królestwo Wielkiej Brytanii",
       "wrong": [
         "Monarchia Habsburgów",
@@ -91971,7 +91936,7 @@ module GameRoomContent
       "id": "feb86799e321",
       "category": "wiara i religia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Biskup Justin Welby?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Justin Welby?",
       "correct": "Wielka Brytania",
       "wrong": [
         "Królestwo Galicji",
@@ -91995,7 +91960,7 @@ module GameRoomContent
       "id": "f87ea770ad24",
       "category": "wiara i religia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Biskup Jørgen Moe?",
+      "prompt": "Którego z wymienionych państw był obywatelem Jørgen Moe?",
       "correct": "Norwegia",
       "wrong": [
         "Japonia",
@@ -92007,7 +91972,7 @@ module GameRoomContent
       "id": "74a3b2306139",
       "category": "wiara i religia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Biskup Karl Lehmann?",
+      "prompt": "Którego z wymienionych państw był obywatelem Karl Lehmann?",
       "correct": "Niemcy",
       "wrong": [
         "Timor Wschodni",
@@ -92019,7 +91984,7 @@ module GameRoomContent
       "id": "ac3ec9ffd4a5",
       "category": "wiara i religia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Biskup Kevin Joseph Farrell?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Kevin Joseph Farrell?",
       "correct": "Peru",
       "wrong": [
         "Królestwo Izraela",
@@ -92031,7 +91996,7 @@ module GameRoomContent
       "id": "e0e1962ccd0b",
       "category": "wiara i religia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Biskup Kurt Koch?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Kurt Koch?",
       "correct": "Szwajcaria",
       "wrong": [
         "Cesarstwo Austrii",
@@ -92043,7 +92008,7 @@ module GameRoomContent
       "id": "86cbd98c4184",
       "category": "wiara i religia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Biskup Liutprand z Cremony?",
+      "prompt": "Którego z wymienionych państw był poddanym Liutprand z Cremony?",
       "correct": "Królestwo Włoch",
       "wrong": [
         "Korona Aragonii",
@@ -92055,7 +92020,7 @@ module GameRoomContent
       "id": "be664829fde3",
       "category": "wiara i religia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Biskup Michał I Cerulariusz?",
+      "prompt": "W którym z wymienionych państw działał Michał I Cerulariusz?",
       "correct": "Cesarstwo Bizantyńskie",
       "wrong": [
         "Królestwo Aragonii",
@@ -92067,7 +92032,7 @@ module GameRoomContent
       "id": "15cc81af69f1",
       "category": "wiara i religia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Biskup Mikael Agricola?",
+      "prompt": "Którego z wymienionych państw był obywatelem Mikael Agricola?",
       "correct": "Szwecja",
       "wrong": [
         "starożytne Ateny",
@@ -92079,7 +92044,7 @@ module GameRoomContent
       "id": "0659d6f993db",
       "category": "wiara i religia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Biskup Mikołaj z Oresme?",
+      "prompt": "Którego z wymienionych państw był poddanym Mikołaj z Oresme?",
       "correct": "Królestwo Francji",
       "wrong": [
         "Imperium Karolińskie",
@@ -92091,7 +92056,7 @@ module GameRoomContent
       "id": "e8ceb4ac9d3a",
       "category": "wiara i religia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Biskup Olaus Magnus?",
+      "prompt": "Którego z wymienionych państw był obywatelem Olaus Magnus?",
       "correct": "Szwecja",
       "wrong": [
         "starożytne Ateny",
@@ -92103,7 +92068,7 @@ module GameRoomContent
       "id": "a2ecad41e454",
       "category": "wiara i religia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Biskup Paolo Giovio?",
+      "prompt": "Którego z wymienionych państw był poddanym Paolo Giovio?",
       "correct": "Księstwo Mediolanu",
       "wrong": [
         "Holandia",
@@ -92115,7 +92080,7 @@ module GameRoomContent
       "id": "9ea2ea925297",
       "category": "wiara i religia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Biskup Philippe de Vitry?",
+      "prompt": "Którego z wymienionych państw był poddanym Philippe de Vitry?",
       "correct": "Królestwo Francji",
       "wrong": [
         "Antiochia",
@@ -92127,7 +92092,7 @@ module GameRoomContent
       "id": "d868cd4cbc36",
       "category": "wiara i religia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Biskup Piotr Lombard?",
+      "prompt": "Którego z wymienionych państw był poddanym Piotr Lombard?",
       "correct": "Królestwo Francji",
       "wrong": [
         "Watykan",
@@ -92139,7 +92104,7 @@ module GameRoomContent
       "id": "df5630a77465",
       "category": "wiara i religia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Biskup Robert Grosseteste?",
+      "prompt": "Którego z wymienionych państw był poddanym Robert Grosseteste?",
       "correct": "Królestwo Anglii",
       "wrong": [
         "Indonezja",
@@ -92151,7 +92116,7 @@ module GameRoomContent
       "id": "976a3c414ed3",
       "category": "wiara i religia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Biskup Synezjusz?",
+      "prompt": "W którym z wymienionych państw działał Synezjusz?",
       "correct": "Cesarstwo Bizantyńskie",
       "wrong": [
         "Imperium Karolińskie",
@@ -92163,7 +92128,7 @@ module GameRoomContent
       "id": "39176bff9046",
       "category": "wiara i religia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Biskup Thietmar z Merseburga?",
+      "prompt": "Którego z wymienionych państw był obywatelem Thietmar z Merseburga?",
       "correct": "Niemcy",
       "wrong": [
         "Ameryka Brytyjska",
@@ -92175,7 +92140,7 @@ module GameRoomContent
       "id": "2185b40d2b4a",
       "category": "wiara i religia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Biskup Tytus z Krety?",
+      "prompt": "W którym z wymienionych państw działał Tytus z Krety?",
       "correct": "starożytny Rzym",
       "wrong": [
         "Holandia",
@@ -92595,7 +92560,7 @@ module GameRoomContent
       "id": "dde9dd2bb67b",
       "category": "wiara i religia",
       "level": "medium",
-      "prompt": "Fojbe — kto był małżonkiem tego bóstwa?",
+      "prompt": "Fojbe — jak nazywał się jej mąż w mitologii?",
       "correct": "Kojos",
       "wrong": [
         "Sigyn",
@@ -92607,7 +92572,7 @@ module GameRoomContent
       "id": "083386131e41",
       "category": "wiara i religia",
       "level": "medium",
-      "prompt": "Frigg — kto był małżonkiem tego bóstwa?",
+      "prompt": "Frigg — jak nazywał się jej mąż w mitologii?",
       "correct": "Odyn",
       "wrong": [
         "Klimene",
@@ -92739,7 +92704,7 @@ module GameRoomContent
       "id": "0ec214b57d86",
       "category": "wiara i religia",
       "level": "medium",
-      "prompt": "Hebe — kto był małżonkiem tego bóstwa?",
+      "prompt": "Hebe — jak nazywał się jej mąż w mitologii?",
       "correct": "Herakles",
       "wrong": [
         "Ozyrys",
@@ -92799,7 +92764,7 @@ module GameRoomContent
       "id": "d6f2beee7e1b",
       "category": "wiara i religia",
       "level": "medium",
-      "prompt": "Japet — kto był małżonkiem tego bóstwa?",
+      "prompt": "Która okeanida była żoną Japeta według „Teogonii” Hezjoda?",
       "correct": "Klimene",
       "wrong": [
         "Hyperion",
@@ -95139,7 +95104,7 @@ module GameRoomContent
       "id": "1a3da9c34632",
       "category": "wiara i religia",
       "level": "medium",
-      "prompt": "Maat — kto był małżonkiem tego bóstwa?",
+      "prompt": "Którego z wymienionych bogów egipskich łączono z Maat jako jej partnera?",
       "correct": "Thot",
       "wrong": [
         "Kronos",
@@ -95187,7 +95152,7 @@ module GameRoomContent
       "id": "e4d1f3be1b60",
       "category": "wiara i religia",
       "level": "medium",
-      "prompt": "Marduk — kto był małżonkiem tego bóstwa?",
+      "prompt": "Jak nazywała się żona babilońskiego boga Marduka?",
       "correct": "Sarpanitu",
       "wrong": [
         "Mut",
@@ -95907,7 +95872,7 @@ module GameRoomContent
       "id": "d5191ec3391b",
       "category": "wiara i religia",
       "level": "medium",
-      "prompt": "Neftyda — kto był małżonkiem tego bóstwa?",
+      "prompt": "Neftyda — jak nazywał się jej mąż w mitologii?",
       "correct": "Set",
       "wrong": [
         "Hathor",
@@ -95979,7 +95944,7 @@ module GameRoomContent
       "id": "c61a2f7bd2a1",
       "category": "wiara i religia",
       "level": "medium",
-      "prompt": "Nut — kto był małżonkiem tego bóstwa?",
+      "prompt": "Nut — jak nazywał się jej mąż w mitologii?",
       "correct": "Geb",
       "wrong": [
         "Ops",
@@ -96519,7 +96484,7 @@ module GameRoomContent
       "id": "c12b55731900",
       "category": "wiara i religia",
       "level": "medium",
-      "prompt": "Ptah — kto był małżonkiem tego bóstwa?",
+      "prompt": "Ptah — jak nazywała się jego żona w mitologii?",
       "correct": "Sechmet",
       "wrong": [
         "Wenus",
@@ -96543,7 +96508,7 @@ module GameRoomContent
       "id": "9186db79dcb7",
       "category": "wiara i religia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Rabin Abrabanel?",
+      "prompt": "Którego z wymienionych państw był poddanym Abrabanel?",
       "correct": "Królestwo Portugalii",
       "wrong": [
         "Dynastia Zhou",
@@ -96555,7 +96520,7 @@ module GameRoomContent
       "id": "b645b9d2fca6",
       "category": "wiara i religia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Rabin Awicebron?",
+      "prompt": "Którego z wymienionych państw był poddanym Awicebron?",
       "correct": "Kalifat Kordoby",
       "wrong": [
         "kalifat Umajjadów",
@@ -96567,7 +96532,7 @@ module GameRoomContent
       "id": "84ac1e2c440a",
       "category": "wiara i religia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Rabin Chasdaj Kreskas?",
+      "prompt": "Którego z wymienionych państw był poddanym Chasdaj Kreskas?",
       "correct": "Korona Aragonii",
       "wrong": [
         "Watykan",
@@ -96579,7 +96544,7 @@ module GameRoomContent
       "id": "567bff2b76d9",
       "category": "wiara i religia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Rabin Elazar Szach?",
+      "prompt": "Którego z wymienionych państw był obywatelem Elazar Szach?",
       "correct": "Izrael",
       "wrong": [
         "Królestwo Armenii",
@@ -96591,7 +96556,7 @@ module GameRoomContent
       "id": "dc3ff0dae7e6",
       "category": "wiara i religia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Rabin Hillel?",
+      "prompt": "Którego z wymienionych państw był poddanym Hillel?",
       "correct": "Królestwo Partów",
       "wrong": [
         "Elektorat Saksonii",
@@ -96603,7 +96568,7 @@ module GameRoomContent
       "id": "cfbc438ed5c6",
       "category": "wiara i religia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Rabin Jehuda Löw ben Becalel?",
+      "prompt": "Którego z wymienionych państw był poddanym Jehuda Löw ben Becalel?",
       "correct": "Królestwo Czech",
       "wrong": [
         "Dynastia Qing",
@@ -96615,7 +96580,7 @@ module GameRoomContent
       "id": "025517c74aff",
       "category": "wiara i religia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Rabin Nachmanides?",
+      "prompt": "Którego z wymienionych państw był poddanym Nachmanides?",
       "correct": "Korona Aragonii",
       "wrong": [
         "Królestwo Ostrogotów",
@@ -96627,7 +96592,7 @@ module GameRoomContent
       "id": "ec19bb67942e",
       "category": "wiara i religia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Rabin Saadja ben Josef?",
+      "prompt": "Którego z wymienionych państw był poddanym Saadja ben Josef?",
       "correct": "Kalifat Abbasydski",
       "wrong": [
         "Dynastia Qing",
@@ -96639,7 +96604,7 @@ module GameRoomContent
       "id": "a94e4e54ac7e",
       "category": "wiara i religia",
       "level": "medium",
-      "prompt": "Jakie obywatelstwo przypisano osobie Rabin Sabbataj Cwi?",
+      "prompt": "Którego z wymienionych państw był poddanym Sabbataj Cwi?",
       "correct": "Imperium osmańskie",
       "wrong": [
         "Królestwo Armenii",
@@ -96951,7 +96916,7 @@ module GameRoomContent
       "id": "76a688919ac2",
       "category": "wiara i religia",
       "level": "medium",
-      "prompt": "Sechmet — kto był małżonkiem tego bóstwa?",
+      "prompt": "Sechmet — jak nazywał się jej mąż w mitologii?",
       "correct": "Ptah",
       "wrong": [
         "Nanna",
@@ -97035,7 +97000,7 @@ module GameRoomContent
       "id": "5451e5c931be",
       "category": "wiara i religia",
       "level": "medium",
-      "prompt": "Sita — kto był małżonkiem tego bóstwa?",
+      "prompt": "Sita — jak nazywał się jej mąż w mitologii?",
       "correct": "Rama",
       "wrong": [
         "Wisznu",
@@ -97047,7 +97012,7 @@ module GameRoomContent
       "id": "11c7a6fbfa8f",
       "category": "wiara i religia",
       "level": "medium",
-      "prompt": "Sobek — kto był małżonkiem tego bóstwa?",
+      "prompt": "Która bogini o postaci kobry była czczona wraz z Sobkiem w świątyni Medinet Madi?",
       "correct": "Renenutet",
       "wrong": [
         "Brahma",
@@ -97395,7 +97360,7 @@ module GameRoomContent
       "id": "09e4721f0e5a",
       "category": "wiara i religia",
       "level": "medium",
-      "prompt": "Styks — kto był małżonkiem tego bóstwa?",
+      "prompt": "Styks — jak nazywał się jej mąż w mitologii?",
       "correct": "Pallas",
       "wrong": [
         "Śiwa",
@@ -97503,7 +97468,7 @@ module GameRoomContent
       "id": "c4b18651623b",
       "category": "wiara i religia",
       "level": "medium",
-      "prompt": "Teja — kto był małżonkiem tego bóstwa?",
+      "prompt": "Teja — jak nazywał się jej mąż w mitologii?",
       "correct": "Hyperion",
       "wrong": [
         "Telemach",
@@ -97539,7 +97504,7 @@ module GameRoomContent
       "id": "a26fe03f14df",
       "category": "wiara i religia",
       "level": "medium",
-      "prompt": "Tetyda — kto był małżonkiem tego bóstwa?",
+      "prompt": "Tetyda — jak nazywał się jej mąż w mitologii?",
       "correct": "Okeanos",
       "wrong": [
         "Rukmini",
@@ -99195,7 +99160,7 @@ module GameRoomContent
       "id": "b96b3e04401f",
       "category": "wiara i religia",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Biskup Absalon?",
+      "prompt": "Którego z wymienionych państw był poddanym Absalon?",
       "correct": "Królestwo Danii",
       "wrong": [
         "Królestwo Prus",
@@ -99219,7 +99184,7 @@ module GameRoomContent
       "id": "95de58538a38",
       "category": "wiara i religia",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Biskup Apolinary z Laodycei?",
+      "prompt": "W którym z wymienionych państw działał Apolinary z Laodycei?",
       "correct": "starożytny Rzym",
       "wrong": [
         "Królestwo Szkocji",
@@ -99363,7 +99328,7 @@ module GameRoomContent
       "id": "88888b0e45fb",
       "category": "wiara i religia",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Biskup Erik Pontoppidan?",
+      "prompt": "Którego z wymienionych państw był poddanym Erik Pontoppidan?",
       "correct": "Królestwo Danii",
       "wrong": [
         "Republika Chińska",
@@ -99399,7 +99364,7 @@ module GameRoomContent
       "id": "d95ce9b1f652",
       "category": "wiara i religia",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Biskup Francis Eugene George?",
+      "prompt": "Którego z wymienionych państw był obywatelem Francis Eugene George?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Kanada",
@@ -99411,7 +99376,7 @@ module GameRoomContent
       "id": "933bed27006d",
       "category": "wiara i religia",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Biskup Franz König?",
+      "prompt": "Którego z wymienionych państw był obywatelem Franz König?",
       "correct": "Austria",
       "wrong": [
         "Królestwo Walencji",
@@ -99495,7 +99460,7 @@ module GameRoomContent
       "id": "49336c7ff526",
       "category": "wiara i religia",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Biskup Hydacjusz?",
+      "prompt": "W którym z wymienionych państw działał Hydacjusz?",
       "correct": "starożytny Rzym",
       "wrong": [
         "Korona Aragonii",
@@ -99615,7 +99580,7 @@ module GameRoomContent
       "id": "e302b116cee1",
       "category": "wiara i religia",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Biskup Kutbert z Lindisfarne?",
+      "prompt": "Którego z wymienionych państw był poddanym Kutbert z Lindisfarne?",
       "correct": "Nortumbria",
       "wrong": [
         "Węgry",
@@ -99663,7 +99628,7 @@ module GameRoomContent
       "id": "3a1a76f44d62",
       "category": "wiara i religia",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Biskup Mikołaj?",
+      "prompt": "Którego z wymienionych państw był obywatelem Mikołaj?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Pierwsze państwo bułgarskie",
@@ -99735,7 +99700,7 @@ module GameRoomContent
       "id": "f4bf2d60e521",
       "category": "wiara i religia",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Biskup Richard Williamson?",
+      "prompt": "Którego z wymienionych państw był obywatelem Richard Williamson?",
       "correct": "Wielka Brytania",
       "wrong": [
         "Wicekrólestwo Peru",
@@ -99819,7 +99784,7 @@ module GameRoomContent
       "id": "a83c3cfa86e4",
       "category": "wiara i religia",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Biskup Teodor z Mopsuestii?",
+      "prompt": "W którym z wymienionych państw działał Teodor z Mopsuestii?",
       "correct": "Cesarstwo Bizantyńskie",
       "wrong": [
         "Imperium Karolińskie",
@@ -104523,7 +104488,7 @@ module GameRoomContent
       "id": "6385c0a07479",
       "category": "wiara i religia",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Rabin Abraham Geiger?",
+      "prompt": "Którego z wymienionych państw był poddanym Abraham Geiger?",
       "correct": "Królestwo Prus",
       "wrong": [
         "Państwo frankijskie",
@@ -104535,7 +104500,7 @@ module GameRoomContent
       "id": "80718fd60957",
       "category": "wiara i religia",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Rabin Abraham J. Twerski?",
+      "prompt": "Którego z wymienionych państw był obywatelem Abraham J. Twerski?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Królestwo Wielkiej Brytanii",
@@ -104547,7 +104512,7 @@ module GameRoomContent
       "id": "ede766e91017",
       "category": "wiara i religia",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Rabin Abraham ben Szlomo Abulafia?",
+      "prompt": "Którego z wymienionych państw był poddanym Abraham ben Szlomo Abulafia?",
       "correct": "Królestwo Aragonii",
       "wrong": [
         "Francja",
@@ -104559,19 +104524,19 @@ module GameRoomContent
       "id": "550e9011958a",
       "category": "wiara i religia",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Rabin Abraham ibn Daud?",
+      "prompt": "Która dynastia władała Kordobą około 1110 roku, gdy urodził się Abraham ibn Daud?",
       "correct": "Almorawidzi",
       "wrong": [
-        "Państwo Kościelne",
-        "starożytne Ateny",
-        "Cypr"
+        "Nasrydzi",
+        "Safawidzi",
+        "Fatymidzi"
       ]
     },
     {
       "id": "cda52561d400",
       "category": "wiara i religia",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Rabin Anan ben Dawid?",
+      "prompt": "Którego z wymienionych państw był poddanym Anan ben Dawid?",
       "correct": "Kalifat Abbasydski",
       "wrong": [
         "Księstwo Mediolanu",
@@ -104583,7 +104548,7 @@ module GameRoomContent
       "id": "77e79add5e6c",
       "category": "wiara i religia",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Rabin Chaim Kaniewski?",
+      "prompt": "Którego z wymienionych państw był obywatelem Chaim Kaniewski?",
       "correct": "Izrael",
       "wrong": [
         "Cypr",
@@ -104595,7 +104560,7 @@ module GameRoomContent
       "id": "e42e5dd27147",
       "category": "wiara i religia",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Rabin Chaim Potok?",
+      "prompt": "Którego z wymienionych państw był obywatelem Chaim Potok?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Republika Zjednoczonych Prowincji",
@@ -104607,7 +104572,7 @@ module GameRoomContent
       "id": "22722f5e83c1",
       "category": "wiara i religia",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Rabin Chaim Vital?",
+      "prompt": "Którego z wymienionych państw był poddanym Chaim Vital?",
       "correct": "Imperium osmańskie",
       "wrong": [
         "Starożytny Egipt",
@@ -104619,7 +104584,7 @@ module GameRoomContent
       "id": "cdc4553b4899",
       "category": "wiara i religia",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Rabin Dawid Lau?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Dawid Lau?",
       "correct": "Izrael",
       "wrong": [
         "Szwecja",
@@ -104631,7 +104596,7 @@ module GameRoomContent
       "id": "c84754e266fc",
       "category": "wiara i religia",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Rabin Elijahu Bakszi-Doron?",
+      "prompt": "Którego z wymienionych państw był obywatelem Elijahu Bakszi-Doron?",
       "correct": "Izrael",
       "wrong": [
         "Królestwo Armenii",
@@ -104643,7 +104608,7 @@ module GameRoomContent
       "id": "121a2c187280",
       "category": "wiara i religia",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Rabin Elimelech z Leżajska?",
+      "prompt": "Którego z wymienionych państw był obywatelem Elimelech z Leżajska?",
       "correct": "Rzeczpospolita Obojga Narodów",
       "wrong": [
         "Timor Wschodni",
@@ -104655,7 +104620,7 @@ module GameRoomContent
       "id": "ca80b35b4535",
       "category": "wiara i religia",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Rabin Gerszom z Moguncji?",
+      "prompt": "Którego z wymienionych państw był obywatelem Gerszom z Moguncji?",
       "correct": "Niemcy",
       "wrong": [
         "Zjednoczone królestwo Izraela",
@@ -104667,19 +104632,19 @@ module GameRoomContent
       "id": "2503d3b28a35",
       "category": "wiara i religia",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Rabin Hasdai ibn Shaprut?",
+      "prompt": "W której części średniowiecznego Półwyspu Iberyjskiego działał Hasdai ibn Shaprut na dworze kalifa w Kordobie?",
       "correct": "Al-Andalus",
       "wrong": [
-        "Niderlandy Burgundzkie",
-        "Marchia toskańska",
-        "Norwegia"
+        "Asturia",
+        "Nawarra",
+        "Aragonia"
       ]
     },
     {
       "id": "69f602e4adeb",
       "category": "wiara i religia",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Rabin Icchak Kaduri?",
+      "prompt": "Którego z wymienionych państw był obywatelem Icchak Kaduri?",
       "correct": "Izrael",
       "wrong": [
         "Wessex",
@@ -104691,7 +104656,7 @@ module GameRoomContent
       "id": "db79fa9f9790",
       "category": "wiara i religia",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Rabin Isaac Mayer Wise?",
+      "prompt": "Którego z wymienionych państw był obywatelem Isaac Mayer Wise?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Norwegia",
@@ -104703,7 +104668,7 @@ module GameRoomContent
       "id": "3022fce52970",
       "category": "wiara i religia",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Rabin Israel Kirzner?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Israel Kirzner?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Austro-Węgry",
@@ -104715,7 +104680,7 @@ module GameRoomContent
       "id": "971e575bc252",
       "category": "wiara i religia",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Rabin Israel Meir Lau?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Israel Meir Lau?",
       "correct": "Izrael",
       "wrong": [
         "Dynastia Zhou",
@@ -104727,19 +104692,19 @@ module GameRoomContent
       "id": "379531e1ea0d",
       "category": "wiara i religia",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Rabin Izaak Alfasi?",
+      "prompt": "Pod rządami której dynastii znajdowała się Lucena w ostatnich latach życia Izaaka Alfasiego, zmarłego w 1103 roku?",
       "correct": "Almorawidzi",
       "wrong": [
-        "Wielkie Księstwo Toskanii",
-        "Joseon",
-        "Niemcy"
+        "Nasrydzi",
+        "Safawidzi",
+        "Fatymidzi"
       ]
     },
     {
       "id": "960474747d19",
       "category": "wiara i religia",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Rabin Izaak Luria?",
+      "prompt": "Którego z wymienionych państw był poddanym Izaak Luria?",
       "correct": "Imperium osmańskie",
       "wrong": [
         "Węgry",
@@ -104751,7 +104716,7 @@ module GameRoomContent
       "id": "16c8d68a5588",
       "category": "wiara i religia",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Rabin Izaak ben Salomon Izraeli?",
+      "prompt": "Którego z wymienionych państw był poddanym Izaak ben Salomon Izraeli?",
       "correct": "Kalifat Fatymidów",
       "wrong": [
         "Austro-Węgry",
@@ -104763,7 +104728,7 @@ module GameRoomContent
       "id": "43587bd06bc2",
       "category": "wiara i religia",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Rabin Izrael Meir Kagan?",
+      "prompt": "Którego z wymienionych państw był poddanym Izrael Meir Kagan?",
       "correct": "Imperium Rosyjskie",
       "wrong": [
         "Korona Aragonii",
@@ -104775,7 +104740,7 @@ module GameRoomContent
       "id": "38f513542015",
       "category": "wiara i religia",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Rabin Jackie Mason?",
+      "prompt": "Którego z wymienionych państw był obywatelem Jackie Mason?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Zjednoczone Prowincje Niderlandów",
@@ -104787,7 +104752,7 @@ module GameRoomContent
       "id": "84770dfd2e92",
       "category": "wiara i religia",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Rabin Jacob Neusner?",
+      "prompt": "Którego z wymienionych państw był obywatelem Jacob Neusner?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Imperium Rosyjskie",
@@ -104799,7 +104764,7 @@ module GameRoomContent
       "id": "d4eb4c2ec4f7",
       "category": "wiara i religia",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Rabin Jakub Frank?",
+      "prompt": "Którego z wymienionych państw był obywatelem Jakub Frank?",
       "correct": "Rzeczpospolita Obojga Narodów",
       "wrong": [
         "Królestwo Włoch",
@@ -104811,7 +104776,7 @@ module GameRoomContent
       "id": "64a5fd78784c",
       "category": "wiara i religia",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Rabin Ja’akow Litzman?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Ja’akow Litzman?",
       "correct": "Izrael",
       "wrong": [
         "Nigeria",
@@ -104823,7 +104788,7 @@ module GameRoomContent
       "id": "3e0809845cdb",
       "category": "wiara i religia",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Rabin Jehuda Abrabanel?",
+      "prompt": "Którego z wymienionych państw był poddanym Jehuda Abrabanel?",
       "correct": "Królestwo Portugalii",
       "wrong": [
         "Norwegia",
@@ -104835,7 +104800,7 @@ module GameRoomContent
       "id": "5819f90e744e",
       "category": "wiara i religia",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Rabin Jicchak Josef?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Jicchak Josef?",
       "correct": "Izrael",
       "wrong": [
         "Francja",
@@ -104847,7 +104812,7 @@ module GameRoomContent
       "id": "5ad47204999d",
       "category": "wiara i religia",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Rabin Jonathan Sacks?",
+      "prompt": "Którego z wymienionych państw był obywatelem Jonathan Sacks?",
       "correct": "Wielka Brytania",
       "wrong": [
         "Niderlandy Burgundzkie",
@@ -104859,8 +104824,8 @@ module GameRoomContent
       "id": "d5b2ed9c2d08",
       "category": "wiara i religia",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Rabin Josef Albo?",
-      "correct": "Kastylia-León",
+      "prompt": "W którym z wymienionych historycznych państw żył Josef Albo?",
+      "correct": "Korona Kastylii",
       "wrong": [
         "Królestwo Walencji",
         "Judea",
@@ -104871,7 +104836,7 @@ module GameRoomContent
       "id": "155ad80c1c73",
       "category": "wiara i religia",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Rabin Josef Burg?",
+      "prompt": "Którego z wymienionych państw był obywatelem Josef Burg?",
       "correct": "Izrael",
       "wrong": [
         "Zjednoczone Królestwo Wielkiej Brytanii i Irlandii",
@@ -104883,7 +104848,7 @@ module GameRoomContent
       "id": "f9a056288b3d",
       "category": "wiara i religia",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Rabin Józef Karo?",
+      "prompt": "Którego z wymienionych państw był poddanym Józef Karo?",
       "correct": "Imperium osmańskie",
       "wrong": [
         "Irlandia",
@@ -104895,7 +104860,7 @@ module GameRoomContent
       "id": "0f21a701e76d",
       "category": "wiara i religia",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Rabin Leopold Zunz?",
+      "prompt": "Którego z wymienionych państw był poddanym Leopold Zunz?",
       "correct": "Księstwo Lippe",
       "wrong": [
         "Kastylia-León",
@@ -104907,7 +104872,7 @@ module GameRoomContent
       "id": "b6383afb550c",
       "category": "wiara i religia",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Rabin Menachem Mendel Schneersohn?",
+      "prompt": "Którego z wymienionych państw był poddanym Menachem Mendel Schneersohn?",
       "correct": "Imperium Rosyjskie",
       "wrong": [
         "Słowacja",
@@ -104919,7 +104884,7 @@ module GameRoomContent
       "id": "0fa6999eac46",
       "category": "wiara i religia",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Rabin Mojżesz Kordowero?",
+      "prompt": "Którego z wymienionych państw był poddanym Mojżesz Kordowero?",
       "correct": "Imperium osmańskie",
       "wrong": [
         "Kastylia-León",
@@ -104931,7 +104896,7 @@ module GameRoomContent
       "id": "512fb5c2896e",
       "category": "wiara i religia",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Rabin Mojżesz ben Maj-mon?",
+      "prompt": "Którego z wymienionych państw był obywatelem Mojżesz ben Maj-mon?",
       "correct": "Egipt",
       "wrong": [
         "Indie",
@@ -104943,8 +104908,8 @@ module GameRoomContent
       "id": "ba290e67f35c",
       "category": "wiara i religia",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Rabin Mojżesz ben Szem Tow?",
-      "correct": "Kastylia-León",
+      "prompt": "W którym z wymienionych historycznych państw żył Mojżesz ben Szem Tow?",
+      "correct": "Korona Kastylii",
       "wrong": [
         "Norwegia",
         "Zjednoczone Prowincje Niderlandów",
@@ -104955,7 +104920,7 @@ module GameRoomContent
       "id": "13ba7a57e706",
       "category": "wiara i religia",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Rabin Mordechaj Elijahu?",
+      "prompt": "Którego z wymienionych państw był obywatelem Mordechaj Elijahu?",
       "correct": "Izrael",
       "wrong": [
         "Imperium Karolińskie",
@@ -104967,7 +104932,7 @@ module GameRoomContent
       "id": "ea72db55527f",
       "category": "wiara i religia",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Rabin Mosze Chaim Luzzatto?",
+      "prompt": "Którego z wymienionych państw był obywatelem Mosze Chaim Luzzatto?",
       "correct": "Republika Wenecka",
       "wrong": [
         "Antiochia",
@@ -104979,7 +104944,7 @@ module GameRoomContent
       "id": "e2a168e54f38",
       "category": "wiara i religia",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Rabin Mosze Gafni?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Mosze Gafni?",
       "correct": "Izrael",
       "wrong": [
         "Niderlandy Burgundzkie",
@@ -104991,7 +104956,7 @@ module GameRoomContent
       "id": "6b532ab94590",
       "category": "wiara i religia",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Rabin Owadia Josef?",
+      "prompt": "Którego z wymienionych państw był obywatelem Owadia Josef?",
       "correct": "Izrael",
       "wrong": [
         "Państwo Kościelne",
@@ -105003,7 +104968,7 @@ module GameRoomContent
       "id": "6f136ed473b5",
       "category": "wiara i religia",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Rabin Petrus Alfonsi?",
+      "prompt": "Którego z wymienionych państw był poddanym Petrus Alfonsi?",
       "correct": "Królestwo Aragonii",
       "wrong": [
         "Królestwo Leónu",
@@ -105015,7 +104980,7 @@ module GameRoomContent
       "id": "c7e355e7b88c",
       "category": "wiara i religia",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Rabin Regina Jonas?",
+      "prompt": "Którego z wymienionych państw była obywatelką Regina Jonas?",
       "correct": "Rzesza Niemiecka",
       "wrong": [
         "Święte Cesarstwo Rzymskie",
@@ -105027,7 +104992,7 @@ module GameRoomContent
       "id": "6e25419e26a5",
       "category": "wiara i religia",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Rabin Salomon ha-Lewi Alkabec?",
+      "prompt": "Którego z wymienionych państw był poddanym Salomon ha-Lewi Alkabec?",
       "correct": "Imperium osmańskie",
       "wrong": [
         "Królestwo Walencji",
@@ -105039,7 +105004,7 @@ module GameRoomContent
       "id": "2732d9578a7a",
       "category": "wiara i religia",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Rabin Samson Raphael Hirsch?",
+      "prompt": "Którego z wymienionych państw był obywatelem Samson Raphael Hirsch?",
       "correct": "Hamburg",
       "wrong": [
         "Starożytny Egipt",
@@ -105051,7 +105016,7 @@ module GameRoomContent
       "id": "1cc58ebf8bb3",
       "category": "wiara i religia",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Rabin Samuel ibn Tibbon?",
+      "prompt": "Którego z wymienionych państw był obywatelem Samuel ibn Tibbon?",
       "correct": "Francja",
       "wrong": [
         "Monarchia Habsburgów",
@@ -105063,7 +105028,7 @@ module GameRoomContent
       "id": "39edd83f1bde",
       "category": "wiara i religia",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Rabin Shmuel Schneersohn?",
+      "prompt": "Którego z wymienionych państw był poddanym Shmuel Schneersohn?",
       "correct": "Imperium Rosyjskie",
       "wrong": [
         "Królestwo Galicji",
@@ -105075,7 +105040,7 @@ module GameRoomContent
       "id": "7ce43e36bae3",
       "category": "wiara i religia",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Rabin Szlomo Goren?",
+      "prompt": "Którego z wymienionych państw był obywatelem Szlomo Goren?",
       "correct": "Izrael",
       "wrong": [
         "Wessex",
@@ -105087,7 +105052,7 @@ module GameRoomContent
       "id": "6302c8da464e",
       "category": "wiara i religia",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Rabin Uri Zohar?",
+      "prompt": "Którego z wymienionych państw był obywatelem Uri Zohar?",
       "correct": "Izrael",
       "wrong": [
         "Rzeczpospolita Obojga Narodów",
@@ -105099,7 +105064,7 @@ module GameRoomContent
       "id": "7bbd2a434ed1",
       "category": "wiara i religia",
       "level": "hard",
-      "prompt": "Jakie obywatelstwo przypisano osobie Rabin Zacharias Frankel?",
+      "prompt": "Którego z wymienionych państw był poddanym Zacharias Frankel?",
       "correct": "Austro-Węgry",
       "wrong": [
         "Hidżaz",
@@ -107535,7 +107500,7 @@ module GameRoomContent
       "id": "553a819d7db6",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Abel Tasman — jakiego kraju obywatelem był ten podróżnik?",
+      "prompt": "Którego z wymienionych państw był obywatelem Abel Tasman?",
       "correct": "Republika Zjednoczonych Prowincji",
       "wrong": [
         "Holandia",
@@ -107547,7 +107512,7 @@ module GameRoomContent
       "id": "9bef1080d1c7",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Abraham Lincoln — jakiego kraju obywatelem była ta postać?",
+      "prompt": "Którego z wymienionych państw był obywatelem Abraham Lincoln?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Imperium hiszpańskie",
@@ -107571,7 +107536,7 @@ module GameRoomContent
       "id": "62aa7402e1fa",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Abu Nuwas — jakiego kraju obywatelem była ta postać?",
+      "prompt": "Którego z wymienionych państw był poddanym Abu Nuwas?",
       "correct": "Kalifat Abbasydski",
       "wrong": [
         "Niepodległe Państwo Chorwackie",
@@ -107667,19 +107632,19 @@ module GameRoomContent
       "id": "1689a0b9559e",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Albrecht Dürer — jakiego kraju obywatelem była ta postać?",
-      "correct": "Księstwo Bawarii",
+      "prompt": "Obywatelem którego wolnego miasta Rzeszy był Albrecht Dürer?",
+      "correct": "Norymberga",
       "wrong": [
-        "Sułtanat Delhijski",
-        "Sułtanat mameluków",
-        "Stara Konfederacja Szwajcarska"
+        "Lubeka",
+        "Hamburg",
+        "Frankfurt nad Menem"
       ]
     },
     {
       "id": "111a8ea9d782",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Aleksander Dumas — jakiego kraju obywatelem była ta postać?",
+      "prompt": "Którego z wymienionych państw był obywatelem Aleksander Dumas?",
       "correct": "Francja",
       "wrong": [
         "Armenia",
@@ -107763,7 +107728,7 @@ module GameRoomContent
       "id": "382c70b054bc",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Aleksandr Puszkin — jakiego kraju obywatelem była ta postać?",
+      "prompt": "Którego z wymienionych państw był poddanym Aleksandr Puszkin?",
       "correct": "Imperium Rosyjskie",
       "wrong": [
         "Imperium mongolskie",
@@ -107799,7 +107764,7 @@ module GameRoomContent
       "id": "c19471014037",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Alexander von Humboldt — jakiego kraju obywatelem był ten podróżnik?",
+      "prompt": "Którego z wymienionych państw był poddanym Alexander von Humboldt?",
       "correct": "Królestwo Prus",
       "wrong": [
         "Republika Chińska",
@@ -107823,7 +107788,7 @@ module GameRoomContent
       "id": "930e80d3ee64",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Alfred Nobel — jakiego kraju obywatelem była ta postać?",
+      "prompt": "Którego z wymienionych państw był obywatelem Alfred Nobel?",
       "correct": "Szwecja",
       "wrong": [
         "Malaje",
@@ -107835,7 +107800,7 @@ module GameRoomContent
       "id": "5be9673e2544",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Alfred Russel Wallace — jakiego kraju obywatelem był ten podróżnik?",
+      "prompt": "Którego z wymienionych państw był poddanym Alfred Russel Wallace?",
       "correct": "Zjednoczone Królestwo Wielkiej Brytanii i Irlandii",
       "wrong": [
         "Kŭmgwan Kaya",
@@ -107847,7 +107812,7 @@ module GameRoomContent
       "id": "05fb10d9fe3c",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Alfred Wegener — jakiego kraju obywatelem był ten podróżnik?",
+      "prompt": "Którego z wymienionych państw był obywatelem Alfred Wegener?",
       "correct": "Niemcy",
       "wrong": [
         "Australia",
@@ -107883,7 +107848,7 @@ module GameRoomContent
       "id": "a7ba2aff694c",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Ameryka — kto tego dokonał?",
+      "prompt": "Kto dowodził wyprawą, która w 1492 roku dotarła z Europy do Bahamów?",
       "correct": "Krzysztof Kolumb",
       "wrong": [
         "Henryk IV Burbon",
@@ -107895,7 +107860,7 @@ module GameRoomContent
       "id": "a04e2c9c1662",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Ameryka — w którym roku tego dokonano?",
+      "prompt": "W którym roku pierwsza wyprawa Krzysztofa Kolumba dotarła do Bahamów?",
       "correct": "1492",
       "wrong": [
         "1322",
@@ -107979,7 +107944,7 @@ module GameRoomContent
       "id": "5a73dd86afe9",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Anna Stuart — kto był małżonkiem tej postaci?",
+      "prompt": "Anna Stuart — jak nazywał się jej mąż?",
       "correct": "Jerzy Duński",
       "wrong": [
         "Hat-Hor",
@@ -107991,7 +107956,7 @@ module GameRoomContent
       "id": "070e9d63de7a",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Antarktyda — w którym roku tego dokonano?",
+      "prompt": "W którym roku wyprawy Bellingshausena i Bransfielda po raz pierwszy odnotowały dostrzeżenie lądu Antarktydy?",
       "correct": "1820",
       "wrong": [
         "1810",
@@ -108015,7 +107980,7 @@ module GameRoomContent
       "id": "22377a8bc9b8",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Antonio Vivaldi — jakiego kraju obywatelem była ta postać?",
+      "prompt": "Którego z wymienionych państw był obywatelem Antonio Vivaldi?",
       "correct": "Republika Wenecka",
       "wrong": [
         "Królestwo Holandii",
@@ -108099,7 +108064,7 @@ module GameRoomContent
       "id": "918c0d7449d7",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Arthur C. Clarke — jakiego kraju obywatelem był ten podróżnik?",
+      "prompt": "Którego z wymienionych państw był obywatelem Arthur C. Clarke?",
       "correct": "Wielka Brytania",
       "wrong": [
         "Iran",
@@ -108111,7 +108076,7 @@ module GameRoomContent
       "id": "c4014173c7b3",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Arthur Schopenhauer — jakiego kraju obywatelem była ta postać?",
+      "prompt": "Którego z wymienionych państw był poddanym Arthur Schopenhauer?",
       "correct": "Królestwo Prus",
       "wrong": [
         "Sri Lanka",
@@ -108183,7 +108148,7 @@ module GameRoomContent
       "id": "5a7ccede4104",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Augustyn z Hippony — jakiego kraju obywatelem była ta postać?",
+      "prompt": "Którego z wymienionych państw był obywatelem Augustyn z Hippony?",
       "correct": "starożytny Rzym",
       "wrong": [
         "Przedlitawia",
@@ -108195,7 +108160,7 @@ module GameRoomContent
       "id": "7560a8b47e70",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Australia — kto tego dokonał?",
+      "prompt": "Który żeglarz dowodził pierwszą udokumentowaną europejską wyprawą, która w 1606 roku wylądowała w Australii?",
       "correct": "Willem Janszoon",
       "wrong": [
         "Karol Orleański",
@@ -108267,7 +108232,7 @@ module GameRoomContent
       "id": "475abad9a1db",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Aśoka — jakiego kraju obywatelem była ta postać?",
+      "prompt": "Którym z wymienionych państw władał Aśoka?",
       "correct": "Imperium Maurjów",
       "wrong": [
         "Księstwo Brunszwiku i Lüneburga",
@@ -108327,7 +108292,7 @@ module GameRoomContent
       "id": "840e72093bea",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Bartolomeu Dias — jakiego kraju obywatelem był ten podróżnik?",
+      "prompt": "Którego z wymienionych państw był poddanym Bartolomeu Dias?",
       "correct": "Królestwo Portugalii",
       "wrong": [
         "Dynastia Liao",
@@ -108351,7 +108316,7 @@ module GameRoomContent
       "id": "6860b3527cbf",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Baruch Spinoza — jakiego kraju obywatelem była ta postać?",
+      "prompt": "Którego z wymienionych państw był obywatelem Baruch Spinoza?",
       "correct": "Republika Zjednoczonych Prowincji",
       "wrong": [
         "Trzech Dostojnych i Pięciu Cesarzy",
@@ -108363,7 +108328,7 @@ module GameRoomContent
       "id": "5e2b8af05b40",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Bashō Matsuo — jakiego kraju obywatelem była ta postać?",
+      "prompt": "Z którego kraju pochodził poeta Bashō Matsuo?",
       "correct": "Japonia",
       "wrong": [
         "Kurdystan",
@@ -108555,7 +108520,7 @@ module GameRoomContent
       "id": "4296ba21c413",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Blaise Pascal — jakiego kraju obywatelem była ta postać?",
+      "prompt": "Którego z wymienionych państw był poddanym Blaise Pascal?",
       "correct": "Królestwo Francji",
       "wrong": [
         "Kolumbia",
@@ -108615,7 +108580,7 @@ module GameRoomContent
       "id": "304ca3f47d36",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Brazylia — kto tego dokonał?",
+      "prompt": "Kto dowodził portugalską wyprawą, która w kwietniu 1500 roku dotarła do wybrzeży dzisiejszej Brazylii?",
       "correct": "Pedro Álvares Cabral",
       "wrong": [
         "Robert II Pobożny",
@@ -108627,7 +108592,7 @@ module GameRoomContent
       "id": "4b17b3d98d8c",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Brazylia — w którym roku tego dokonano?",
+      "prompt": "W którym roku wyprawa Pedra Álvaresa Cabrala dotarła do wybrzeży dzisiejszej Brazylii?",
       "correct": "1500",
       "wrong": [
         "1551",
@@ -108735,7 +108700,7 @@ module GameRoomContent
       "id": "e3cc7d1a1754",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Cecil Rhodes — jakiego kraju obywatelem był ten podróżnik?",
+      "prompt": "Którego z wymienionych państw był poddanym Cecil Rhodes?",
       "correct": "Zjednoczone Królestwo Wielkiej Brytanii i Irlandii",
       "wrong": [
         "Kurdystan",
@@ -108747,7 +108712,7 @@ module GameRoomContent
       "id": "d726953421ff",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Ceres — kto tego dokonał?",
+      "prompt": "Kto odkrył Ceres w 1801 roku?",
       "correct": "Giuseppe Piazzi",
       "wrong": [
         "Gustav Kirchhoff",
@@ -108963,7 +108928,7 @@ module GameRoomContent
       "id": "066c0d4b3114",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Charles Baudelaire — jakiego kraju obywatelem była ta postać?",
+      "prompt": "Którego z wymienionych państw był obywatelem Charles Baudelaire?",
       "correct": "Francja",
       "wrong": [
         "Cesarstwo chińskie",
@@ -108975,7 +108940,7 @@ module GameRoomContent
       "id": "9035702c2af0",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Charles Dickens — jakiego kraju obywatelem była ta postać?",
+      "prompt": "Którego z wymienionych państw był poddanym Charles Dickens?",
       "correct": "Zjednoczone Królestwo Wielkiej Brytanii i Irlandii",
       "wrong": [
         "Palestyna",
@@ -109071,7 +109036,7 @@ module GameRoomContent
       "id": "4708430bfc87",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Cyceron — jakiego kraju obywatelem była ta postać?",
+      "prompt": "Którego z wymienionych państw był obywatelem Cyceron?",
       "correct": "starożytny Rzym",
       "wrong": [
         "Kościół tytularny",
@@ -109179,7 +109144,7 @@ module GameRoomContent
       "id": "1ec121fa8bfb",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Diego Velázquez — jakiego kraju obywatelem była ta postać?",
+      "prompt": "Którego z wymienionych państw był obywatelem Diego Velázquez?",
       "correct": "Hiszpania",
       "wrong": [
         "Państwo frankijskie",
@@ -109299,7 +109264,7 @@ module GameRoomContent
       "id": "578a647a6fd4",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Edgar Allan Poe — jakiego kraju obywatelem była ta postać?",
+      "prompt": "Którego z wymienionych państw był obywatelem Edgar Allan Poe?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Sułtanat Johoru",
@@ -109311,7 +109276,7 @@ module GameRoomContent
       "id": "5896c0a27174",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Edmund Hillary — jakiego kraju obywatelem był ten podróżnik?",
+      "prompt": "Którego z wymienionych państw był obywatelem Edmund Hillary?",
       "correct": "Nowa Zelandia",
       "wrong": [
         "III Rzesza",
@@ -109371,7 +109336,7 @@ module GameRoomContent
       "id": "7cf41c6bc7f9",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Ernest Shackleton — jakiego kraju obywatelem był ten podróżnik?",
+      "prompt": "Którego z wymienionych państw był poddanym Ernest Shackleton?",
       "correct": "Zjednoczone Królestwo Wielkiej Brytanii i Irlandii",
       "wrong": [
         "Burkina Faso",
@@ -109425,18 +109390,6 @@ module GameRoomContent
         "1312",
         "1287",
         "1378"
-      ]
-    },
-    {
-      "id": "a92f2dd83f15",
-      "category": "śladami przodków",
-      "level": "easy",
-      "prompt": "Euklides — jakiego kraju obywatelem była ta postać?",
-      "correct": "starożytne Ateny",
-      "wrong": [
-        "Księstwo Brunszwiku i Lüneburga",
-        "Gwatemala",
-        "Królestwo Portugalii"
       ]
     },
     {
@@ -109515,7 +109468,7 @@ module GameRoomContent
       "id": "1395534f6975",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Filip III Habsburg — kto był małżonkiem tej postaci?",
+      "prompt": "Filip III Habsburg — jak nazywała się jego żona?",
       "correct": "Małgorzata Austriaczka",
       "wrong": [
         "Karol Wielki",
@@ -109539,7 +109492,7 @@ module GameRoomContent
       "id": "9c2aacd44952",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Filip IV Piękny — kto był małżonkiem tej postaci?",
+      "prompt": "Filip IV Piękny — jak nazywała się jego żona?",
       "correct": "Joanna I z Nawarry",
       "wrong": [
         "Emily Donelson Jackson",
@@ -109575,7 +109528,7 @@ module GameRoomContent
       "id": "416c6ba20580",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Fiodor Dostojewski — jakiego kraju obywatelem była ta postać?",
+      "prompt": "Którego z wymienionych państw był poddanym Fiodor Dostojewski?",
       "correct": "Imperium Rosyjskie",
       "wrong": [
         "Mjanma",
@@ -109587,7 +109540,7 @@ module GameRoomContent
       "id": "1ba4a590931d",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Francesco Petrarca — jakiego kraju obywatelem była ta postać?",
+      "prompt": "Którego z wymienionych państw był obywatelem Francesco Petrarca?",
       "correct": "Republika Florencka",
       "wrong": [
         "Królestwo Norwegii",
@@ -109599,7 +109552,7 @@ module GameRoomContent
       "id": "c0237723dff3",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Francis Bacon — jakiego kraju obywatelem była ta postać?",
+      "prompt": "Którego z wymienionych państw był poddanym Francis Bacon?",
       "correct": "Królestwo Anglii",
       "wrong": [
         "Słowacja",
@@ -109611,7 +109564,7 @@ module GameRoomContent
       "id": "6376a2cbfe6d",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Francis Drake — jakiego kraju obywatelem był ten podróżnik?",
+      "prompt": "Którego z wymienionych państw był poddanym Francis Drake?",
       "correct": "Królestwo Anglii",
       "wrong": [
         "Królestwo Kuszanów",
@@ -109635,7 +109588,7 @@ module GameRoomContent
       "id": "d9db9ceb82cb",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Francisco Goya — jakiego kraju obywatelem była ta postać?",
+      "prompt": "Którego z wymienionych państw był obywatelem Francisco Goya?",
       "correct": "Hiszpania",
       "wrong": [
         "Królestwo Szkocji",
@@ -109647,7 +109600,7 @@ module GameRoomContent
       "id": "a9b808049b77",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Franciszek Józef I — kto był małżonkiem tej postaci?",
+      "prompt": "Franciszek Józef I — jak nazywała się jego żona?",
       "correct": "Elżbieta Bawarska",
       "wrong": [
         "Jan I Dobry",
@@ -109719,7 +109672,7 @@ module GameRoomContent
       "id": "ea083409a37b",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Fryderyk II Wielki — kto był małżonkiem tej postaci?",
+      "prompt": "Fryderyk II Wielki — jak nazywała się jego żona?",
       "correct": "Elżbieta Krystyna Braunschweig-Wolfenbüttel-Bevern",
       "wrong": [
         "Fryderyk I Zollern",
@@ -109755,7 +109708,7 @@ module GameRoomContent
       "id": "c09f8229a6bc",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Gajusz Juliusz Cezar — jakiego kraju obywatelem była ta postać?",
+      "prompt": "Którego z wymienionych państw był obywatelem Gajusz Juliusz Cezar?",
       "correct": "starożytny Rzym",
       "wrong": [
         "Mali",
@@ -109815,7 +109768,7 @@ module GameRoomContent
       "id": "c6811f55f3d1",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Gottfried Wilhelm Leibniz — jakiego kraju obywatelem była ta postać?",
+      "prompt": "Którego z wymienionych państw był poddanym Gottfried Wilhelm Leibniz?",
       "correct": "Elektorat Saksonii",
       "wrong": [
         "Zjednoczone Prowincje Niderlandów",
@@ -109827,7 +109780,7 @@ module GameRoomContent
       "id": "9cf6f20ab414",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Grenada — w którym roku tego dokonano?",
+      "prompt": "W którym roku Krzysztof Kolumb dotarł do Grenady podczas swojej trzeciej wyprawy?",
       "correct": "1498",
       "wrong": [
         "1242",
@@ -110079,7 +110032,7 @@ module GameRoomContent
       "id": "289ea9ae4777",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Hans Christian Andersen — jakiego kraju obywatelem była ta postać?",
+      "prompt": "Którego z wymienionych państw był poddanym Hans Christian Andersen?",
       "correct": "Królestwo Danii",
       "wrong": [
         "Państwo wielkomorawskie",
@@ -110163,7 +110116,7 @@ module GameRoomContent
       "id": "21641add385a",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Henry Morton Stanley — jakiego kraju obywatelem był ten podróżnik?",
+      "prompt": "Którego z wymienionych państw był poddanym Henry Morton Stanley?",
       "correct": "Zjednoczone Królestwo Wielkiej Brytanii i Irlandii",
       "wrong": [
         "Wielcy Seldżucy",
@@ -110187,7 +110140,7 @@ module GameRoomContent
       "id": "5a4a76e3f38f",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Henryk II Plantagenet — kto był małżonkiem tej postaci?",
+      "prompt": "Henryk II Plantagenet — jak nazywała się jego żona?",
       "correct": "Eleonora Akwitańska",
       "wrong": [
         "György von Hevesy",
@@ -110259,12 +110212,12 @@ module GameRoomContent
       "id": "4bd10391089a",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Herodot — jakiego kraju obywatelem była ta postać?",
+      "prompt": "W którym mieście urodził się Herodot?",
       "correct": "Halikarnas",
       "wrong": [
-        "Republika Wenecka",
-        "Besarabia",
-        "Królestwo Holandii"
+        "Ateny",
+        "Sparta",
+        "Korynt"
       ]
     },
     {
@@ -110283,7 +110236,7 @@ module GameRoomContent
       "id": "d07a44de07f9",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Hokusai Katsushika — jakiego kraju obywatelem była ta postać?",
+      "prompt": "Z którego kraju pochodził artysta Hokusai Katsushika?",
       "correct": "Japonia",
       "wrong": [
         "Korea Południowa",
@@ -110319,7 +110272,7 @@ module GameRoomContent
       "id": "6c3ba6abffc2",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Honoré de Balzac — jakiego kraju obywatelem była ta postać?",
+      "prompt": "Którego z wymienionych państw był obywatelem Honoré de Balzac?",
       "correct": "Francja",
       "wrong": [
         "Klein Vrystaat",
@@ -110331,7 +110284,7 @@ module GameRoomContent
       "id": "f219a930a81c",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Horacy — jakiego kraju obywatelem była ta postać?",
+      "prompt": "Którego z wymienionych państw był obywatelem Horacy?",
       "correct": "starożytny Rzym",
       "wrong": [
         "Ćola",
@@ -110343,7 +110296,7 @@ module GameRoomContent
       "id": "492a7845e530",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Hugo Kapet — kto był małżonkiem tej postaci?",
+      "prompt": "Hugo Kapet — jak nazywała się jego żona?",
       "correct": "Adelajda Akwitańska",
       "wrong": [
         "Robert II Pobożny",
@@ -110847,7 +110800,7 @@ module GameRoomContent
       "id": "b4b3d6c39f24",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Io — kto tego dokonał?",
+      "prompt": "Który astronom w 1610 roku zaobserwował Io wraz z trzema innymi dużymi księżycami Jowisza?",
       "correct": "Galileusz",
       "wrong": [
         "Atanaryk",
@@ -110883,7 +110836,7 @@ module GameRoomContent
       "id": "152fc83a455c",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Izabela I Kastylijska — kto był małżonkiem tej postaci?",
+      "prompt": "Izabela I Kastylijska — jak nazywał się jej mąż?",
       "correct": "Ferdynand Aragoński",
       "wrong": [
         "Itzcoatl",
@@ -110895,7 +110848,7 @@ module GameRoomContent
       "id": "c54dd6cd0fda",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Jacques Cartier — jakiego kraju obywatelem był ten podróżnik?",
+      "prompt": "Którego z wymienionych państw był poddanym Jacques Cartier?",
       "correct": "Królestwo Francji",
       "wrong": [
         "Dynastia Durrani",
@@ -110907,7 +110860,7 @@ module GameRoomContent
       "id": "1aba5b52e17a",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Jacques-Yves Cousteau — jakiego kraju obywatelem był ten podróżnik?",
+      "prompt": "Którego z wymienionych państw był obywatelem Jacques-Yves Cousteau?",
       "correct": "Francja",
       "wrong": [
         "Belgia",
@@ -110919,7 +110872,7 @@ module GameRoomContent
       "id": "6115c790034e",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Jakub I Stuart — kto był małżonkiem tej postaci?",
+      "prompt": "Jakub I Stuart — jak nazywała się jego żona?",
       "correct": "Anna Duńska",
       "wrong": [
         "Vitale Candiano",
@@ -110931,7 +110884,7 @@ module GameRoomContent
       "id": "4ee6153d10f3",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "James Clerk Maxwell — jakiego kraju obywatelem była ta postać?",
+      "prompt": "Którego z wymienionych państw był poddanym James Clerk Maxwell?",
       "correct": "Zjednoczone Królestwo Wielkiej Brytanii i Irlandii",
       "wrong": [
         "Afganistan",
@@ -110943,7 +110896,7 @@ module GameRoomContent
       "id": "0f3f79f6498e",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "James Cook — jakiego kraju obywatelem był ten podróżnik?",
+      "prompt": "Którego z wymienionych państw był poddanym James Cook?",
       "correct": "Królestwo Wielkiej Brytanii",
       "wrong": [
         "Katar",
@@ -110955,7 +110908,7 @@ module GameRoomContent
       "id": "a4fa4ae44244",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "James Madison — jakiego kraju obywatelem była ta postać?",
+      "prompt": "Którego z wymienionych państw był obywatelem James Madison?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Republika Liguryjska",
@@ -111039,7 +110992,7 @@ module GameRoomContent
       "id": "162336ae8b95",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Jane Austen — jakiego kraju obywatelem była ta postać?",
+      "prompt": "Którego z wymienionych państw była poddaną Jane Austen?",
       "correct": "Zjednoczone Królestwo Wielkiej Brytanii i Irlandii",
       "wrong": [
         "Besarabia",
@@ -111063,7 +111016,7 @@ module GameRoomContent
       "id": "7846fca51a7e",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Jerzy II Hanowerski — kto był małżonkiem tej postaci?",
+      "prompt": "Jerzy II Hanowerski — jak nazywała się jego żona?",
       "correct": "Karolina z Ansbachu",
       "wrong": [
         "Wilhelm I",
@@ -111087,7 +111040,7 @@ module GameRoomContent
       "id": "59887d616954",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Joanna Grey — kto był małżonkiem tej postaci?",
+      "prompt": "Joanna Grey — jak nazywał się jej mąż?",
       "correct": "Guildford Dudley",
       "wrong": [
         "Maria Anna Sabaudzka",
@@ -111099,7 +111052,7 @@ module GameRoomContent
       "id": "f6526c982777",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Joanna d'Arc — jakiego kraju obywatelem była ta postać?",
+      "prompt": "Którego z wymienionych państw była poddaną Joanna d'Arc?",
       "correct": "Królestwo Francji",
       "wrong": [
         "Republika Cospaii",
@@ -111123,7 +111076,7 @@ module GameRoomContent
       "id": "083b7bf51e35",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Johannes Gutenberg — jakiego kraju obywatelem była ta postać?",
+      "prompt": "Którego z wymienionych państw był poddanym Johannes Gutenberg?",
       "correct": "Święte Cesarstwo Rzymskie",
       "wrong": [
         "Demokratyczna Republika Konga",
@@ -111147,7 +111100,7 @@ module GameRoomContent
       "id": "ac33fd1d7cd8",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Jonathan Swift — jakiego kraju obywatelem była ta postać?",
+      "prompt": "Którego z wymienionych państw był poddanym Jonathan Swift?",
       "correct": "Królestwo Irlandii",
       "wrong": [
         "Chanat Krymski",
@@ -111267,7 +111220,7 @@ module GameRoomContent
       "id": "0efe610bfb8d",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Jurij Gagarin — jakiego kraju obywatelem był ten podróżnik?",
+      "prompt": "Którego z wymienionych państw był obywatelem Jurij Gagarin?",
       "correct": "Związek Socjalistycznych Republik Radzieckich",
       "wrong": [
         "Obwód syrdaryjski",
@@ -111315,7 +111268,7 @@ module GameRoomContent
       "id": "e946753e81f3",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Kajmany — kto tego dokonał?",
+      "prompt": "Kto w 1503 roku odnotował dostrzeżenie wysp Cayman Brac i Little Cayman?",
       "correct": "Krzysztof Kolumb",
       "wrong": [
         "Sechemib",
@@ -111327,7 +111280,7 @@ module GameRoomContent
       "id": "fe19becf0d35",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Kajmany — w którym roku tego dokonano?",
+      "prompt": "W którym roku Krzysztof Kolumb dostrzegł wyspy Cayman Brac i Little Cayman?",
       "correct": "1503",
       "wrong": [
         "1555",
@@ -111471,7 +111424,7 @@ module GameRoomContent
       "id": "7b16b6df2b0b",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Karol Darwin — jakiego kraju obywatelem był ten podróżnik?",
+      "prompt": "Którego z wymienionych państw był poddanym Karol Darwin?",
       "correct": "Zjednoczone Królestwo Wielkiej Brytanii i Irlandii",
       "wrong": [
         "Imperium tybetańskie",
@@ -111483,7 +111436,7 @@ module GameRoomContent
       "id": "95c13face2d8",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Karol I Stuart — kto był małżonkiem tej postaci?",
+      "prompt": "Karol I Stuart — jak nazywała się jego żona?",
       "correct": "Henrietta Maria Burbon",
       "wrong": [
         "Osorkon Starszy",
@@ -111495,7 +111448,7 @@ module GameRoomContent
       "id": "b4299aaba76b",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Karol II Stuart — kto był małżonkiem tej postaci?",
+      "prompt": "Karol II Stuart — jak nazywała się jego żona?",
       "correct": "Katarzyna Bragança",
       "wrong": [
         "Władysław I Łokietek",
@@ -111519,7 +111472,7 @@ module GameRoomContent
       "id": "ea3426a360c0",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Karol Linneusz — jakiego kraju obywatelem była ta postać?",
+      "prompt": "Którego z wymienionych państw był obywatelem Karol Linneusz?",
       "correct": "Szwecja",
       "wrong": [
         "Chanat Buchary",
@@ -111531,7 +111484,7 @@ module GameRoomContent
       "id": "12960c59e9c2",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Karol V Habsburg — kto był małżonkiem tej postaci?",
+      "prompt": "Karol V Habsburg — jak nazywała się jego żona?",
       "correct": "Izabela Portugalska",
       "wrong": [
         "Ethelwulf",
@@ -111543,7 +111496,7 @@ module GameRoomContent
       "id": "69687f9358f2",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Karol VI Habsburg — kto był małżonkiem tej postaci?",
+      "prompt": "Karol VI Habsburg — jak nazywała się jego żona?",
       "correct": "Elżbieta Krystyna von Braunschweig-Wolfenbüttel",
       "wrong": [
         "Statejra II",
@@ -111555,7 +111508,7 @@ module GameRoomContent
       "id": "a9741ea008fc",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Karol VI Szalony — kto był małżonkiem tej postaci?",
+      "prompt": "Karol VI Szalony — jak nazywała się jego żona?",
       "correct": "Izabela Bawarska",
       "wrong": [
         "Osorkon Starszy",
@@ -111567,7 +111520,7 @@ module GameRoomContent
       "id": "bb363040160d",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Karol VII Walezjusz — kto był małżonkiem tej postaci?",
+      "prompt": "Karol VII Walezjusz — jak nazywała się jego żona?",
       "correct": "Maria Andegaweńska",
       "wrong": [
         "Karol Wielki",
@@ -111591,7 +111544,7 @@ module GameRoomContent
       "id": "84bba7aece1c",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Karol Wielki — jakiego kraju obywatelem była ta postać?",
+      "prompt": "Którym z wymienionych państw władał Karol Wielki?",
       "correct": "Państwo frankijskie",
       "wrong": [
         "Indonezja",
@@ -111615,7 +111568,7 @@ module GameRoomContent
       "id": "4e2ca16765c4",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Karol X Burbon — kto był małżonkiem tej postaci?",
+      "prompt": "Karol X Burbon — jak nazywała się jego żona?",
       "correct": "Maria Teresa Sabaudzka (1756–1805)",
       "wrong": [
         "Ludwik Łazarz Zamenhof",
@@ -111627,7 +111580,7 @@ module GameRoomContent
       "id": "47069067cafa",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Karol XIV Jan — kto był małżonkiem tej postaci?",
+      "prompt": "Karol XIV Jan — jak nazywała się jego żona?",
       "correct": "Dezyderia Clary-Bernadotte",
       "wrong": [
         "Edekon",
@@ -111663,7 +111616,7 @@ module GameRoomContent
       "id": "66919cde3c9c",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Kartezjusz — jakiego kraju obywatelem była ta postać?",
+      "prompt": "Którego z wymienionych państw był obywatelem Kartezjusz?",
       "correct": "Francja",
       "wrong": [
         "Kuwejt",
@@ -111879,7 +111832,7 @@ module GameRoomContent
       "id": "e7dda3028ca9",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Konfucjusz — jakiego kraju obywatelem była ta postać?",
+      "prompt": "Z którego starożytnego państwa chińskiego pochodził Konfucjusz?",
       "correct": "Lu",
       "wrong": [
         "Imperium Sasanidów",
@@ -111975,7 +111928,7 @@ module GameRoomContent
       "id": "5065f4ab2643",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Krzysztof Kolumb — jakiego kraju obywatelem był ten podróżnik?",
+      "prompt": "Którego z wymienionych państw był obywatelem Krzysztof Kolumb?",
       "correct": "Republika Genui",
       "wrong": [
         "Liechtenstein",
@@ -112311,19 +112264,19 @@ module GameRoomContent
       "id": "25a77be5acf2",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Laozi — jakiego kraju obywatelem była ta postać?",
+      "prompt": "Przy dworze której dynastii Laozi miał pracować jako archiwista według tradycyjnej biografii?",
       "correct": "Dynastia Zhou",
       "wrong": [
-        "Wessex",
-        "Maroko Hiszpańskie",
-        "Księstwo Bawarii"
+        "Dynastia Ming",
+        "Dynastia Tang",
+        "Dynastia Qing"
       ]
     },
     {
       "id": "b961882534bc",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Leif Eriksson — jakiego kraju obywatelem był ten podróżnik?",
+      "prompt": "Którego z wymienionych państw był obywatelem Leif Eriksson?",
       "correct": "Wolna Wspólnota Islandzka",
       "wrong": [
         "Besarabia",
@@ -112443,12 +112396,12 @@ module GameRoomContent
       "id": "363c7b4ad194",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Li Bai — jakiego kraju obywatelem była ta postać?",
+      "prompt": "Która dynastia rządziła Chinami w czasach poety Li Baia?",
       "correct": "Dynastia Tang",
       "wrong": [
-        "Imperium Rosyjskie",
-        "Państwo wielkomorawskie",
-        "Republika Helwecka"
+        "Dynastia Ming",
+        "Dynastia Qing",
+        "Dynastia Yuan"
       ]
     },
     {
@@ -112551,7 +112504,7 @@ module GameRoomContent
       "id": "cd98069d7def",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Louis Pasteur — jakiego kraju obywatelem była ta postać?",
+      "prompt": "Którego z wymienionych państw był obywatelem Louis Pasteur?",
       "correct": "Francja",
       "wrong": [
         "Shu Han",
@@ -112575,7 +112528,7 @@ module GameRoomContent
       "id": "fdc3176d9ca0",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Ludwik Filip — kto był małżonkiem tej postaci?",
+      "prompt": "Ludwik Filip — jak nazywała się jego żona?",
       "correct": "Maria Amelia Burbon-Sycylijska",
       "wrong": [
         "Elżbieta Burbon (1602-1644)",
@@ -112611,7 +112564,7 @@ module GameRoomContent
       "id": "42c94b908626",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Ludwik IX Święty — kto był małżonkiem tej postaci?",
+      "prompt": "Ludwik IX Święty — jak nazywała się jego żona?",
       "correct": "Małgorzata Prowansalska",
       "wrong": [
         "John Anthony Cramer",
@@ -112695,7 +112648,7 @@ module GameRoomContent
       "id": "7195782026fa",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Ludwik XIV — jakiego kraju obywatelem była ta postać?",
+      "prompt": "Którym z wymienionych państw władał Ludwik XIV?",
       "correct": "Królestwo Francji",
       "wrong": [
         "Zjednoczone Królestwo Wielkiej Brytanii i Irlandii",
@@ -112707,7 +112660,7 @@ module GameRoomContent
       "id": "9765530a3910",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Ludwik XV — kto był małżonkiem tej postaci?",
+      "prompt": "Ludwik XV — jak nazywała się jego żona?",
       "correct": "Maria Leszczyńska",
       "wrong": [
         "Eutydemos I",
@@ -112719,7 +112672,7 @@ module GameRoomContent
       "id": "406331cfb0f2",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Ludwik XVI — kto był małżonkiem tej postaci?",
+      "prompt": "Ludwik XVI — jak nazywała się jego żona?",
       "correct": "Maria Antonina Austriaczka",
       "wrong": [
         "William P. Fessenden",
@@ -112743,7 +112696,7 @@ module GameRoomContent
       "id": "9a1d20707a2d",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Ludwik XVIII — kto był małżonkiem tej postaci?",
+      "prompt": "Ludwik XVIII — jak nazywała się jego żona?",
       "correct": "Maria Józefina Sabaudzka",
       "wrong": [
         "Dżet",
@@ -112815,7 +112768,7 @@ module GameRoomContent
       "id": "17d31cf4d21e",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Marco Polo — jakiego kraju obywatelem był ten podróżnik?",
+      "prompt": "Którego z wymienionych państw był obywatelem Marco Polo?",
       "correct": "Republika Wenecka",
       "wrong": [
         "Jordania",
@@ -112827,7 +112780,7 @@ module GameRoomContent
       "id": "742dfd3a574c",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Marek Aureliusz — jakiego kraju obywatelem była ta postać?",
+      "prompt": "Którego z wymienionych państw był obywatelem Marek Aureliusz?",
       "correct": "starożytny Rzym",
       "wrong": [
         "jezuici",
@@ -112851,7 +112804,7 @@ module GameRoomContent
       "id": "e46035f6df33",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Maria I Tudor — kto był małżonkiem tej postaci?",
+      "prompt": "Maria I Tudor — jak nazywał się jej mąż?",
       "correct": "Filip II Habsburg",
       "wrong": [
         "Muhammad Szibani",
@@ -112863,7 +112816,7 @@ module GameRoomContent
       "id": "c7df1e3bc3d4",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Maria II Stuart — kto był małżonkiem tej postaci?",
+      "prompt": "Maria II Stuart — jak nazywał się jej mąż?",
       "correct": "Wilhelm III Orański",
       "wrong": [
         "Fabian Bellingshausen",
@@ -112875,7 +112828,7 @@ module GameRoomContent
       "id": "b35a2d40a82a",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Maria Teresa Habsburżanka — kto był małżonkiem tej postaci?",
+      "prompt": "Maria Teresa Habsburżanka — jak nazywał się jej mąż?",
       "correct": "Franciszek I Lotaryński",
       "wrong": [
         "Joanna Beaufort",
@@ -112959,7 +112912,7 @@ module GameRoomContent
       "id": "7456c5327be9",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Michał Anioł — jakiego kraju obywatelem była ta postać?",
+      "prompt": "Którego z wymienionych państw był obywatelem Michał Anioł?",
       "correct": "Republika Florencka",
       "wrong": [
         "Księstwo Brunszwiku i Lüneburga",
@@ -112971,8 +112924,8 @@ module GameRoomContent
       "id": "55b893385d09",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Miguel de Cervantes — jakiego kraju obywatelem była ta postać?",
-      "correct": "Kastylia-León",
+      "prompt": "W którym z wymienionych historycznych państw żył Miguel de Cervantes?",
+      "correct": "Korona Kastylii",
       "wrong": [
         "reszta świata",
         "Państwo frankijskie",
@@ -112983,7 +112936,7 @@ module GameRoomContent
       "id": "224859a9c5aa",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Mikołaj II Romanow — kto był małżonkiem tego władcy Polski?",
+      "prompt": "Mikołaj II Romanow — jak nazywała się jego żona?",
       "correct": "Aleksandra Fiodorowna",
       "wrong": [
         "Emilio Segrè",
@@ -113067,7 +113020,7 @@ module GameRoomContent
       "id": "5cae21f63a8d",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Molier — jakiego kraju obywatelem była ta postać?",
+      "prompt": "Którego z wymienionych państw był poddanym Molier?",
       "correct": "Królestwo Francji",
       "wrong": [
         "Bordeaux",
@@ -113139,7 +113092,7 @@ module GameRoomContent
       "id": "771b6f4793c7",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Murasaki Shikibu — jakiego kraju obywatelem była ta postać?",
+      "prompt": "Z którego kraju pochodziła pisarka Murasaki Shikibu?",
       "correct": "Japonia",
       "wrong": [
         "Africa Proconsularis",
@@ -113223,7 +113176,7 @@ module GameRoomContent
       "id": "112a16c12160",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Neptun — w którym roku tego dokonano?",
+      "prompt": "W którym roku Johann Galle zaobserwował Neptuna na podstawie obliczeń Urbaina Le Verriera?",
       "correct": "1846",
       "wrong": [
         "1819",
@@ -113283,7 +113236,7 @@ module GameRoomContent
       "id": "be062b18b8eb",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Norfolk — kto tego dokonał?",
+      "prompt": "Który brytyjski żeglarz dotarł na wyspę Norfolk w 1774 roku?",
       "correct": "James Cook",
       "wrong": [
         "Elżbieta Bawarska",
@@ -113331,7 +113284,7 @@ module GameRoomContent
       "id": "10f9ed1490fd",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Oktawian August — jakiego kraju obywatelem była ta postać?",
+      "prompt": "Którego z wymienionych państw był obywatelem Oktawian August?",
       "correct": "starożytny Rzym",
       "wrong": [
         "Republika Chińska",
@@ -113355,12 +113308,12 @@ module GameRoomContent
       "id": "6bd4e372407e",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Omar Chajjam — jakiego kraju obywatelem była ta postać?",
+      "prompt": "Za panowania której dynastii w Persji żył Omar Chajjam?",
       "correct": "Wielcy Seldżucy",
       "wrong": [
-        "Królestwo Kuszanów",
-        "Chińska Republika Ludowa",
-        "Państwo frankijskie"
+        "Safawidzi",
+        "Kadżarowie",
+        "Pahlawi"
       ]
     },
     {
@@ -113451,7 +113404,7 @@ module GameRoomContent
       "id": "4ac5ba54cc0a",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Owidiusz — jakiego kraju obywatelem była ta postać?",
+      "prompt": "Którego z wymienionych państw był obywatelem Owidiusz?",
       "correct": "starożytny Rzym",
       "wrong": [
         "Watykan",
@@ -113571,7 +113524,7 @@ module GameRoomContent
       "id": "31a71e24922a",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Paweł z Tarsu — jakiego kraju obywatelem była ta postać?",
+      "prompt": "Którego z wymienionych państw był obywatelem Paweł z Tarsu?",
       "correct": "starożytny Rzym",
       "wrong": [
         "Dominikana",
@@ -113631,7 +113584,7 @@ module GameRoomContent
       "id": "afffaf7c9b74",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Pedro Álvares Cabral — jakiego kraju obywatelem był ten podróżnik?",
+      "prompt": "Którego z wymienionych państw był poddanym Pedro Álvares Cabral?",
       "correct": "Królestwo Portugalii",
       "wrong": [
         "Królestwo Norwegii",
@@ -113679,7 +113632,7 @@ module GameRoomContent
       "id": "77190d4903da",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Peter Paul Rubens — jakiego kraju obywatelem była ta postać?",
+      "prompt": "Którego z wymienionych państw był poddanym Peter Paul Rubens?",
       "correct": "Niderlandy Hiszpańskie",
       "wrong": [
         "Republika Wenecka",
@@ -113751,7 +113704,7 @@ module GameRoomContent
       "id": "84592c177158",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Piotr Czajkowski — jakiego kraju obywatelem była ta postać?",
+      "prompt": "Którego z wymienionych państw był poddanym Piotr Czajkowski?",
       "correct": "Imperium Rosyjskie",
       "wrong": [
         "Wei",
@@ -113919,7 +113872,7 @@ module GameRoomContent
       "id": "d15fd81cac61",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Platon — jakiego kraju obywatelem była ta postać?",
+      "prompt": "Którego z wymienionych państw był obywatelem Platon?",
       "correct": "starożytne Ateny",
       "wrong": [
         "Iran",
@@ -114120,18 +114073,6 @@ module GameRoomContent
       ]
     },
     {
-      "id": "69843c5d9805",
-      "category": "śladami przodków",
-      "level": "easy",
-      "prompt": "Rafael Santi — jakiego kraju obywatelem była ta postać?",
-      "correct": "Święte Cesarstwo Rzymskie",
-      "wrong": [
-        "Republika Cospaii",
-        "Meksyk",
-        "Africa Proconsularis"
-      ]
-    },
-    {
       "id": "291336213a9b",
       "category": "śladami przodków",
       "level": "easy",
@@ -114159,7 +114100,7 @@ module GameRoomContent
       "id": "240b77eacafd",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Rembrandt — jakiego kraju obywatelem była ta postać?",
+      "prompt": "Którego z wymienionych państw był obywatelem Rembrandt?",
       "correct": "Republika Zjednoczonych Prowincji",
       "wrong": [
         "Trzech Dostojnych i Pięciu Cesarzy",
@@ -114291,7 +114232,7 @@ module GameRoomContent
       "id": "b7fa4866211a",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Roald Amundsen — jakiego kraju obywatelem był ten podróżnik?",
+      "prompt": "Którego z wymienionych państw był obywatelem Roald Amundsen?",
       "correct": "Norwegia",
       "wrong": [
         "Dominikana",
@@ -114303,7 +114244,7 @@ module GameRoomContent
       "id": "5b20508dec8c",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Robert Falcon Scott — jakiego kraju obywatelem był ten podróżnik?",
+      "prompt": "Którego z wymienionych państw był poddanym Robert Falcon Scott?",
       "correct": "Zjednoczone Królestwo Wielkiej Brytanii i Irlandii",
       "wrong": [
         "instytucja edukacyjna",
@@ -114615,7 +114556,7 @@ module GameRoomContent
       "id": "f527dfa58721",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Sofokles — jakiego kraju obywatelem była ta postać?",
+      "prompt": "Którego z wymienionych państw był obywatelem Sofokles?",
       "correct": "starożytne Ateny",
       "wrong": [
         "Royal Society",
@@ -114627,7 +114568,7 @@ module GameRoomContent
       "id": "d20ca84f2970",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Sokrates — jakiego kraju obywatelem była ta postać?",
+      "prompt": "Którego z wymienionych państw był obywatelem Sokrates?",
       "correct": "starożytne Ateny",
       "wrong": [
         "Dynastia Durrani",
@@ -114711,7 +114652,7 @@ module GameRoomContent
       "id": "96590224769a",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Steve Irwin — jakiego kraju obywatelem był ten podróżnik?",
+      "prompt": "Którego z wymienionych państw był obywatelem Steve Irwin?",
       "correct": "Australia",
       "wrong": [
         "Republika Chińska (1912–1949)",
@@ -114903,7 +114844,7 @@ module GameRoomContent
       "id": "97c536e44e57",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Søren Kierkegaard — jakiego kraju obywatelem była ta postać?",
+      "prompt": "Którego z wymienionych państw był poddanym Søren Kierkegaard?",
       "correct": "Królestwo Danii",
       "wrong": [
         "Cesarstwo Wielkiej Japonii",
@@ -115011,7 +114952,7 @@ module GameRoomContent
       "id": "5235b104a096",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Theodore Roosevelt — jakiego kraju obywatelem był ten podróżnik?",
+      "prompt": "Którego z wymienionych państw był obywatelem Theodore Roosevelt?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Państwo Palestyna",
@@ -115023,7 +114964,7 @@ module GameRoomContent
       "id": "33b3bcd80117",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Thomas Jefferson — jakiego kraju obywatelem była ta postać?",
+      "prompt": "Którego z wymienionych państw był obywatelem Thomas Jefferson?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Pakistan",
@@ -115047,7 +114988,7 @@ module GameRoomContent
       "id": "fd53a7f18976",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Thor Heyerdahl — jakiego kraju obywatelem był ten podróżnik?",
+      "prompt": "Którego z wymienionych państw był obywatelem Thor Heyerdahl?",
       "correct": "Norwegia",
       "wrong": [
         "Kamakura",
@@ -115299,7 +115240,7 @@ module GameRoomContent
       "id": "2a566f1e4d17",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Ulysses Grant — jakiego kraju obywatelem był ten podróżnik?",
+      "prompt": "Którego z wymienionych państw był obywatelem Ulysses Grant?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Mandżukuo",
@@ -115647,7 +115588,7 @@ module GameRoomContent
       "id": "cf40af37fd1a",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Uran — kto tego dokonał?",
+      "prompt": "Kto odkrył planetę Uran w 1781 roku?",
       "correct": "William Herschel",
       "wrong": [
         "Ferdynand Aviz, książę Viseu",
@@ -115659,7 +115600,7 @@ module GameRoomContent
       "id": "03ea36451c6e",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Uran — w którym roku tego dokonano?",
+      "prompt": "W którym roku William Herschel odkrył Urana?",
       "correct": "1781",
       "wrong": [
         "1698",
@@ -115755,7 +115696,7 @@ module GameRoomContent
       "id": "0230f7a00e54",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Vincent van Gogh — jakiego kraju obywatelem była ta postać?",
+      "prompt": "Którego z wymienionych państw był obywatelem Vincent van Gogh?",
       "correct": "Holandia",
       "wrong": [
         "jezuici",
@@ -115815,7 +115756,7 @@ module GameRoomContent
       "id": "02bb6dec0588",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Wergiliusz — jakiego kraju obywatelem była ta postać?",
+      "prompt": "Którego z wymienionych państw był obywatelem Wergiliusz?",
       "correct": "starożytny Rzym",
       "wrong": [
         "Królestwo Wielkiej Brytanii",
@@ -115899,7 +115840,7 @@ module GameRoomContent
       "id": "ad025c16a1c6",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Wielki Wybuch — kto tego dokonał?",
+      "prompt": "Kto zaproponował hipotezę pierwotnego atomu, będącą prekursorką teorii Wielkiego Wybuchu?",
       "correct": "Georges Lemaître",
       "wrong": [
         "Ludwik I Pobożny",
@@ -115995,7 +115936,7 @@ module GameRoomContent
       "id": "5ba3d67f5aca",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Wilhelm I — kto był małżonkiem tej postaci?",
+      "prompt": "Wilhelm I — jak nazywała się jego żona?",
       "correct": "Augusta Sachsen-Weimar",
       "wrong": [
         "Omri",
@@ -116019,7 +115960,7 @@ module GameRoomContent
       "id": "0ac84e5a80bd",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Wilhelm III Orański — kto był małżonkiem tej postaci?",
+      "prompt": "Wilhelm III Orański — jak nazywała się jego żona?",
       "correct": "Maria II Stuart",
       "wrong": [
         "Mikołaj I Romanow",
@@ -116067,7 +116008,7 @@ module GameRoomContent
       "id": "89c16fe298f9",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "William Shakespeare — jakiego kraju obywatelem była ta postać?",
+      "prompt": "Którego z wymienionych państw był poddanym William Shakespeare?",
       "correct": "Królestwo Anglii",
       "wrong": [
         "Królestwo Norwegii",
@@ -116283,7 +116224,7 @@ module GameRoomContent
       "id": "dc01f86efbb5",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Wyspy Dziewicze Stanów Zjednoczonych — w którym roku tego dokonano?",
+      "prompt": "W którym roku Krzysztof Kolumb dotarł do archipelagu Wysp Dziewiczych?",
       "correct": "1493",
       "wrong": [
         "1483",
@@ -116379,12 +116320,12 @@ module GameRoomContent
       "id": "872d9e415750",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "Zheng He — jakiego kraju obywatelem był ten podróżnik?",
-      "correct": "Ming",
+      "prompt": "Której chińskiej dynastii służył admirał Zheng He?",
+      "correct": "Dynastia Ming",
       "wrong": [
-        "Erytrea",
-        "Balhae",
-        "Cesarstwo Wielkiej Japonii"
+        "Dynastia Tang",
+        "Dynastia Qing",
+        "Dynastia Han"
       ]
     },
     {
@@ -116475,7 +116416,7 @@ module GameRoomContent
       "id": "dcd23ca8bd27",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "akwarium — kto tego dokonał?",
+      "prompt": "Która badaczka w XIX wieku konstruowała akwaria do obserwacji żywych organizmów morskich, w tym żeglarków?",
       "correct": "Jeanne Villepreux-Power",
       "wrong": [
         "Filip VI Walezjusz",
@@ -116487,7 +116428,7 @@ module GameRoomContent
       "id": "2cef49a2ce66",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "ameryk — kto tego dokonał?",
+      "prompt": "Który z wymienionych naukowców należał do zespołu, który w 1944 roku otrzymał ameryk?",
       "correct": "Glenn Theodore Seaborg",
       "wrong": [
         "Augusta Sachsen-Weimar",
@@ -116499,7 +116440,7 @@ module GameRoomContent
       "id": "b4149b5ad2d6",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "anarchizm — kto tego dokonał?",
+      "prompt": "Który myśliciel nazwał siebie anarchistą w wydanej w 1840 roku pracy „Co to jest własność?”?",
       "correct": "Pierre Joseph Proudhon",
       "wrong": [
         "Elżbieta Rakuszanka",
@@ -116523,7 +116464,7 @@ module GameRoomContent
       "id": "9289dfbf9fab",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "argon — w którym roku tego dokonano?",
+      "prompt": "W którym roku Rayleigh i Ramsay odkryli argon jako odrębny pierwiastek?",
       "correct": "1894",
       "wrong": [
         "1890",
@@ -116535,7 +116476,7 @@ module GameRoomContent
       "id": "ee7fa76647b6",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "arsen — kto tego dokonał?",
+      "prompt": "Któremu średniowiecznemu uczonemu przypisuje się wyodrębnienie arsenu w XIII wieku?",
       "correct": "Albert Wielki",
       "wrong": [
         "Heinrich Scheidemann",
@@ -116547,7 +116488,7 @@ module GameRoomContent
       "id": "59b9b7a8694a",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "astat — kto tego dokonał?",
+      "prompt": "Który z wymienionych fizyków wraz z Corsonem i MacKenziem otrzymał astat w 1940 roku?",
       "correct": "Emilio Segrè",
       "wrong": [
         "Omurtag",
@@ -116559,7 +116500,7 @@ module GameRoomContent
       "id": "56932ee21681",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "atol — kto tego dokonał?",
+      "prompt": "Kto przedstawił teorię powstawania atoli przez osiadanie wysp wulkanicznych otoczonych rafami?",
       "correct": "Karol Darwin",
       "wrong": [
         "Harriet Lane",
@@ -116571,7 +116512,7 @@ module GameRoomContent
       "id": "a5c82db9f9c8",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "azot — w którym roku tego dokonano?",
+      "prompt": "W którym roku Daniel Rutherford opisał gaz znany dziś jako azot w swojej rozprawie doktorskiej?",
       "correct": "1772",
       "wrong": [
         "1729",
@@ -116583,7 +116524,7 @@ module GameRoomContent
       "id": "7c9607a6bdeb",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "bar — w którym roku tego dokonano?",
+      "prompt": "W którym roku Humphry Davy po raz pierwszy wyizolował metaliczny bar?",
       "correct": "1808",
       "wrong": [
         "1849",
@@ -116595,7 +116536,7 @@ module GameRoomContent
       "id": "0c865041e708",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "bateria ogniw — kto tego dokonał?",
+      "prompt": "Kto skonstruował stos elektryczny z naprzemiennych płytek metali, uznawany za pierwszą baterię?",
       "correct": "Alessandro Volta",
       "wrong": [
         "Glenn Theodore Seaborg",
@@ -116607,7 +116548,7 @@ module GameRoomContent
       "id": "70ee61c03c97",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "beryl — w którym roku tego dokonano?",
+      "prompt": "W którym roku Louis Nicolas Vauquelin odkrył beryl podczas analizy berylu i szmaragdu?",
       "correct": "1798",
       "wrong": [
         "1786",
@@ -116619,7 +116560,7 @@ module GameRoomContent
       "id": "f8f04f517bf0",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "biegun południowy — kto tego dokonał?",
+      "prompt": "Kto kierował pierwszą wyprawą, która dotarła do geograficznego bieguna południowego?",
       "correct": "Roald Amundsen",
       "wrong": [
         "Fryderyk Engels",
@@ -116631,7 +116572,7 @@ module GameRoomContent
       "id": "ee961df3c936",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "biegun południowy — w którym roku tego dokonano?",
+      "prompt": "W którym roku wyprawa Roalda Amundsena dotarła do geograficznego bieguna południowego?",
       "correct": "1911",
       "wrong": [
         "1914",
@@ -116691,7 +116632,7 @@ module GameRoomContent
       "id": "f03c9d148530",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "bor — w którym roku tego dokonano?",
+      "prompt": "W którym roku Henri Moissan otrzymał bor o większej czystości niż wcześniejsze próbki z początku XIX wieku?",
       "correct": "1892",
       "wrong": [
         "1832",
@@ -116703,7 +116644,7 @@ module GameRoomContent
       "id": "b7be2c8492d8",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "brom — w którym roku tego dokonano?",
+      "prompt": "W którym roku Carl Löwig otrzymał próbkę bromu, rok przed publikacją odkrycia przez Balarda?",
       "correct": "1825",
       "wrong": [
         "1830",
@@ -116715,7 +116656,7 @@ module GameRoomContent
       "id": "a7d8eda57797",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "cewka — kto tego dokonał?",
+      "prompt": "Kto w doświadczeniach z dwiema cewkami na żelaznym pierścieniu odkrył indukcję elektromagnetyczną?",
       "correct": "Michael Faraday",
       "wrong": [
         "Giuseppe Piazzi",
@@ -116739,7 +116680,7 @@ module GameRoomContent
       "id": "588cec069a5e",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "chlor — w którym roku tego dokonano?",
+      "prompt": "W którym roku Carl Wilhelm Scheele po raz pierwszy otrzymał chlor, zanim uznano go za pierwiastek?",
       "correct": "1774",
       "wrong": [
         "1675",
@@ -116751,7 +116692,7 @@ module GameRoomContent
       "id": "d33a4b4d385d",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "chrom — w którym roku tego dokonano?",
+      "prompt": "W którym roku Louis Nicolas Vauquelin odkrył chrom w minerale nazywanym syberyjską rudą czerwoną?",
       "correct": "1797",
       "wrong": [
         "1700",
@@ -116763,7 +116704,7 @@ module GameRoomContent
       "id": "8ad874d22d06",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "czołg — w którym roku tego dokonano?",
+      "prompt": "W którym roku powstał brytyjski prototyp czołgu Little Willie?",
       "correct": "1915",
       "wrong": [
         "1920",
@@ -116775,7 +116716,7 @@ module GameRoomContent
       "id": "91ada985ad75",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "dobór naturalny — kto tego dokonał?",
+      "prompt": "Który z wymienionych przyrodników opracował teorię ewolucji przez dobór naturalny, niezależnie od Alfreda Russela Wallace’a?",
       "correct": "Karol Darwin",
       "wrong": [
         "Setnacht",
@@ -116787,7 +116728,7 @@ module GameRoomContent
       "id": "56ea05a3f731",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "elektron — kto tego dokonał?",
+      "prompt": "Kto w doświadczeniach z promieniami katodowymi odkrył elektron?",
       "correct": "Joseph John Thomson",
       "wrong": [
         "Rolf",
@@ -116799,7 +116740,7 @@ module GameRoomContent
       "id": "4503825f5f1d",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "elektron — w którym roku tego dokonano?",
+      "prompt": "W którym roku J. J. Thomson ogłosił wyniki doświadczeń prowadzących do odkrycia elektronu?",
       "correct": "1897",
       "wrong": [
         "1863",
@@ -116811,7 +116752,7 @@ module GameRoomContent
       "id": "f4c313526211",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "elektryczność — w którym roku tego dokonano?",
+      "prompt": "W którym roku Michael Faraday zademonstrował obroty elektromagnetyczne, tworząc zasadę działania silnika elektrycznego?",
       "correct": "1821",
       "wrong": [
         "1852",
@@ -116823,7 +116764,7 @@ module GameRoomContent
       "id": "ad5463796fe2",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "esperanto — kto tego dokonał?",
+      "prompt": "Kto stworzył język esperanto?",
       "correct": "Ludwik Łazarz Zamenhof",
       "wrong": [
         "Hormizd IV",
@@ -116835,7 +116776,7 @@ module GameRoomContent
       "id": "25181ea1b3cb",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "ferm — kto tego dokonał?",
+      "prompt": "Który z wymienionych badaczy współuczestniczył w odkryciu fermu w pozostałościach po eksplozji termojądrowej?",
       "correct": "Glenn Theodore Seaborg",
       "wrong": [
         "Tribuno Memmo",
@@ -116847,8 +116788,8 @@ module GameRoomContent
       "id": "e16547697430",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "fluor — w którym roku tego dokonano?",
-      "correct": "1810",
+      "prompt": "W którym roku Henri Moissan po raz pierwszy wyizolował fluor w postaci pierwiastkowej?",
+      "correct": "1886",
       "wrong": [
         "1826",
         "1836",
@@ -116859,7 +116800,7 @@ module GameRoomContent
       "id": "ea2f647371a9",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "fortepian — w którym roku tego dokonano?",
+      "prompt": "Około którego roku Bartolomeo Cristofori skonstruował pierwszy fortepian?",
       "correct": "1700",
       "wrong": [
         "1666",
@@ -116871,7 +116812,7 @@ module GameRoomContent
       "id": "6e34de6deadd",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "fosfor — kto tego dokonał?",
+      "prompt": "Kto odkrył fosfor w 1669 roku, prowadząc doświadczenia z moczem?",
       "correct": "Hennig Brand",
       "wrong": [
         "Seti II",
@@ -116883,7 +116824,7 @@ module GameRoomContent
       "id": "77e4bc4b1af4",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "fosfor — w którym roku tego dokonano?",
+      "prompt": "W którym roku Hennig Brand odkrył fosfor?",
       "correct": "1669",
       "wrong": [
         "1712",
@@ -116895,7 +116836,7 @@ module GameRoomContent
       "id": "982e4713d301",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "fotografia — w którym roku tego dokonano?",
+      "prompt": "W którym roku publicznie ogłoszono metodę fotografii Louisa Daguerre’a, zwaną dagerotypią?",
       "correct": "1839",
       "wrong": [
         "1862",
@@ -116907,7 +116848,7 @@ module GameRoomContent
       "id": "458efbbdd912",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "gal — w którym roku tego dokonano?",
+      "prompt": "W którym roku Paul-Émile Lecoq de Boisbaudran odkrył gal?",
       "correct": "1875",
       "wrong": [
         "1857",
@@ -116919,7 +116860,7 @@ module GameRoomContent
       "id": "d3e46153c2e6",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "gazeta — w którym roku tego dokonano?",
+      "prompt": "W którym roku Johann Carolus zaczął drukować w Strasburgu gazetę „Relation”?",
       "correct": "1605",
       "wrong": [
         "1599",
@@ -116931,7 +116872,7 @@ module GameRoomContent
       "id": "3b40698e43cb",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "glin — w którym roku tego dokonano?",
+      "prompt": "W którym roku Hans Christian Ørsted otrzymał pierwszą, jeszcze zanieczyszczoną próbkę metalicznego glinu?",
       "correct": "1825",
       "wrong": [
         "1878",
@@ -116943,7 +116884,7 @@ module GameRoomContent
       "id": "521dd309d1af",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "grawitacja — kto tego dokonał?",
+      "prompt": "Kto sformułował prawo powszechnego ciążenia, opublikowane w „Principiach” w 1687 roku?",
       "correct": "Isaac Newton",
       "wrong": [
         "Filip II August",
@@ -116955,7 +116896,7 @@ module GameRoomContent
       "id": "997ad8f88609",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "hel — w którym roku tego dokonano?",
+      "prompt": "W którym roku wykryto hel w widmie Słońca, zanim znaleziono go na Ziemi?",
       "correct": "1868",
       "wrong": [
         "1851",
@@ -116979,7 +116920,7 @@ module GameRoomContent
       "id": "fad0ed8c6a2e",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "jedwabny szlak — kto tego dokonał?",
+      "prompt": "Który geograf wprowadził w XIX wieku określenie „Jedwabny Szlak”?",
       "correct": "Ferdinand von Richthofen",
       "wrong": [
         "Karol Młot",
@@ -116991,7 +116932,7 @@ module GameRoomContent
       "id": "88dd33fc790c",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "jod — w którym roku tego dokonano?",
+      "prompt": "W którym roku Bernard Courtois odkrył jod podczas pracy z popiołem wodorostów?",
       "correct": "1811",
       "wrong": [
         "1875",
@@ -117003,7 +116944,7 @@ module GameRoomContent
       "id": "42d861fea40a",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "kadm — w którym roku tego dokonano?",
+      "prompt": "W którym roku Friedrich Stromeyer odkrył kadm?",
       "correct": "1817",
       "wrong": [
         "1813",
@@ -117015,7 +116956,7 @@ module GameRoomContent
       "id": "8e0a99806671",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "kakaowiec właściwy — kto tego dokonał?",
+      "prompt": "Który europejski żeglarz podczas swojej czwartej wyprawy w 1502 roku zetknął się z ziarnami kakao przewożonymi przez Majów?",
       "correct": "Krzysztof Kolumb",
       "wrong": [
         "Sanacht",
@@ -117039,7 +116980,7 @@ module GameRoomContent
       "id": "e9488a34e6ba",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "kiur — kto tego dokonał?",
+      "prompt": "Który z wymienionych naukowców wraz z Ralphem Jamesem i Albertem Ghiorsą otrzymał kiur w 1944 roku?",
       "correct": "Glenn Theodore Seaborg",
       "wrong": [
         "Fraates III",
@@ -117051,7 +116992,7 @@ module GameRoomContent
       "id": "27fec14774a2",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "kobalt — w którym roku tego dokonano?",
+      "prompt": "Który rok przyjmuje się jako rok odkrycia kobaltu przez Georga Brandta?",
       "correct": "1735",
       "wrong": [
         "1766",
@@ -117063,7 +117004,7 @@ module GameRoomContent
       "id": "b019e9cc94aa",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "komputer — kto tego dokonał?",
+      "prompt": "Kto zaprojektował maszynę analityczną, mechanicznego poprzednika komputera ogólnego przeznaczenia?",
       "correct": "Charles Babbage",
       "wrong": [
         "Władysław I Herman",
@@ -117075,7 +117016,7 @@ module GameRoomContent
       "id": "e6211e036e9e",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "koszykówka — w którym roku tego dokonano?",
+      "prompt": "W którym roku James Naismith opracował zasady koszykówki?",
       "correct": "1891",
       "wrong": [
         "1886",
@@ -117099,7 +117040,7 @@ module GameRoomContent
       "id": "805241e4adaf",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "krypton — w którym roku tego dokonano?",
+      "prompt": "W którym roku William Ramsay i Morris Travers odkryli krypton?",
       "correct": "1898",
       "wrong": [
         "1851",
@@ -117111,8 +117052,8 @@ module GameRoomContent
       "id": "07cd658c14c2",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "krzem — w którym roku tego dokonano?",
-      "correct": "1823",
+      "prompt": "W którym roku Jöns Jacob Berzelius otrzymał stosunkowo czysty krzem, wyodrębniając go z fluorokrzemianu potasu?",
+      "correct": "1824",
       "wrong": [
         "1876",
         "1865",
@@ -117123,7 +117064,7 @@ module GameRoomContent
       "id": "9faa6d0583dc",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "ksenon — w którym roku tego dokonano?",
+      "prompt": "W którym roku William Ramsay i Morris Travers odkryli ksenon?",
       "correct": "1898",
       "wrong": [
         "1834",
@@ -117135,7 +117076,7 @@ module GameRoomContent
       "id": "0253872ea5c7",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "lit — w którym roku tego dokonano?",
+      "prompt": "W którym roku Johan August Arfwedson odkrył lit w petalicie?",
       "correct": "1817",
       "wrong": [
         "1806",
@@ -117147,7 +117088,7 @@ module GameRoomContent
       "id": "d80d02bfdeaa",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "magnez — w którym roku tego dokonano?",
+      "prompt": "W którym roku Joseph Black odróżnił magnezję, czyli tlenek magnezu, od wapna?",
       "correct": "1755",
       "wrong": [
         "1682",
@@ -117159,7 +117100,7 @@ module GameRoomContent
       "id": "d2a59b9a440c",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "mangan — w którym roku tego dokonano?",
+      "prompt": "W którym roku Johan Gottlieb Gahn wyizolował mangan z piroluzytu?",
       "correct": "1774",
       "wrong": [
         "1731",
@@ -117171,7 +117112,7 @@ module GameRoomContent
       "id": "d1a1fd599c19",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "mendelew — kto tego dokonał?",
+      "prompt": "Który z wymienionych badaczy należał do zespołu, który w 1955 roku otrzymał mendelew?",
       "correct": "Glenn Theodore Seaborg",
       "wrong": [
         "Dymitr II",
@@ -117183,7 +117124,7 @@ module GameRoomContent
       "id": "9d2f416dceab",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "metan — kto tego dokonał?",
+      "prompt": "Kto w XVIII wieku wyodrębnił i badał metan, zbierając gaz wydobywający się z bagien?",
       "correct": "Alessandro Volta",
       "wrong": [
         "Fraates III",
@@ -117195,7 +117136,7 @@ module GameRoomContent
       "id": "f2adf263c9c2",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "międzynarodowy alfabet fonetyczny — kto tego dokonał?",
+      "prompt": "Który duński językoznawca zaproponował w 1886 roku utworzenie stowarzyszenia, które opracowałoby wspólny międzynarodowy alfabet fonetyczny?",
       "correct": "Otto Jespersen",
       "wrong": [
         "Karol XIV Jan",
@@ -117207,7 +117148,7 @@ module GameRoomContent
       "id": "48a0770f3ecf",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "neon — w którym roku tego dokonano?",
+      "prompt": "W którym roku William Ramsay i Morris Travers odkryli neon?",
       "correct": "1898",
       "wrong": [
         "1835",
@@ -117219,7 +117160,7 @@ module GameRoomContent
       "id": "2822f438bf62",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "nikiel — w którym roku tego dokonano?",
+      "prompt": "W którym roku Axel Fredrik Cronstedt odkrył nikiel podczas badania minerału z kopalni w Szwecji?",
       "correct": "1751",
       "wrong": [
         "1767",
@@ -117255,7 +117196,7 @@ module GameRoomContent
       "id": "4add2ce94ca9",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "penicylina — kto tego dokonał?",
+      "prompt": "Kto w 1928 roku zaobserwował działanie penicyliny w hodowli bakterii zanieczyszczonej pleśnią?",
       "correct": "Alexander Fleming",
       "wrong": [
         "Szeszonk I",
@@ -117267,7 +117208,7 @@ module GameRoomContent
       "id": "1693396373ab",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "piłka nożna — w którym roku tego dokonano?",
+      "prompt": "W którym roku powstała angielska Football Association i spisano jej zasady piłki nożnej?",
       "correct": "1863",
       "wrong": [
         "1880",
@@ -117279,7 +117220,7 @@ module GameRoomContent
       "id": "45e54a5e7cf3",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "piłka siatkowa — w którym roku tego dokonano?",
+      "prompt": "W którym roku William G. Morgan stworzył grę, z której rozwinęła się siatkówka?",
       "correct": "1895",
       "wrong": [
         "1831",
@@ -117291,7 +117232,7 @@ module GameRoomContent
       "id": "b180314194ca",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "platyna — w którym roku tego dokonano?",
+      "prompt": "W którym roku Julius Caesar Scaliger opisał trudnotopliwy metal z Ameryki Środkowej, uznawany za platynę?",
       "correct": "1557",
       "wrong": [
         "1572",
@@ -117303,7 +117244,7 @@ module GameRoomContent
       "id": "dcfbb6633c49",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "podczerwień — kto tego dokonał?",
+      "prompt": "Kto w 1800 roku odkrył promieniowanie podczerwone, badając temperaturę poza czerwoną częścią widma?",
       "correct": "William Herschel",
       "wrong": [
         "Helena Moskiewska",
@@ -117315,7 +117256,7 @@ module GameRoomContent
       "id": "d26e940e5ced",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "potas — w którym roku tego dokonano?",
+      "prompt": "W którym roku Humphry Davy wyizolował metaliczny potas za pomocą elektrolizy?",
       "correct": "1807",
       "wrong": [
         "1857",
@@ -117339,7 +117280,7 @@ module GameRoomContent
       "id": "49e122e0825d",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "proch czarny — kto tego dokonał?",
+      "prompt": "Któremu legendarnemu niemieckiemu zakonnikowi przypisywano wynalezienie prochu, choć był on wcześniej znany w Chinach?",
       "correct": "Berthold Schwarz",
       "wrong": [
         "Szymon Cyrenejczyk",
@@ -117351,7 +117292,7 @@ module GameRoomContent
       "id": "c03cec7cbc7a",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "promieniowanie elektromagnetyczne — kto tego dokonał?",
+      "prompt": "Kto doświadczalnie potwierdził istnienie fal elektromagnetycznych przewidzianych przez Maxwella, wytwarzając fale radiowe?",
       "correct": "Heinrich Hertz",
       "wrong": [
         "Fryderyk I Zollern",
@@ -117363,7 +117304,7 @@ module GameRoomContent
       "id": "c5cd261640de",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "promieniowanie rentgenowskie — kto tego dokonał?",
+      "prompt": "Kto odkrył promieniowanie rentgenowskie w 1895 roku?",
       "correct": "Wilhelm Röntgen",
       "wrong": [
         "Jerzy IV Lasza",
@@ -117375,7 +117316,7 @@ module GameRoomContent
       "id": "659d20049992",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "proton — kto tego dokonał?",
+      "prompt": "Kto wykazał, że jądra wodoru są składnikami jąder innych pierwiastków, przyczyniając się do odkrycia protonu?",
       "correct": "Ernest Rutherford",
       "wrong": [
         "Tauseret",
@@ -117387,7 +117328,7 @@ module GameRoomContent
       "id": "9572ac7e226c",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "proton — w którym roku tego dokonano?",
+      "prompt": "W którym roku Ernest Rutherford zaproponował nazwę „proton” dla jądra wodoru?",
       "correct": "1920",
       "wrong": [
         "1902",
@@ -117399,7 +117340,7 @@ module GameRoomContent
       "id": "fc415b8da55e",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "przeglądarka internetowa — kto tego dokonał?",
+      "prompt": "Kto napisał pierwszą przeglądarkę WWW, nazwaną WorldWideWeb?",
       "correct": "Tim Berners-Lee",
       "wrong": [
         "Muhammad Ibn Tughdż",
@@ -117411,7 +117352,7 @@ module GameRoomContent
       "id": "5b04699d208a",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "rad — w którym roku tego dokonano?",
+      "prompt": "W którym roku Maria Skłodowska-Curie i Pierre Curie odkryli rad?",
       "correct": "1898",
       "wrong": [
         "1861",
@@ -117423,8 +117364,8 @@ module GameRoomContent
       "id": "d993eaea99ec",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "radio — w którym roku tego dokonano?",
-      "correct": "1894",
+      "prompt": "W którym roku Guglielmo Marconi rozpoczął swoje doświadczenia z telegrafią bezprzewodową w rodzinnej posiadłości we Włoszech?",
+      "correct": "1895",
       "wrong": [
         "1866",
         "1831",
@@ -117435,7 +117376,7 @@ module GameRoomContent
       "id": "6b46cfb16141",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "radioaktywność — kto tego dokonał?",
+      "prompt": "Kto odkrył promieniotwórczość naturalną soli uranu w 1896 roku?",
       "correct": "Henri Becquerel",
       "wrong": [
         "Ludwik Łazarz Zamenhof",
@@ -117447,7 +117388,7 @@ module GameRoomContent
       "id": "df7ef6d87702",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "radon — w którym roku tego dokonano?",
+      "prompt": "W którym roku Ernest Rutherford i Robert Owens wykryli emanację toru, zidentyfikowaną później jako izotop radonu?",
       "correct": "1899",
       "wrong": [
         "1894",
@@ -117471,7 +117412,7 @@ module GameRoomContent
       "id": "2a8b35135e9e",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "rower — w którym roku tego dokonano?",
+      "prompt": "W którym roku John Kemp Starley zaprezentował rower Rover Safety Bicycle?",
       "correct": "1885",
       "wrong": [
         "1841",
@@ -117483,7 +117424,7 @@ module GameRoomContent
       "id": "d448c2ae9776",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "rubid — w którym roku tego dokonano?",
+      "prompt": "W którym roku Robert Bunsen i Gustav Kirchhoff odkryli rubid dzięki analizie widmowej?",
       "correct": "1861",
       "wrong": [
         "1803",
@@ -117495,7 +117436,7 @@ module GameRoomContent
       "id": "32a7c3931ba3",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "saksofon — kto tego dokonał?",
+      "prompt": "Kto skonstruował saksofon?",
       "correct": "Adolphe Sax",
       "wrong": [
         "Statejra II",
@@ -117507,8 +117448,8 @@ module GameRoomContent
       "id": "059cc821f9df",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "samochód — w którym roku tego dokonano?",
-      "correct": "1884",
+      "prompt": "W którym roku Carl Benz zgłosił patent na swój samochód z silnikiem spalinowym, Patent-Motorwagen?",
+      "correct": "1886",
       "wrong": [
         "1878",
         "1861",
@@ -117519,7 +117460,7 @@ module GameRoomContent
       "id": "6d6d046e9910",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "selen — w którym roku tego dokonano?",
+      "prompt": "W którym roku Jöns Jacob Berzelius odkrył selen?",
       "correct": "1817",
       "wrong": [
         "1837",
@@ -117529,9 +117470,9 @@ module GameRoomContent
     },
     {
       "id": "755215bfb62a",
-      "category": "śladami przodków",
+      "category": "chemia",
       "level": "easy",
-      "prompt": "siarka — kto tego dokonał?",
+      "prompt": "Który chemik w 1777 roku uznał siarkę za pierwiastek?",
       "correct": "Antoine Lavoisier",
       "wrong": [
         "Olgierd",
@@ -117541,9 +117482,9 @@ module GameRoomContent
     },
     {
       "id": "7843ccb89aeb",
-      "category": "śladami przodków",
+      "category": "chemia",
       "level": "easy",
-      "prompt": "siarka — w którym roku tego dokonano?",
+      "prompt": "W którym roku Antoine Lavoisier uznał siarkę za pierwiastek?",
       "correct": "1777",
       "wrong": [
         "1758",
@@ -117555,7 +117496,7 @@ module GameRoomContent
       "id": "17ff9d830f22",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "stal — w którym roku tego dokonano?",
+      "prompt": "W którym roku Pierre-Émile Martin uzyskał patent na proces wytwarzania stali w piecu regeneracyjnym?",
       "correct": "1865",
       "wrong": [
         "1880",
@@ -117579,8 +117520,8 @@ module GameRoomContent
       "id": "e0cd6acbcde7",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "stront — w którym roku tego dokonano?",
-      "correct": "1787",
+      "prompt": "W którym roku Humphry Davy wyizolował metaliczny stront?",
+      "correct": "1808",
       "wrong": [
         "1706",
         "1710",
@@ -117591,7 +117532,7 @@ module GameRoomContent
       "id": "3050ef133080",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "szczepionka — kto tego dokonał?",
+      "prompt": "Kto w 1796 roku przeprowadził doświadczenie z krowianką, które zapoczątkowało szczepienia przeciw ospie prawdziwej?",
       "correct": "Edward Jenner",
       "wrong": [
         "Elżbieta Krystyna von Braunschweig-Wolfenbüttel",
@@ -117603,7 +117544,7 @@ module GameRoomContent
       "id": "0382c48a5e89",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "sód — w którym roku tego dokonano?",
+      "prompt": "W którym roku Humphry Davy wyizolował metaliczny sód za pomocą elektrolizy?",
       "correct": "1807",
       "wrong": [
         "1861",
@@ -117615,7 +117556,7 @@ module GameRoomContent
       "id": "dc159cbbf417",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "telefon — w którym roku tego dokonano?",
+      "prompt": "W którym roku Alexander Graham Bell otrzymał amerykański patent na telefon?",
       "correct": "1876",
       "wrong": [
         "1863",
@@ -117627,7 +117568,7 @@ module GameRoomContent
       "id": "b75a5b2b5871",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "tlen — w którym roku tego dokonano?",
+      "prompt": "W którym roku Joseph Priestley otrzymał tlen przez ogrzewanie tlenku rtęci?",
       "correct": "1774",
       "wrong": [
         "1735",
@@ -117639,7 +117580,7 @@ module GameRoomContent
       "id": "d4a419f0d6e3",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "transformator — kto tego dokonał?",
+      "prompt": "Kto zbudował w 1831 roku żelazny pierścień z dwoma uzwojeniami, będący poprzednikiem transformatora?",
       "correct": "Michael Faraday",
       "wrong": [
         "William Herschel",
@@ -117651,7 +117592,7 @@ module GameRoomContent
       "id": "fadc9cbad830",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "tytan — w którym roku tego dokonano?",
+      "prompt": "W którym roku William Gregor rozpoznał nieznany wcześniej pierwiastek, później nazwany tytanem, w minerale z Kornwalii?",
       "correct": "1791",
       "wrong": [
         "1746",
@@ -117663,7 +117604,7 @@ module GameRoomContent
       "id": "0c532d9a3f9f",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "układ okresowy pierwiastków — kto tego dokonał?",
+      "prompt": "Kto w 1869 roku opublikował układ okresowy pierwiastków i pozostawił w nim miejsca na nieodkryte jeszcze pierwiastki?",
       "correct": "Dmitrij Mendelejew",
       "wrong": [
         "Ludwik Węgierski",
@@ -117675,7 +117616,7 @@ module GameRoomContent
       "id": "f58c9b972cb4",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "wanad — w którym roku tego dokonano?",
+      "prompt": "W którym roku Andrés Manuel del Río po raz pierwszy odkrył pierwiastek nazwany później wanadem?",
       "correct": "1801",
       "wrong": [
         "1854",
@@ -117687,7 +117628,7 @@ module GameRoomContent
       "id": "9ad40f2808f6",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "wapń — w którym roku tego dokonano?",
+      "prompt": "W którym roku Humphry Davy wyizolował metaliczny wapń?",
       "correct": "1808",
       "wrong": [
         "1817",
@@ -117699,7 +117640,7 @@ module GameRoomContent
       "id": "43aa7a968910",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "wodór — w którym roku tego dokonano?",
+      "prompt": "W którym roku Henry Cavendish opisał wodór jako gaz o własnościach odmiennych od innych znanych gazów?",
       "correct": "1766",
       "wrong": [
         "1691",
@@ -117807,7 +117748,7 @@ module GameRoomContent
       "id": "94c85b7b6452",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "węgiel — kto tego dokonał?",
+      "prompt": "Który chemik umieścił węgiel na liście substancji prostych w swoim „Traktacie elementarnym chemii”?",
       "correct": "Antoine Lavoisier",
       "wrong": [
         "Wachtang II",
@@ -117819,7 +117760,7 @@ module GameRoomContent
       "id": "2ce8621603d7",
       "category": "śladami przodków",
       "level": "easy",
-      "prompt": "węgiel — w którym roku tego dokonano?",
+      "prompt": "W którym roku ukazał się „Traktat elementarny chemii” Lavoisiera, zaliczający węgiel do substancji prostych?",
       "correct": "1789",
       "wrong": [
         "1768",
@@ -117903,7 +117844,7 @@ module GameRoomContent
       "id": "ad158714cba2",
       "category": "śladami przodków",
       "level": "medium",
-      "prompt": "Afonso de Albuquerque — jakiego kraju obywatelem był ten podróżnik?",
+      "prompt": "Którego z wymienionych państw był poddanym Afonso de Albuquerque?",
       "correct": "Królestwo Portugalii",
       "wrong": [
         "Królestwo Danii",
@@ -117939,7 +117880,7 @@ module GameRoomContent
       "id": "4730c14878ed",
       "category": "śladami przodków",
       "level": "medium",
-      "prompt": "Aleksander Jagiellończyk — kto był małżonkiem tego władcy Polski?",
+      "prompt": "Aleksander Jagiellończyk — jak nazywała się jego żona?",
       "correct": "Helena Moskiewska",
       "wrong": [
         "Hugo Kapet",
@@ -117975,7 +117916,7 @@ module GameRoomContent
       "id": "73ed4bc71070",
       "category": "śladami przodków",
       "level": "medium",
-      "prompt": "Alfons I Zdobywca — kto był małżonkiem tej postaci?",
+      "prompt": "Alfons I Zdobywca — jak nazywała się jego żona?",
       "correct": "Mafalda Sabaudzka",
       "wrong": [
         "Kazimierz II Sprawiedliwy",
@@ -118071,7 +118012,7 @@ module GameRoomContent
       "id": "3b6b1c11d26b",
       "category": "śladami przodków",
       "level": "medium",
-      "prompt": "Arnulf z Karyntii — kto był małżonkiem tej postaci?",
+      "prompt": "Arnulf z Karyntii — jak nazywała się jego żona?",
       "correct": "Oda",
       "wrong": [
         "Ernest Rutherford",
@@ -118119,7 +118060,7 @@ module GameRoomContent
       "id": "56540874f45c",
       "category": "śladami przodków",
       "level": "medium",
-      "prompt": "August III — kto był małżonkiem tego władcy Polski?",
+      "prompt": "August III — jak nazywała się jego żona?",
       "correct": "Maria Józefa",
       "wrong": [
         "Filip VI Walezjusz",
@@ -118191,7 +118132,7 @@ module GameRoomContent
       "id": "3f758383cf82",
       "category": "śladami przodków",
       "level": "medium",
-      "prompt": "Bear Grylls — jakiego kraju obywatelem był ten podróżnik?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Bear Grylls?",
       "correct": "Wielka Brytania",
       "wrong": [
         "Starszy Żuz",
@@ -119391,7 +119332,7 @@ module GameRoomContent
       "id": "31be8d0aa1f2",
       "category": "śladami przodków",
       "level": "medium",
-      "prompt": "Carl Ritter — jakiego kraju obywatelem był ten podróżnik?",
+      "prompt": "Którego z wymienionych państw był poddanym Carl Ritter?",
       "correct": "Królestwo Prus",
       "wrong": [
         "Shu Han",
@@ -119631,7 +119572,7 @@ module GameRoomContent
       "id": "9b727e89a7f8",
       "category": "śladami przodków",
       "level": "medium",
-      "prompt": "Chrystian I Oldenburg — kto był małżonkiem tej postaci?",
+      "prompt": "Chrystian I Oldenburg — jak nazywała się jego żona?",
       "correct": "Dorota brandenburska",
       "wrong": [
         "Szeszonk I",
@@ -119643,7 +119584,7 @@ module GameRoomContent
       "id": "5f592daa9ac3",
       "category": "śladami przodków",
       "level": "medium",
-      "prompt": "Chrystian IX — kto był małżonkiem tej postaci?",
+      "prompt": "Chrystian IX — jak nazywała się jego żona?",
       "correct": "Luiza Hessen-Kassel",
       "wrong": [
         "Ludwik XI",
@@ -119751,7 +119692,7 @@ module GameRoomContent
       "id": "bc09e58cf38f",
       "category": "śladami przodków",
       "level": "medium",
-      "prompt": "Davy Crockett — jakiego kraju obywatelem był ten podróżnik?",
+      "prompt": "Którego z wymienionych państw był obywatelem Davy Crockett?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Republika Zjednoczonych Prowincji",
@@ -119943,7 +119884,7 @@ module GameRoomContent
       "id": "3bfd7e41d619",
       "category": "śladami przodków",
       "level": "medium",
-      "prompt": "Eryk Rudy — jakiego kraju obywatelem był ten podróżnik?",
+      "prompt": "Którego z wymienionych państw był obywatelem Eryk Rudy?",
       "correct": "Norwegia",
       "wrong": [
         "Libia",
@@ -119967,7 +119908,7 @@ module GameRoomContent
       "id": "be119c95c588",
       "category": "śladami przodków",
       "level": "medium",
-      "prompt": "Ewlija Czelebi — jakiego kraju obywatelem był ten podróżnik?",
+      "prompt": "Którego z wymienionych państw był poddanym Ewlija Czelebi?",
       "correct": "Imperium osmańskie",
       "wrong": [
         "starożytne Ateny",
@@ -119979,7 +119920,7 @@ module GameRoomContent
       "id": "775095380d98",
       "category": "śladami przodków",
       "level": "medium",
-      "prompt": "Fabian Bellingshausen — jakiego kraju obywatelem był ten podróżnik?",
+      "prompt": "Którego z wymienionych państw był poddanym Fabian Bellingshausen?",
       "correct": "Imperium Rosyjskie",
       "wrong": [
         "Republika Genui",
@@ -119991,7 +119932,7 @@ module GameRoomContent
       "id": "2c02d8f7d6b5",
       "category": "śladami przodków",
       "level": "medium",
-      "prompt": "Ferdinand von Wrangel — jakiego kraju obywatelem był ten podróżnik?",
+      "prompt": "Którego z wymienionych państw był poddanym Ferdinand von Wrangel?",
       "correct": "Imperium Rosyjskie",
       "wrong": [
         "Bułgaria",
@@ -120003,7 +119944,7 @@ module GameRoomContent
       "id": "f40603422d9f",
       "category": "śladami przodków",
       "level": "medium",
-      "prompt": "Ferdynand I Habsburg — kto był małżonkiem tej postaci?",
+      "prompt": "Ferdynand I Habsburg — jak nazywała się jego żona?",
       "correct": "Maria Anna Sabaudzka",
       "wrong": [
         "John Couch Adams",
@@ -120051,7 +119992,7 @@ module GameRoomContent
       "id": "f2ac3e99c76f",
       "category": "śladami przodków",
       "level": "medium",
-      "prompt": "Filip V Wysoki — kto był małżonkiem tej postaci?",
+      "prompt": "Filip V Wysoki — jak nazywała się jego żona?",
       "correct": "Joanna II Burgundzka",
       "wrong": [
         "Dmitrij Mendelejew",
@@ -120099,7 +120040,7 @@ module GameRoomContent
       "id": "8a7d3e9bdeaf",
       "category": "śladami przodków",
       "level": "medium",
-      "prompt": "Francis Galton — jakiego kraju obywatelem był ten podróżnik?",
+      "prompt": "Którego z wymienionych państw był poddanym Francis Galton?",
       "correct": "Zjednoczone Królestwo Wielkiej Brytanii i Irlandii",
       "wrong": [
         "Królestwo Nawarry",
@@ -120111,7 +120052,7 @@ module GameRoomContent
       "id": "ddf3e70f9592",
       "category": "śladami przodków",
       "level": "medium",
-      "prompt": "Franciszek II Walezjusz — kto był małżonkiem tej postaci?",
+      "prompt": "Franciszek II Walezjusz — jak nazywała się jego żona?",
       "correct": "Maria I Stuart",
       "wrong": [
         "Jan II Dobry",
@@ -120147,7 +120088,7 @@ module GameRoomContent
       "id": "6312ef6d28af",
       "category": "śladami przodków",
       "level": "medium",
-      "prompt": "Fryderyk Wilhelm I Pruski — kto był małżonkiem tej postaci?",
+      "prompt": "Fryderyk Wilhelm I Pruski — jak nazywała się jego żona?",
       "correct": "Zofia Dorota Hanowerska",
       "wrong": [
         "Pepin Krótki",
@@ -120159,7 +120100,7 @@ module GameRoomContent
       "id": "ad305f093580",
       "category": "śladami przodków",
       "level": "medium",
-      "prompt": "Fryderyk Wilhelm IV Pruski — kto był małżonkiem tej postaci?",
+      "prompt": "Fryderyk Wilhelm IV Pruski — jak nazywała się jego żona?",
       "correct": "Elżbieta Ludwika Wittelsbach",
       "wrong": [
         "Emily Donelson Jackson",
@@ -120207,7 +120148,7 @@ module GameRoomContent
       "id": "ba43f2e9624d",
       "category": "śladami przodków",
       "level": "medium",
-      "prompt": "George Curzon — jakiego kraju obywatelem był ten podróżnik?",
+      "prompt": "Którego z wymienionych państw był poddanym George Curzon?",
       "correct": "Zjednoczone Królestwo Wielkiej Brytanii i Irlandii",
       "wrong": [
         "Republika Cospaii",
@@ -120219,7 +120160,7 @@ module GameRoomContent
       "id": "0cdbc3e1cc75",
       "category": "śladami przodków",
       "level": "medium",
-      "prompt": "George Everest — jakiego kraju obywatelem był ten podróżnik?",
+      "prompt": "Którego z wymienionych państw był obywatelem George Everest?",
       "correct": "Wielka Brytania",
       "wrong": [
         "Brazylia",
@@ -120231,7 +120172,7 @@ module GameRoomContent
       "id": "c6358fb8b33b",
       "category": "śladami przodków",
       "level": "medium",
-      "prompt": "George Vancouver — jakiego kraju obywatelem był ten podróżnik?",
+      "prompt": "Którego z wymienionych państw był poddanym George Vancouver?",
       "correct": "Królestwo Wielkiej Brytanii",
       "wrong": [
         "Mjanma",
@@ -120243,7 +120184,7 @@ module GameRoomContent
       "id": "6b58067ea067",
       "category": "śladami przodków",
       "level": "medium",
-      "prompt": "Gertrude Bell — jakiego kraju obywatelem był ten podróżnik?",
+      "prompt": "Którego z wymienionych państw była poddaną Gertrude Bell?",
       "correct": "Zjednoczone Królestwo Wielkiej Brytanii i Irlandii",
       "wrong": [
         "Królestwo Polskie (1385–1569)",
@@ -120267,7 +120208,7 @@ module GameRoomContent
       "id": "edd24274f198",
       "category": "śladami przodków",
       "level": "medium",
-      "prompt": "Harald III Surowy — jakiego kraju obywatelem był ten podróżnik?",
+      "prompt": "Którym z wymienionych państw władał Harald III Srogi?",
       "correct": "Królestwo Norwegii",
       "wrong": [
         "Wielcy Mogołowie",
@@ -120327,7 +120268,7 @@ module GameRoomContent
       "id": "e034eda1e83e",
       "category": "śladami przodków",
       "level": "medium",
-      "prompt": "Henry Hudson — jakiego kraju obywatelem był ten podróżnik?",
+      "prompt": "Którego z wymienionych państw był poddanym Henry Hudson?",
       "correct": "Królestwo Anglii",
       "wrong": [
         "Trizonia",
@@ -120363,7 +120304,7 @@ module GameRoomContent
       "id": "a033777e9bce",
       "category": "śladami przodków",
       "level": "medium",
-      "prompt": "Henryk II Walezjusz — kto był małżonkiem tej postaci?",
+      "prompt": "Henryk II Walezjusz — jak nazywała się jego żona?",
       "correct": "Katarzyna Medycejska",
       "wrong": [
         "Ludwik II Jąkała",
@@ -120375,7 +120316,7 @@ module GameRoomContent
       "id": "810d1eab43eb",
       "category": "śladami przodków",
       "level": "medium",
-      "prompt": "Henryk II Święty — kto był małżonkiem tej postaci?",
+      "prompt": "Henryk II Święty — jak nazywała się jego żona?",
       "correct": "Kunegunda Luksemburska",
       "wrong": [
         "Joanna II Burgundzka",
@@ -120387,8 +120328,8 @@ module GameRoomContent
       "id": "d1ba17b16437",
       "category": "śladami przodków",
       "level": "medium",
-      "prompt": "Hernando de Soto — jakiego kraju obywatelem był ten podróżnik?",
-      "correct": "Kastylia-León",
+      "prompt": "W którym z wymienionych historycznych państw żył Hernando de Soto?",
+      "correct": "Korona Kastylii",
       "wrong": [
         "Przedlitawia",
         "Cesarstwo Rzymskie",
@@ -120915,7 +120856,7 @@ module GameRoomContent
       "id": "aef958ccd25c",
       "category": "śladami przodków",
       "level": "medium",
-      "prompt": "Jakub I — kto był małżonkiem tej postaci?",
+      "prompt": "Jakub I, król Szkocji — jak nazywała się jego żona?",
       "correct": "Joanna Beaufort",
       "wrong": [
         "Jan I Dobry",
@@ -120927,7 +120868,7 @@ module GameRoomContent
       "id": "3dcf7308c590",
       "category": "śladami przodków",
       "level": "medium",
-      "prompt": "Jakub IV — kto był małżonkiem tej postaci?",
+      "prompt": "Jakub IV, król Szkocji — jak nazywała się jego żona?",
       "correct": "Małgorzata Tudor",
       "wrong": [
         "Pierre Joseph Proudhon",
@@ -120987,7 +120928,7 @@ module GameRoomContent
       "id": "f1ae1135f694",
       "category": "śladami przodków",
       "level": "medium",
-      "prompt": "Jan IV Szczęśliwy — kto był małżonkiem tej postaci?",
+      "prompt": "Jan IV Szczęśliwy — jak nazywała się jego żona?",
       "correct": "Ludwika de Guzman",
       "wrong": [
         "Antoine Lavoisier",
@@ -121023,7 +120964,7 @@ module GameRoomContent
       "id": "30c054ccfe64",
       "category": "śladami przodków",
       "level": "medium",
-      "prompt": "Jerzy I Grecki — kto był małżonkiem tej postaci?",
+      "prompt": "Jerzy I Grecki — jak nazywała się jego żona?",
       "correct": "Olga Konstantinowna Romanowa",
       "wrong": [
         "Chizr Chan",
@@ -121047,7 +120988,7 @@ module GameRoomContent
       "id": "b831c6218d1b",
       "category": "śladami przodków",
       "level": "medium",
-      "prompt": "John Hurt — jakiego kraju obywatelem był ten podróżnik?",
+      "prompt": "Którego z wymienionych państw był obywatelem John Hurt?",
       "correct": "Wielka Brytania",
       "wrong": [
         "Lu",
@@ -121059,7 +121000,7 @@ module GameRoomContent
       "id": "a1ed2132fd64",
       "category": "śladami przodków",
       "level": "medium",
-      "prompt": "John Smith — jakiego kraju obywatelem był ten podróżnik?",
+      "prompt": "Którego z wymienionych państw był poddanym John Smith?",
       "correct": "Królestwo Anglii",
       "wrong": [
         "Kolumbia",
@@ -121071,7 +121012,7 @@ module GameRoomContent
       "id": "829e074b73d4",
       "category": "śladami przodków",
       "level": "medium",
-      "prompt": "Joseph Dalton Hooker — jakiego kraju obywatelem był ten podróżnik?",
+      "prompt": "Którego z wymienionych państw był poddanym Joseph Dalton Hooker?",
       "correct": "Zjednoczone Królestwo Wielkiej Brytanii i Irlandii",
       "wrong": [
         "fyla",
@@ -121083,7 +121024,7 @@ module GameRoomContent
       "id": "e5f49987e0af",
       "category": "śladami przodków",
       "level": "medium",
-      "prompt": "Juan Ponce de León — jakiego kraju obywatelem był ten podróżnik?",
+      "prompt": "Którego z wymienionych państw był poddanym Juan Ponce de León?",
       "correct": "Imperium hiszpańskie",
       "wrong": [
         "Himjaryci",
@@ -121095,7 +121036,7 @@ module GameRoomContent
       "id": "0e8ca0f27eee",
       "category": "śladami przodków",
       "level": "medium",
-      "prompt": "Juan Sebastián Elcano — jakiego kraju obywatelem był ten podróżnik?",
+      "prompt": "Którego z wymienionych państw był obywatelem Juan Sebastián Elcano?",
       "correct": "Hiszpania",
       "wrong": [
         "Stany Zjednoczone",
@@ -121107,7 +121048,7 @@ module GameRoomContent
       "id": "9d871a544e89",
       "category": "śladami przodków",
       "level": "medium",
-      "prompt": "Jules Dumont d'Urville — jakiego kraju obywatelem był ten podróżnik?",
+      "prompt": "Którego z wymienionych państw był obywatelem Jules Dumont d'Urville?",
       "correct": "Francja",
       "wrong": [
         "Królestwo Portugalii",
@@ -121143,7 +121084,7 @@ module GameRoomContent
       "id": "d6acbb103c37",
       "category": "śladami przodków",
       "level": "medium",
-      "prompt": "Józef I Habsburg — kto był małżonkiem tej postaci?",
+      "prompt": "Józef I Habsburg — jak nazywała się jego żona?",
       "correct": "Wilhelmina Amalia Brunszwicka",
       "wrong": [
         "William P. Fessenden",
@@ -121215,7 +121156,7 @@ module GameRoomContent
       "id": "7530ff028013",
       "category": "śladami przodków",
       "level": "medium",
-      "prompt": "Karl Ernst von Baer — jakiego kraju obywatelem był ten podróżnik?",
+      "prompt": "Którego z wymienionych państw był poddanym Karl Ernst von Baer?",
       "correct": "Imperium Rosyjskie",
       "wrong": [
         "Kościół katolicki",
@@ -121239,7 +121180,7 @@ module GameRoomContent
       "id": "67648d4a3c2d",
       "category": "śladami przodków",
       "level": "medium",
-      "prompt": "Karol III Hiszpański — kto był małżonkiem tej postaci?",
+      "prompt": "Karol III Hiszpański — jak nazywała się jego żona?",
       "correct": "Maria Amalia Wettyn",
       "wrong": [
         "Aszurbanipal",
@@ -121263,7 +121204,7 @@ module GameRoomContent
       "id": "81bda8a9d885",
       "category": "śladami przodków",
       "level": "medium",
-      "prompt": "Karol IX Walezjusz — kto był małżonkiem tej postaci?",
+      "prompt": "Karol IX Walezjusz — jak nazywała się jego żona?",
       "correct": "Elżbieta Habsburżanka",
       "wrong": [
         "Olgierd",
@@ -121323,7 +121264,7 @@ module GameRoomContent
       "id": "ffc561199d76",
       "category": "śladami przodków",
       "level": "medium",
-      "prompt": "Karol XV — kto był małżonkiem tej postaci?",
+      "prompt": "Karol XV — jak nazywała się jego żona?",
       "correct": "Ludwika Orańska",
       "wrong": [
         "Lestek",
@@ -121431,7 +121372,7 @@ module GameRoomContent
       "id": "a628855a10dd",
       "category": "śladami przodków",
       "level": "medium",
-      "prompt": "Kazimierz IV Jagiellończyk — kto był małżonkiem tego władcy Polski?",
+      "prompt": "Kazimierz IV Jagiellończyk — jak nazywała się jego żona?",
       "correct": "Elżbieta Rakuszanka",
       "wrong": [
         "Childeryk I",
@@ -121503,7 +121444,7 @@ module GameRoomContent
       "id": "59de0c07a1f3",
       "category": "śladami przodków",
       "level": "medium",
-      "prompt": "Konstantyn I Grecki — kto był małżonkiem tej postaci?",
+      "prompt": "Konstantyn I Grecki — jak nazywała się jego żona?",
       "correct": "Zofia Hohenzollern",
       "wrong": [
         "Maria Amelia Burbon-Sycylijska",
@@ -121875,7 +121816,7 @@ module GameRoomContent
       "id": "ac8c842ad613",
       "category": "śladami przodków",
       "level": "medium",
-      "prompt": "Ludwik II Niemiecki — kto był małżonkiem tej postaci?",
+      "prompt": "Ludwik II Niemiecki — jak nazywała się jego żona?",
       "correct": "Emma Bawarska",
       "wrong": [
         "Mohammad Nadir Szah",
@@ -121995,7 +121936,7 @@ module GameRoomContent
       "id": "0d4a61460a7f",
       "category": "śladami przodków",
       "level": "medium",
-      "prompt": "Maciej Habsburg — kto był małżonkiem tej postaci?",
+      "prompt": "Maciej Habsburg — jak nazywała się jego żona?",
       "correct": "Anna Tyrolska",
       "wrong": [
         "Maria Leszczyńska",
@@ -122055,7 +121996,7 @@ module GameRoomContent
       "id": "34ae8e3c8b72",
       "category": "śladami przodków",
       "level": "medium",
-      "prompt": "Maksymilian II Habsburg — kto był małżonkiem tej postaci?",
+      "prompt": "Maksymilian II Habsburg — jak nazywała się jego żona?",
       "correct": "Maria Hiszpańska",
       "wrong": [
         "Adelajda Akwitańska",
@@ -122163,7 +122104,7 @@ module GameRoomContent
       "id": "9a38f37ef1a2",
       "category": "śladami przodków",
       "level": "medium",
-      "prompt": "Matteo Ricci — jakiego kraju obywatelem był ten podróżnik?",
+      "prompt": "Którego z wymienionych państw był obywatelem Matteo Ricci?",
       "correct": "Państwo Kościelne",
       "wrong": [
         "Korea Północna",
@@ -122187,7 +122128,7 @@ module GameRoomContent
       "id": "b2bc8cbb7d3a",
       "category": "śladami przodków",
       "level": "medium",
-      "prompt": "Małgorzata I — kto był małżonkiem tej postaci?",
+      "prompt": "Małgorzata I — jak nazywał się jej mąż?",
       "correct": "Haakon VI Magnusson",
       "wrong": [
         "Eryk Zwycięski",
@@ -122391,7 +122332,7 @@ module GameRoomContent
       "id": "9a7101773f0b",
       "category": "śladami przodków",
       "level": "medium",
-      "prompt": "Mikołaj Roerich — jakiego kraju obywatelem był ten podróżnik?",
+      "prompt": "Którego z wymienionych państw był poddanym Mikołaj Roerich?",
       "correct": "Imperium Rosyjskie",
       "wrong": [
         "Republika Weimarska",
@@ -122511,7 +122452,7 @@ module GameRoomContent
       "id": "36d5922d15b6",
       "category": "śladami przodków",
       "level": "medium",
-      "prompt": "Mungo Park — jakiego kraju obywatelem był ten podróżnik?",
+      "prompt": "Którego z wymienionych państw był poddanym Mungo Park?",
       "correct": "Zjednoczone Królestwo Wielkiej Brytanii i Irlandii",
       "wrong": [
         "Hiszpania",
@@ -122571,7 +122512,7 @@ module GameRoomContent
       "id": "c7d9956f470e",
       "category": "śladami przodków",
       "level": "medium",
-      "prompt": "Nikołaj Przewalski — jakiego kraju obywatelem był ten podróżnik?",
+      "prompt": "Którego z wymienionych państw był poddanym Nikołaj Przewalski?",
       "correct": "Imperium Rosyjskie",
       "wrong": [
         "Trzech Dostojnych i Pięciu Cesarzy",
@@ -122655,7 +122596,7 @@ module GameRoomContent
       "id": "340f2e9e1b83",
       "category": "śladami przodków",
       "level": "medium",
-      "prompt": "Oskar I — kto był małżonkiem tej postaci?",
+      "prompt": "Oskar I — jak nazywała się jego żona?",
       "correct": "Józefina de Beauharnais-Bernadotte",
       "wrong": [
         "Christiaan Huygens",
@@ -122667,7 +122608,7 @@ module GameRoomContent
       "id": "0f36b1a88fc4",
       "category": "śladami przodków",
       "level": "medium",
-      "prompt": "Oskar II — kto był małżonkiem tej postaci?",
+      "prompt": "Oskar II — jak nazywała się jego żona?",
       "correct": "Zofia Wilhelmina Nassau",
       "wrong": [
         "Eutydemos I",
@@ -123219,7 +123160,7 @@ module GameRoomContent
       "id": "f87ad1c79129",
       "category": "śladami przodków",
       "level": "medium",
-      "prompt": "Reinhold Messner — jakiego kraju obywatelem był ten podróżnik?",
+      "prompt": "Którego z wymienionych państw jest lub był obywatelem Reinhold Messner?",
       "correct": "Włochy",
       "wrong": [
         "II Republika Francuska",
@@ -123339,7 +123280,7 @@ module GameRoomContent
       "id": "df0ddb2c27b6",
       "category": "śladami przodków",
       "level": "medium",
-      "prompt": "Richard Byrd — jakiego kraju obywatelem był ten podróżnik?",
+      "prompt": "Którego z wymienionych państw był obywatelem Richard Byrd?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Mandat Palestyny",
@@ -123351,7 +123292,7 @@ module GameRoomContent
       "id": "a64496d747d9",
       "category": "śladami przodków",
       "level": "medium",
-      "prompt": "Richard Francis Burton — jakiego kraju obywatelem był ten podróżnik?",
+      "prompt": "Którego z wymienionych państw był obywatelem Richard Francis Burton?",
       "correct": "Wielka Brytania",
       "wrong": [
         "Niepodległe Państwo Chorwackie",
@@ -123363,7 +123304,7 @@ module GameRoomContent
       "id": "e00b88f677cf",
       "category": "śladami przodków",
       "level": "medium",
-      "prompt": "Robert Edwin Peary — jakiego kraju obywatelem był ten podróżnik?",
+      "prompt": "Którego z wymienionych państw był obywatelem Robert Edwin Peary?",
       "correct": "Stany Zjednoczone",
       "wrong": [
         "Monarchia Habsburgów",
@@ -123507,7 +123448,7 @@ module GameRoomContent
       "id": "d31a62e292ce",
       "category": "śladami przodków",
       "level": "medium",
-      "prompt": "Samuel de Champlain — jakiego kraju obywatelem był ten podróżnik?",
+      "prompt": "Którego z wymienionych państw był poddanym Samuel de Champlain?",
       "correct": "Królestwo Francji",
       "wrong": [
         "Grecja",
@@ -123663,7 +123604,7 @@ module GameRoomContent
       "id": "d991289df94f",
       "category": "śladami przodków",
       "level": "medium",
-      "prompt": "Stanisław Leszczyński — kto był małżonkiem tego władcy Polski?",
+      "prompt": "Stanisław Leszczyński — jak nazywała się jego żona?",
       "correct": "Katarzyna Opalińska",
       "wrong": [
         "Willem Janszoon",
@@ -123711,7 +123652,7 @@ module GameRoomContent
       "id": "c502192f4e57",
       "category": "śladami przodków",
       "level": "medium",
-      "prompt": "Stefan Batory — kto był małżonkiem tego władcy Polski?",
+      "prompt": "Stefan Batory — jak nazywała się jego żona?",
       "correct": "Anna Jagiellonka",
       "wrong": [
         "Maria II Stuart",
@@ -123951,7 +123892,7 @@ module GameRoomContent
       "id": "63a0b9e73077",
       "category": "śladami przodków",
       "level": "medium",
-      "prompt": "Tigranes II — kto był małżonkiem tej postaci?",
+      "prompt": "Tigranes II — jak nazywała się jego żona?",
       "correct": "Kleopatra z Pontu",
       "wrong": [
         "Gejza",
@@ -124647,7 +124588,7 @@ module GameRoomContent
       "id": "fdc22a9a1193",
       "category": "śladami przodków",
       "level": "medium",
-      "prompt": "Vasco Núñez de Balboa — jakiego kraju obywatelem był ten podróżnik?",
+      "prompt": "Którego z wymienionych państw był obywatelem Vasco Núñez de Balboa?",
       "correct": "Hiszpania",
       "wrong": [
         "Republika Missisipi",
@@ -124707,7 +124648,7 @@ module GameRoomContent
       "id": "42c6122b39c4",
       "category": "śladami przodków",
       "level": "medium",
-      "prompt": "Wacław III — kto był małżonkiem tego władcy Polski?",
+      "prompt": "Wacław III — jak nazywała się jego żona?",
       "correct": "Wiola Elżbieta cieszyńska",
       "wrong": [
         "Jerzy III Hanowerski",
@@ -124767,7 +124708,7 @@ module GameRoomContent
       "id": "bd65a20ba3b4",
       "category": "śladami przodków",
       "level": "medium",
-      "prompt": "Walter Raleigh — jakiego kraju obywatelem był ten podróżnik?",
+      "prompt": "Którego z wymienionych państw był poddanym Walter Raleigh?",
       "correct": "Królestwo Anglii",
       "wrong": [
         "Szwecja",
@@ -124959,7 +124900,7 @@ module GameRoomContent
       "id": "884fbb421218",
       "category": "śladami przodków",
       "level": "medium",
-      "prompt": "Wilhelm z Rubruk — jakiego kraju obywatelem był ten podróżnik?",
+      "prompt": "Którego z wymienionych państw był poddanym Wilhelm z Rubruk?",
       "correct": "Królestwo Francji",
       "wrong": [
         "Królestwo Jerozolimskie",
@@ -124983,7 +124924,7 @@ module GameRoomContent
       "id": "7f00f4a5099a",
       "category": "śladami przodków",
       "level": "medium",
-      "prompt": "William Dampier — jakiego kraju obywatelem był ten podróżnik?",
+      "prompt": "Którego z wymienionych państw był poddanym William Dampier?",
       "correct": "Królestwo Wielkiej Brytanii",
       "wrong": [
         "Ekwador",
@@ -126471,7 +126412,7 @@ module GameRoomContent
       "id": "63ed41ffbdf8",
       "category": "śladami przodków",
       "level": "medium",
-      "prompt": "Ławr Korniłow — jakiego kraju obywatelem był ten podróżnik?",
+      "prompt": "Którego z wymienionych państw był poddanym Ławr Korniłow?",
       "correct": "Imperium Rosyjskie",
       "wrong": [
         "Obwód syrdaryjski",
@@ -128787,7 +128728,7 @@ module GameRoomContent
       "id": "e6e7de8e0aa3",
       "category": "śladami przodków",
       "level": "hard",
-      "prompt": "Bolesław V Wstydliwy — kto był małżonkiem tego władcy Polski?",
+      "prompt": "Bolesław V Wstydliwy — jak nazywała się jego żona?",
       "correct": "Święta Kinga",
       "wrong": [
         "Snofru",
@@ -129123,7 +129064,7 @@ module GameRoomContent
       "id": "d4b5bfeae15f",
       "category": "śladami przodków",
       "level": "hard",
-      "prompt": "Henryk I Brodaty — kto był małżonkiem tego władcy Polski?",
+      "prompt": "Henryk I Brodaty — jak nazywała się jego żona?",
       "correct": "Jadwiga Śląska",
       "wrong": [
         "Borzywoj I",
@@ -129891,7 +129832,7 @@ module GameRoomContent
       "id": "3bbf181afbe6",
       "category": "śladami przodków",
       "level": "hard",
-      "prompt": "Konrad I mazowiecki — kto był małżonkiem tego władcy Polski?",
+      "prompt": "Konrad I mazowiecki — jak nazywała się jego żona?",
       "correct": "Agafia Światosławówna",
       "wrong": [
         "Borzywoj I",
@@ -130047,7 +129988,7 @@ module GameRoomContent
       "id": "60f5636ff91a",
       "category": "śladami przodków",
       "level": "hard",
-      "prompt": "Leszek Czarny — kto był małżonkiem tego władcy Polski?",
+      "prompt": "Leszek Czarny — jak nazywała się jego żona?",
       "correct": "Gryfina Halicka",
       "wrong": [
         "Małgorzata Prowansalska",
@@ -133274,7 +133215,7 @@ module GameRoomContent
   ],
   "source": "Base pack: https://github.com/budyn1211/elten-game-room/blob/efa6e640a57901e7b01e5ac2158e84f1c3375435/content/quiz_pl_wikidata.rb; sport corrections: content/QUIZ_PL_SPORT_SOURCES.txt"
 }
-QUIZ_DATA_bc6b16c37ee40100368a83e1441e1b0ae5bcfef80b8a3f2c55833bd495a797c1
+QUIZ_DATA_de967eeb75e541daafef43bc73abd974df17d97c3a6e9adfc667f8ef7ff567be
     end
   end
 end

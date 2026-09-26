@@ -14,8 +14,9 @@ module GameRoomWidget
     include GameRoomUI::PingControl
     attr_reader :snapshots
 
-    def initialize(loader:, opener:, labeler:, id_for:, active: -> { true }, clock: -> { Process.clock_gettime(Process::CLOCK_MONOTONIC) }, worker: nil, foreground: nil, manual_refresh: -> {}, creator: nil, invitations: nil, program: nil)
+    def initialize(loader:, opener:, labeler:, id_for:, active: -> { true }, clock: -> { Process.clock_gettime(Process::CLOCK_MONOTONIC) }, worker: nil, foreground: nil, manual_refresh: -> {}, creator: nil, invitations: nil, program: nil, on_visit: nil)
       @game_room_program = program
+      @on_visit = on_visit
       @loader = loader
       @opener = opener
       @labeler = labeler
@@ -53,6 +54,7 @@ module GameRoomWidget
       # ListBox focuses its selected row while handling arrows. Only a host
       # entry from outside update is a real tab entry, not list navigation.
       if !@updating && active?
+        @on_visit&.call
         # Preserve the original order: fetch, replace rows, then let the host
         # read the selected row. Only periodic/manual refresh runs in the
         # background; Tab must not present a previous visit's rows as current.
@@ -141,7 +143,7 @@ module GameRoomWidget
       end
       tips = (@creator ? creation_actions : []).map { |_key, slot, label| GameRoomContextHelp.shortcut_tip(slot == nil ? 'Ctrl+N' : GameRoomTablePresets.shortcut(slot), label) }
       tips.unshift(GameRoomContextHelp.shortcut_tip('Ctrl+J', _("Accept invitation"))) if @invitations
-      tips << GameRoomContent.utf8(_("Ctrl+F4: read HTTP and available Communications ping.")) if @game_room_program
+      tips << GameRoomContent.utf8(_("Ctrl+F4: read HTTP ping and available Communications relay or P2P ping.")) if @game_room_program
       GameRoomContextHelp.replace([self], tips)
     end
 

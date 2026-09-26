@@ -41,6 +41,10 @@ class FakeControl
     @context_disabled_globally = true
   end
 
+  def contextinglobal_enabled?
+    @context_disabled_globally != true
+  end
+
   def add_tip(_tip)
   end
 

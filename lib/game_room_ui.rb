@@ -30,7 +30,7 @@ module GameRoomUI
     "F3: raise the selected Game Room sound volume.",
     "Shift+F2: select the previous sound group.",
     "Shift+F3: select the next sound group.",
-    "Ctrl+F4: read HTTP and available Communications ping."
+    "Ctrl+F4: read HTTP ping and available Communications relay or P2P ping."
   ].freeze
   HotkeyAction = Struct.new(:callback) do
     def call
@@ -103,10 +103,44 @@ module GameRoomUI
     attr_accessor :game_room_program, :game_room_volume_reader, :game_room_volume_writer
     attr_accessor :game_room_general_help_tips, :game_room_text_help_tips
     attr_accessor :game_room_background_help_enabled
+    attr_accessor :game_room_entry_boundary
 
     def initialize(fields, program: nil, **options)
       @game_room_program = program
       super(fields, **options)
+    end
+
+    def game_room_invitation_context?
+      return false unless game_room_hotkeys_active? && @game_room_program&.respond_to?(:switch_to_invited_table, true)
+
+      $activecontrols.to_a.reverse.find do |control|
+        control.respond_to?(:game_room_hotkeys_active?) && control.game_room_hotkeys_active?
+      end.equal?(self)
+    end
+
+    def hascontext
+      super || game_room_invitation_context?
+    end
+
+    def context(menu, submenu = true)
+      super
+      return if submenu && !contextinglobal_enabled?
+      return unless game_room_invitation_context?
+
+      menu.option(GameRoomContent.utf8(_("Accept invitation")), nil, "j") do
+        accept_game_room_invitation
+      end
+    end
+
+    def accept_game_room_invitation
+      return unless @game_room_program&.respond_to?(:switch_to_invited_table, true)
+
+      clear_game_room_key
+      begin
+        @game_room_program.send(:switch_to_invited_table)
+      ensure
+        clear_game_room_key
+      end
     end
 
     def wait
@@ -118,6 +152,15 @@ module GameRoomUI
     end
 
     def update
+      if game_room_hotkeys_active? && @game_room_program&.respond_to?(:switch_to_invited_table, true) &&
+          main_shortcut_pressed?('j', first: true)
+        # Handle this before the focused field, including chat and modal forms.
+        # The existing invitation path owns admission, confirmation and cleanup.
+        accept_game_room_invitation
+      end
+      if game_room_entry_boundary && game_room_hotkeys_active? && !game_room_background_help?
+        @game_room_program.dispatch_game_room_entry if @game_room_program&.respond_to?(:dispatch_game_room_entry)
+      end
       dispatch_pending_game_room_events
       if game_room_background_help?
         # Keep the native game wait alive, but send keyboard input only to the
@@ -227,7 +270,11 @@ module GameRoomUI
       else
         game_room_general_help_tips.to_a
       end
-      items = GameRoomContextHelp.clean_tips(tips + form_tips + history_tips + GLOBAL_TIPS.map { |tip| _(tip) })
+      global_tips = GLOBAL_TIPS.map { |tip| _(tip) }
+      if @game_room_program&.respond_to?(:switch_to_invited_table, true)
+        global_tips.unshift(GameRoomContextHelp.shortcut_tip('Ctrl+J', _("Accept invitation")))
+      end
+      items = GameRoomContextHelp.clean_tips(tips + form_tips + history_tips + global_tips)
       items = [_("No shortcuts are available on this screen.")] if items.empty?
       @game_room_help_open = true
       opened_here = true
@@ -267,6 +314,7 @@ module GameRoomUI
       # not run here; background help is updated by its waiting parent once.
       return unless @game_room_waiting && !@game_room_help_owner
       return unless $mainthread && $currentthread.equal?(Thread.current)
+      @game_room_program.cleanup_game_room_launches if @game_room_program&.respond_to?(:cleanup_game_room_launches)
       return if Thread.current.equal?($mainthread)
       return unless @game_room_program&.respond_to?(:dispatch_pending_game_room_events)
 
