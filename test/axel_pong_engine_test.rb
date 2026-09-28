@@ -73,7 +73,7 @@ assert(replay.winner == 'Alice' && replay.state[:scores] == [12, 10], 'deuce win
 replay = rules.replay(session, events.map { |e| e.merge('actor' => 'Bob') }, repo)
 assert(replay.state[:scores] == [0, 0], 'unauthorized scores')
 assert(!rules.supports_saved_games? && !rules.supports_bot_move_delay?, 'unsafe save/bot delay')
-assert(rules.default_options.keys.sort == %w[arcade custom_target difficulty target team_size], 'wrong settings: personal automatic return must not be a table rule')
+assert(rules.default_options.keys.sort == %w[arcade custom_target difficulty p2p_enabled p2p_participants_limit target team_size], 'wrong settings: personal automatic return must not be a table rule')
 
 started = Process.clock_gettime(Process::CLOCK_MONOTONIC)
 steps = 0

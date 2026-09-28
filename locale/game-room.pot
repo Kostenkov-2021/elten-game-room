@@ -67,7 +67,7 @@ msgstr ""
 msgid "%{card}. Choose how to change the Scriptorium"
 msgstr ""
 
-#: lib/game_surfaces.rb:995
+#: lib/game_surfaces.rb:1019
 msgid "%{card}. Choose how to play it"
 msgstr ""
 
@@ -95,7 +95,7 @@ msgstr ""
 msgid "%{category} down"
 msgstr ""
 
-#: games/categories.rb:708
+#: games/categories.rb:710
 msgid "%{category} for letter %{letter}"
 msgstr ""
 
@@ -215,7 +215,7 @@ msgid_plural "%{count} hidden cards"
 msgstr[0] ""
 msgstr[1] ""
 
-#: games/krowa.rb:168
+#: games/krowa.rb:169
 msgid "%{count} letters"
 msgstr ""
 
@@ -303,7 +303,7 @@ msgstr ""
 msgid "%{game} (%{waiting}/%{total})"
 msgstr ""
 
-#: lib/game_room_screens.rb:495
+#: lib/game_room_screens.rb:533
 msgid "%{game} rules"
 msgstr ""
 
@@ -311,19 +311,19 @@ msgstr ""
 msgid "%{game}, %{owner}"
 msgstr ""
 
-#: __app.rb:2323
+#: __app.rb:2391
 msgid "%{game}, %{table}"
 msgstr ""
 
-#: lib/game_room_screens.rb:508
+#: lib/game_room_screens.rb:546
 msgid "%{game}: %{section}"
 msgstr ""
 
-#: __app.rb:1026
+#: __app.rb:1040
 msgid "%{game}; %{date}; %{players}"
 msgstr ""
 
-#: __app.rb:1960
+#: __app.rb:2016
 msgid "%{game}; %{table}; invited by %{sender}; %{count}/%{maximum}"
 msgstr ""
 
@@ -339,7 +339,7 @@ msgstr ""
 msgid "%{giver} gave a trump card to %{target}; %{target} chooses the return card."
 msgstr ""
 
-#: __app.rb:3131
+#: __app.rb:3213
 msgid "%{group}, %{volume}%%"
 msgstr ""
 
@@ -354,7 +354,7 @@ msgstr ""
 msgid "%{judge} is reviewing the answers."
 msgstr ""
 
-#: games/categories.rb:755
+#: games/categories.rb:757
 msgid "%{judge} is reviewing the answers. Confirmed assessments will appear in the game history."
 msgstr ""
 
@@ -365,7 +365,7 @@ msgstr ""
 msgid "%{judge}; answers in %{language}; %{time}; target: %{target} points"
 msgstr ""
 
-#: games/krowa.rb:435
+#: games/krowa.rb:436
 msgid "%{length} letters."
 msgstr ""
 
@@ -380,11 +380,11 @@ msgstr ""
 msgid "%{matches} matches; extra categories: %{extra}; Yahtzee bonus: %{bonus}; Joker: %{joker}"
 msgstr ""
 
-#: lib/game_screen.rb:1202
+#: lib/game_screen.rb:1020
 msgid "%{message} Allowed values: %{values}."
 msgstr ""
 
-#: lib/game_screen.rb:1330 lib/game_screen.rb:1336
+#: lib/game_screen.rb:1152 lib/game_screen.rb:1158
 msgid "%{minimum} to %{maximum}"
 msgstr ""
 
@@ -392,15 +392,15 @@ msgstr ""
 msgid "%{mode}: started %{started}, completed %{completed}"
 msgstr ""
 
-#: games/ludo.rb:365
+#: games/ludo.rb:453
 msgid "%{move}; captures an opposing pawn"
 msgstr ""
 
-#: games/ludo.rb:367
+#: games/ludo.rb:455
 msgid "%{move}; opposing pawns captured: %{count}"
 msgstr ""
 
-#: games/ludo.rb:369
+#: games/ludo.rb:457
 msgid "%{move}; safe field"
 msgstr ""
 
@@ -440,7 +440,7 @@ msgstr ""
 msgid "%{owner} waived the rent from %{player}."
 msgstr ""
 
-#: __app.rb:2604
+#: __app.rb:2686
 msgid "%{owner}, %{count}/%{maximum}, %{status}"
 msgstr ""
 
@@ -489,15 +489,15 @@ msgstr ""
 msgid "%{players} lost a token."
 msgstr ""
 
-#: games/categories.rb:1115
+#: games/categories.rb:1117
 msgid "%{players}: %{category}: %{answer}; decision: %{decision}."
 msgstr ""
 
-#: games/categories.rb:1124
+#: games/categories.rb:1126
 msgid "%{players}: %{category}: %{answer}; the judge changed the decision from %{previous} to %{decision}."
 msgstr ""
 
-#: games/categories.rb:1134
+#: games/categories.rb:1136
 msgid "%{players}: %{category}: %{answer}; the judge removed the assessment %{previous}."
 msgstr ""
 
@@ -530,7 +530,7 @@ msgstr ""
 msgid "%{player} added a computer."
 msgstr ""
 
-#: games/krowa.rb:419
+#: games/krowa.rb:420
 msgid "%{player} adds a noun: %{word}."
 msgstr ""
 
@@ -548,7 +548,7 @@ msgstr ""
 msgid "%{player} answered incorrectly."
 msgstr ""
 
-#: games/cat_head_tail.rb:311 games/farkle.rb:559
+#: games/cat_head_tail.rb:311 games/farkle.rb:562
 msgid "%{player} banked %{points} points and now has %{total}."
 msgstr ""
 
@@ -717,7 +717,7 @@ msgstr ""
 msgid "%{player} declared bankruptcy. Remaining property returns to the bank."
 msgstr ""
 
-#: games/tysiac.rb:878
+#: games/tysiac.rb:882
 msgid "%{player} declared the %{suit} marriage for %{points} points by playing %{card}. %{suit} is now trump."
 msgstr ""
 
@@ -841,15 +841,15 @@ msgstr ""
 msgid "%{player} folds."
 msgstr ""
 
-#: games/tysiac.rb:1647
+#: games/tysiac.rb:1651
 msgid "%{player} gained %{points} points."
 msgstr ""
 
-#: games/tysiac.rb:1651
+#: games/tysiac.rb:1655
 msgid "%{player} gained no points."
 msgstr ""
 
-#: games/tysiac.rb:1450
+#: games/tysiac.rb:1454
 msgid "%{player} gave you %{card}."
 msgstr ""
 
@@ -857,7 +857,7 @@ msgstr ""
 msgid "%{player} goes to jail."
 msgstr ""
 
-#: games/krowa.rb:459
+#: games/krowa.rb:460
 msgid "%{player} guesses the word in %{count} attempts."
 msgstr ""
 
@@ -883,7 +883,7 @@ msgstr ""
 msgid "%{player} has no legal move; the turn is passed."
 msgstr ""
 
-#: games/ludo.rb:490
+#: games/ludo.rb:578
 msgid "%{player} has no legal pawn move."
 msgstr ""
 
@@ -919,7 +919,7 @@ msgstr ""
 msgid "%{player} is looking at the chosen cards."
 msgstr ""
 
-#: games/tysiac.rb:976
+#: games/tysiac.rb:980
 msgid "%{player} is now on the barrel."
 msgstr ""
 
@@ -939,7 +939,7 @@ msgstr ""
 msgid "%{player} is reviewing the answers."
 msgstr ""
 
-#: games/categories.rb:291
+#: games/categories.rb:293
 msgid "%{player} is the judge."
 msgstr ""
 
@@ -971,7 +971,7 @@ msgstr ""
 msgid "%{player} keeps all cards."
 msgstr ""
 
-#: games/farkle.rb:530
+#: games/farkle.rb:533
 msgid "%{player} kept %{dice} for %{score} points; turn total %{total}."
 msgstr ""
 
@@ -1004,7 +1004,7 @@ msgstr ""
 msgid "%{player} lost %{count} tokens for %{reason}; %{remaining} remain."
 msgstr ""
 
-#: games/tysiac.rb:1649
+#: games/tysiac.rb:1653
 msgid "%{player} lost %{points} points."
 msgstr ""
 
@@ -1039,7 +1039,7 @@ msgstr ""
 msgid "%{player} moved from %{from} to %{to}."
 msgstr ""
 
-#: games/ludo.rb:534
+#: games/ludo.rb:622
 msgid "%{player} moved pawn %{pawn} from %{from} to %{to}."
 msgstr ""
 
@@ -1157,7 +1157,7 @@ msgstr ""
 msgid "%{player} played %{cards}."
 msgstr ""
 
-#: games/spades.rb:2476 games/three_five_eight.rb:631 games/tysiac.rb:869 games/uno.rb:755
+#: games/spades.rb:2476 games/three_five_eight.rb:631 games/tysiac.rb:873 games/uno.rb:755
 msgid "%{player} played %{card}."
 msgstr ""
 
@@ -1246,7 +1246,7 @@ msgstr ""
 msgid "%{player} reached the No Mercy card limit, receives 250 points and is out of this round."
 msgstr ""
 
-#: games/cat_head_tail.rb:331 games/farkle.rb:580
+#: games/cat_head_tail.rb:331 games/farkle.rb:583
 msgid "%{player} reached the score limit. Finish the current round of turns."
 msgstr ""
 
@@ -1284,7 +1284,7 @@ msgstr ""
 msgid "%{player} receives %{amount} from the pot; all other players folded."
 msgstr ""
 
-#: games/tysiac.rb:920
+#: games/tysiac.rb:924
 msgid "%{player} receives %{points} points from the set-aside cards for winning the last trick."
 msgstr ""
 
@@ -1360,7 +1360,7 @@ msgctxt "cat_head_tail"
 msgid "%{player} rolled %{roll} and now has %{points} points in this turn."
 msgstr ""
 
-#: games/ludo.rb:474
+#: games/ludo.rb:375 games/ludo.rb:563
 msgid "%{player} rolled %{value}."
 msgstr ""
 
@@ -1426,7 +1426,7 @@ msgstr ""
 msgid "%{player} rolled three doubles and goes to jail."
 msgstr ""
 
-#: games/farkle.rb:467
+#: games/farkle.rb:470
 msgid "%{player} rolled: %{dice}."
 msgstr ""
 
@@ -1445,7 +1445,7 @@ msgstr ""
 msgid "%{player} scored %{points} in %{category}."
 msgstr ""
 
-#: games/categories.rb:402
+#: games/categories.rb:404
 msgid "%{player} scored %{points} points in this round."
 msgstr ""
 
@@ -1472,11 +1472,11 @@ msgstr ""
 msgid "%{player} sent %{count} opposing pawns back to their base."
 msgstr ""
 
-#: games/ludo.rb:545
+#: games/ludo.rb:634
 msgid "%{player} sent pawn %{pawn} belonging to %{opponent} back to the base."
 msgstr ""
 
-#: lib/audio_ball/client.rb:557 lib/axel_pong/client.rb:469 lib/game_surfaces/audio_ball_surface.rb:171 lib/game_surfaces/pong_surface.rb:107
+#: lib/audio_ball/client.rb:563 lib/axel_pong/client.rb:475 lib/game_surfaces/audio_ball_surface.rb:171 lib/game_surfaces/pong_surface.rb:107
 msgid "%{player} serves."
 msgstr ""
 
@@ -1511,7 +1511,7 @@ msgstr ""
 msgid "%{player} still owes %{amount} to %{recipient}."
 msgstr ""
 
-#: games/categories.rb:303
+#: games/categories.rb:305
 msgid "%{player} submitted their answers."
 msgstr ""
 
@@ -1519,7 +1519,7 @@ msgstr ""
 msgid "%{player} surrendered the deal at a contract of %{contract}."
 msgstr ""
 
-#: games/krowa.rb:482
+#: games/krowa.rb:483
 msgid "%{player} surrenders."
 msgstr ""
 
@@ -1590,7 +1590,7 @@ msgid_plural "%{player} wins the battle and takes %{count} cards."
 msgstr[0] ""
 msgstr[1] ""
 
-#: games/ludo.rb:294
+#: games/ludo.rb:330
 msgid "%{player} wins the game."
 msgstr ""
 
@@ -1627,11 +1627,11 @@ msgstr ""
 msgid "%{player} won the auction for %{property} at %{amount}."
 msgstr ""
 
-#: games/categories.rb:659 games/quiz_party.rb:558
+#: games/categories.rb:661 games/quiz_party.rb:558
 msgid "%{player} won the game with %{points} points."
 msgstr ""
 
-#: games/axel_pong.rb:127 games/axel_pong.rb:182 games/base.rb:1075 games/base.rb:1473 games/categories.rb:1044 games/quiz_party.rb:913 games/rummy.rb:536
+#: games/axel_pong.rb:127 games/axel_pong.rb:182 games/base.rb:1075 games/base.rb:1473 games/categories.rb:1046 games/ludo.rb:215 games/ludo.rb:391 games/quiz_party.rb:913 games/rummy.rb:536
 msgid "%{player} won the game."
 msgstr ""
 
@@ -1649,7 +1649,7 @@ msgstr ""
 msgid "%{player} won the round. The values of the remaining cards were added to their owners' scores."
 msgstr ""
 
-#: games/tysiac.rb:905
+#: games/tysiac.rb:909
 msgid "%{player} won the trick for %{points} card points."
 msgstr ""
 
@@ -1716,7 +1716,7 @@ msgctxt "cat_head_tail"
 msgid "%{player}, %{dice}, %{points} points."
 msgstr ""
 
-#: games/cat_head_tail.rb:411 games/ludo.rb:306
+#: games/cat_head_tail.rb:411 games/ludo.rb:342
 msgid "%{player}, %{dice}."
 msgstr ""
 
@@ -1725,11 +1725,15 @@ msgctxt "cat_head_tail"
 msgid "%{player}, %{dice}."
 msgstr ""
 
-#: games/ludo.rb:358
+#: games/ludo.rb:381
+msgid "%{player}, %{from} %{to}."
+msgstr ""
+
+#: games/ludo.rb:446
 msgid "%{player}, %{from}; will move to %{to}"
 msgstr ""
 
-#: games/ludo.rb:396 games/ludo.rb:422
+#: games/ludo.rb:484 games/ludo.rb:510
 msgid "%{player}, %{position}"
 msgstr ""
 
@@ -1737,18 +1741,18 @@ msgstr ""
 msgid "%{player}, changed fields: %{fields}."
 msgstr ""
 
-#: games/tysiac.rb:1664
+#: games/tysiac.rb:1668
 msgid "%{player}, collected %{collected}, awarded %{points}."
 msgstr ""
 
-#: games/tysiac.rb:1662
+#: games/tysiac.rb:1666
 msgid "%{player}, collected %{collected}, lost %{points}."
 msgstr ""
 
 msgid "%{player}, serve within ten seconds or lose a point."
 msgstr ""
 
-#: lib/axel_pong/hurry.rb:35
+#: lib/axel_pong/hurry.rb:37
 msgid "%{player}, serve within ten seconds or your opponent receives a point."
 msgstr ""
 
@@ -1770,19 +1774,19 @@ msgstr ""
 msgid "%{player}: %{action}."
 msgstr ""
 
-#: games/krowa_support/presentation.rb:223
+#: games/krowa_support/presentation.rb:231
 msgid "%{player}: %{attempts} attempts, %{seconds} s"
 msgstr ""
 
-#: games/krowa_support/presentation.rb:217
+#: games/krowa_support/presentation.rb:225
 msgid "%{player}: %{attempts} attempts, playing"
 msgstr ""
 
-#: games/krowa_support/presentation.rb:179
+#: games/krowa_support/presentation.rb:187
 msgid "%{player}: %{attempt}"
 msgstr ""
 
-#: games/spades.rb:2615 games/tysiac.rb:1566
+#: games/spades.rb:2615 games/tysiac.rb:1570
 msgid "%{player}: %{bid}"
 msgstr ""
 
@@ -1790,7 +1794,7 @@ msgstr ""
 msgid "%{player}: %{cards} points for opponents' cards and %{bonus} bonus points."
 msgstr ""
 
-#: games/base.rb:868 games/scientific_war.rb:887 games/spades.rb:2626 games/three_five_eight.rb:999 games/tysiac.rb:1524 games/war.rb:421 games/war.rb:480
+#: games/base.rb:868 games/scientific_war.rb:887 games/spades.rb:2626 games/three_five_eight.rb:999 games/tysiac.rb:1528 games/war.rb:421 games/war.rb:480
 msgid "%{player}: %{card}"
 msgstr ""
 
@@ -1804,7 +1808,7 @@ msgstr ""
 msgid "%{player}: %{count}"
 msgstr ""
 
-#: games/ludo.rb:301
+#: games/ludo.rb:337
 msgid "%{player}: %{count} at the finish"
 msgstr ""
 
@@ -1822,7 +1826,7 @@ msgstr ""
 msgid "%{player}: %{pieces}"
 msgstr ""
 
-#: games/categories.rb:1404 games/quiz_party.rb:1280
+#: games/categories.rb:1406 games/quiz_party.rb:1280
 msgid "%{player}: %{points}"
 msgstr ""
 
@@ -1834,11 +1838,11 @@ msgstr ""
 msgid "%{player}: %{points} points in total."
 msgstr ""
 
-#: games/ludo.rb:448
+#: games/ludo.rb:536
 msgid "%{player}: %{positions}"
 msgstr ""
 
-#: games/ludo.rb:253 games/ludo.rb:440
+#: games/ludo.rb:289 games/ludo.rb:528
 msgid "%{player}: %{positions}."
 msgstr ""
 
@@ -1853,7 +1857,7 @@ msgstr ""
 msgid "%{player}: %{result}"
 msgstr ""
 
-#: games/biblios.rb:1308 games/cat_head_tail.rb:394 games/farkle.rb:695 games/three_five_eight.rb:1004 games/tysiac.rb:1535 games/uno.rb:1536 games/yahtzee.rb:525
+#: games/biblios.rb:1308 games/cat_head_tail.rb:394 games/farkle.rb:698 games/three_five_eight.rb:1004 games/tysiac.rb:1539 games/uno.rb:1536 games/yahtzee.rb:525
 msgid "%{player}: %{score}"
 msgstr ""
 
@@ -1887,8 +1891,12 @@ msgstr ""
 msgid "%{player}: %{tricks}/%{target}"
 msgstr ""
 
-#: games/krowa.rb:454
+#: games/krowa.rb:455
 msgid "%{player}: %{word}, %{matches} of %{length}."
+msgstr ""
+
+#: games/ludo.rb:384
+msgid "%{player}: captured %{opponent}, %{from}; back to the base."
 msgstr ""
 
 #: games/monopoly.rb:1782
@@ -1902,11 +1910,11 @@ msgstr ""
 msgid "%{player}: field %{number}, %{square}"
 msgstr ""
 
-#: games/tysiac.rb:1671
+#: games/tysiac.rb:1675
 msgid "%{player}: first surrender."
 msgstr ""
 
-#: games/tysiac.rb:1676
+#: games/tysiac.rb:1680
 msgid "%{player}: first zero."
 msgstr ""
 
@@ -1914,7 +1922,11 @@ msgstr ""
 msgid "%{player}: invalid words: %{words}. Penalty: %{points}."
 msgstr ""
 
-#: games/krowa_support/presentation.rb:219
+#: games/ludo.rb:379
+msgid "%{player}: no legal move."
+msgstr ""
+
+#: games/krowa_support/presentation.rb:227
 msgid "%{player}: not guessed, %{attempts} attempts"
 msgstr ""
 
@@ -1922,11 +1934,11 @@ msgstr ""
 msgid "%{player}: out"
 msgstr ""
 
-#: games/tysiac.rb:1672
+#: games/tysiac.rb:1676
 msgid "%{player}: second surrender."
 msgstr ""
 
-#: games/tysiac.rb:1677
+#: games/tysiac.rb:1681
 msgid "%{player}: second zero."
 msgstr ""
 
@@ -1934,23 +1946,27 @@ msgstr ""
 msgid "%{player}: shield, %{seconds} seconds."
 msgstr ""
 
-#: games/krowa_support/presentation.rb:221
+#: games/krowa_support/presentation.rb:229
 msgid "%{player}: surrendered"
 msgstr ""
 
-#: games/tysiac.rb:1674
+#: games/tysiac.rb:1678
 msgid "%{player}: third surrender."
 msgstr ""
 
-#: games/tysiac.rb:1679
+#: games/tysiac.rb:1683
 msgid "%{player}: third zero."
+msgstr ""
+
+#: games/ludo.rb:377
+msgid "%{player}: three consecutive sixes; end of turn."
 msgstr ""
 
 #: games/three_five_eight.rb:664
 msgid "%{player}: tricks won %{tricks}, target %{target}, points this deal %{points}, total score %{score}."
 msgstr ""
 
-#: games/tysiac.rb:1550
+#: games/tysiac.rb:1554
 msgid "%{player}: zeros %{zeros}/3, surrenders %{surrenders}/3%{barrel}"
 msgstr ""
 
@@ -1994,7 +2010,7 @@ msgstr ""
 msgid "%{property}; group ownership %{owned} of %{total}."
 msgstr ""
 
-#: games/card_game.rb:61 games/makao.rb:921 games/makao.rb:928 games/ninety_nine.rb:1044 games/poker.rb:1293 games/spades.rb:2822 games/three_five_eight.rb:1093 games/tysiac.rb:1626
+#: games/card_game.rb:61 games/makao.rb:921 games/makao.rb:928 games/ninety_nine.rb:1044 games/poker.rb:1293 games/spades.rb:2822 games/three_five_eight.rb:1093 games/tysiac.rb:1630
 msgid "%{rank} of %{suit}"
 msgstr ""
 
@@ -2006,7 +2022,7 @@ msgstr ""
 msgid "%{result} %{stores}"
 msgstr ""
 
-#: games/krowa_support/presentation.rb:207
+#: games/krowa_support/presentation.rb:215
 msgid "%{round}. %{word}: %{attempts} attempts"
 msgstr ""
 
@@ -2018,23 +2034,23 @@ msgstr ""
 msgid "%{seconds} seconds per answer; target: %{target} points"
 msgstr ""
 
-#: games/categories.rb:1370
+#: games/categories.rb:1372
 msgid "%{seconds} seconds remaining"
 msgstr ""
 
-#: games/categories.rb:1394 games/quiz_party.rb:1274 lib/game_surfaces/taboo_surface.rb:49
+#: games/categories.rb:1396 games/quiz_party.rb:1274 lib/game_surfaces/taboo_surface.rb:49
 msgid "%{seconds} seconds remaining."
 msgstr ""
 
-#: __app.rb:402
+#: __app.rb:404
 msgid "%{sender} invites you to %{table} (%{game})."
 msgstr ""
 
-#: __app.rb:402
+#: __app.rb:404
 msgid "%{sender} invites you to resume %{table} (%{game})."
 msgstr ""
 
-#: lib/axel_pong/client.rb:465 lib/game_surfaces/pong_surface.rb:104
+#: lib/axel_pong/client.rb:471 lib/game_surfaces/pong_surface.rb:104
 msgid "%{server} will serve against %{receiver}."
 msgstr ""
 
@@ -2065,19 +2081,23 @@ msgstr ""
 msgid "%{suit} as trump"
 msgstr ""
 
-#: __app.rb:2327
+#: __app.rb:2395
 msgid "%{table}, unavailable"
 msgstr ""
 
 msgid "%{taker} gave %{card} to %{player}."
 msgstr ""
 
-#: games/tysiac.rb:1456 games/tysiac.rb:799
+#: games/tysiac.rb:1460 games/tysiac.rb:799
 msgid "%{taker} gave a card to %{player}."
 msgstr ""
 
 #: lib/game_surfaces/pong_surface.rb:96
 msgid "%{team}. Points: %{points}."
+msgstr ""
+
+#: games/ludo.rb:387
+msgid "%{text} Capture %{index} of %{count}."
 msgstr ""
 
 msgid "%{text} Declared: %{choice}."
@@ -2130,7 +2150,7 @@ msgstr ""
 msgid "%{user} declined your invitation to %{table}."
 msgstr ""
 
-#: __app.rb:3182
+#: __app.rb:3264
 msgid "%{user}'s table"
 msgstr ""
 
@@ -2155,11 +2175,11 @@ msgstr ""
 msgid "%{value}, selected."
 msgstr ""
 
-#: lib/axel_pong/client.rb:450
+#: lib/axel_pong/client.rb:456
 msgid "%{variant}. %{difficulty}. %{points} points to win."
 msgstr ""
 
-#: lib/axel_pong/client.rb:450
+#: lib/axel_pong/client.rb:456
 msgid "%{variant}. %{difficulty}. Unlimited match."
 msgstr ""
 
@@ -2178,7 +2198,11 @@ msgstr ""
 msgid "%{variant}; 3 to 8 letters; %{count} attempts per letter"
 msgstr ""
 
-#: games/krowa.rb:170
+#: games/krowa.rb:172
+msgid "%{variant}; 3 to 8 letters; attempt limit depends on word length"
+msgstr ""
+
+#: games/krowa.rb:171
 msgid "%{variant}; 3 to 9 letters"
 msgstr ""
 
@@ -2199,7 +2223,7 @@ msgid ""
 "Source: https://sjp.pl/"
 msgstr ""
 
-#: games/krowa_support/presentation.rb:176
+#: games/krowa_support/presentation.rb:184
 msgid "%{word}, %{matches} of %{length}"
 msgstr ""
 
@@ -2211,11 +2235,11 @@ msgstr ""
 msgid "(more than you can pay)"
 msgstr ""
 
-#: games/tysiac.rb:1539
+#: games/tysiac.rb:1543
 msgid ", on the barrel"
 msgstr ""
 
-#: games/tysiac.rb:1549
+#: games/tysiac.rb:1553
 msgid ", on the barrel, %{deals} deals left"
 msgstr ""
 
@@ -2280,7 +2304,7 @@ msgstr ""
 msgid "2 cards"
 msgstr ""
 
-#: games/categories.rb:590
+#: games/categories.rb:592
 msgid "20 seconds remain."
 msgstr ""
 
@@ -2576,7 +2600,7 @@ msgstr ""
 msgid "A full column cannot be selected. After a valid move, the turn passes to the other player."
 msgstr ""
 
-#: __app.rb:2701 __app.rb:2743
+#: __app.rb:2783 __app.rb:2825
 msgid "A game has already started. Opening the current game."
 msgstr ""
 
@@ -2865,11 +2889,11 @@ msgstr ""
 msgid "About this adaptation"
 msgstr ""
 
-#: __app.rb:1740 __app.rb:1940 __app.rb:2799
+#: __app.rb:1796 __app.rb:1996 __app.rb:2881
 msgid "Accept"
 msgstr ""
 
-#: __app.rb:2123 lib/game_room_ui.rb:130 lib/game_room_ui.rb:275 lib/game_room_widget.rb:139 lib/game_room_widget.rb:145
+#: __app.rb:2190 lib/game_room_ui.rb:132 lib/game_room_ui.rb:279 lib/game_room_widget.rb:154 lib/game_room_widget.rb:160
 msgid "Accept invitation"
 msgstr ""
 
@@ -2886,7 +2910,7 @@ msgstr[1] ""
 msgid "Accept waiting for %{count} turns"
 msgstr ""
 
-#: __app.rb:2008 __app.rb:2029
+#: __app.rb:2064 __app.rb:2090
 msgid "Accepting invitation"
 msgstr ""
 
@@ -2939,11 +2963,11 @@ msgstr ""
 msgid "Add a computer"
 msgstr ""
 
-#: __app.rb:1736
+#: __app.rb:1792
 msgid "Add a new computer in this place"
 msgstr ""
 
-#: games/krowa_support/presentation.rb:58
+#: games/krowa_support/presentation.rb:66
 msgid "Add noun to dictionary and check"
 msgstr ""
 
@@ -2997,6 +3021,10 @@ msgstr ""
 msgid "Added Czech and Spanish interface translations by balteam. Choose the language in Settings > General. These translations do not include game rules. Tysiac is now called 1000 card game in English."
 msgstr ""
 
+#: lib/game_room_changelog.rb:307
+msgid "Added Daily Krowa rankings by paulinux. You can publish results and browse rankings for individual days. Today's solution remains hidden; you can view the word for earlier days."
+msgstr ""
+
 #: lib/game_room_changelog.rb:147
 msgid "Added Krowa by paulinux: guess Polish words in the daily puzzle, solo play, Race or cooperative Word Tower, with a personal gallery and optional leaderboards."
 msgstr ""
@@ -3011,6 +3039,10 @@ msgstr ""
 
 #: lib/game_room_changelog.rb:177
 msgid "Added a Draw another word button to Krowa's Random word variant. It reveals the previous word and resets attempts without recording a win."
+msgstr ""
+
+#: lib/game_room_changelog.rb:306
+msgid "Added a Russian interface and a Russian pack of 36 quiz questions by Danil (Kostenkov-2021). Choose the interface language in Settings > General, and the question language when creating a table."
 msgstr ""
 
 msgid "Added a test adaptation of Axel Pong: follow the ball by sound, move your paddle and return it to your opponent. Play against another person or a bot, with six difficulty levels and a target of 7, 11 or 21 points, won by a two-point lead."
@@ -3028,7 +3060,7 @@ msgstr ""
 msgid "Added statistics by balteam: visits, started and completed games, with game and period filters. Open Statistics in the main menu. Ctrl+W on that menu's options list reads current public and private table counts and human memberships, including observers but not bots. Developer mode does not collect new statistics."
 msgstr ""
 
-#: __app.rb:1638
+#: __app.rb:1694
 msgid "Adding computer"
 msgstr ""
 
@@ -3193,7 +3225,7 @@ msgstr ""
 msgid "All"
 msgstr ""
 
-#: lib/game_room_ui.rb:24
+#: lib/game_room_ui.rb:25
 msgid "All Game Room sounds"
 msgstr ""
 
@@ -3222,11 +3254,11 @@ msgstr ""
 msgid "All options appear in one table form. Length applies to Random word and Race, while scoring applies only to Race. Daily Krowa and Word Tower ignore those fields."
 msgstr ""
 
-#: games/ludo.rb:285
+#: games/ludo.rb:321
 msgid "All pawns"
 msgstr ""
 
-#: games/farkle.rb:536
+#: games/farkle.rb:539
 msgid "All six dice scored; hot dice."
 msgstr ""
 
@@ -3302,7 +3334,7 @@ msgstr ""
 msgid "Also added Biblios by dawidpieper (Pajper): a card game of building a library and bidding at auctions, for two to four players, with bots and Polish translation."
 msgstr ""
 
-#: __app.rb:833 lib/game_shortcut_bindings.rb:60
+#: __app.rb:848 lib/game_shortcut_bindings.rb:60
 msgid "Alt"
 msgstr ""
 
@@ -3335,11 +3367,11 @@ msgstr ""
 msgid "An exact roll is required to reach the finish: on by default. A roll going past the finish cannot move that pawn. When disabled, an excessive roll also brings it to the finish. Three consecutive sixes lose the turn: on by default; the third six ends the turn without moving a pawn for that roll, but does not undo previous moves."
 msgstr ""
 
-#: __app.rb:1812
+#: __app.rb:1868
 msgid "An invitation to this table is already pending for this user."
 msgstr ""
 
-#: games/krowa.rb:282
+#: games/krowa.rb:283
 msgid "An observer does not take part in the game."
 msgstr ""
 
@@ -3358,26 +3390,26 @@ msgstr ""
 msgid "An unowned street, station or utility may be bought when you land on it. The game gives its name, colour or type, and price. If you have enough cash, choose whether to buy. If you cannot afford it, the purchase is declined automatically. A property you do not buy remains available, unless the auction option sends it to auction."
 msgstr ""
 
-#: games/categories.rb:1329
+#: games/categories.rb:1331
 msgid "Animal"
 msgstr ""
 
 msgid "Announce lobby changes"
 msgstr ""
 
-#: lib/game_room_screens.rb:193
+#: lib/game_room_screens.rb:197
 msgid "Announce when a computer is added or removed"
 msgstr ""
 
-#: lib/game_room_screens.rb:185
+#: lib/game_room_screens.rb:189
 msgid "Announce when a player joins a table"
 msgstr ""
 
-#: lib/game_room_screens.rb:189
+#: lib/game_room_screens.rb:193
 msgid "Announce when a player leaves a table"
 msgstr ""
 
-#: lib/game_room_screens.rb:181
+#: lib/game_room_screens.rb:185
 msgid "Announce when a table is created"
 msgstr ""
 
@@ -3385,11 +3417,11 @@ msgstr ""
 msgid "Announcer volume"
 msgstr ""
 
-#: games/krowa.rb:281
+#: games/krowa.rb:282
 msgid "Another person is playing now."
 msgstr ""
 
-#: games/krowa.rb:285
+#: games/krowa.rb:286
 msgid "Another word has already started."
 msgstr ""
 
@@ -3421,7 +3453,7 @@ msgstr ""
 msgid "Answer time defaults to 90 seconds. Use 0 for no limit, or 10 to 3600 seconds. The countdown applies to writing, not to judging; without a limit everyone must submit. Local announcements warn near the end and announce expiry."
 msgstr ""
 
-#: games/krowa_support/presentation.rb:63
+#: games/krowa_support/presentation.rb:71
 msgid "Answer: %{length} letters"
 msgstr ""
 
@@ -3431,7 +3463,7 @@ msgstr ""
 msgid "Answering and judging keys"
 msgstr ""
 
-#: games/categories.rb:312
+#: games/categories.rb:314
 msgid "Answering has closed."
 msgstr ""
 
@@ -3462,7 +3494,7 @@ msgstr ""
 msgid "Apă-Canal"
 msgstr ""
 
-#: games/axel_pong.rb:30 lib/axel_pong/client.rb:452
+#: games/axel_pong.rb:30 lib/axel_pong/client.rb:458
 msgid "Arcade"
 msgstr ""
 
@@ -3658,7 +3690,7 @@ msgstr ""
 msgid "Assign automatically"
 msgstr ""
 
-#: lib/game_room_screens.rb:375 lib/game_room_screens.rb:380
+#: lib/game_room_screens.rb:413 lib/game_room_screens.rb:418
 msgid "Assign or edit"
 msgstr ""
 
@@ -3683,7 +3715,7 @@ msgstr ""
 msgid "At the end, subtract each player's unused tile values. If someone emptied their rack with an empty bag, add the others' unused values to that player's score. With a blocked board there is no such bonus. Blanks cost zero. The highest adjusted score wins; equal highest scores share the result. Save only after submitting or cancelling the local draft."
 msgstr ""
 
-#: games/ludo.rb:385
+#: games/ludo.rb:473
 msgid "At the finish: %{count} of %{total} pawns"
 msgstr ""
 
@@ -3706,11 +3738,11 @@ msgstr ""
 msgid "Attacking kings introduces a separate five-card attack. The king of spades starts it; the king of hearts can answer it and add five more. Thus spades followed by hearts makes the next player draw ten, unless they defend again. It does not reverse play. The other kings are ordinary cards, and a king attack is not combined with a two-or-three attack."
 msgstr ""
 
-#: games/krowa_support/leaderboards.rb:189 games/krowa_support/leaderboards.rb:71 games/krowa_support/presentation.rb:71
+#: games/krowa_support/leaderboards.rb:182 games/krowa_support/leaderboards.rb:269 games/krowa_support/leaderboards.rb:74 games/krowa_support/presentation.rb:79
 msgid "Attempts"
 msgstr ""
 
-#: games/krowa_support/presentation.rb:201
+#: games/krowa_support/presentation.rb:209
 msgid "Attempts: %{count}. %{status}"
 msgstr ""
 
@@ -3744,7 +3776,7 @@ msgstr ""
 msgid "Auction, transfer and play keys"
 msgstr ""
 
-#: games/tysiac.rb:1568
+#: games/tysiac.rb:1572
 msgid "Auction: %{bids}."
 msgstr ""
 
@@ -3778,7 +3810,7 @@ msgstr ""
 msgid "Audio Ball settings"
 msgstr ""
 
-#: lib/audio_tutorial.rb:53 lib/game_room_screens.rb:493
+#: lib/audio_tutorial.rb:53 lib/game_room_screens.rb:531
 msgid "Audio tutorial"
 msgstr ""
 
@@ -3800,7 +3832,7 @@ msgstr ""
 msgid "Available moves from %{field}: %{moves}."
 msgstr ""
 
-#: games/axel_pong.rb:17 lib/game_room_screens.rb:176
+#: games/axel_pong.rb:17 lib/game_room_screens.rb:180
 msgid "Axel Pong"
 msgstr ""
 
@@ -3869,7 +3901,7 @@ msgstr ""
 msgid "B: respond to the buzzer."
 msgstr ""
 
-#: __app.rb:1059 __app.rb:1156 __app.rb:1200 __app.rb:1313 __app.rb:1825 __app.rb:1941 __app.rb:2126 games/krowa_support/leaderboards.rb:37 lib/game_room_presence_screen.rb:16 lib/game_room_screens.rb:498 lib/game_room_screens.rb:519 lib/game_screen.rb:1311 lib/game_screen.rb:383 lib/game_statistics_screen.rb:25 lib/game_statistics_screen.rb:59
+#: __app.rb:1073 __app.rb:1170 __app.rb:1214 __app.rb:1339 __app.rb:1881 __app.rb:1997 __app.rb:2193 games/krowa_support/leaderboards.rb:39 lib/game_room_presence_screen.rb:16 lib/game_room_screens.rb:536 lib/game_room_screens.rb:557 lib/game_screen.rb:1129 lib/game_screen.rb:354 lib/game_statistics_screen.rb:25 lib/game_statistics_screen.rb:59
 msgid "Back"
 msgstr ""
 
@@ -4004,18 +4036,18 @@ msgstr ""
 msgid "Before serving or after a defence, you may hold the ball for as long as you like unless the opponent warns you with Ctrl+W. You then have ten seconds to hit. Preparing does not stop or restart the countdown, and repeated warnings do not give you more time. If you fail to hit before time runs out, the opponent scores a point. Only your opponent can issue a warning; observers cannot."
 msgstr ""
 
-#: games/categories.rb:793
+#: games/categories.rb:795
 msgid "Begin review without missing answers"
 msgstr ""
 
 msgid "Begin your turn by drawing once. Then you may meld, lay off or manipulate as often as the rules allow. You cannot do these actions before drawing, unless there is no available draw source. End by discarding one card; with no discard pile use Shift+F. Emptying your hand ends the round immediately, even without a final discard."
 msgstr ""
 
-#: games/krowa_support/leaderboards.rb:149
+#: games/krowa_support/leaderboards.rb:229
 msgid "Best result"
 msgstr ""
 
-#: games/krowa_support/presentation.rb:166
+#: games/krowa_support/presentation.rb:174
 msgid "Best result: %{players}."
 msgstr ""
 
@@ -4131,7 +4163,7 @@ msgstr ""
 msgid "Boards"
 msgstr ""
 
-#: games/categories.rb:1340
+#: games/categories.rb:1342
 msgid "Body part"
 msgstr ""
 
@@ -4157,7 +4189,7 @@ msgstr ""
 msgid "Bonuses and the Joker are separate options"
 msgstr ""
 
-#: games/categories.rb:1343
+#: games/categories.rb:1345
 msgid "Book"
 msgstr ""
 
@@ -4212,11 +4244,11 @@ msgstr ""
 msgid "Bow marked. Choose the stern, or the same square for one mast."
 msgstr ""
 
-#: lib/audio_ball/client.rb:576
+#: lib/audio_ball/client.rb:582
 msgid "Break between points."
 msgstr ""
 
-#: lib/audio_ball/client.rb:576
+#: lib/audio_ball/client.rb:582
 msgid "Break between sets."
 msgstr ""
 
@@ -4253,7 +4285,7 @@ msgstr ""
 msgid "Build one crossword together"
 msgstr ""
 
-#: games/categories.rb:1341
+#: games/categories.rb:1343
 msgid "Building"
 msgstr ""
 
@@ -4436,7 +4468,7 @@ msgstr ""
 msgid "Calm (short search)"
 msgstr ""
 
-#: __app.rb:1741 __app.rb:2800 __app.rb:2858 games/krowa_support/client.rb:184 games/krowa_support/leaderboards.rb:123 games/rummy_ui.rb:26 lib/audio_ball/settings.rb:24 lib/axel_pong/settings.rb:38 lib/game_option_editor.rb:87 lib/game_room_screens.rb:232 lib/game_screen.rb:1221 lib/game_screen.rb:1265 lib/game_surfaces/word_board.rb:182
+#: __app.rb:1797 __app.rb:2882 __app.rb:2940 games/krowa_support/client.rb:184 games/krowa_support/leaderboards.rb:203 games/rummy_ui.rb:26 lib/audio_ball/settings.rb:24 lib/axel_pong/settings.rb:38 lib/game_option_editor.rb:87 lib/game_room_screens.rb:235 lib/game_screen.rb:1039 lib/game_screen.rb:1083 lib/game_surfaces/word_board.rb:182
 msgid "Cancel"
 msgstr ""
 
@@ -4452,7 +4484,7 @@ msgstr ""
 msgid "Cancel the prepared melds before saving the game."
 msgstr ""
 
-#: games/categories.rb:800 games/categories.rb:813
+#: games/categories.rb:802 games/categories.rb:815
 msgid "Cancel the round"
 msgstr ""
 
@@ -4682,7 +4714,7 @@ msgstr ""
 msgid "Categories shown in each round"
 msgstr ""
 
-#: games/categories.rb:283
+#: games/categories.rb:285
 msgid "Categories: %{categories}."
 msgstr ""
 
@@ -4736,7 +4768,7 @@ msgstr ""
 msgid "Change settings for the next game"
 msgstr ""
 
-#: __app.rb:2797 lib/game_room_screens.rb:19
+#: __app.rb:2879 lib/game_room_screens.rb:19
 msgid "Change team"
 msgstr ""
 
@@ -4755,21 +4787,21 @@ msgstr ""
 msgid "Changing the question or card language in Quiz Party and Taboo keeps focus on the language. Sets update without moving the cursor; use Tab to reach them."
 msgstr ""
 
-#: lib/game_history_navigation.rb:125 lib/game_layout.rb:163
+#: lib/game_history_navigation.rb:125 lib/game_layout.rb:170
 msgid "Chat"
 msgstr ""
 
 msgid "Chat history"
 msgstr ""
 
-#: lib/game_screen.rb:705
+#: lib/game_screen.rb:688
 msgid "Chat is not available."
 msgstr ""
 
 msgid "Chat move commands accept the chosen notation, for example /21 17 or /a3 b4."
 msgstr ""
 
-#: lib/game_room_ui.rb:26
+#: lib/game_room_ui.rb:27
 msgid "Chat sounds"
 msgstr ""
 
@@ -4810,45 +4842,49 @@ msgstr ""
 msgid "Checking computer move"
 msgstr ""
 
-#: lib/game_screen.rb:894
+#: lib/game_screen.rb:792
 msgid "Checking for game updates"
 msgstr ""
 
 msgid "Checking game availability"
 msgstr ""
 
-#: __app.rb:973
+#: __app.rb:988
 msgid "Checking game before saving"
 msgstr ""
 
-#: __app.rb:1975
+#: __app.rb:2031
 msgid "Checking invitation"
 msgstr ""
 
-#: __app.rb:588
+#: games/krowa_support/leaderboards.rb:140 games/krowa_support/leaderboards.rb:174
+msgid "Checking server date"
+msgstr ""
+
+#: __app.rb:590
 msgid "Checking server table access"
 msgstr ""
 
-#: __app.rb:2487
+#: __app.rb:2552
 msgid "Checking table"
 msgstr ""
 
 msgid "Checking the current game"
 msgstr ""
 
-#: __app.rb:1075
+#: __app.rb:1089
 msgid "Checking the current table"
 msgstr ""
 
-#: __app.rb:2691
+#: __app.rb:2773
 msgid "Checking the table before starting"
 msgstr ""
 
-#: __app.rb:1627 __app.rb:2737
+#: __app.rb:1683 __app.rb:2081 __app.rb:2819
 msgid "Checking the table members"
 msgstr ""
 
-#: __app.rb:443
+#: __app.rb:445
 msgid "Checking your current table"
 msgstr ""
 
@@ -4861,7 +4897,7 @@ msgstr ""
 msgid "Checkmate wins. Stalemate, insufficient material, three repetitions or 50 moves by each side without a pawn move or capture produce a draw."
 msgstr ""
 
-#: games/categories.rb:1352
+#: games/categories.rb:1354
 msgid "Chemical element"
 msgstr ""
 
@@ -4919,11 +4955,11 @@ msgstr ""
 msgid "Choose a card to give to %{player}"
 msgstr ""
 
-#: games/tysiac.rb:1471 games/tysiac.rb:555
+#: games/tysiac.rb:1475 games/tysiac.rb:555
 msgid "Choose a card to give to %{player}."
 msgstr ""
 
-#: games/tysiac.rb:1464
+#: games/tysiac.rb:1468
 msgid "Choose a card to set aside. Remaining: %{count}."
 msgstr ""
 
@@ -4948,7 +4984,7 @@ msgstr ""
 msgid "Choose a column and press Enter. Your piece falls to the lowest empty field in that column, regardless of which row you were inspecting."
 msgstr ""
 
-#: __app.rb:2406
+#: __app.rb:2474
 msgid "Choose a game for the preset"
 msgstr ""
 
@@ -4959,7 +4995,7 @@ msgstr ""
 msgid "Choose a player for the trade"
 msgstr ""
 
-#: __app.rb:1695
+#: __app.rb:1751
 msgid "Choose a player in the current game."
 msgstr ""
 
@@ -5018,7 +5054,7 @@ msgstr ""
 msgid "Choose a talon."
 msgstr ""
 
-#: __app.rb:2853
+#: __app.rb:2935
 msgid "Choose a team"
 msgstr ""
 
@@ -5119,7 +5155,7 @@ msgstr ""
 msgid "Choose teams"
 msgstr ""
 
-#: __app.rb:2798
+#: __app.rb:2880
 msgid "Choose teams randomly"
 msgstr ""
 
@@ -5147,7 +5183,7 @@ msgstr ""
 msgid "Choose the content, not the interface language"
 msgstr ""
 
-#: games/tysiac.rb:1507
+#: games/tysiac.rb:1511
 msgid "Choose the contract value"
 msgstr ""
 
@@ -5161,7 +5197,7 @@ msgstr ""
 msgid "Choose the final contract"
 msgstr ""
 
-#: __app.rb:1691
+#: __app.rb:1747
 msgid "Choose the new table master"
 msgstr ""
 
@@ -5176,7 +5212,7 @@ msgstr ""
 msgid "Choose the promotion piece"
 msgstr ""
 
-#: __app.rb:1709
+#: __app.rb:1765
 msgid "Choose the replacement"
 msgstr ""
 
@@ -5196,7 +5232,7 @@ msgstr ""
 msgid "Choose where to play %{tile}"
 msgstr ""
 
-#: games/tysiac.rb:1403 games/tysiac.rb:1507
+#: games/tysiac.rb:1407 games/tysiac.rb:1511
 msgid "Choose your bid"
 msgstr ""
 
@@ -5239,11 +5275,11 @@ msgstr ""
 msgid "Church cards change the prizes"
 msgstr ""
 
-#: games/categories.rb:1327
+#: games/categories.rb:1329
 msgid "City"
 msgstr ""
 
-#: games/audio_ball.rb:54 games/axel_pong.rb:30 lib/axel_pong/client.rb:452
+#: games/audio_ball.rb:54 games/axel_pong.rb:30 lib/axel_pong/client.rb:458
 msgid "Classic"
 msgstr ""
 
@@ -5268,11 +5304,11 @@ msgstr ""
 msgid "Clean water company"
 msgstr ""
 
-#: lib/game_room_screens.rb:377
+#: lib/game_room_screens.rb:415
 msgid "Clear assignment"
 msgstr ""
 
-#: games/krowa_support/client.rb:169 games/krowa_support/client.rb:213 games/krowa_support/client.rb:255 games/krowa_support/leaderboards.rb:199 games/krowa_support/leaderboards.rb:200 lib/game_room_screens.rb:62 lib/game_room_ui.rb:285
+#: games/krowa_support/client.rb:169 games/krowa_support/client.rb:213 games/krowa_support/client.rb:255 games/krowa_support/leaderboards.rb:279 games/krowa_support/leaderboards.rb:280 lib/game_room_screens.rb:62 lib/game_room_ui.rb:289
 msgid "Close"
 msgstr ""
 
@@ -5283,15 +5319,15 @@ msgstr ""
 msgid "Close the table for everyone"
 msgstr ""
 
-#: __app.rb:1673
+#: __app.rb:1729
 msgid "Close the table for everyone?"
 msgstr ""
 
-#: __app.rb:1674
+#: __app.rb:1730
 msgid "Closing table"
 msgstr ""
 
-#: games/categories.rb:1339
+#: games/categories.rb:1341
 msgid "Clothing item"
 msgstr ""
 
@@ -5331,7 +5367,7 @@ msgstr ""
 msgid "Collection started: %{date}."
 msgstr ""
 
-#: games/categories.rb:1334
+#: games/categories.rb:1336
 msgid "Color"
 msgstr ""
 
@@ -5388,7 +5424,7 @@ msgstr ""
 msgid "Completed"
 msgstr ""
 
-#: games/krowa_support/presentation.rb:204
+#: games/krowa_support/presentation.rb:212
 msgid "Completed rounds: %{count}. Attempts this round: %{used} of %{limit}."
 msgstr ""
 
@@ -5436,7 +5472,7 @@ msgstr ""
 msgid "Connecting the match."
 msgstr ""
 
-#: __app.rb:2359 __app.rb:461
+#: __app.rb:2427 __app.rb:463
 msgid "Connecting to Elten"
 msgstr ""
 
@@ -5454,7 +5490,7 @@ msgstr ""
 msgid "Contracts, nils and overtricks"
 msgstr ""
 
-#: games/krowa_support/presentation.rb:37
+#: games/krowa_support/presentation.rb:45
 msgid "Controls"
 msgstr ""
 
@@ -5482,7 +5518,15 @@ msgstr ""
 msgid "Corrected many quiz questions, removing ambiguous wording and language errors and clarifying questions and answers."
 msgstr ""
 
-#: games/krowa_support/leaderboards.rb:229
+#: lib/game_room_changelog.rb:322
+msgid "Corrected messages about the required number of players and the current number of users at the table, thanks to balteam."
+msgstr ""
+
+#: lib/game_room_changelog.rb:314
+msgid "Corrected move geometry and square numbering in Checkers on 8 by 8, 10 by 10 and 12 by 12 boards."
+msgstr ""
+
+#: games/krowa_support/leaderboards.rb:309
 msgid "Could not connect to the Krowa leaderboard."
 msgstr ""
 
@@ -5490,11 +5534,15 @@ msgstr ""
 msgid "Could not load Krowa settings. Please try again."
 msgstr ""
 
-#: games/krowa_support/leaderboards.rb:110
+#: games/krowa_support/leaderboards.rb:111
+msgid "Could not publish the Daily Krowa result."
+msgstr ""
+
+#: games/krowa_support/leaderboards.rb:130
 msgid "Could not publish the Word Tower result."
 msgstr ""
 
-#: games/krowa_support/leaderboards.rb:91
+#: games/krowa_support/leaderboards.rb:94
 msgid "Could not publish the result."
 msgstr ""
 
@@ -5506,7 +5554,7 @@ msgstr ""
 msgid "Could not retrieve the definition from SJP."
 msgstr ""
 
-#: games/krowa.rb:285
+#: games/krowa.rb:286
 msgid "Could not retrieve the server time."
 msgstr ""
 
@@ -5541,7 +5589,7 @@ msgstr ""
 msgid "Countries and cities is played by two to eight people. Each round draws a letter and several categories. Write a word or name beginning with that letter for each category. For example, with B and the categories country, city and animal, you might write Brazil, Berlin and bear. The entries must fit their categories, not merely start with the right letter."
 msgstr ""
 
-#: games/categories.rb:1326
+#: games/categories.rb:1328
 msgid "Country"
 msgstr ""
 
@@ -5553,15 +5601,15 @@ msgstr ""
 msgid "Coverage is partial. Older client versions and uncollected days may be missing."
 msgstr ""
 
-#: __app.rb:226 __app.rb:927 lib/game_room_widget.rb:129
+#: __app.rb:228 __app.rb:942 lib/game_room_widget.rb:143
 msgid "Create a new table"
 msgstr ""
 
-#: __app.rb:1648
+#: __app.rb:1704
 msgid "Create a new table to add named computers."
 msgstr ""
 
-#: lib/game_room_widget.rb:130
+#: lib/game_room_widget.rb:144
 msgid "Create a table from preset %{number}"
 msgstr ""
 
@@ -5572,19 +5620,19 @@ msgstr ""
 msgid "Create table"
 msgstr ""
 
-#: __app.rb:942
+#: __app.rb:957
 msgid "Creating table"
 msgstr ""
 
-#: lib/axel_pong/client.rb:260
+#: lib/axel_pong/client.rb:266
 msgid "Crowd off."
 msgstr ""
 
-#: lib/axel_pong/client.rb:260
+#: lib/axel_pong/client.rb:266
 msgid "Crowd on."
 msgstr ""
 
-#: __app.rb:832 lib/game_shortcut_bindings.rb:59
+#: __app.rb:847 lib/game_shortcut_bindings.rb:59
 msgid "Ctrl"
 msgstr ""
 
@@ -5607,7 +5655,7 @@ msgstr ""
 msgid "Ctrl+D opens Krowa settings for audio and the custom dictionary. In the dictionary list, Space selects words and the shared button removes them. Up raises volume by 1% and Down lowers it. F1 reads shortcuts and Ctrl+F1 opens these rules. Invitations use the shared Game Room menu, including Ctrl+I and Ctrl+Shift+I."
 msgstr ""
 
-#: games/krowa_support/presentation.rb:41
+#: games/krowa_support/presentation.rb:49
 msgid "Ctrl+D: open Krowa settings for music, effects and your custom dictionary."
 msgstr ""
 
@@ -5627,7 +5675,7 @@ msgstr ""
 msgid "Ctrl+F4: read HTTP and available Communications ping."
 msgstr ""
 
-#: lib/game_room_ui.rb:33 lib/game_room_widget.rb:146
+#: lib/game_room_ui.rb:34 lib/game_room_widget.rb:162
 msgid "Ctrl+F4: read HTTP ping and available Communications relay or P2P ping."
 msgstr ""
 
@@ -5727,6 +5775,10 @@ msgstr ""
 msgid "Ctrl+T: remaining answer time, also while typing. Outside editable fields, T reads the letter and judge, S the scores and V round information. Letter shortcuts do not interfere with typing answers or chat."
 msgstr ""
 
+#: lib/game_room_changelog.rb:311
+msgid "Ctrl+W on a selected table in the widget or join window reads its players and observers without joining it."
+msgstr ""
+
 msgid "Ctrl+W: give the opponent holding the ball ten seconds to hit."
 msgstr ""
 
@@ -5746,7 +5798,7 @@ msgstr ""
 msgid "Current colour: %{colour}."
 msgstr ""
 
-#: games/tysiac.rb:1570
+#: games/tysiac.rb:1574
 msgid "Current contract: %{contract}, bidder: %{player}."
 msgstr ""
 
@@ -5762,7 +5814,7 @@ msgstr ""
 msgid "Current table options"
 msgstr ""
 
-#: games/cat_head_tail.rb:186 games/farkle.rb:709
+#: games/cat_head_tail.rb:186 games/farkle.rb:712
 msgid "Current turn: %{points} points."
 msgstr ""
 
@@ -5810,6 +5862,10 @@ msgstr ""
 
 #: games/krowa.rb:286
 msgid "Custom words can be added only in a single-player Daily Krowa or Random word game."
+msgstr ""
+
+#: games/krowa.rb:287
+msgid "Custom words can be added only in a single-player Random word game."
 msgstr ""
 
 #: content/monopoly_boards.rb:19
@@ -5896,7 +5952,7 @@ msgstr ""
 msgid "D: your cards. E: community cards. G: your best current combination. In Hold'em, 1–2 read private cards and 3–7 the board; in draw poker, 1–5 read your own cards."
 msgstr ""
 
-#: games/krowa.rb:109
+#: games/krowa.rb:110
 msgid "Daily Krowa"
 msgstr ""
 
@@ -5912,8 +5968,12 @@ msgstr ""
 msgid "Daily Krowa can draw a word between three and nine letters long. The word is determined using server time, so if you need a different one, you would have to hack into the server and change the date. You can open Daily Krowa only once. If you guess the word, give up or leave the game, it remains unavailable to your account until the next day."
 msgstr ""
 
-#: games/krowa.rb:70
+#: games/krowa.rb:71
 msgid "Daily Krowa cannot be observed or played at another person's table."
+msgstr ""
+
+#: games/krowa_support/presentation.rb:40
+msgid "Daily Krowa has its own entry in Rankings. Choose a date to hear each player's result and number of attempts. Today's solution stays hidden; for previous days, the list also shows the word. After solving Daily Krowa, you can choose whether to publish your result there."
 msgstr ""
 
 #: games/krowa_support/presentation.rb:15
@@ -5924,8 +5984,24 @@ msgstr ""
 msgid "Daily Krowa is private: nobody can join or observe it. That would make guessing it later far too easy!"
 msgstr ""
 
-#: __app.rb:3048
+#: games/krowa_support/leaderboards.rb:152 games/krowa_support/leaderboards.rb:32
+msgid "Daily Krowa leaderboard"
+msgstr ""
+
+#: __app.rb:3130
 msgid "Daily Krowa requires a private table. Create a new private table for this variant."
+msgstr ""
+
+#: games/krowa_support/leaderboards.rb:103
+msgid "Daily Krowa result published."
+msgstr ""
+
+#: games/krowa_support/leaderboards.rb:195
+msgid "Daily Krowa: %{date}"
+msgstr ""
+
+#: games/krowa_support/leaderboards.rb:193
+msgid "Daily Krowa: %{date}, %{word}"
 msgstr ""
 
 #: games/krowa_support/presentation.rb:29
@@ -5935,7 +6011,7 @@ msgstr ""
 msgid "Dark fields, men and kings"
 msgstr ""
 
-#: games/krowa_support/leaderboards.rb:171
+#: games/krowa_support/leaderboards.rb:152 games/krowa_support/leaderboards.rb:251
 msgid "Date"
 msgstr ""
 
@@ -5969,7 +6045,7 @@ msgstr ""
 msgid "Declare bankruptcy"
 msgstr ""
 
-#: games/tysiac.rb:1415
+#: games/tysiac.rb:1419
 msgid "Declare the marriage"
 msgstr ""
 
@@ -5987,11 +6063,11 @@ msgstr ""
 msgid "Delete removes the draft tile under the cursor; Backspace undoes the last placement; Z cancels the draft; F submits. G exchanges tiles; P passes. C reads the rack; I cycles free, alphabetic and vowel-first rack order; Y previews words and points; L lists played words; E reads tile counts; S reads scores; T reads whose turn it is. Writing advances past committed letters. Sorting requires cancelling the draft. These shortcuts do not act in chat."
 msgstr ""
 
-#: __app.rb:1032
+#: __app.rb:1046
 msgid "Delete saved game"
 msgstr ""
 
-#: __app.rb:1049
+#: __app.rb:1063
 msgid "Delete this saved game?"
 msgstr ""
 
@@ -5999,7 +6075,7 @@ msgstr ""
 msgid "Delete: discard the current card immediately."
 msgstr ""
 
-#: __app.rb:1049
+#: __app.rb:1063
 msgid "Deleting saved game"
 msgstr ""
 
@@ -6026,7 +6102,7 @@ msgstr ""
 msgid "Develop a group evenly"
 msgstr ""
 
-#: __app.rb:600
+#: __app.rb:602
 msgid "Development mode without server table access. Global lobby history and sending invitations are unavailable."
 msgstr ""
 
@@ -6135,11 +6211,11 @@ msgstr ""
 msgid "Do not use the target, a forbidden word, a grammatical form of either or a meaningful part of it. Nor may you spell it, translate it, give initials or abbreviations, point, imitate its sound or say what it rhymes with. This is not a ban on every unrelated word that happens to share some letters. Judge the meaning of the clue, not an accidental sequence of characters."
 msgstr ""
 
-#: __app.rb:651
+#: __app.rb:660
 msgid "Do you want to exit ELTEN Game Room?"
 msgstr ""
 
-#: __app.rb:1588
+#: __app.rb:1629
 msgid "Do you want to leave the table?"
 msgstr ""
 
@@ -6147,7 +6223,7 @@ msgstr ""
 msgid "Do you want to leave the table? The table will be closed for everyone."
 msgstr ""
 
-#: __app.rb:2024
+#: __app.rb:2086
 msgid "Do you want to leave your current table and join the invited table?"
 msgstr ""
 
@@ -6258,11 +6334,11 @@ msgstr ""
 msgid "Draw after fifty moves without a pawn move or capture."
 msgstr ""
 
-#: games/krowa_support/presentation.rb:82
+#: games/krowa_support/presentation.rb:90
 msgid "Draw another word"
 msgstr ""
 
-#: games/krowa_support/presentation.rb:82
+#: games/krowa_support/presentation.rb:90
 msgid "Draw another word - reset the race"
 msgstr ""
 
@@ -6330,7 +6406,7 @@ msgstr ""
 msgid "Drawing and responses to penalties"
 msgstr ""
 
-#: games/krowa.rb:489
+#: games/krowa.rb:490
 msgid "Drawing another word. Attempts start over."
 msgstr ""
 
@@ -6520,6 +6596,10 @@ msgstr ""
 msgid "Edit this meld"
 msgstr ""
 
+#: games/krowa_support/presentation.rb:36
+msgid "Eight-letter words: 64 attempts."
+msgstr ""
+
 #: games/scientific_war.rb:55
 msgid "Eight: in the next trick, before choosing a card, the player who played an eight may swap their hand with their pile."
 msgstr ""
@@ -6568,11 +6648,11 @@ msgstr ""
 msgid "En passant is available only immediately after an opposing pawn advances two fields and finishes beside your pawn. Move your pawn diagonally to the field that opposing pawn passed; that pawn is captured even though the destination was empty."
 msgstr ""
 
-#: __app.rb:1658
+#: __app.rb:1714
 msgid "Enabling observer mode"
 msgstr ""
 
-#: __app.rb:1658
+#: __app.rb:1714
 msgid "Enabling player mode"
 msgstr ""
 
@@ -6586,7 +6666,7 @@ msgstr ""
 msgid "End of the game"
 msgstr ""
 
-#: __app.rb:3075
+#: __app.rb:3157
 msgid "End the current game for everyone? The table and chat will stay open, and no winner will be recorded."
 msgstr ""
 
@@ -6616,7 +6696,7 @@ msgstr ""
 msgid "Ending"
 msgstr ""
 
-#: __app.rb:3082
+#: __app.rb:3164
 msgid "Ending game"
 msgstr ""
 
@@ -6660,7 +6740,7 @@ msgstr ""
 msgid "Enter a whole number of points from 2 to 999."
 msgstr ""
 
-#: games/krowa_support/leaderboards.rb:134
+#: games/krowa_support/leaderboards.rb:214
 msgid "Enter a word or word fragment."
 msgstr ""
 
@@ -6680,14 +6760,14 @@ msgstr ""
 msgid "Enter in Chat: send the typed message. In grid games, /a1 can place a piece and /e2 e4 can move one, using the same legality checks as the board. Draughts also accepts numbered squares. Start a message with // to send a literal slash. Escape closes an open list or dialog."
 msgstr ""
 
-#: games/krowa_support/presentation.rb:40
+#: games/krowa_support/presentation.rb:48
 msgid "Enter in the answer field: submit the typed noun and clear the field for the next attempt."
 msgstr ""
 
 msgid "Enter on a card: play, or choose whether to declare an available marriage. Shift+Enter: declare the marriage directly when legal. Without a marriage it reports that fact and does not play the card."
 msgstr ""
 
-#: lib/game_surfaces.rb:544
+#: lib/game_surfaces.rb:568
 msgid "Enter one destination field, for example /C4."
 msgstr ""
 
@@ -6982,11 +7062,11 @@ msgstr ""
 msgid "F2 and F3: lower or raise the selected sound group's volume by 10 percentage points. Shift+F2 and Shift+F3: choose the sound group. All Game Room sounds controls the master level without changing each group's setting. Speech and other ELTEN sounds are unaffected."
 msgstr ""
 
-#: lib/game_room_ui.rb:29
+#: lib/game_room_ui.rb:30
 msgid "F2: lower the selected Game Room sound volume."
 msgstr ""
 
-#: lib/game_room_ui.rb:30
+#: lib/game_room_ui.rb:31
 msgid "F3: raise the selected Game Room sound volume."
 msgstr ""
 
@@ -7033,7 +7113,7 @@ msgstr ""
 msgid "Falling pieces and lines of four"
 msgstr ""
 
-#: games/categories.rb:1336
+#: games/categories.rb:1338
 msgid "Famous person"
 msgstr ""
 
@@ -7055,11 +7135,15 @@ msgstr ""
 msgid "Farkle no longer asks players to finish the table circuit when the last player has already reached the target and the game ends immediately."
 msgstr ""
 
+#: lib/game_room_changelog.rb:317
+msgid "Farkle now correctly recognises a five-dice straight together with an additional scoring die."
+msgstr ""
+
 #: lib/game_room_changelog.rb:109 lib/game_room_changelog.rb:87
 msgid "Farkle now finishes the current table circuit after someone reaches the score limit. The highest score wins, with shared wins on a tie. Bots take the leader and remaining turns into account; older saved games keep their original finishing rule. Based on dawidpieper's contribution."
 msgstr ""
 
-#: games/farkle.rb:479
+#: games/farkle.rb:482
 msgid "Farkle. %{player} lost %{points} points from this turn."
 msgstr ""
 
@@ -7090,7 +7174,7 @@ msgstr ""
 msgid "Field %{field} is occupied by your %{piece}."
 msgstr ""
 
-#: lib/game_surfaces.rb:550
+#: lib/game_surfaces.rb:574
 msgid "Field %{field} is outside this board."
 msgstr ""
 
@@ -7108,7 +7192,7 @@ msgstr ""
 msgid "Fill every category on the score sheet and finish with the highest total score."
 msgstr ""
 
-#: games/categories.rb:1344
+#: games/categories.rb:1346
 msgid "Film"
 msgstr ""
 
@@ -7124,7 +7208,7 @@ msgstr ""
 msgid "Finding the sides by sound"
 msgstr ""
 
-#: games/categories.rb:716
+#: games/categories.rb:718
 msgid "Finish answering"
 msgstr ""
 
@@ -7132,7 +7216,7 @@ msgstr ""
 msgid "Finish exchanging"
 msgstr ""
 
-#: lib/game_surfaces.rb:888
+#: lib/game_surfaces.rb:912
 msgid "Finish or cancel the current card choice first."
 msgstr ""
 
@@ -7140,7 +7224,7 @@ msgstr ""
 msgid "Finish or clear the prepared packet first."
 msgstr ""
 
-#: games/categories.rb:783 lib/game_surfaces/review_surface.rb:101
+#: games/categories.rb:785 lib/game_surfaces/review_surface.rb:101
 msgid "Finish review"
 msgstr ""
 
@@ -7176,7 +7260,7 @@ msgstr ""
 msgid "First meld: %{points} points; %{missing} more required."
 msgstr ""
 
-#: games/krowa_support/leaderboards.rb:71
+#: games/krowa_support/leaderboards.rb:74
 msgid "First result"
 msgstr ""
 
@@ -7211,6 +7295,10 @@ msgstr ""
 
 #: games/poker.rb:85
 msgid "Five-card draw: improve your own hand"
+msgstr ""
+
+#: games/krowa_support/presentation.rb:33
+msgid "Five-letter words: 30 attempts"
 msgstr ""
 
 #: games/yahtzee.rb:16
@@ -7253,6 +7341,14 @@ msgstr ""
 msgid "Fixed opening Messages and other ELTEN windows after entering Game Room through the widget, and receiving updates for games opened this way."
 msgstr ""
 
+#: lib/game_room_changelog.rb:319
+msgid "Fixed resuming larger saved games, including Scrabble, and a case where a failed save left the game paused."
+msgstr ""
+
+#: lib/game_room_changelog.rb:320
+msgid "Fixed selecting the next table master after successive games at one table, and safeguards when switching to another table through an invitation."
+msgstr ""
+
 #: lib/game_room_changelog.rb:112
 msgid "Fixed text encoding in game settings, including a Reversi checkbox crash when Game Room and ELTEN use different interface languages."
 msgstr ""
@@ -7267,6 +7363,10 @@ msgstr ""
 
 #: lib/game_room_changelog.rb:261
 msgid "Fixed updates when Game Room is opened from another window, such as a conference. Previously, the game could show subsequent moves only after you sent a chat message."
+msgstr ""
+
+#: lib/game_room_changelog.rb:315
+msgid "Fixed watching an ongoing rally in Axel Pong after joining a match already in progress."
 msgstr ""
 
 #: games/battleship.rb:115
@@ -7308,7 +7408,7 @@ msgstr ""
 msgid "Following, beating and trumping"
 msgstr ""
 
-#: games/categories.rb:1333
+#: games/categories.rb:1335
 msgid "Food"
 msgstr ""
 
@@ -7391,6 +7491,10 @@ msgstr ""
 msgid "Four, six or eight people form two equal teams. There are no bots. Teams take turns, and each member gets a turn describing. Only the current describer and the opposing team can see the active card. Guessing teammates and observers cannot inspect it. Opponents listen for a broken rule while your teammates call out guesses; guessers do not need to press a key."
 msgstr ""
 
+#: games/krowa_support/presentation.rb:32
+msgid "Four-letter words: 24 attempts"
+msgstr ""
+
 #: games/yahtzee.rb:16
 msgid "Fours"
 msgstr ""
@@ -7421,15 +7525,15 @@ msgstr ""
 msgid "From auction to the last trick"
 msgstr ""
 
-#: lib/game_room_screens.rb:197
+#: lib/game_room_screens.rb:201
 msgid "From contacts"
 msgstr ""
 
-#: lib/game_room_screens.rb:197
+#: lib/game_room_screens.rb:201
 msgid "From everyone"
 msgstr ""
 
-#: lib/game_room_screens.rb:197
+#: lib/game_room_screens.rb:201
 msgid "From nobody"
 msgstr ""
 
@@ -7494,7 +7598,7 @@ msgstr ""
 msgid "Game"
 msgstr ""
 
-#: __app.rb:298
+#: __app.rb:300
 msgid "Game Room"
 msgstr ""
 
@@ -7518,11 +7622,11 @@ msgstr ""
 msgid "Game Room supports three to six players. Three players receive 17 cards each after removing one two; four receive 13 from the full deck; five receive 10 after removing two twos; six receive eight after removing all twos. Cards rank from two up to ace. The dealer rotates, and the next player starts both bidding and the first trick."
 msgstr ""
 
-#: lib/game_room_widget.rb:42
+#: lib/game_room_widget.rb:43
 msgid "Game Room tables"
 msgstr ""
 
-#: lib/game_room_widget.rb:215 lib/game_room_widget.rb:246
+#: lib/game_room_widget.rb:232 lib/game_room_widget.rb:263
 msgid "Game Room tables could not be loaded. Press R to retry."
 msgstr ""
 
@@ -7561,11 +7665,11 @@ msgstr ""
 msgid "Game details"
 msgstr ""
 
-#: lib/game_layout.rb:278
+#: lib/game_layout.rb:286
 msgid "Game history"
 msgstr ""
 
-#: __app.rb:401
+#: __app.rb:403
 msgid "Game invitation"
 msgstr ""
 
@@ -7584,19 +7688,19 @@ msgstr ""
 msgid "Game mode"
 msgstr ""
 
-#: games/krowa_support/presentation.rb:48
+#: games/krowa_support/presentation.rb:56
 msgid "Game over."
 msgstr ""
 
-#: games/krowa_support/presentation.rb:163
+#: games/krowa_support/presentation.rb:171
 msgid "Game over. The word was not guessed."
 msgstr ""
 
-#: __app.rb:228 __app.rb:910 lib/game_rules.rb:96 lib/participant_menu.rb:22
+#: __app.rb:230 __app.rb:925 lib/game_rules.rb:96 lib/participant_menu.rb:22
 msgid "Game rules"
 msgstr ""
 
-#: lib/game_room_ui.rb:24
+#: lib/game_room_ui.rb:25
 msgid "Game sounds"
 msgstr ""
 
@@ -7604,7 +7708,7 @@ msgstr ""
 msgid "Game started: %{first} versus %{second}."
 msgstr ""
 
-#: games/base.rb:1456 lib/game_table_background.rb:129
+#: games/base.rb:1456 games/ludo.rb:373 lib/game_table_background.rb:129
 msgid "Game started: %{players}."
 msgstr ""
 
@@ -7624,11 +7728,11 @@ msgstr ""
 msgid "Games completed: %{count}"
 msgstr ""
 
-#: lib/game_room_screens.rb:179
+#: lib/game_room_screens.rb:183
 msgid "Games covered by lobby messages"
 msgstr ""
 
-#: lib/game_room_screens.rb:222
+#: lib/game_room_screens.rb:225
 msgid "Games shown on the main screen"
 msgstr ""
 
@@ -7652,7 +7756,7 @@ msgstr ""
 msgid "Gara de Nord"
 msgstr ""
 
-#: lib/game_room_screens.rb:176
+#: lib/game_room_screens.rb:180
 msgid "General"
 msgstr ""
 
@@ -7716,11 +7820,11 @@ msgstr ""
 msgid "Guessed"
 msgstr ""
 
-#: games/krowa_support/presentation.rb:200
+#: games/krowa_support/presentation.rb:208
 msgid "Guessed."
 msgstr ""
 
-#: games/krowa.rb:116
+#: games/krowa.rb:117
 msgid "Guessing time"
 msgstr ""
 
@@ -7873,7 +7977,7 @@ msgstr ""
 msgid "Identical answers in the same category are grouped. The judge, not the program, decides whether a single answer is unique, partially correct or incorrect, and whether an identical group is accepted or incorrect."
 msgstr ""
 
-#: games/categories.rb:779
+#: games/categories.rb:781
 msgid "Identical, 1 point"
 msgstr ""
 
@@ -7953,7 +8057,7 @@ msgstr ""
 msgid "If you have no legal move, your turn is passed automatically. The game ends when neither player can move."
 msgstr ""
 
-#: games/krowa.rb:102
+#: games/krowa.rb:103
 msgid "If you leave the table, today's Daily Krowa will remain unavailable even if you have not guessed the word or surrendered. Are you sure you want to leave?"
 msgstr ""
 
@@ -7967,6 +8071,10 @@ msgstr ""
 
 #: lib/game_room_changelog.rb:214
 msgid "Improved Axel Pong connection setup and recovery, including starting another match at the same table. Repeated connection invitations no longer interfere with an already accepted connection."
+msgstr ""
+
+#: lib/game_room_changelog.rb:313
+msgid "Improved Ludo announcements. Your choice of player names or colours now also applies to moves, turn announcements, scores and history. Move descriptions are shorter and omit unnecessary piece numbers."
 msgstr ""
 
 #: lib/game_room_changelog.rb:200
@@ -7999,6 +8107,10 @@ msgstr ""
 
 #: games/biblios.rb:54
 msgid "In Biblios, two to four players compete to build the most valuable monastery library. Collect cards in five categories: Pigments, Monks, Forbidden Tomes, Holy Books and Manuscripts. Cards have values and letters. The total value in a category determines who wins that category, but the die on the Scriptorium determines how many victory points it is worth. Each die starts at 3 and can later range from 1 to 6."
+msgstr ""
+
+#: lib/game_room_changelog.rb:318
+msgid "In Categories, after using the entire alphabet, you can continue playing with the letters available again."
 msgstr ""
 
 #: games/checkers.rb:107
@@ -8089,6 +8201,10 @@ msgstr ""
 msgid "In Word Tower, you take turns, and guessing the word starts another round. Words have 3 to 8 letters, and the shared attempt limit is the word length multiplied by 8. The tower ends when you run out of attempts or the host gives up. Your score is the number of completed rounds. The round list in the leaderboard contains the words and attempt counts."
 msgstr ""
 
+#: games/krowa_support/presentation.rb:30
+msgid "In Word Tower, you take turns, and guessing the word starts another round. Words have 3 to 8 letters, and the shared attempt limit is:"
+msgstr ""
+
 #: games/krowa_support/presentation.rb:21
 msgid "In Word Tower, you take turns. Words have 3 to 8 letters and the shared attempt limit is the word length multiplied by 8. Guessing the word starts another round with a different word. History and the current turn are shared."
 msgstr ""
@@ -8111,7 +8227,7 @@ msgstr ""
 msgid "In an ordinary deal the dealer's target is 3 tricks, the player to the dealer's right needs 5, and the chooser to the dealer's left needs 8. Your score for the deal is tricks won minus your target. The three changes therefore always total zero."
 msgstr ""
 
-#: games/ludo.rb:377
+#: games/ludo.rb:465
 msgid "In base: %{count}"
 msgstr ""
 
@@ -8160,7 +8276,15 @@ msgstr ""
 msgid "In solo mode, you have two options: Daily Krowa, with a new word each day that is the same for everyone, or Random word, where you can choose the word length. In both modes, you have one superpower. You can add words to a dictionary that stores your nouns locally. Hmmm... if you put asdfasdfasdf in there, it will be stored too, but I hope having fun matters more than racking up leaderboard scores. So, if you want to use smerfy as a guess, just press \"Add noun to dictionary and check\". You will not be able to use that word in multiplayer modes, though. Not because I dislike the Smurfs; it is simply not in the database."
 msgstr ""
 
+#: games/krowa_support/presentation.rb:16
+msgid "In solo mode, you have two options: Daily Krowa, with a new word each day that is the same for everyone, or Random word, where you can choose the word length. In the latter mode, you have one superpower. You can add words to a dictionary that stores your nouns locally. Hmmm... if you put asdfasdfasdf in there, it will be stored too, but I hope having fun matters more than racking up leaderboard scores. So, if you want to use smerfy as a guess, just press \"Add noun to dictionary and check\". You will not be able to use that word in multiplayer modes, though. Not because I dislike the Smurfs; it is simply not in the database."
+msgstr ""
+
 msgid "In standard scoring, making a regular contract gives 10 points for every bid trick plus 1 point for every overtrick. Missing it gives minus 10 times the bid. Overtricks are already part of the displayed score; every accumulated tenth overtrick also causes a 100 point penalty."
+msgstr ""
+
+#: lib/game_room_changelog.rb:321
+msgid "In the 1000 card game, an invalid play record no longer prevents subsequent valid moves from being replayed."
 msgstr ""
 
 #: games/poker.rb:83
@@ -8183,7 +8307,7 @@ msgstr ""
 msgid "Income tax"
 msgstr ""
 
-#: games/categories.rb:780
+#: games/categories.rb:782
 msgid "Incorrect, 0 points"
 msgstr ""
 
@@ -8218,7 +8342,7 @@ msgstr ""
 msgid "Indonesian board"
 msgstr ""
 
-#: __app.rb:1032
+#: __app.rb:1046
 msgid "Information"
 msgstr ""
 
@@ -8248,7 +8372,7 @@ msgstr ""
 msgid "Into the public space"
 msgstr ""
 
-#: games/krowa_support/presentation.rb:158
+#: games/krowa_support/presentation.rb:166
 msgid "Invalid table configuration."
 msgstr ""
 
@@ -8260,15 +8384,15 @@ msgstr ""
 msgid "Invalid word offers six policies. Choose whether an invalid submission lets you correct the move or ends your turn, and whether it costs zero, 5 or 10 points. The default is correction without a penalty. One submitted attempt incurs at most one penalty, even if several words are invalid. The draft returns to the rack and does not use any board bonuses."
 msgstr ""
 
-#: games/categories.rb:1351
+#: games/categories.rb:1353
 msgid "Invention"
 msgstr ""
 
-#: __app.rb:2124
+#: __app.rb:2191
 msgid "Invitation"
 msgstr ""
 
-#: lib/game_room_ui.rb:26
+#: lib/game_room_ui.rb:27
 msgid "Invitation and Game Room notification sounds"
 msgstr ""
 
@@ -8278,7 +8402,7 @@ msgstr ""
 msgid "Invitation sent."
 msgstr ""
 
-#: __app.rb:1936 __app.rb:229
+#: __app.rb:1992 __app.rb:231
 msgid "Invitations"
 msgstr ""
 
@@ -8290,7 +8414,7 @@ msgstr ""
 msgid "Invitations can now be accepted from notifications after reopening Game Room. Joining a table clears its invitations; a temporary network error does not invalidate an invitation."
 msgstr ""
 
-#: __app.rb:1824
+#: __app.rb:1880
 msgid "Invite"
 msgstr ""
 
@@ -8298,11 +8422,11 @@ msgstr ""
 msgid "Invite an online Elten user"
 msgstr ""
 
-#: __app.rb:1789
+#: __app.rb:1845
 msgid "Invite an online user"
 msgstr ""
 
-#: __app.rb:1789
+#: __app.rb:1845
 msgid "Invite from contacts"
 msgstr ""
 
@@ -8310,7 +8434,7 @@ msgstr ""
 msgid "Invite someone from your contacts"
 msgstr ""
 
-#: games/categories.rb:1349
+#: games/categories.rb:1351
 msgid "Island"
 msgstr ""
 
@@ -8345,7 +8469,7 @@ msgstr ""
 msgid "It is your birthday: collect 25 from every other player."
 msgstr ""
 
-#: games/base.rb:953
+#: games/base.rb:953 games/ludo.rb:203
 msgid "It is your turn."
 msgstr ""
 
@@ -8395,15 +8519,15 @@ msgstr ""
 msgid "Jail can be reached by a field, a card or three doubles. Before rolling you may pay the exit fee or use a held jail card. Otherwise try for doubles, for up to three turns. Successful doubles release you and move the pawn but give no extra roll. After the third failed attempt you pay and move by that roll. Merely visiting the jail field is not imprisonment."
 msgstr ""
 
-#: __app.rb:1199
+#: __app.rb:1213
 msgid "Join"
 msgstr ""
 
-#: __app.rb:1151 __app.rb:227
+#: __app.rb:1165 __app.rb:229
 msgid "Join a table"
 msgstr ""
 
-#: __app.rb:1256
+#: __app.rb:1282
 msgid "Joining table"
 msgstr ""
 
@@ -8490,7 +8614,7 @@ msgstr ""
 msgid "Keyboard help in the rules lists each game-field shortcut separately, without chat controls or global shortcuts."
 msgstr ""
 
-#: lib/game_room_ui.rb:282
+#: lib/game_room_ui.rb:286
 msgid "Keyboard shortcuts"
 msgstr ""
 
@@ -8515,15 +8639,15 @@ msgstr ""
 msgid "Kings move and capture over any distance is on by default. Such a king travels along a clear diagonal and may land on an empty square beyond the opposing piece it jumps. It cannot jump two occupied squares in a single jump. If the setting is off, a king moves one square or makes a short capture jump, still in either direction."
 msgstr ""
 
-#: lib/game_room_screens.rb:246
+#: lib/game_room_screens.rb:249
 msgid "Known languages"
 msgstr ""
 
-#: games/krowa.rb:38 games/krowa_support/presentation.rb:67
+#: games/krowa.rb:39 games/krowa_support/presentation.rb:75
 msgid "Krowa"
 msgstr ""
 
-#: games/krowa.rb:300 games/krowa_support/client.rb:146
+#: games/krowa.rb:301 games/krowa_support/client.rb:146
 msgid "Krowa gallery"
 msgstr ""
 
@@ -8531,30 +8655,34 @@ msgstr ""
 msgid "Krowa has shorter setting names and updated keyboard help. F1 and the shortcuts in game rules use shorter descriptions without Press and to."
 msgstr ""
 
-#: games/krowa_support/leaderboards.rb:35
+#: games/krowa_support/leaderboards.rb:37
 msgid "Krowa leaderboards"
 msgstr ""
 
-#: games/krowa_support/leaderboards.rb:24
+#: games/krowa_support/leaderboards.rb:25
 msgid "Krowa leaderboards are temporarily unavailable."
 msgstr ""
 
-#: games/krowa_support/presentation.rb:101
+#: games/krowa_support/presentation.rb:109
 msgid "Krowa settings"
 msgstr ""
 
-#: games/krowa.rb:301
+#: games/krowa.rb:302
 msgid "Krowa settings (Ctrl+D)"
 msgstr ""
 
-#: games/krowa.rb:108
+#: games/krowa.rb:109
 msgid "Krowa variant"
 msgstr ""
 
 msgid "Krowa's Random word variant has a Draw another word button. It reveals the old word and resets attempts without giving a win, gallery entry or leaderboard result. Race keeps its existing manual reroll button; neither variant rerolls automatically. Daily Krowa and Word Tower do not gain this option."
 msgstr ""
 
-#: games/krowa_support/presentation.rb:31
+#: lib/game_room_changelog.rb:308
+msgid "Krowa's Word Tower now allows more attempts and includes eight new nouns. A custom dictionary is available only in the single-player Random word mode, not in Daily Krowa."
+msgstr ""
+
+#: games/krowa_support/presentation.rb:38
 msgid "Krowa's music and sound effects are off by default. Ctrl+D opens their switches and separate volume sliders. These sounds also respect the shared game-sound mute and volume settings in Game Room."
 msgstr ""
 
@@ -8604,7 +8732,7 @@ msgstr ""
 msgid "Landing on someone else's chargeable property makes you pay its owner. For a street, the amount depends on its rent schedule, colour group and buildings. Stations depend on how many stations the owner has. Utilities also use the dice total. A mortgaged property charges no rent. The deed inspection shows the figures used on your board, which matters especially on larger regional boards."
 msgstr ""
 
-#: games/categories.rb:1350
+#: games/categories.rb:1352
 msgid "Language"
 msgstr ""
 
@@ -8633,11 +8761,11 @@ msgstr ""
 msgid "Last roll"
 msgstr ""
 
-#: games/farkle.rb:717
+#: games/farkle.rb:720
 msgid "Last roll: %{dice}."
 msgstr ""
 
-#: games/krowa_support/leaderboards.rb:149
+#: games/krowa_support/leaderboards.rb:229
 msgid "Last update"
 msgstr ""
 
@@ -8649,22 +8777,22 @@ msgstr ""
 msgid "Lay off on %{meld}"
 msgstr ""
 
-#: games/krowa_support/leaderboards.rb:73
+#: games/krowa_support/leaderboards.rb:76
 msgid "Leaderboard: %{word}"
 msgstr ""
 
-#: __app.rb:231 __app.rb:777
+#: __app.rb:233 __app.rb:792
 msgid "Leaderboards"
 msgstr ""
 
 msgid "Leaderboards will become available after the first playable game is added."
 msgstr ""
 
-#: __app.rb:1457 lib/game_layout.rb:170 lib/game_screen.rb:510 lib/participant_menu.rb:30
+#: __app.rb:1485 lib/game_layout.rb:177 lib/game_screen.rb:481 lib/participant_menu.rb:30
 msgid "Leave"
 msgstr ""
 
-#: __app.rb:1608
+#: __app.rb:1649
 msgid "Leaving table"
 msgstr ""
 
@@ -8721,11 +8849,11 @@ msgstr ""
 msgid "Letisko Sliač"
 msgstr ""
 
-#: games/categories.rb:1384
+#: games/categories.rb:1386
 msgid "Letter %{letter}; judge: %{judge}."
 msgstr ""
 
-#: games/categories.rb:1374
+#: games/categories.rb:1376
 msgid "Letter %{letter}; judge: %{judge}; %{status}."
 msgstr ""
 
@@ -8752,76 +8880,84 @@ msgstr ""
 msgid "Ljubljana Railway Station"
 msgstr ""
 
+#: games/krowa_support/leaderboards.rb:147
+msgid "Loading Daily Krowa dates"
+msgstr ""
+
+#: games/krowa_support/leaderboards.rb:160
+msgid "Loading Daily Krowa leaderboard"
+msgstr ""
+
 #: __app.rb:669 __app.rb:720
 msgid "Loading Game Room history"
 msgstr ""
 
-#: __app.rb:2270 lib/game_room_widget.rb:104 lib/game_room_widget.rb:109 lib/game_room_widget.rb:45
+#: __app.rb:2338 lib/game_room_widget.rb:117 lib/game_room_widget.rb:122 lib/game_room_widget.rb:46
 msgid "Loading Game Room tables"
 msgstr ""
 
-#: games/krowa_support/leaderboards.rb:156
+#: games/krowa_support/leaderboards.rb:236
 msgid "Loading Word Tower leaderboard"
 msgstr ""
 
-#: games/krowa_support/leaderboards.rb:178
+#: games/krowa_support/leaderboards.rb:258
 msgid "Loading Word Tower rounds"
 msgstr ""
 
-#: __app.rb:1137
+#: __app.rb:1151
 msgid "Loading available tables"
 msgstr ""
 
-#: __app.rb:2295
+#: __app.rb:2363
 msgid "Loading contacts"
 msgstr ""
 
-#: __app.rb:1915
+#: __app.rb:1971
 msgid "Loading invitations"
 msgstr ""
 
-#: __app.rb:2437
+#: lib/game_room_screens.rb:361
 msgid "Loading notification settings"
 msgstr ""
 
-#: __app.rb:1035 __app.rb:1043 __app.rb:1110
+#: __app.rb:1049 __app.rb:1057 __app.rb:1124
 msgid "Loading saved game"
 msgstr ""
 
-#: __app.rb:1019
+#: __app.rb:1033
 msgid "Loading saved games"
 msgstr ""
 
 msgid "Loading server time"
 msgstr ""
 
-#: __app.rb:811
+#: __app.rb:826
 msgid "Loading statistics"
 msgstr ""
 
-#: __app.rb:1182
+#: __app.rb:1196
 msgid "Loading tables"
 msgstr ""
 
-#: __app.rb:1757
+#: __app.rb:1813
 msgid "Loading users"
 msgstr ""
 
-#: games/krowa_support/leaderboards.rb:57
+#: games/krowa_support/leaderboards.rb:60
 msgid "Loading word leaderboard"
 msgstr ""
 
 msgid "Lobby announcements"
 msgstr ""
 
-#: lib/game_room_screens.rb:176
+#: lib/game_room_screens.rb:180
 msgid "Lobby messages"
 msgstr ""
 
 msgid "Local market"
 msgstr ""
 
-#: __app.rb:2473
+#: __app.rb:2538
 msgid "Local settings saved. New-table notification subscriptions could not be saved."
 msgstr ""
 
@@ -8906,11 +9042,11 @@ msgstr ""
 msgid "Makao's F1 help now includes Shift+Enter for adding a card to or removing it from a package."
 msgstr ""
 
-#: lib/participant_menu.rb:182
+#: lib/participant_menu.rb:198
 msgid "Make a player for the next game"
 msgstr ""
 
-#: lib/participant_menu.rb:182
+#: lib/participant_menu.rb:198
 msgid "Make an observer for the next game"
 msgstr ""
 
@@ -8984,15 +9120,15 @@ msgstr ""
 msgid "Match a card and try to empty your hand"
 msgstr ""
 
-#: lib/axel_pong/client.rb:506
+#: lib/axel_pong/client.rb:512
 msgid "Match in progress."
 msgstr ""
 
-#: lib/axel_pong/client.rb:436 lib/axel_pong/client.rb:504
+#: lib/axel_pong/client.rb:442 lib/axel_pong/client.rb:510
 msgid "Match paused. Waiting for synchronization."
 msgstr ""
 
-#: lib/axel_pong/client.rb:438
+#: lib/axel_pong/client.rb:444
 msgid "Match resumed."
 msgstr ""
 
@@ -9121,11 +9257,11 @@ msgstr ""
 msgid "Misery"
 msgstr ""
 
-#: games/categories.rb:329
+#: games/categories.rb:331
 msgid "Missing reveals count as blank answers: %{players}."
 msgstr ""
 
-#: lib/game_room_screens.rb:253
+#: lib/game_room_screens.rb:256
 msgid "Missing translations use other known languages, then English. Restart ELTEN to apply language changes."
 msgstr ""
 
@@ -9185,7 +9321,7 @@ msgstr ""
 msgid "Most victory points wins. If tied, compare remaining Gold. If still tied, compare the Monk total and then its best letter, followed in the same way by Pigments, Forbidden Tomes, Holy Books and Manuscripts. If every comparison remains equal, the game is drawn. There is no separate score target or series of rounds in Biblios."
 msgstr ""
 
-#: games/categories.rb:1348
+#: games/categories.rb:1350
 msgid "Mountain"
 msgstr ""
 
@@ -9257,7 +9393,7 @@ msgstr ""
 msgid "Music and sound effects are disabled by default, have separate volume controls, and use Elten's audio output. Race and Word Tower have separate music; Daily Krowa and Random word share one track."
 msgstr ""
 
-#: games/categories.rb:1346
+#: games/categories.rb:1348
 msgid "Music group"
 msgstr ""
 
@@ -9265,7 +9401,7 @@ msgstr ""
 msgid "Music volume"
 msgstr ""
 
-#: games/categories.rb:1342
+#: games/categories.rb:1344
 msgid "Musical instrument"
 msgstr ""
 
@@ -9288,7 +9424,7 @@ msgstr ""
 msgid "N: start a new combination in the draft."
 msgstr ""
 
-#: games/categories.rb:1328
+#: games/categories.rb:1330
 msgid "Name"
 msgstr ""
 
@@ -9308,7 +9444,7 @@ msgstr ""
 msgid "New games are selected in the widget by default, while saved manual deselections are remembered. Older settings also enable Rummy, Domino, Mexican Train, Scrabble, Taboo and Biblios once."
 msgstr ""
 
-#: __app.rb:390 __app.rb:396
+#: __app.rb:392 __app.rb:398
 msgid "New table"
 msgstr ""
 
@@ -9327,7 +9463,7 @@ msgstr ""
 msgid "New-table notifications now use a distinct sound, balanced to the existing notification volume. Invitations keep their previous sound."
 msgstr ""
 
-#: lib/game_room_screens.rb:207
+#: lib/game_room_screens.rb:362
 msgid "New-table subscriptions are unavailable without access to server settings. Other settings can still be changed."
 msgstr ""
 
@@ -9425,7 +9561,7 @@ msgstr ""
 msgid "No answers to review"
 msgstr ""
 
-#: games/krowa_support/presentation.rb:71
+#: games/krowa_support/presentation.rb:79
 msgid "No attempts"
 msgstr ""
 
@@ -9460,7 +9596,7 @@ msgstr ""
 msgid "No cards have been played in this trick"
 msgstr ""
 
-#: games/tysiac.rb:1522
+#: games/tysiac.rb:1526
 msgid "No cards have been played in this trick."
 msgstr ""
 
@@ -9487,6 +9623,10 @@ msgstr ""
 msgid "No contract has been chosen yet."
 msgstr ""
 
+#: games/krowa_support/leaderboards.rb:153
+msgid "No daily results"
+msgstr ""
+
 #: games/krowa_support/client.rb:245
 msgid "No definition in SJP."
 msgstr ""
@@ -9499,7 +9639,7 @@ msgstr ""
 msgid "No dice"
 msgstr ""
 
-#: games/farkle.rb:715
+#: games/farkle.rb:718
 msgid "No dice have been rolled in this turn."
 msgstr ""
 
@@ -9511,7 +9651,7 @@ msgstr ""
 msgid "No discard pile"
 msgstr ""
 
-#: __app.rb:1422 __app.rb:1423
+#: __app.rb:1449 __app.rb:1450
 msgid "No games have been played yet"
 msgstr ""
 
@@ -9540,7 +9680,7 @@ msgstr ""
 msgid "No limit, the default, permits any legal raise up to your stack. Pot limit caps the raise above the call at the pot after adding your call. Half-pot limit uses half that amount, but never below the minimum legal raise. Both are capped by your available chips. Fixed limit uses a fixed raise equal to the current big blind at every stage in this implementation; it does not double on later streets."
 msgstr ""
 
-#: lib/game_room_widget.rb:260
+#: lib/game_room_widget.rb:277
 msgid "No matching Game Room tables"
 msgstr ""
 
@@ -9552,7 +9692,7 @@ msgstr ""
 msgid "No matching property."
 msgstr ""
 
-#: games/krowa_support/leaderboards.rb:150
+#: games/krowa_support/leaderboards.rb:230
 msgid "No matching words"
 msgstr ""
 
@@ -9563,7 +9703,7 @@ msgstr ""
 msgid "No more dice showing %{value} can be selected."
 msgstr ""
 
-#: lib/game_layout.rb:279
+#: lib/game_layout.rb:287
 msgid "No moves yet"
 msgstr ""
 
@@ -9602,11 +9742,15 @@ msgstr ""
 msgid "No places are available"
 msgstr ""
 
+#: lib/table_roster_reader.rb:45
+msgid "No players at this table."
+msgstr ""
+
 #: games/taboo_ui.rb:52
 msgid "No points"
 msgstr ""
 
-#: games/krowa_support/leaderboards.rb:74
+#: games/krowa_support/leaderboards.rb:183 games/krowa_support/leaderboards.rb:77
 msgid "No published results"
 msgstr ""
 
@@ -9622,11 +9766,11 @@ msgstr ""
 msgid "No rent: this property is mortgaged."
 msgstr ""
 
-#: games/krowa_support/leaderboards.rb:172
+#: games/krowa_support/leaderboards.rb:252
 msgid "No results"
 msgstr ""
 
-#: games/krowa_support/leaderboards.rb:192
+#: games/krowa_support/leaderboards.rb:272
 msgid "No saved rounds"
 msgstr ""
 
@@ -9645,7 +9789,7 @@ msgstr ""
 msgid "No ship you still own fits from %{field}."
 msgstr ""
 
-#: lib/game_room_screens.rb:439 lib/game_room_ui.rb:278
+#: lib/game_room_screens.rb:477 lib/game_room_ui.rb:282
 msgid "No shortcuts are available on this screen."
 msgstr ""
 
@@ -9661,8 +9805,12 @@ msgstr ""
 msgid "No suit has been led."
 msgstr ""
 
-#: __app.rb:2377
+#: __app.rb:2445
 msgid "No table preset is assigned to this shortcut."
+msgstr ""
+
+#: lib/table_roster_reader.rb:25
+msgid "No table selected."
 msgstr ""
 
 msgid "No time limit"
@@ -9686,7 +9834,7 @@ msgid_plural "Nobody can continue the war. %{count} cards stay on the table for 
 msgstr[0] ""
 msgstr[1] ""
 
-#: games/krowa_support/presentation.rb:166
+#: games/krowa_support/presentation.rb:174
 msgid "Nobody guessed the word."
 msgstr ""
 
@@ -9745,27 +9893,27 @@ msgstr ""
 msgid "Nothing changes hands until the recipient accepts. Both sides must still afford their payments and own the offered properties. Mortgaged properties and streets in a group with buildings cannot be traded. A bot may decline an apparently fair face-value purchase because the property completes or protects an important group; the printed price is not a promise that the owner will sell."
 msgstr ""
 
-#: lib/game_room_screens.rb:176
+#: lib/game_room_screens.rb:180
 msgid "Notification settings"
 msgstr ""
 
-#: lib/game_room_screens.rb:202
+#: lib/game_room_screens.rb:206
 msgid "Notify me about new public tables (preferences are visible to table creators)"
 msgstr ""
 
-#: lib/game_room_screens.rb:210
+#: lib/game_room_screens.rb:213
 msgid "Notify me about new tables only from contacts"
 msgstr ""
 
-#: games/krowa_support/presentation.rb:74
+#: games/krowa_support/presentation.rb:82
 msgid "Now playing"
 msgstr ""
 
-#: games/krowa.rb:116 games/krowa_support/client.rb:164
+#: games/krowa.rb:117 games/krowa_support/client.rb:164
 msgid "Number of attempts"
 msgstr ""
 
-#: games/krowa.rb:112 games/krowa_support/client.rb:164
+#: games/krowa.rb:113 games/krowa_support/client.rb:164
 msgid "Number of letters"
 msgstr ""
 
@@ -9788,6 +9936,10 @@ msgstr ""
 
 #: lib/participant_menu.rb:20
 msgid "Observe the next game"
+msgstr ""
+
+#: lib/table_roster_reader.rb:46
+msgid "Observers: %{players}."
 msgstr ""
 
 msgid "Oil company"
@@ -9923,15 +10075,15 @@ msgstr ""
 msgid "Only dice from the same roll can form a combination. For example, a one saved from an earlier roll cannot be added to two new ones to make a triple. You may combine several scoring groups from the current roll, but every selected die must belong to a valid group. The program does not let you attach a useless die just to get rid of it."
 msgstr ""
 
-#: games/krowa.rb:282
+#: games/krowa.rb:283
 msgid "Only the host can do this."
 msgstr ""
 
-#: __app.rb:2697
+#: __app.rb:2779
 msgid "Only the table master may start a game."
 msgstr ""
 
-#: __app.rb:1058 __app.rb:1155 games/krowa_support/leaderboards.rb:199 games/krowa_support/leaderboards.rb:36 lib/game_room_screens.rb:497 lib/game_room_screens.rb:93
+#: __app.rb:1072 __app.rb:1169 games/krowa_support/leaderboards.rb:279 games/krowa_support/leaderboards.rb:38 lib/game_room_screens.rb:535 lib/game_room_screens.rb:93
 msgid "Open"
 msgstr ""
 
@@ -9954,11 +10106,11 @@ msgstr ""
 msgid "Opening the betting requires a pair of jacks or better."
 msgstr ""
 
-#: __app.rb:2740
+#: __app.rb:2822
 msgid "Opening the current game"
 msgstr ""
 
-#: lib/game_screen.rb:1484
+#: lib/game_screen.rb:1306
 msgid "Opening the new game"
 msgstr ""
 
@@ -10120,14 +10272,14 @@ msgstr ""
 msgid "Pair, two pairs and misery adds three rows and is enabled by default. Pair needs two equal dice and counts the sum of all five. Two pairs also counts all five but needs pairs of two different values. A full house qualifies; four equal dice alone do not. Misery gives 36 minus the sum of all dice, so a low roll is useful there."
 msgstr ""
 
-#: games/categories.rb:778
+#: games/categories.rb:780
 msgid "Partially correct, 1 point"
 msgstr ""
 
 msgid "Partially correct, 5 points"
 msgstr ""
 
-#: games/krowa_support/leaderboards.rb:171
+#: games/krowa_support/leaderboards.rb:251
 msgid "Participants"
 msgstr ""
 
@@ -10135,7 +10287,7 @@ msgstr ""
 msgid "Participants can be replaced during a game. Select a player or bot in the Users list and press Ctrl+Shift+R. You can give their seat to a present observer or replace a person with a new bot if the game supports bots. The hand, score and team position are preserved, and the replaced person can keep watching."
 msgstr ""
 
-#: games/biblios.rb:1112 games/tysiac.rb:1394 games/tysiac.rb:1501
+#: games/biblios.rb:1112 games/tysiac.rb:1398 games/tysiac.rb:1505
 msgid "Pass"
 msgstr ""
 
@@ -10253,7 +10405,7 @@ msgstr ""
 msgid "Period: %{period}"
 msgstr ""
 
-#: lib/axel_pong/client.rb:257
+#: lib/axel_pong/client.rb:263
 msgid "Perspective: %{player}."
 msgstr ""
 
@@ -10278,7 +10430,7 @@ msgstr ""
 msgid "Pile: %{total}."
 msgstr ""
 
-#: games/krowa_support/leaderboards.rb:171 games/krowa_support/leaderboards.rb:71
+#: games/krowa_support/leaderboards.rb:182 games/krowa_support/leaderboards.rb:251 games/krowa_support/leaderboards.rb:74
 msgid "Place"
 msgstr ""
 
@@ -10321,7 +10473,7 @@ msgstr ""
 msgid "Placing a disc"
 msgstr ""
 
-#: games/categories.rb:1330
+#: games/categories.rb:1332
 msgid "Plant"
 msgstr ""
 
@@ -10331,7 +10483,7 @@ msgstr ""
 msgid "Play a card matching the colour or value, or play a wild card. Space draws a card. Drawing is allowed even with a playable card by default, up to the configured limit; reaching the limit does not end the turn."
 msgstr ""
 
-#: lib/game_room_screens.rb:237
+#: lib/game_room_screens.rb:240
 msgid "Play a sound for my turn outside the table window"
 msgstr ""
 
@@ -10381,7 +10533,7 @@ msgstr ""
 msgid "Play the selected sound"
 msgstr ""
 
-#: games/tysiac.rb:1409
+#: games/tysiac.rb:1413
 msgid "Play without declaring a marriage"
 msgstr ""
 
@@ -10401,11 +10553,11 @@ msgstr ""
 msgid "Player %{player} wins the set."
 msgstr ""
 
-#: games/ludo.rb:262
+#: games/ludo.rb:298
 msgid "Player colours."
 msgstr ""
 
-#: games/ludo.rb:262
+#: games/ludo.rb:298
 msgid "Player names."
 msgstr ""
 
@@ -10422,6 +10574,10 @@ msgstr ""
 
 #: lib/game_statistics_screen.rb:145
 msgid "Players: %{count}"
+msgstr ""
+
+#: lib/table_roster_reader.rb:45
+msgid "Players: %{players}."
 msgstr ""
 
 msgid "Playing a card"
@@ -10455,11 +10611,11 @@ msgstr ""
 msgid "Playing, sorting and checking the state"
 msgstr ""
 
-#: games/krowa_support/presentation.rb:200
+#: games/krowa_support/presentation.rb:208
 msgid "Playing."
 msgstr ""
 
-#: lib/realtime/task_ui.rb:48
+#: lib/game_room_pending_operation.rb:66 lib/realtime/task_ui.rb:52
 msgid "Please wait..."
 msgstr ""
 
@@ -10503,7 +10659,7 @@ msgstr ""
 msgid "Poker variant"
 msgstr ""
 
-#: content/languages.rb:16 games/categories.rb:133 games/categories.rb:219
+#: content/languages.rb:25 games/categories.rb:133 games/categories.rb:219
 msgid "Polish"
 msgstr ""
 
@@ -10549,6 +10705,10 @@ msgid "Pong's first table setting is now a Classic/Arcade mode list. Shift+E cha
 msgstr ""
 
 msgid "Pong's movement, returns, bot behaviour and positional audio were brought closer to the original. Fixed slowdowns caused by the interface refresh rhythm, return tolerance, Nightmare speed between people, stereo positioning and fading wall sounds. Restored the original paddle-volume balance, goal recordings and spoken scores."
+msgstr ""
+
+#: games/ludo.rb:90
+msgid "Positions are read with the name or colour first, followed by the square, without pawn numbers. Ctrl+C switches names and colours throughout the game announcements and your view of game history. C always reads who has each colour. Red, blue, yellow and green follow the fixed seats at the table. Your choice is saved on this computer for future tables. It does not change other people's settings or the recorded moves. Chat and table membership messages keep the actual names."
 msgstr ""
 
 #: games/ludo.rb:90
@@ -10600,11 +10760,11 @@ msgstr ""
 msgid "Preparing and playing a packet"
 msgstr ""
 
-#: games/categories.rb:1425
+#: games/categories.rb:1427
 msgid "Preparing round %{round}."
 msgstr ""
 
-#: __app.rb:1085
+#: __app.rb:1099
 msgid "Preparing saved game"
 msgstr ""
 
@@ -10612,15 +10772,15 @@ msgstr ""
 msgid "Preparing the ball: Right arrow or A"
 msgstr ""
 
-#: lib/game_screen.rb:1839
+#: lib/game_screen.rb:1576
 msgid "Preparing the next round"
 msgstr ""
 
-#: games/krowa_support/presentation.rb:192
+#: games/krowa_support/presentation.rb:200
 msgid "Preparing the word."
 msgstr ""
 
-#: lib/game_screen.rb:1150
+#: lib/game_screen.rb:968
 msgid "Preparing trade"
 msgstr ""
 
@@ -10661,13 +10821,17 @@ msgstr ""
 msgid "Press Enter on Roll the die. If exactly one pawn can move, it moves automatically. If several pawns can move, the list shows only those choices together with their destinations; use the Arrow keys and Enter to choose."
 msgstr ""
 
+#: lib/game_room_changelog.rb:312
+msgid "Press Enter on a person in the table's Users list to open ELTEN's standard user menu, where you can send a message, call them or add them to your contacts."
+msgstr ""
+
 msgid "Press Enter on the pawn list to roll or to choose a displayed move. Press P for your pawn positions, Shift+P for the opponents' pawn positions, T for the turn and Ctrl+F1 for these rules."
 msgstr ""
 
 msgid "Press Enter on the pawn list to roll. If exactly one pawn can move, it moves automatically. If several pawns can move, the list shows only those choices together with their destinations; use the Arrow keys and Enter to choose."
 msgstr ""
 
-#: lib/game_room_screens.rb:411
+#: lib/game_room_screens.rb:449
 msgid "Press Enter to assign."
 msgstr ""
 
@@ -10675,7 +10839,7 @@ msgstr ""
 msgid "Press Enter to bid."
 msgstr ""
 
-#: lib/game_room_screens.rb:411
+#: lib/game_room_screens.rb:449
 msgid "Press Enter to edit."
 msgstr ""
 
@@ -10772,7 +10936,7 @@ msgstr ""
 msgid "Pressing an assigned widget shortcut creates a table with those settings without reopening the setup form. It does not start the match automatically or replace a table you are already at. Empty slots only report that nothing is assigned. Presets are local to this computer; an outdated preset asks you to review it before creating a table."
 msgstr ""
 
-#: lib/game_room_screens.rb:243
+#: lib/game_room_screens.rb:246
 msgid "Primary interface language"
 msgstr ""
 
@@ -10791,7 +10955,7 @@ msgstr ""
 msgid "Private tables can be selected when creating any game. They are available by invitation and do not appear in public table lists, the widget or lobby announcements."
 msgstr ""
 
-#: games/categories.rb:1332
+#: games/categories.rb:1334
 msgid "Profession"
 msgstr ""
 
@@ -10824,19 +10988,27 @@ msgstr ""
 msgid "Public toilet"
 msgstr ""
 
-#: games/krowa_support/client.rb:311
+#: games/krowa_support/client.rb:315
 msgid "Publish the Word Tower result: %{rounds} completed rounds?"
 msgstr ""
 
-#: games/krowa_support/client.rb:299
+#: games/krowa_support/client.rb:303
 msgid "Publish the result for %{word}: %{attempts} attempts?"
 msgstr ""
 
-#: games/krowa_support/leaderboards.rb:97
+#: games/krowa_support/client.rb:300
+msgid "Publish your Daily Krowa result: %{attempts} attempts?"
+msgstr ""
+
+#: games/krowa_support/leaderboards.rb:100
+msgid "Publishing Daily Krowa result"
+msgstr ""
+
+#: games/krowa_support/leaderboards.rb:117
 msgid "Publishing Word Tower result"
 msgstr ""
 
-#: games/krowa_support/leaderboards.rb:80
+#: games/krowa_support/leaderboards.rb:83
 msgid "Publishing result"
 msgstr ""
 
@@ -10926,7 +11098,7 @@ msgstr ""
 msgid "R: reject an incoming offer."
 msgstr ""
 
-#: games/krowa.rb:110
+#: games/krowa.rb:111
 msgid "Race"
 msgstr ""
 
@@ -10961,11 +11133,11 @@ msgstr ""
 msgid "Raise; total payment %{amount}"
 msgstr ""
 
-#: games/krowa.rb:113
+#: games/krowa.rb:114
 msgid "Random"
 msgstr ""
 
-#: games/krowa.rb:109
+#: games/krowa.rb:110
 msgid "Random word"
 msgstr ""
 
@@ -10983,11 +11155,15 @@ msgstr ""
 msgid "Reaching the target with unbanked turn points is not enough: you must bank them. A Farkle loses only the current turn's unbanked points, not points saved in earlier turns. The first-bank minimum applies while your saved score is zero; after a successful first bank the ordinary minimum applies."
 msgstr ""
 
-#: lib/game_room_screens.rb:235
+#: lib/game_room_screens.rb:238
 msgid "Read table messages outside the table window"
 msgstr ""
 
-#: __app.rb:1218 __app.rb:1223 lib/participant_menu.rb:23
+#: __app.rb:1238 __app.rb:1245 lib/game_room_widget.rb:153 lib/game_room_widget.rb:161
+msgid "Read the table participants"
+msgstr ""
+
+#: __app.rb:1239 __app.rb:1244 lib/participant_menu.rb:23
 msgid "Read the table variant and settings"
 msgstr ""
 
@@ -11021,6 +11197,10 @@ msgstr ""
 msgid "Reduced delays in sending and handling serves, returns and goal notifications in online Pong. Improved synchronisation between four players in Doubles, without changing the rules or ball physics."
 msgstr ""
 
+#: lib/game_room_changelog.rb:309
+msgid "Reduced interface stalls on slow connections. While a move is being sent, you can still browse available information and use help. In arcade games, waiting for a score to be saved no longer blocks local paddle movement."
+msgstr ""
+
 #: lib/game_room_changelog.rb:263
 msgid "Reduced interface stalls when receiving new-table notifications for subscribed games. Existing filters, volume settings and removal of outdated notifications are preserved."
 msgstr ""
@@ -11041,11 +11221,11 @@ msgstr ""
 msgid "Regional boards have their own figures"
 msgstr ""
 
-#: __app.rb:1940
+#: __app.rb:1996
 msgid "Reject"
 msgstr ""
 
-#: __app.rb:2123 lib/game_room_screens.rb:121
+#: __app.rb:2190 lib/game_room_screens.rb:121
 msgid "Reject invitation"
 msgstr ""
 
@@ -11053,7 +11233,7 @@ msgstr ""
 msgid "Reject the proposed trade"
 msgstr ""
 
-#: __app.rb:2094
+#: __app.rb:2161
 msgid "Rejecting invitation"
 msgstr ""
 
@@ -11067,7 +11247,7 @@ msgstr ""
 msgid "Remove a computer"
 msgstr ""
 
-#: lib/participant_menu.rb:151
+#: lib/participant_menu.rb:167
 msgid "Remove computer"
 msgstr ""
 
@@ -11095,11 +11275,15 @@ msgstr ""
 msgid "Removed the extra three-second delay at the start of human Pong matches. Waiting for players to connect, announcements and breaks after goals remain unchanged."
 msgstr ""
 
+#: lib/game_room_changelog.rb:316
+msgid "Removed the rustling sound at the start of Audio Ball's standard high-ball sound. The Audiodisc sound pack is unchanged."
+msgstr ""
+
 #: games/krowa_support/client.rb:230
 msgid "Removed words: %{words}."
 msgstr ""
 
-#: __app.rb:1638
+#: __app.rb:1694
 msgid "Removing computer"
 msgstr ""
 
@@ -11156,11 +11340,11 @@ msgstr ""
 msgid "Reshuffling an exhausted deck during a deal now has a short announcement and its own sound in UNO, Makao, 99, Rummy and draw Poker."
 msgstr ""
 
-#: __app.rb:2474
+#: __app.rb:2539
 msgid "Restart ELTEN to apply the interface language preferences."
 msgstr ""
 
-#: lib/game_layout.rb:167
+#: lib/game_layout.rb:174
 msgid "Restart game"
 msgstr ""
 
@@ -11168,23 +11352,23 @@ msgstr ""
 msgid "Restrict rolls that allow leaving the base"
 msgstr ""
 
-#: games/krowa_support/leaderboards.rb:189
+#: games/krowa_support/leaderboards.rb:269
 msgid "Result"
 msgstr ""
 
-#: games/krowa_support/leaderboards.rb:83
+#: games/krowa_support/leaderboards.rb:86
 msgid "Result published."
 msgstr ""
 
-#: games/krowa_support/leaderboards.rb:149 games/krowa_support/presentation.rb:72
+#: games/krowa_support/leaderboards.rb:229 games/krowa_support/presentation.rb:80
 msgid "Results"
 msgstr ""
 
-#: __app.rb:1032 __app.rb:1438
+#: __app.rb:1046 __app.rb:1466
 msgid "Resume game"
 msgstr ""
 
-#: __app.rb:1123
+#: __app.rb:1137
 msgid "Resuming game"
 msgstr ""
 
@@ -11210,7 +11394,7 @@ msgstr ""
 msgid "Revealed answers for letter %{letter}; %{judge} is judging"
 msgstr ""
 
-#: games/categories.rb:735
+#: games/categories.rb:737
 msgid "Revealing your submitted answers."
 msgstr ""
 
@@ -11226,7 +11410,7 @@ msgstr ""
 msgid "Reversi is played by two people on an 8 by 8 board. Four discs are already in the centre: two black and two white. The first player is black and starts. Unlike in many board games, captured discs stay on the board and change colour. You want more discs of your colour when the game ends, not necessarily after every move."
 msgstr ""
 
-#: games/categories.rb:764
+#: games/categories.rb:766
 msgid "Review answers for letter %{letter}"
 msgstr ""
 
@@ -11274,7 +11458,7 @@ msgstr ""
 msgid "Right arrow: prepare to serve or to hit after defending."
 msgstr ""
 
-#: games/categories.rb:1347 games/poker.rb:724
+#: games/categories.rb:1349 games/poker.rb:724
 msgid "River"
 msgstr ""
 
@@ -11325,7 +11509,7 @@ msgstr ""
 msgid "Roll the dice before choosing a category."
 msgstr ""
 
-#: games/ludo.rb:327
+#: games/ludo.rb:415
 msgid "Roll the die"
 msgstr ""
 
@@ -11380,11 +11564,11 @@ msgstr ""
 msgid "Rotating judge is the default: the role moves around the seating order, so everyone sometimes judges instead of scoring. Table master judges every round makes the creator the permanent judge and removes that person from the scoring competition. With two participants, that setting leaves one answering player and one permanent judge."
 msgstr ""
 
-#: games/krowa_support/leaderboards.rb:189
+#: games/krowa_support/leaderboards.rb:269
 msgid "Round"
 msgstr ""
 
-#: games/categories.rb:417
+#: games/categories.rb:419
 msgid "Round %{round} ended."
 msgstr ""
 
@@ -11392,7 +11576,7 @@ msgstr ""
 msgid "Round %{round} ended. %{scores}"
 msgstr ""
 
-#: games/categories.rb:277
+#: games/categories.rb:279
 msgid "Round %{round} started. Letter: %{letter}."
 msgstr ""
 
@@ -11411,7 +11595,7 @@ msgstr ""
 msgid "Round %{round} was dealt. %{dealer} is the dealer."
 msgstr ""
 
-#: games/krowa.rb:435
+#: games/krowa.rb:436
 msgid "Round %{round}. %{length} letters."
 msgstr ""
 
@@ -11451,11 +11635,11 @@ msgstr ""
 msgid "Round %{round}; category %{category}; question %{position} of %{total}; target: %{target} points."
 msgstr ""
 
-#: games/categories.rb:1413
+#: games/categories.rb:1415
 msgid "Round %{round}; completed rounds: %{completed}."
 msgstr ""
 
-#: games/categories.rb:473
+#: games/categories.rb:475
 msgid "Round %{round}; letter %{letter}; judge: %{judge}"
 msgstr ""
 
@@ -11470,7 +11654,7 @@ msgstr ""
 msgid "Rounding to five-point units is on by default: ranks two through nine are worth 5, ten and faces 10, a low ace 5, a high or set ace 15. With rounding off they are face value, faces 10, low ace 1 and high or set ace 11. An ace left in hand is always worth the high value. A hand joker is worth 20; a melded joker takes the represented value. An identity meld adds 10 per card."
 msgstr ""
 
-#: games/krowa_support/leaderboards.rb:171
+#: games/krowa_support/leaderboards.rb:251
 msgid "Rounds"
 msgstr ""
 
@@ -11489,7 +11673,7 @@ msgstr ""
 msgid "Rules"
 msgstr ""
 
-#: __app.rb:918
+#: __app.rb:933
 msgid "Rules for this game are not available in this version of ELTEN Game Room."
 msgstr ""
 
@@ -11518,6 +11702,10 @@ msgstr ""
 
 #: games/rummy_ui.rb:115
 msgid "Runs, sets and the position of a joker"
+msgstr ""
+
+#: content/languages.rb:16
+msgid "Russian"
 msgstr ""
 
 #: content/monopoly_boards.rb:20
@@ -11623,7 +11811,7 @@ msgstr ""
 msgid "Sarajevo Railway Station"
 msgstr ""
 
-#: games/krowa_support/client.rb:184 lib/audio_ball/settings.rb:24 lib/axel_pong/settings.rb:38 lib/game_room_screens.rb:231
+#: games/krowa_support/client.rb:184 lib/audio_ball/settings.rb:24 lib/axel_pong/settings.rb:38 lib/game_room_screens.rb:234
 msgid "Save"
 msgstr ""
 
@@ -11635,7 +11823,7 @@ msgstr ""
 msgid "Save Taboo between turns, after the table master approves the review."
 msgstr ""
 
-#: __app.rb:3025
+#: __app.rb:3107
 msgid "Save changes"
 msgstr ""
 
@@ -11648,7 +11836,7 @@ msgstr ""
 msgid "Save keeps the selected side for future matches; Cancel preserves the previous setting. A match continues while the settings window is open. Close it to return to the playfield controls."
 msgstr ""
 
-#: __app.rb:2413
+#: __app.rb:2481
 msgid "Save preset"
 msgstr ""
 
@@ -11660,11 +11848,11 @@ msgstr ""
 msgid "Save the game at the beginning of a trick, before any person has chosen a card."
 msgstr ""
 
-#: __app.rb:980
+#: __app.rb:995
 msgid "Save this game and close the table for everyone?"
 msgstr ""
 
-#: __app.rb:1029 __app.rb:230
+#: __app.rb:1043 __app.rb:232
 msgid "Saved games"
 msgstr ""
 
@@ -11676,11 +11864,11 @@ msgstr ""
 msgid "Saving Daily Krowa"
 msgstr ""
 
-#: __app.rb:982
+#: __app.rb:997
 msgid "Saving game"
 msgstr ""
 
-#: games/krowa.rb:127
+#: games/krowa.rb:128
 msgid "Saving is available only in Race and Word Tower."
 msgstr ""
 
@@ -11688,19 +11876,19 @@ msgstr ""
 msgid "Saving is not supported for this game."
 msgstr ""
 
-#: __app.rb:2454
+#: __app.rb:2519
 msgid "Saving notification settings"
 msgstr ""
 
-#: __app.rb:3054
+#: __app.rb:3136
 msgid "Saving table settings"
 msgstr ""
 
-#: __app.rb:2894
+#: __app.rb:2976
 msgid "Saving teams"
 msgstr ""
 
-#: games/krowa_support/presentation.rb:35
+#: games/krowa_support/presentation.rb:43
 msgid "Saving your game"
 msgstr ""
 
@@ -11738,7 +11926,7 @@ msgstr ""
 msgid "Score: %{own} to %{opponent}."
 msgstr ""
 
-#: games/cat_head_tail.rb:399 games/categories.rb:1409 games/farkle.rb:700 games/quiz_party.rb:1285 games/spades.rb:775 games/tysiac.rb:1533
+#: games/cat_head_tail.rb:399 games/categories.rb:1411 games/farkle.rb:703 games/quiz_party.rb:1285 games/spades.rb:775 games/tysiac.rb:1537
 msgid "Scores: %{scores}."
 msgstr ""
 
@@ -11763,7 +11951,7 @@ msgstr ""
 msgid "Scoring combinations in this implementation"
 msgstr ""
 
-#: games/krowa.rb:115
+#: games/krowa.rb:116
 msgid "Scoring criterion"
 msgstr ""
 
@@ -11789,19 +11977,19 @@ msgstr ""
 msgid "Scriptorium: %{values}."
 msgstr ""
 
-#: games/krowa_support/leaderboards.rb:122
+#: games/krowa_support/leaderboards.rb:202
 msgid "Search"
 msgstr ""
 
-#: games/krowa_support/leaderboards.rb:30
+#: games/krowa_support/leaderboards.rb:31
 msgid "Search for a word"
 msgstr ""
 
-#: games/krowa_support/leaderboards.rb:140
+#: games/krowa_support/leaderboards.rb:220
 msgid "Search results: %{query}"
 msgstr ""
 
-#: games/krowa_support/leaderboards.rb:137
+#: games/krowa_support/leaderboards.rb:217
 msgid "Searching words"
 msgstr ""
 
@@ -11821,7 +12009,7 @@ msgstr ""
 msgid "Seeds in each pit"
 msgstr ""
 
-#: __app.rb:1312 __app.rb:2125 __app.rb:2857 lib/game_screen.rb:1220 lib/game_surfaces/word_board.rb:182
+#: __app.rb:1338 __app.rb:2192 __app.rb:2939 lib/game_screen.rb:1038 lib/game_surfaces/word_board.rb:182
 msgid "Select"
 msgstr ""
 
@@ -11848,7 +12036,7 @@ msgstr ""
 msgid "Select each card only once, from your own hand."
 msgstr ""
 
-#: lib/game_room_screens.rb:382
+#: lib/game_room_screens.rb:420
 msgid "Select this table shortcut for editing"
 msgstr ""
 
@@ -11891,11 +12079,11 @@ msgstr ""
 msgid "Selling reverses that process: remove buildings from the most developed streets and receive half their purchase price. The bank normally has 32 houses and 12 hotels on a 40-field board, or 48 houses and 18 hotels on a 60-field board. Turning a hotel back into four houses needs those houses to be available. If there are too few, the list explicitly offers selling all buildings in the colour group instead, still at half price."
 msgstr ""
 
-#: lib/game_screen.rb:1264
+#: lib/game_screen.rb:1082
 msgid "Send proposal"
 msgstr ""
 
-#: lib/game_screen.rb:1362 lib/game_screen.rb:1382
+#: lib/game_screen.rb:1184 lib/game_screen.rb:1204
 msgid "Sending action"
 msgstr ""
 
@@ -11903,23 +12091,23 @@ msgstr ""
 msgid "Sending and declining invitations is recorded in the room history. Declining no longer creates a separate notification or an empty notification entry."
 msgstr ""
 
-#: lib/game_screen.rb:1398
+#: lib/game_screen.rb:1220
 msgid "Sending assessment"
 msgstr ""
 
-#: __app.rb:1555 lib/game_screen.rb:1666
+#: __app.rb:1596 lib/game_screen.rb:1490
 msgid "Sending chat message"
 msgstr ""
 
-#: __app.rb:1099 __app.rb:1793
+#: __app.rb:1113 __app.rb:1849
 msgid "Sending invitation"
 msgstr ""
 
-#: __app.rb:612
+#: __app.rb:614
 msgid "Sending invitations is unavailable because server table access could not be confirmed."
 msgstr ""
 
-#: __app.rb:610
+#: __app.rb:612
 msgid "Sending invitations is unavailable in development mode without server table access."
 msgstr ""
 
@@ -11933,7 +12121,7 @@ msgstr ""
 msgid "Server ping: %{milliseconds} ms."
 msgstr ""
 
-#: __app.rb:602
+#: __app.rb:604
 msgid "Server table access could not be checked. Global lobby history and sending invitations are unavailable until you reopen Game Room."
 msgstr ""
 
@@ -11963,15 +12151,15 @@ msgstr ""
 msgid "Sets: %{own} to %{opponent}."
 msgstr ""
 
-#: __app.rb:233 lib/game_room_screens.rb:177
+#: __app.rb:235 lib/game_room_screens.rb:181
 msgid "Settings"
 msgstr ""
 
-#: __app.rb:2479
+#: __app.rb:2544
 msgid "Settings saved."
 msgstr ""
 
-#: __app.rb:2477
+#: __app.rb:2542
 msgid "Settings saved. Restart ELTEN to apply the interface language preferences."
 msgstr ""
 
@@ -11985,10 +12173,14 @@ msgstr ""
 msgid "Setup and joker variant"
 msgstr ""
 
+#: games/krowa_support/presentation.rb:35
+msgid "Seven-letter words: 49 attempts"
+msgstr ""
+
 msgid "Shared room controls: Tab and Shift+Tab move between fields. F1 gives help for the current field and available actions. Ctrl+F1 opens the rules, game shortcuts and current table settings. The room context menu contains the actions available to you at that moment."
 msgstr ""
 
-#: games/categories.rb:664 games/quiz_party.rb:563
+#: games/categories.rb:666 games/quiz_party.rb:563
 msgid "Shared victory: %{players}, %{points} points."
 msgstr ""
 
@@ -12000,7 +12192,7 @@ msgstr ""
 msgid "Sharp (searches deeply and answers more slowly)"
 msgstr ""
 
-#: __app.rb:834 lib/game_shortcut_bindings.rb:61
+#: __app.rb:849 lib/game_shortcut_bindings.rb:61
 msgid "Shift"
 msgstr ""
 
@@ -12078,11 +12270,11 @@ msgstr ""
 msgid "Shift+Enter: select or unselect a card for payment."
 msgstr ""
 
-#: lib/game_room_ui.rb:31
+#: lib/game_room_ui.rb:32
 msgid "Shift+F2: select the previous sound group."
 msgstr ""
 
-#: lib/game_room_ui.rb:32
+#: lib/game_room_ui.rb:33
 msgid "Shift+F3: select the next sound group."
 msgstr ""
 
@@ -12169,7 +12361,7 @@ msgstr ""
 msgid "Shift+S: read zeroes, surrenders and barrel chances."
 msgstr ""
 
-#: games/krowa_support/presentation.rb:39
+#: games/krowa_support/presentation.rb:47
 msgid "Shift+Tab: move to the previous field."
 msgstr ""
 
@@ -12247,19 +12439,19 @@ msgstr ""
 msgid "Short line railroad"
 msgstr ""
 
-#: lib/game_room_screens.rb:219
+#: lib/game_room_screens.rb:222
 msgid "Show Game Room on the ELTEN main screen"
 msgstr ""
 
-#: lib/game_room_screens.rb:224
+#: lib/game_room_screens.rb:227
 msgid "Show full or unavailable tables"
 msgstr ""
 
-#: lib/game_room_screens.rb:198
+#: lib/game_room_screens.rb:202
 msgid "Show invitation notifications from"
 msgstr ""
 
-#: lib/game_room_screens.rb:228
+#: lib/game_room_screens.rb:231
 msgid "Show only tables created by contacts"
 msgstr ""
 
@@ -12267,15 +12459,15 @@ msgstr ""
 msgid "Showdown: %{summary}."
 msgstr ""
 
-#: lib/axel_pong/client.rb:248
+#: lib/axel_pong/client.rb:254
 msgid "Side-wall cues: noise."
 msgstr ""
 
-#: lib/axel_pong/client.rb:248
+#: lib/axel_pong/client.rb:254
 msgid "Side-wall cues: off."
 msgstr ""
 
-#: lib/axel_pong/client.rb:249
+#: lib/axel_pong/client.rb:255
 msgid "Side-wall cues: tones."
 msgstr ""
 
@@ -12305,6 +12497,10 @@ msgid "Single requires exactly two players."
 msgstr ""
 
 msgid "Sirkeci Railway Station"
+msgstr ""
+
+#: games/krowa_support/presentation.rb:34
+msgid "Six-letter words: 42 attempts"
 msgstr ""
 
 #: games/yahtzee.rb:16
@@ -12365,11 +12561,11 @@ msgstr ""
 msgid "Solution"
 msgstr ""
 
-#: games/krowa.rb:501 games/krowa_support/client.rb:123
+#: games/krowa.rb:502 games/krowa_support/client.rb:123
 msgid "Solution: %{word}."
 msgstr ""
 
-#: games/categories.rb:1345
+#: games/categories.rb:1347
 msgid "Song"
 msgstr ""
 
@@ -12385,7 +12581,7 @@ msgstr ""
 msgid "Sound pack (only for you)"
 msgstr ""
 
-#: lib/game_room_screens.rb:176
+#: lib/game_room_screens.rb:180
 msgid "Sounds"
 msgstr ""
 
@@ -12393,7 +12589,7 @@ msgstr ""
 msgid "Sounds from Audiodisc"
 msgstr ""
 
-#: lib/game_room_ui.rb:25
+#: lib/game_room_ui.rb:26
 msgid "Sounds when someone enters or leaves a room"
 msgstr ""
 
@@ -12405,7 +12601,7 @@ msgstr ""
 msgid "South-east Asia board"
 msgstr ""
 
-#: __app.rb:835 lib/game_shortcut_bindings.rb:57
+#: __app.rb:850 lib/game_shortcut_bindings.rb:57
 msgid "Space"
 msgstr ""
 
@@ -12483,7 +12679,7 @@ msgstr ""
 msgid "Splitting an odd chip"
 msgstr ""
 
-#: games/categories.rb:1337
+#: games/categories.rb:1339
 msgid "Sport"
 msgstr ""
 
@@ -12498,7 +12694,7 @@ msgstr ""
 msgid "Start by rolling six dice. Choose a scoring combination from the list and confirm it. Those dice are set aside and their points join your turn total. You can then roll the remaining dice or bank the points if you have reached the required minimum. Banking ends the turn and adds its points to your permanent score."
 msgstr ""
 
-#: lib/game_layout.rb:166
+#: lib/game_layout.rb:173
 msgid "Start game"
 msgstr ""
 
@@ -12524,7 +12720,7 @@ msgstr ""
 msgid "Starting chips must be from 100 to 100000."
 msgstr ""
 
-#: __app.rb:2764
+#: __app.rb:2846
 msgid "Starting game"
 msgstr ""
 
@@ -12549,7 +12745,7 @@ msgstr ""
 msgid "Stasiun Hall Bandung"
 msgstr ""
 
-#: __app.rb:232 lib/game_statistics_screen.rb:15
+#: __app.rb:234 lib/game_statistics_screen.rb:15
 msgid "Statistics"
 msgstr ""
 
@@ -12561,7 +12757,7 @@ msgstr ""
 msgid "Statistics unavailable"
 msgstr ""
 
-#: games/tysiac.rb:1546
+#: games/tysiac.rb:1550
 msgid "Statistics: %{statistics}."
 msgstr ""
 
@@ -12663,23 +12859,23 @@ msgstr ""
 msgid "Surat Railway Station"
 msgstr ""
 
-#: games/categories.rb:1335
+#: games/categories.rb:1337
 msgid "Surname"
 msgstr ""
 
-#: games/krowa_support/presentation.rb:79
+#: games/krowa_support/presentation.rb:87
 msgid "Surrender"
 msgstr ""
 
-#: games/krowa_support/presentation.rb:79
+#: games/krowa_support/presentation.rb:87
 msgid "Surrender Word Tower"
 msgstr ""
 
-#: games/tysiac.rb:1488
+#: games/tysiac.rb:1492
 msgid "Surrender the deal"
 msgstr ""
 
-#: games/krowa_support/presentation.rb:200
+#: games/krowa_support/presentation.rb:208
 msgid "Surrendered."
 msgstr ""
 
@@ -12770,7 +12966,7 @@ msgstr ""
 msgid "Tab moves between your hand and other game fields, history and users. F1 gives shortcut hints. Ctrl+F1 opens these complete rules. Escape returns to the table."
 msgstr ""
 
-#: games/krowa_support/presentation.rb:38
+#: games/krowa_support/presentation.rb:46
 msgid "Tab: move to the next field. In table settings, fields unrelated to the selected variant are hidden, so you do not need to skip them."
 msgstr ""
 
@@ -12786,7 +12982,7 @@ msgstr ""
 msgid "Table master judges every round"
 msgstr ""
 
-#: lib/game_room_screens.rb:372
+#: lib/game_room_screens.rb:410
 msgid "Table shortcuts"
 msgstr ""
 
@@ -12895,7 +13091,7 @@ msgstr ""
 msgid "Team %{players}"
 msgstr ""
 
-#: __app.rb:2852
+#: __app.rb:2934
 msgid "Team %{team}"
 msgstr ""
 
@@ -13087,7 +13283,7 @@ msgstr ""
 msgid "The Race host can draw a different word. The previous word is revealed and every player's attempts and time are reset. This is not a win or a completed round."
 msgstr ""
 
-#: games/krowa_support/presentation.rb:34
+#: games/krowa_support/presentation.rb:42
 msgid "The Rankings item in the main menu gives you access to word results and Word Tower round counts. Your gallery and custom dictionary are stored locally and separately for each account. To remove your own words, open My dictionary in Krowa settings, select them with Space and choose Delete selected."
 msgstr ""
 
@@ -13109,7 +13305,7 @@ msgstr ""
 msgid "The aim of the game"
 msgstr ""
 
-#: games/categories.rb:1392 games/quiz_party.rb:1272
+#: games/categories.rb:1394 games/quiz_party.rb:1272
 msgid "The answer time has ended."
 msgstr ""
 
@@ -13125,14 +13321,14 @@ msgstr ""
 msgid "The ante must be positive and cannot exceed the starting stack."
 msgstr ""
 
-#: games/krowa.rb:280
+#: games/krowa.rb:281
 msgid "The attempt is waiting to be checked."
 msgstr ""
 
 msgid "The auction and talon"
 msgstr ""
 
-#: games/tysiac.rb:1561
+#: games/tysiac.rb:1565
 msgid "The auction has not started."
 msgstr ""
 
@@ -13262,7 +13458,7 @@ msgstr ""
 msgid "The court is 25 steps long. By default, you hear your end on the right and the opponent's end on the left. An incoming ball travels from left to right; your shot travels from right to left. Headphones make it easier to follow the ball. You can reverse this listening perspective in your personal settings."
 msgstr ""
 
-#: games/battleship.rb:39 games/categories.rb:60 games/krowa.rb:36 games/quiz_party.rb:41 games/scientific_war.rb:91
+#: games/battleship.rb:39 games/categories.rb:60 games/krowa.rb:37 games/quiz_party.rb:41 games/scientific_war.rb:91
 msgid "The current game contains private data that cannot be transferred at this stage."
 msgstr ""
 
@@ -13308,7 +13504,7 @@ msgstr ""
 msgid "The describing player presses Enter when everyone is ready. After three seconds, a sound starts the turn and reveals the card. Enter marks a correct guess; P skips. An opponent presses B for a violation. The next card appears immediately without restarting the clock. Guessers do not press anything. The deck is shuffled; no card repeats until exhaustion, and reshuffling avoids an immediate repeat."
 msgstr ""
 
-#: games/cat_head_tail.rb:403 games/ludo.rb:306 games/yahtzee.rb:518 lib/game_surfaces/roll_and_score.rb:177
+#: games/cat_head_tail.rb:403 games/ludo.rb:342 games/yahtzee.rb:518 lib/game_surfaces/roll_and_score.rb:177
 msgid "The dice have not been rolled."
 msgstr ""
 
@@ -13345,7 +13541,7 @@ msgstr ""
 msgid "The final bidder takes the publicly revealed talon, then gives one card to each opponent. The bidder may keep the winning contract or raise it, in steps of 5, up to 400. The bidder leads the first trick; every later trick is led by the winner of the previous one."
 msgstr ""
 
-#: games/categories.rb:1418
+#: games/categories.rb:1420
 msgid "The final cycle ends after round %{round}."
 msgstr ""
 
@@ -13410,7 +13606,7 @@ msgstr ""
 msgid "The first player's pieces are at the bottom."
 msgstr ""
 
-#: games/categories.rb:1368 games/categories.rb:1382 games/quiz_party.rb:1259 games/quiz_party.rb:1289
+#: games/categories.rb:1370 games/categories.rb:1384 games/quiz_party.rb:1259 games/quiz_party.rb:1289
 msgid "The first round is being prepared."
 msgstr ""
 
@@ -13457,7 +13653,7 @@ msgstr ""
 msgid "The full Witcher set combines its two subject collections. Witcher — games contains game-related questions; Witcher — books and adaptations contains books and screen adaptations. Choose the full set for a mixture or the narrower set for that medium. The accepted answer comes from the chosen question data, not a live search or a judge's decision during play."
 msgstr ""
 
-#: games/krowa_support/presentation.rb:33
+#: games/krowa_support/presentation.rb:41
 msgid "The gallery remembers the words you have guessed on your own and your best attempt count for each one. You can open it before a game or after it ends. Its menu lets you sort by date, attempt count or word length. Select a word with Enter to open its leaderboard. After a game, you can agree to publish your result, which also opens the leaderboard for that word."
 msgstr ""
 
@@ -13469,18 +13665,18 @@ msgstr ""
 msgid "The game announces when someone goes onto the barrel and records it in the history. S reads scores and marks the players currently on the barrel. Shift+S also tells you how many barrel chances they have left."
 msgstr ""
 
-#: __app.rb:2754
+#: __app.rb:2836
 msgid "The game cannot start until these players join the real-time session: %{players}."
 msgstr ""
 
-#: lib/game_screen.rb:1407 lib/game_screen.rb:1440 lib/game_screen.rb:2187
+#: lib/game_screen.rb:1229 lib/game_screen.rb:1262 lib/game_screen.rb:1924
 msgid "The game changed before your action was accepted. Please choose again."
 msgstr ""
 
 msgid "The game could not be opened. Please try again."
 msgstr ""
 
-#: __app.rb:1013
+#: __app.rb:1027
 msgid "The game could not be saved. The table was not closed by this operation."
 msgstr ""
 
@@ -13495,7 +13691,7 @@ msgstr ""
 msgid "The game ended in a draw."
 msgstr ""
 
-#: games/categories.rb:1052
+#: games/categories.rb:1054
 msgid "The game ended with a shared victory: %{players}."
 msgstr ""
 
@@ -13521,7 +13717,7 @@ msgstr ""
 msgid "The game has already ended."
 msgstr ""
 
-#: __app.rb:1009
+#: __app.rb:1023
 msgid "The game has been saved."
 msgstr ""
 
@@ -13532,7 +13728,7 @@ msgstr ""
 msgid "The game includes the agreed international board list and a Polish board. Every board uses the same rules engine and differs only in names and presentation."
 msgstr ""
 
-#: games/base.rb:1373 games/ludo.rb:325 games/ninety_nine.rb:944 games/scientific_war.rb:825
+#: games/base.rb:1373 games/ludo.rb:413 games/ninety_nine.rb:944 games/scientific_war.rb:825
 msgid "The game is finished."
 msgstr ""
 
@@ -13565,7 +13761,7 @@ msgstr ""
 msgid "The host can save Race or Word Tower after the current word is ready and all submitted attempts have been checked. The local save includes the private solution and can be resumed with the same players in a new table. The table closes only after the save is verified. Daily Krowa and Random word cannot be saved for later."
 msgstr ""
 
-#: games/krowa.rb:489
+#: games/krowa.rb:490
 msgid "The host changes the word. Race attempts and time start over."
 msgstr ""
 
@@ -13618,7 +13814,7 @@ msgstr[1] ""
 msgid "The jokers cancel each other out."
 msgstr ""
 
-#: games/categories.rb:366 games/categories.rb:387
+#: games/categories.rb:368 games/categories.rb:389
 msgid "The judge finished reviewing the answers."
 msgstr ""
 
@@ -13655,7 +13851,7 @@ msgstr ""
 msgid "The last tiles and the final score"
 msgstr ""
 
-#: games/categories.rb:1030
+#: games/categories.rb:1032
 msgid "The lead is tied. A tie-break will be played only by %{players}; the judge will be selected from the other participants."
 msgstr ""
 
@@ -13729,7 +13925,7 @@ msgstr ""
 msgid "The number of starting tokens must be greater than zero."
 msgstr ""
 
-#: __app.rb:1810 __app.rb:2535 lib/game_room_widget.rb:159 lib/game_screen.rb:2235
+#: __app.rb:1866 __app.rb:2614 lib/game_room_widget.rb:175 lib/game_screen.rb:1978
 msgid "The operation could not be completed. Please try again."
 msgstr ""
 
@@ -13833,7 +14029,7 @@ msgstr ""
 msgid "The raise limit for this betting round has been reached."
 msgstr ""
 
-#: __app.rb:1230 __app.rb:2019 __app.rb:2069 __app.rb:2336
+#: __app.rb:1256 __app.rb:2075 __app.rb:2136 __app.rb:2404
 msgid "The real-time connection to this table could not be established. Please try again."
 msgstr ""
 
@@ -13845,22 +14041,22 @@ msgstr ""
 msgid "The round is blocked."
 msgstr ""
 
-#: games/categories.rb:430
+#: games/categories.rb:432
 msgid "The round was cancelled. The judge order did not advance."
 msgstr ""
 
 msgid "The round winner gets zero points. Others add the points of cards left in their hands: number cards their value, coloured action cards 20, and wild cards 50. Eliminate a player at this score defaults to 500 (50–5000). Reaching or exceeding it eliminates that player; the remaining players start another round. The last remaining player wins the whole game."
 msgstr ""
 
-#: __app.rb:1112
+#: __app.rb:1126
 msgid "The saved game is no longer available."
 msgstr ""
 
-#: __app.rb:1053
+#: __app.rb:1067
 msgid "The saved game storage is damaged or incompatible."
 msgstr ""
 
-#: games/krowa.rb:283
+#: games/krowa.rb:284
 msgid "The saved secret is unavailable. The game cannot check attempts until it is restored."
 msgstr ""
 
@@ -13901,7 +14097,7 @@ msgstr ""
 msgid "The second player's pieces are at the bottom."
 msgstr ""
 
-#: games/krowa.rb:284
+#: games/krowa.rb:285
 msgid "The secret could not be saved locally. The word has not been started; please try again."
 msgstr ""
 
@@ -13963,11 +14159,11 @@ msgstr ""
 msgid "The selected word dictionary is missing or damaged."
 msgstr ""
 
-#: games/krowa_support/leaderboards.rb:87
+#: games/krowa_support/leaderboards.rb:107 games/krowa_support/leaderboards.rb:90
 msgid "The server already has the same or a better result."
 msgstr ""
 
-#: __app.rb:2629
+#: __app.rb:2711
 msgid "The settings of this table are not available."
 msgstr ""
 
@@ -13988,11 +14184,11 @@ msgstr ""
 msgid "The ship does not fit there."
 msgstr ""
 
-#: lib/game_room_screens.rb:420
+#: lib/game_room_screens.rb:458
 msgid "The shortcut could not be saved. Please try again."
 msgstr ""
 
-#: __app.rb:3134
+#: __app.rb:3216
 msgid "The sound volume could not be saved."
 msgstr ""
 
@@ -14010,19 +14206,19 @@ msgstr ""
 msgid "The table and score use Game Room's normal session; movement uses Communications. During a human match, each player calculates their own flight and return locally. Lost or delayed paddle-position updates alone do not stop the ball. Serves, returns and misses travel separately in order. An actual connection failure pauses the rally; a replacement connection restarts the unfinished point with the confirmed score unchanged. Observers may listen but cannot control a paddle. Unfinished matches cannot currently be saved."
 msgstr ""
 
-#: __app.rb:2898 __app.rb:3039 __app.rb:3058
+#: __app.rb:2980 __app.rb:3121 __app.rb:3140
 msgid "The table changed while you were editing. Open its settings again."
 msgstr ""
 
-#: lib/game_room_widget.rb:172
+#: lib/game_room_widget.rb:188
 msgid "The table could not be created. Please try again."
 msgstr ""
 
-#: lib/game_room_widget.rb:279
+#: lib/game_room_widget.rb:296
 msgid "The table could not be opened. Please try again."
 msgstr ""
 
-#: games/krowa_support/presentation.rb:36
+#: games/krowa_support/presentation.rb:44
 msgid "The table creator can save a Race or Word Tower while a word is being guessed, once all submitted attempts have been checked. The local save lets you resume the game with the same players at a new table. Solo games cannot be saved for later."
 msgstr ""
 
@@ -14047,7 +14243,7 @@ msgstr ""
 msgid "The table is empty."
 msgstr ""
 
-#: __app.rb:1101
+#: __app.rb:1115
 msgid "The table is waiting for the original players. Start the game when everyone has joined."
 msgstr ""
 
@@ -14088,7 +14284,11 @@ msgstr ""
 msgid "The table owner can disable card exchange in the game options. When it is disabled, every deal goes directly from contract selection to taking the kitty."
 msgstr ""
 
-#: games/krowa.rb:103
+#: lib/table_roster_reader.rb:39 lib/table_roster_reader.rb:49
+msgid "The table participants are currently unavailable."
+msgstr ""
+
+#: games/krowa.rb:104
 msgid "The table will be closed."
 msgstr ""
 
@@ -14133,12 +14333,16 @@ msgstr ""
 msgid "The target score was reached."
 msgstr ""
 
-#: games/categories.rb:1014
+#: games/categories.rb:1016
 msgid "The target score was reached. The final judge cycle has begun."
 msgstr ""
 
 #: games/scrabble.rb:165
 msgid "The tiles have been dealt."
+msgstr ""
+
+#: games/krowa_support/presentation.rb:37
+msgid "The tower ends when you run out of attempts or the host gives up. Your score is the number of completed rounds. The round list in the leaderboard contains the words and attempt counts."
 msgstr ""
 
 #: games/scientific_war.rb:176
@@ -14170,12 +14374,16 @@ msgstr ""
 msgid "The upper-section bonus adds 35 points if the six upper rows total at least 63. It is enabled by default. You do not need three of each value separately: a strong result in Sixes can compensate for a weak result in Ones. Switching the bonus off leaves the rows themselves unchanged."
 msgstr ""
 
-#: __app.rb:2748 __app.rb:2886
+#: __app.rb:2830 __app.rb:2968
 msgid "The users at the table changed while teams were being selected. Please start again."
 msgstr ""
 
 #: games/domino.rb:34
 msgid "The whole team must finish"
+msgstr ""
+
+#: lib/game_room_changelog.rb:310
+msgid "The widget and join list hide tables with a game in progress after 45 minutes without activity. This does not close the table; resuming the game or chat makes it visible again."
 msgstr ""
 
 #: lib/game_room_changelog.rb:206
@@ -14196,7 +14404,7 @@ msgstr ""
 msgid "The word cannot contain an empty gap."
 msgstr ""
 
-#: games/krowa_support/presentation.rb:162
+#: games/krowa_support/presentation.rb:170
 msgid "The word was guessed. Attempts: %{count}."
 msgstr ""
 
@@ -14236,23 +14444,23 @@ msgstr ""
 msgid "There are no melds on the table."
 msgstr ""
 
-#: games/categories.rb:782
+#: games/categories.rb:784
 msgid "There are no non-empty answers to review"
 msgstr ""
 
-#: __app.rb:1782
+#: __app.rb:1838
 msgid "There are no online contacts available to invite."
 msgstr ""
 
-#: __app.rb:1782
+#: __app.rb:1838
 msgid "There are no online users available to invite."
 msgstr ""
 
-#: __app.rb:1187
+#: __app.rb:1201
 msgid "There are no open tables for this game."
 msgstr ""
 
-#: __app.rb:1142
+#: __app.rb:1156
 msgid "There are no open tables."
 msgstr ""
 
@@ -14260,7 +14468,7 @@ msgstr ""
 msgid "There are no optional board sizes or alternative placement rules in this game. Either player can be a bot."
 msgstr ""
 
-#: __app.rb:1889
+#: __app.rb:1945
 msgid "There are no pending invitations."
 msgstr ""
 
@@ -14287,6 +14495,12 @@ msgstr ""
 #: games/audio_ball.rb:214
 msgid "There is a short break before the next serve after an ordinary point, and a five-second break between sets. The game automatically announces the set number and who is serving. You do not need to request these announcements."
 msgstr ""
+
+#: __app.rb:3247
+msgid "There is currently %{current} user at the table."
+msgid_plural "There are currently %{current} users at the table."
+msgstr[0] ""
+msgstr[1] ""
 
 #: games/base.rb:1374 games/board_game.rb:231
 msgid "There is no active turn."
@@ -14317,7 +14531,7 @@ msgstr ""
 msgid "There is no selectable piece on this field."
 msgstr ""
 
-#: games/categories.rb:1391
+#: games/categories.rb:1393
 msgid "There is no time limit in this game."
 msgstr ""
 
@@ -14328,7 +14542,7 @@ msgstr ""
 msgid "There is no trump suit."
 msgstr ""
 
-#: __app.rb:1706
+#: __app.rb:1762
 msgid "There is nobody available to replace this player."
 msgstr ""
 
@@ -14351,7 +14565,7 @@ msgstr ""
 msgid "These penalties depend on an increase. Subtracting from 43 to 33, or leaving 33 unchanged with a nine, does not charge anyone. Doubling 33 to 66 does count as an increase to an exact threshold."
 msgstr ""
 
-#: games/categories.rb:1331
+#: games/categories.rb:1333
 msgid "Thing"
 msgstr ""
 
@@ -14434,7 +14648,7 @@ msgstr ""
 msgid "This 1000 card game variant requires exactly %{count} players."
 msgstr ""
 
-#: lib/axel_pong/client.rb:51
+#: lib/axel_pong/client.rb:53
 msgid "This ELTEN version does not provide Communications."
 msgstr ""
 
@@ -14446,15 +14660,15 @@ msgstr ""
 msgid "This Tysiac variant requires exactly %{count} players."
 msgstr ""
 
-#: games/krowa_support/leaderboards.rb:106
+#: games/krowa_support/leaderboards.rb:126
 msgid "This Word Tower result has already been published."
 msgstr ""
 
-#: lib/game_screen.rb:1455 lib/game_screen.rb:1934
+#: lib/game_screen.rb:1277 lib/game_screen.rb:1671
 msgid "This action contains too much data and was not sent."
 msgstr ""
 
-#: games/rummy_ui.rb:183 games/rummy_ui.rb:192 lib/game_surfaces/meld_cards.rb:375 lib/game_surfaces/word_board.rb:117
+#: games/rummy_ui.rb:183 games/rummy_ui.rb:192 lib/game_surfaces/meld_cards.rb:376 lib/game_surfaces/word_board.rb:117
 msgid "This action is not available now."
 msgstr ""
 
@@ -14525,12 +14739,20 @@ msgstr ""
 msgid "This game has already finished."
 msgstr ""
 
-#: __app.rb:2713 __app.rb:2964 __app.rb:3155
+#: __app.rb:2795 __app.rb:3046 __app.rb:3237
 msgid "This game is not supported by this version of ELTEN Game Room."
+msgstr ""
+
+#: __app.rb:3243
+msgid "This game requires exactly %{required} players."
 msgstr ""
 
 #: __app.rb:3160
 msgid "This game requires exactly %{required} players. There are currently %{current} users at the table."
+msgstr ""
+
+#: __app.rb:3245
+msgid "This game requires from %{minimum} to %{maximum} players."
 msgstr ""
 
 #: __app.rb:3165
@@ -14543,11 +14765,11 @@ msgstr ""
 msgid "This implementation keeps the contributed 87-card deck: 45 category cards, 18 Gold cards and 24 Church cards. Before play, the game removes two Gold cards of each value and 21 random cards for two players, one Gold card of each value and 12 random cards for three, or seven random cards for four. You do not know the random removals, so not every card is guaranteed to appear."
 msgstr ""
 
-#: __app.rb:1972 __app.rb:1992 __app.rb:469
+#: __app.rb:2028 __app.rb:2048 __app.rb:471
 msgid "This invitation has expired."
 msgstr ""
 
-#: __app.rb:1901 __app.rb:1997 __app.rb:2114
+#: __app.rb:1957 __app.rb:2053 __app.rb:2181
 msgid "This invitation is no longer available."
 msgstr ""
 
@@ -14571,27 +14793,27 @@ msgstr ""
 msgid "This move would leave your king in check."
 msgstr ""
 
-#: games/krowa.rb:279
+#: games/krowa.rb:280
 msgid "This noun is not in the dictionary."
 msgstr ""
 
-#: __app.rb:1713
+#: __app.rb:1769
 msgid "This participant cannot replace the selected player."
 msgstr ""
 
-#: games/ludo.rb:205
+#: games/ludo.rb:241
 msgid "This pawn cannot move after the current roll."
 msgstr ""
 
-#: __app.rb:1699
+#: __app.rb:1755
 msgid "This player is no longer at the table."
 msgstr ""
 
-#: __app.rb:2382
+#: __app.rb:2450
 msgid "This preset needs updating. Check its game and options before creating a table."
 msgstr ""
 
-#: __app.rb:1105 __app.rb:1130
+#: __app.rb:1119 __app.rb:1144
 msgid "This saved game is not compatible with this version or is damaged."
 msgstr ""
 
@@ -14611,15 +14833,15 @@ msgstr ""
 msgid "This square has no deed."
 msgstr ""
 
-#: __app.rb:2499 __app.rb:397
+#: __app.rb:2564 __app.rb:399
 msgid "This table announcement has expired or is no longer available."
 msgstr ""
 
-#: __app.rb:1244 __app.rb:1646 __app.rb:2003 __app.rb:2073 __app.rb:2082 __app.rb:2348
+#: __app.rb:1270 __app.rb:1702 __app.rb:2059 __app.rb:2140 __app.rb:2149 __app.rb:2416
 msgid "This table is full."
 msgstr ""
 
-#: __app.rb:1247 __app.rb:1647 __app.rb:1816 __app.rb:1997 __app.rb:2073 __app.rb:2085 __app.rb:2350 __app.rb:2512 __app.rb:480 lib/game_table_background.rb:116
+#: __app.rb:1273 __app.rb:1703 __app.rb:1872 __app.rb:2053 __app.rb:2140 __app.rb:2152 __app.rb:2418 __app.rb:2577 __app.rb:482 lib/game_table_background.rb:116 lib/table_roster_reader.rb:41
 msgid "This table is no longer available."
 msgstr ""
 
@@ -14643,22 +14865,22 @@ msgstr ""
 msgid "This trade is no longer valid. Check the player, properties and available cash."
 msgstr ""
 
-#: __app.rb:1814
+#: __app.rb:1870
 msgid "This user is already at the table."
 msgstr ""
 
-#: lib/game_screen.rb:1200
+#: lib/game_screen.rb:1018
 msgid "This value is not allowed."
 msgstr ""
 
 msgid "This variant deals five private cards and has no community cards. The first betting round is followed by one exchange phase, a second betting round and showdown. Keep all five or exchange up to three selected cards. Allow exchanging all five cards is off by default; enabling it raises the exchange limit to five, not the number of exchange phases. Folded players do not exchange; all-in players still do."
 msgstr ""
 
-#: games/krowa.rb:158
+#: games/krowa.rb:159
 msgid "This variant is for exactly one player. Other people may only observe Random word."
 msgstr ""
 
-#: games/krowa.rb:163
+#: games/krowa.rb:164
 msgid "This variant requires %{minimum} to %{maximum} players."
 msgstr ""
 
@@ -14675,7 +14897,7 @@ msgstr ""
 msgid "This version uses the classic 8 by 8 rules without additional variants."
 msgstr ""
 
-#: games/krowa.rb:280
+#: games/krowa.rb:281
 msgid "This word has already been tried."
 msgstr ""
 
@@ -14702,7 +14924,7 @@ msgstr ""
 msgid "Three consecutive sixes lose the turn is on by default. The third six ends your turn without a move for that roll. Moves made after the first two sixes stay on the board: they are not undone."
 msgstr ""
 
-#: games/ludo.rb:479
+#: games/ludo.rb:568
 msgid "Three consecutive sixes; %{player}'s turn ends."
 msgstr ""
 
@@ -14729,6 +14951,10 @@ msgid "Three players"
 msgstr ""
 
 msgid "Three shots, one opponent"
+msgstr ""
+
+#: games/krowa_support/presentation.rb:31
+msgid "Three-letter words: 15 attempts"
 msgstr ""
 
 #: games/taboo_ui.rb:60
@@ -14777,7 +15003,7 @@ msgstr ""
 msgid "Time for one answer in seconds"
 msgstr ""
 
-#: games/categories.rb:593 games/quiz_party.rb:426
+#: games/categories.rb:595 games/quiz_party.rb:426
 msgid "Time is up."
 msgstr ""
 
@@ -14816,7 +15042,7 @@ msgstr ""
 msgid "To place a ship, press Enter at one end, move to the other end and press Enter again. For a one-square ship, choose the same square twice. For example, A1 followed by A4 places a four-square ship vertically. You can place ships of any available length in any order; the program tells you which lengths remain."
 msgstr ""
 
-#: __app.rb:2705
+#: __app.rb:2787
 msgid "To use the new game rules, create a table in Game Room 2.0. All players need version 2.0 or later."
 msgstr ""
 
@@ -14896,7 +15122,7 @@ msgstr ""
 msgid "Transfer table master"
 msgstr ""
 
-#: lib/participant_menu.rb:133 lib/participant_menu.rb:161
+#: lib/participant_menu.rb:149 lib/participant_menu.rb:177
 msgid "Transfer table master to this person"
 msgstr ""
 
@@ -14949,6 +15175,10 @@ msgstr ""
 
 #: lib/game_room_changelog.rb:134
 msgid "Turn-time settings are now consistent across UNO, Makao, Domino, Mexican Train, Rummy, Scrabble, 99 and Poker. The limit is off by default. Timeouts follow each game's rules and never choose and play a card for you."
+msgstr ""
+
+#: games/ludo.rb:204 games/ludo.rb:333 games/ludo.rb:389
+msgid "Turn: %{player}."
 msgstr ""
 
 #: games/rummy_ui.rb:144
@@ -15078,7 +15308,7 @@ msgstr ""
 msgid "Twos, threes, fours and kings"
 msgstr ""
 
-#: __app.rb:1481 lib/game_screen.rb:700
+#: __app.rb:1519 lib/game_screen.rb:683
 msgid "Type a chat message first."
 msgstr ""
 
@@ -15165,7 +15395,7 @@ msgstr ""
 msgid "Unique, 10 points"
 msgstr ""
 
-#: games/categories.rb:777
+#: games/categories.rb:779
 msgid "Unique, 2 points"
 msgstr ""
 
@@ -15240,15 +15470,15 @@ msgstr ""
 msgid "Updated Krowa's rules, with descriptions of its modes and controls in Polish and English."
 msgstr ""
 
-#: lib/game_screen.rb:178 lib/game_screen.rb:421 lib/game_screen.rb:937
+#: lib/game_screen.rb:174 lib/game_screen.rb:392 lib/game_screen.rb:835
 msgid "Updating game"
 msgstr ""
 
-#: __app.rb:1394 __app.rb:1582 __app.rb:1591 __app.rb:1602 __app.rb:1670 __app.rb:1718 __app.rb:2873 __app.rb:2882 __app.rb:3022 __app.rb:3035 __app.rb:3076 lib/game_screen.rb:238 lib/game_screen.rb:910
+#: __app.rb:1421 __app.rb:1623 __app.rb:1632 __app.rb:1643 __app.rb:1726 __app.rb:1774 __app.rb:2955 __app.rb:2964 __app.rb:3104 __app.rb:3117 __app.rb:3158 lib/game_screen.rb:232 lib/game_screen.rb:808
 msgid "Updating table"
 msgstr ""
 
-#: lib/game_screen.rb:1703
+#: lib/game_screen.rb:1530
 msgid "Updating table status"
 msgstr ""
 
@@ -15325,18 +15555,18 @@ msgstr ""
 msgid "Use two jokers adds two cards that can represent an ordinary or special card. You choose what the joker represents when playing it. It only defends a penalty if the represented card would be a legal defence. Representing an ace, jack or king uses its special effect only when that effect is enabled at the table."
 msgstr ""
 
-#: games/krowa_support/leaderboards.rb:71
+#: games/krowa_support/leaderboards.rb:182 games/krowa_support/leaderboards.rb:74
 msgid "User"
 msgstr ""
 
-#: lib/game_screen.rb:1714
+#: lib/game_screen.rb:1541
 msgid "Users at the table (%{count})"
 msgstr ""
 
 msgid "Users at the table. %{name}; %{game}; host: %{owner}; %{count}/%{maximum}"
 msgstr ""
 
-#: __app.rb:2613
+#: __app.rb:2695
 msgid "Users at the table. %{status}; %{name}; %{game}; host: %{owner}; %{count}/%{maximum}"
 msgstr ""
 
@@ -15420,7 +15650,7 @@ msgstr ""
 msgid "Variants and table options"
 msgstr ""
 
-#: games/categories.rb:1338
+#: games/categories.rb:1340
 msgid "Vehicle"
 msgstr ""
 
@@ -15482,7 +15712,7 @@ msgstr ""
 msgid "W: select the first lane, or make the first shot after preparing."
 msgstr ""
 
-#: games/krowa.rb:281
+#: games/krowa.rb:282
 msgid "Wait for the round to start."
 msgstr ""
 
@@ -15494,7 +15724,7 @@ msgstr ""
 msgid "Wait until the current game has finished before changing its controller."
 msgstr ""
 
-#: games/krowa.rb:128
+#: games/krowa.rb:129
 msgid "Wait until the current word and all attempts have been checked before saving."
 msgstr ""
 
@@ -15504,7 +15734,7 @@ msgstr ""
 msgid "Waiting for %{owner} to start a game."
 msgstr ""
 
-#: games/ludo.rb:329 games/makao.rb:399 games/poker.rb:357 games/uno.rb:1563
+#: games/makao.rb:399 games/poker.rb:357 games/uno.rb:1563
 msgid "Waiting for %{player}"
 msgstr ""
 
@@ -15528,19 +15758,23 @@ msgstr ""
 msgid "Waiting for %{player} to roll."
 msgstr ""
 
-#: lib/game_layout.rb:283
+#: games/ludo.rb:417
+msgid "Waiting for a move: %{player}"
+msgstr ""
+
+#: lib/game_layout.rb:291
 msgid "Waiting for a new game to start"
 msgstr ""
 
-#: games/categories.rb:741
+#: games/categories.rb:743
 msgid "Waiting for answers from: %{players}."
 msgstr ""
 
-#: lib/audio_ball/client.rb:578
+#: lib/audio_ball/client.rb:584
 msgid "Waiting for players."
 msgstr ""
 
-#: games/categories.rb:737
+#: games/categories.rb:739
 msgid "Waiting for submitted answers to be revealed."
 msgstr ""
 
@@ -15552,7 +15786,7 @@ msgstr ""
 msgid "Waiting for the describing player."
 msgstr ""
 
-#: lib/game_layout.rb:283
+#: lib/game_layout.rb:291
 msgid "Waiting for the game to start"
 msgstr ""
 
@@ -15560,11 +15794,11 @@ msgstr ""
 msgid "Waiting for the next deal."
 msgstr ""
 
-#: games/krowa_support/presentation.rb:74
+#: games/krowa_support/presentation.rb:82
 msgid "Waiting for the next round"
 msgstr ""
 
-#: lib/axel_pong/client.rb:502
+#: lib/axel_pong/client.rb:508
 msgid "Waiting for the next serve."
 msgstr ""
 
@@ -15584,11 +15818,11 @@ msgstr ""
 msgid "Waiting for the players to answer."
 msgstr ""
 
-#: games/categories.rb:726
+#: games/categories.rb:728
 msgid "Waiting for the players to finish answering."
 msgstr ""
 
-#: lib/audio_ball/client.rb:573
+#: lib/audio_ball/client.rb:579
 msgid "Waiting for the point to be saved."
 msgstr ""
 
@@ -15596,7 +15830,7 @@ msgstr ""
 msgid "Waiting for the private solution."
 msgstr ""
 
-#: __app.rb:1120
+#: __app.rb:1134
 msgid "Waiting for these players: %{players}."
 msgstr ""
 
@@ -15683,7 +15917,7 @@ msgstr ""
 msgid "What your card will do"
 msgstr ""
 
-#: __app.rb:234 lib/game_room_screens.rb:61
+#: __app.rb:236 lib/game_room_screens.rb:61
 msgid "What's new"
 msgstr ""
 
@@ -15837,7 +16071,7 @@ msgstr ""
 msgid "Whole team finish mode changes this: all teammates must empty their hands before the team ends the round. Players who already finished are skipped and do not draw again. The option is off by default and appears only for team play. Elimination and the final result use team totals."
 msgstr ""
 
-#: lib/game_room_screens.rb:176
+#: lib/game_room_screens.rb:180
 msgid "Widget"
 msgstr ""
 
@@ -15932,15 +16166,15 @@ msgstr ""
 msgid "With three players, each receives seven cards and the three remaining cards form one talon. The auction winner takes those three revealed cards, then gives one card to each opponent in the announced order. Each recipient learns only their own card. Everyone then has eight cards, to be played in eight tricks."
 msgstr ""
 
-#: games/krowa_support/leaderboards.rb:149 games/krowa_support/leaderboards.rb:189
+#: games/krowa_support/leaderboards.rb:152 games/krowa_support/leaderboards.rb:229 games/krowa_support/leaderboards.rb:269
 msgid "Word"
 msgstr ""
 
-#: games/krowa.rb:110
+#: games/krowa.rb:111
 msgid "Word Tower"
 msgstr ""
 
-#: games/krowa_support/presentation.rb:159
+#: games/krowa_support/presentation.rb:167
 msgid "Word Tower ended. Completed rounds: %{count}."
 msgstr ""
 
@@ -15948,15 +16182,15 @@ msgstr ""
 msgid "Word Tower ends when the limit is exhausted or the host surrenders. Its score is the number of completed rounds; the round list contains words and attempt counts."
 msgstr ""
 
-#: games/krowa_support/leaderboards.rb:172 games/krowa_support/leaderboards.rb:31
+#: games/krowa_support/leaderboards.rb:252 games/krowa_support/leaderboards.rb:33
 msgid "Word Tower leaderboard"
 msgstr ""
 
-#: games/krowa_support/leaderboards.rb:102
+#: games/krowa_support/leaderboards.rb:122
 msgid "Word Tower result published."
 msgstr ""
 
-#: games/krowa_support/leaderboards.rb:191
+#: games/krowa_support/leaderboards.rb:271
 msgid "Word Tower: %{participants}"
 msgstr ""
 
@@ -15964,11 +16198,11 @@ msgstr ""
 msgid "Word board"
 msgstr ""
 
-#: games/krowa_support/client.rb:243 games/krowa_support/presentation.rb:88 games/krowa_support/presentation.rb:90
+#: games/krowa_support/client.rb:243 games/krowa_support/presentation.rb:96 games/krowa_support/presentation.rb:98
 msgid "Word definition"
 msgstr ""
 
-#: games/krowa_support/leaderboards.rb:121
+#: games/krowa_support/leaderboards.rb:201
 msgid "Word or word fragment"
 msgstr ""
 
@@ -15984,7 +16218,7 @@ msgstr ""
 msgid "Writing, judging and information"
 msgstr ""
 
-#: games/krowa.rb:279
+#: games/krowa.rb:280
 msgid "Wrong number of letters."
 msgstr ""
 
@@ -16012,15 +16246,15 @@ msgstr ""
 msgid "You answered incorrectly."
 msgstr ""
 
-#: __app.rb:955
+#: __app.rb:970
 msgid "You are already at a table."
 msgstr ""
 
-#: __app.rb:1082 __app.rb:1240 __app.rb:2088 __app.rb:2345
+#: __app.rb:1096 __app.rb:1266 __app.rb:2155 __app.rb:2413
 msgid "You are already at another table."
 msgstr ""
 
-#: __app.rb:2017
+#: __app.rb:2073
 msgid "You are already at this table."
 msgstr ""
 
@@ -16032,7 +16266,7 @@ msgstr ""
 msgid "You are imprisoned only when a field, a card or three consecutive doubles sends you there. Simply stopping on the jail field is a visit. Before a prison roll, you may pay the exit fee or use a held jail card. Otherwise you have up to three turns to roll doubles. Successful doubles release you and move you by the roll, without an extra turn. After the third failed attempt, you pay and move by that roll."
 msgstr ""
 
-#: games/ludo.rb:393 games/ludo.rb:438
+#: games/ludo.rb:481 games/ludo.rb:526
 msgid "You are not a player in this game."
 msgstr ""
 
@@ -16040,7 +16274,7 @@ msgstr ""
 msgid "You are not playing in this round."
 msgstr ""
 
-#: games/krowa_support/presentation.rb:193 lib/game_screen.rb:1349
+#: games/krowa_support/presentation.rb:201 lib/game_screen.rb:1171
 msgid "You are observing the game."
 msgstr ""
 
@@ -16056,7 +16290,7 @@ msgstr ""
 msgid "You are reviewing the answers."
 msgstr ""
 
-#: games/categories.rb:722
+#: games/categories.rb:724
 msgid "You are the judge. Wait until all players finish answering."
 msgstr ""
 
@@ -16082,7 +16316,7 @@ msgstr ""
 msgid "You can assign ten table presets to Ctrl+1 through Ctrl+0. Open Game Room > Settings > Widget > Quick table creation, select a shortcut and choose Assign or edit. Select the game, its options and whether the table is private, then give the preset a name. Return to Settings and choose Save to keep the assignments; Cancel discards the edits."
 msgstr ""
 
-#: games/categories.rb:743
+#: games/categories.rb:745
 msgid "You can begin review without the missing answers."
 msgstr ""
 
@@ -16093,7 +16327,7 @@ msgstr ""
 msgid "You can exchange tiles only when at least eight remain in the bag."
 msgstr ""
 
-#: lib/axel_pong/client.rb:264
+#: lib/axel_pong/client.rb:270
 msgid "You can hurry your opponent only while waiting for their serve."
 msgstr ""
 
@@ -16107,6 +16341,10 @@ msgstr ""
 
 #: games/krowa_support/presentation.rb:21
 msgid "You can observe all the other modes if the table is open. If you join Krowa while someone is guessing a random word, you can check the word length and the list and number of their attempts. You can also write in chat: \"p in the fourth position! Seriously, the fourth letter is p!\" But I am not encouraging that."
+msgstr ""
+
+#: games/krowa_support/presentation.rb:21
+msgid "You can observe all the other modes if the table is public or you are invited to it. If you join Krowa while someone is guessing a random word, you can check the word length and the list and number of their attempts. You can also write in chat: \"p in the fourth position! Seriously, the fourth letter is p!\" But I am not encouraging that."
 msgstr ""
 
 #: games/makao.rb:74
@@ -16177,7 +16415,7 @@ msgstr ""
 msgid "You chose %{card}."
 msgstr ""
 
-#: __app.rb:959
+#: __app.rb:974
 msgid "You created a room."
 msgstr ""
 
@@ -16197,7 +16435,7 @@ msgstr ""
 msgid "You fired %{shots} shots, %{hits} of them hits, and sank %{sunk} ships."
 msgstr ""
 
-#: games/tysiac.rb:1444
+#: games/tysiac.rb:1448
 msgid "You gave %{card} to %{player}."
 msgstr ""
 
@@ -16253,7 +16491,7 @@ msgstr ""
 msgid "You have no kings."
 msgstr ""
 
-#: games/base.rb:1131 lib/game_surfaces.rb:899 lib/game_surfaces/packet_cards.rb:192
+#: games/base.rb:1131 lib/game_surfaces.rb:923 lib/game_surfaces/packet_cards.rb:192
 msgid "You have no playable card."
 msgstr ""
 
@@ -16265,7 +16503,7 @@ msgstr ""
 msgid "You have no properties available to mortgage now."
 msgstr ""
 
-#: __app.rb:1022
+#: __app.rb:1036
 msgid "You have no saved games."
 msgstr ""
 
@@ -16292,7 +16530,7 @@ msgstr ""
 msgid "You hold your cards in your hand and choose which one to play. The cards in your hand are always listed from the lowest to the highest, with the joker last. The cards you win go to a separate pile."
 msgstr ""
 
-#: __app.rb:2171
+#: __app.rb:2238
 msgid "You joined %{player}'s room."
 msgstr ""
 
@@ -16316,7 +16554,7 @@ msgstr ""
 msgid "You may also enable a cap on raises per betting round. The cap defaults to 3 and can be 1–10. It is shared by the whole table, not a separate allowance for every player, and resets when the next betting round starts. Without this option there is no numerical cap on raises."
 msgstr ""
 
-#: games/farkle.rb:710
+#: games/farkle.rb:713
 msgid "You may bank from %{minimum} points."
 msgstr ""
 
@@ -16402,7 +16640,7 @@ msgstr ""
 msgid "You play the part of an abbot at the head of a monastery, seeking to amass the most illustrious library. The goal is to earn the most Victory Points by having a higher score in a category than anyone else."
 msgstr ""
 
-#: games/ludo.rb:337
+#: games/ludo.rb:425
 msgid "You rolled %{value}. Choose a pawn to move"
 msgstr ""
 
@@ -16430,11 +16668,11 @@ msgstr ""
 msgid "You want as few points as possible. The round winner receives zero; everyone else adds the value of cards still held. Number cards count their number, coloured action cards 20 and wild cards 50. The elimination limit is normally 500, configurable from 50 to 5000. Players reaching it leave after the round, while the others continue. The last remaining player wins the whole game."
 msgstr ""
 
-#: __app.rb:1664
+#: __app.rb:1720
 msgid "You will observe the next game."
 msgstr ""
 
-#: __app.rb:1664
+#: __app.rb:1720
 msgid "You will play in the next game."
 msgstr ""
 
@@ -16481,11 +16719,11 @@ msgstr ""
 msgid "Your answer was sent. Waiting for the other players."
 msgstr ""
 
-#: games/categories.rb:733
+#: games/categories.rb:735
 msgid "Your answers have been revealed. Waiting for the other players."
 msgstr ""
 
-#: games/categories.rb:724
+#: games/categories.rb:726
 msgid "Your answers were submitted. Waiting for the other players."
 msgstr ""
 
@@ -16548,15 +16786,15 @@ msgstr ""
 msgid "Your fleet: %{left} of %{total} squares afloat."
 msgstr ""
 
-#: games/krowa_support/presentation.rb:32
+#: games/krowa_support/presentation.rb:39
 msgid "Your gallery, dictionary and rankings"
 msgstr ""
 
-#: games/krowa_support/presentation.rb:194
+#: games/krowa_support/presentation.rb:202
 msgid "Your game is over. Waiting for the other players."
 msgstr ""
 
-#: games/card_game.rb:75 games/makao.rb:399 games/ninety_nine.rb:381 games/rummy_ui.rb:60 games/spades.rb:2560 games/three_five_eight.rb:983 games/three_five_eight.rb:985 games/three_five_eight.rb:987 games/tysiac.rb:1439 games/uno.rb:458
+#: games/card_game.rb:75 games/makao.rb:399 games/ninety_nine.rb:381 games/rummy_ui.rb:60 games/spades.rb:2560 games/three_five_eight.rb:983 games/three_five_eight.rb:985 games/three_five_eight.rb:987 games/tysiac.rb:1443 games/uno.rb:458
 msgid "Your hand"
 msgstr ""
 
@@ -16570,11 +16808,11 @@ msgid_plural "Your hand is empty, so you take %{count} cards from your pile into
 msgstr[0] ""
 msgstr[1] ""
 
-#: games/makao.rb:977 games/ninety_nine.rb:903 games/spades.rb:2636 games/three_five_eight.rb:993 games/tysiac.rb:1517
+#: games/makao.rb:977 games/ninety_nine.rb:903 games/spades.rb:2636 games/three_five_eight.rb:993 games/tysiac.rb:1521
 msgid "Your hand is empty."
 msgstr ""
 
-#: games/ninety_nine.rb:905 games/spades.rb:2638 games/three_five_eight.rb:994 games/tysiac.rb:1518
+#: games/ninety_nine.rb:905 games/spades.rb:2638 games/three_five_eight.rb:994 games/tysiac.rb:1522
 msgid "Your hand: %{cards}."
 msgstr ""
 
@@ -16632,7 +16870,7 @@ msgstr ""
 msgid "Your paddle volume"
 msgstr ""
 
-#: games/ludo.rb:278
+#: games/ludo.rb:314
 msgid "Your pawns"
 msgstr ""
 
@@ -16874,7 +17112,7 @@ msgstr ""
 msgid "answered"
 msgstr ""
 
-#: games/categories.rb:1436 games/quiz_party.rb:439
+#: games/categories.rb:1438 games/quiz_party.rb:439
 msgid "answering"
 msgstr ""
 
@@ -16894,7 +17132,7 @@ msgstr ""
 msgid "bankrupt"
 msgstr ""
 
-#: games/ludo.rb:660
+#: games/ludo.rb:753
 msgid "base"
 msgstr ""
 
@@ -16946,7 +17184,7 @@ msgstr ""
 msgid "blinds %{small}/%{big}"
 msgstr ""
 
-#: games/ludo.rb:314 games/uno.rb:16
+#: games/ludo.rb:350 games/uno.rb:16
 msgid "blue"
 msgstr ""
 
@@ -16958,7 +17196,7 @@ msgstr ""
 msgid "brown group"
 msgstr ""
 
-#: games/ludo.rb:284
+#: games/ludo.rb:320
 msgid "browse all pawns"
 msgstr ""
 
@@ -17002,7 +17240,7 @@ msgstr ""
 msgid "browse your library"
 msgstr ""
 
-#: games/ludo.rb:277
+#: games/ludo.rb:313
 msgid "browse your pawns"
 msgstr ""
 
@@ -17022,11 +17260,11 @@ msgstr ""
 msgid "buzzer"
 msgstr ""
 
-#: games/krowa.rb:169
+#: games/krowa.rb:170
 msgid "by number of attempts"
 msgstr ""
 
-#: games/krowa.rb:169
+#: games/krowa.rb:170
 msgid "by time"
 msgstr ""
 
@@ -17096,6 +17334,10 @@ msgstr ""
 msgid "chess coordinates"
 msgstr ""
 
+#: games/chess.rb:299 games/chess.rb:901
+msgid "chess queen"
+msgstr ""
+
 #: games/quiz_party.rb:435
 msgid "choosing a category"
 msgstr ""
@@ -17150,7 +17392,7 @@ msgstr ""
 msgid "crowns"
 msgstr ""
 
-#: games/categories.rb:1362
+#: games/categories.rb:1364
 msgid "custom category pool"
 msgstr ""
 
@@ -17194,7 +17436,7 @@ msgstr ""
 msgid "discard the current card immediately"
 msgstr ""
 
-#: games/base.rb:713 games/categories.rb:599 games/quiz_party.rb:431
+#: games/base.rb:713 games/categories.rb:601 games/quiz_party.rb:431
 msgid "disconnected"
 msgstr ""
 
@@ -17249,7 +17491,7 @@ msgstr ""
 msgid "duplicate, 5 points"
 msgstr ""
 
-#: games/categories.rb:1359
+#: games/categories.rb:1361
 msgid "easy category pool"
 msgstr ""
 
@@ -17285,15 +17527,15 @@ msgstr ""
 msgid "exchange tiles"
 msgstr ""
 
-#: games/ludo.rb:661
+#: games/ludo.rb:754
 msgid "finish"
 msgstr ""
 
-#: games/categories.rb:604 games/quiz_party.rb:434
+#: games/categories.rb:606 games/quiz_party.rb:434
 msgid "finished"
 msgstr ""
 
-#: games/categories.rb:609
+#: games/categories.rb:611
 msgid "finished writing"
 msgstr ""
 
@@ -17317,15 +17559,31 @@ msgstr ""
 msgid "four of a kind"
 msgstr ""
 
+#: games/ludo.rb:400
+msgid "from home lane %{position}"
+msgstr ""
+
+#: games/ludo.rb:398
+msgid "from the base"
+msgstr ""
+
+#: games/ludo.rb:399
+msgid "from the finish"
+msgstr ""
+
+#: games/ludo.rb:401
+msgid "from track %{position}"
+msgstr ""
+
 #: games/poker.rb:892
 msgid "full house"
 msgstr ""
 
-#: games/categories.rb:1435
+#: games/categories.rb:1437
 msgid "game finished"
 msgstr ""
 
-#: __app.rb:2683
+#: __app.rb:2765
 msgid "game in progress"
 msgstr ""
 
@@ -17357,7 +17615,7 @@ msgstr ""
 msgid "gray group"
 msgstr ""
 
-#: games/ludo.rb:314 games/uno.rb:16
+#: games/ludo.rb:350 games/uno.rb:16
 msgid "green"
 msgstr ""
 
@@ -17365,11 +17623,11 @@ msgstr ""
 msgid "green group"
 msgstr ""
 
-#: games/krowa_support/leaderboards.rb:185 games/krowa_support/presentation.rb:153
+#: games/krowa_support/leaderboards.rb:265 games/krowa_support/presentation.rb:161
 msgid "guessed"
 msgstr ""
 
-#: games/categories.rb:1361
+#: games/categories.rb:1363
 msgid "hard category pool"
 msgstr ""
 
@@ -17392,7 +17650,7 @@ msgstr ""
 msgid "home lane"
 msgstr ""
 
-#: games/ludo.rb:663
+#: games/ludo.rb:756
 msgid "home lane %{position} of %{total}"
 msgstr ""
 
@@ -17412,11 +17670,11 @@ msgstr ""
 msgid "hurry the opponent holding the ball"
 msgstr ""
 
-#: games/categories.rb:1111
+#: games/categories.rb:1113
 msgid "identical answer from %{count} players"
 msgstr ""
 
-#: games/categories.rb:1150
+#: games/categories.rb:1152
 msgid "identical, 1 point"
 msgstr ""
 
@@ -17427,7 +17685,7 @@ msgstr ""
 msgid "in the draft"
 msgstr ""
 
-#: games/categories.rb:1151
+#: games/categories.rb:1153
 msgid "incorrect, 0 points"
 msgstr ""
 
@@ -17447,11 +17705,11 @@ msgstr ""
 msgid "joker as %{card}"
 msgstr ""
 
-#: games/categories.rb:602
+#: games/categories.rb:604
 msgid "judge"
 msgstr ""
 
-#: games/categories.rb:603
+#: games/categories.rb:605
 msgid "judging"
 msgstr ""
 
@@ -17524,11 +17782,11 @@ msgstr ""
 msgid "main pot"
 msgstr ""
 
-#: games/spades.rb:753 games/tysiac.rb:1506
+#: games/spades.rb:753 games/tysiac.rb:1510
 msgid "make a bid"
 msgstr ""
 
-#: games/categories.rb:1360
+#: games/categories.rb:1362
 msgid "medium category pool"
 msgstr ""
 
@@ -17601,7 +17859,7 @@ msgstr ""
 msgid "none"
 msgstr ""
 
-#: games/spades.rb:2609 games/spades.rb:2686 games/tysiac.rb:1564
+#: games/spades.rb:2609 games/spades.rb:2686 games/tysiac.rb:1568
 msgid "not bid yet"
 msgstr ""
 
@@ -17609,7 +17867,7 @@ msgstr ""
 msgid "not filled"
 msgstr ""
 
-#: games/krowa_support/leaderboards.rb:185 games/krowa_support/presentation.rb:153
+#: games/krowa_support/leaderboards.rb:265 games/krowa_support/presentation.rb:161
 msgid "not guessed"
 msgstr ""
 
@@ -17641,7 +17899,7 @@ msgstr ""
 msgid "one pair"
 msgstr ""
 
-#: __app.rb:2683 games/mexican_train.rb:204
+#: __app.rb:2765 games/mexican_train.rb:204
 msgid "open"
 msgstr ""
 
@@ -17661,7 +17919,7 @@ msgstr ""
 msgid "out of this round"
 msgstr ""
 
-#: games/categories.rb:1149
+#: games/categories.rb:1151
 msgid "partially correct, 1 point"
 msgstr ""
 
@@ -17676,7 +17934,7 @@ msgstr ""
 msgid "pass your turn"
 msgstr ""
 
-#: games/tysiac.rb:1565
+#: games/tysiac.rb:1569
 msgid "passed"
 msgstr ""
 
@@ -17767,7 +18025,12 @@ msgstr ""
 msgid "purple group"
 msgstr ""
 
-#: games/card_game.rb:54 games/chess.rb:299 games/chess.rb:901 games/makao.rb:27 games/ninety_nine.rb:34 games/poker.rb:34 games/spades.rb:40 games/three_five_eight.rb:35 games/tysiac.rb:25
+#: games/card_game.rb:54 games/makao.rb:27 games/ninety_nine.rb:34 games/poker.rb:34 games/spades.rb:40 games/three_five_eight.rb:35 games/tysiac.rb:25
+msgid "queen"
+msgstr ""
+
+#: games/chess.rb:299 games/chess.rb:901
+msgctxt "chess"
 msgid "queen"
 msgstr ""
 
@@ -17783,7 +18046,7 @@ msgstr ""
 msgid "raise"
 msgstr ""
 
-#: games/krowa.rb:168
+#: games/krowa.rb:169
 msgid "random length"
 msgstr ""
 
@@ -17827,12 +18090,16 @@ msgstr ""
 msgid "read player positions"
 msgstr ""
 
-#: games/ludo.rb:259
+#: games/ludo.rb:295
 msgid "read players' colours"
 msgstr ""
 
 #: games/audio_ball.rb:177
 msgid "read points and sets"
+msgstr ""
+
+#: games/ludo.rb:288
+msgid "read positions: %{player}"
 msgstr ""
 
 #: games/rummy_ui.rb:83
@@ -17938,7 +18205,7 @@ msgstr ""
 msgid "read the observed player's paddle position"
 msgstr ""
 
-#: games/ludo.rb:271
+#: games/ludo.rb:307
 msgid "read the opponents' pawn positions"
 msgstr ""
 
@@ -18066,7 +18333,7 @@ msgstr ""
 msgid "read your paddle position"
 msgstr ""
 
-#: games/ludo.rb:265
+#: games/ludo.rb:301
 msgid "read your pawn positions"
 msgstr ""
 
@@ -18094,7 +18361,7 @@ msgstr ""
 msgid "receive %{property}"
 msgstr ""
 
-#: games/ludo.rb:314 games/uno.rb:16
+#: games/ludo.rb:350 games/uno.rb:16
 msgid "red"
 msgstr ""
 
@@ -18130,7 +18397,7 @@ msgstr ""
 msgid "restore acquisition order"
 msgstr ""
 
-#: games/categories.rb:1432
+#: games/categories.rb:1434
 msgid "revealing answers"
 msgstr ""
 
@@ -18138,7 +18405,7 @@ msgstr ""
 msgid "reverse"
 msgstr ""
 
-#: games/categories.rb:1433
+#: games/categories.rb:1435
 msgid "reviewing answers"
 msgstr ""
 
@@ -18154,7 +18421,7 @@ msgstr ""
 msgid "rotating judge"
 msgstr ""
 
-#: games/categories.rb:1434
+#: games/categories.rb:1436
 msgid "round completed"
 msgstr ""
 
@@ -18198,7 +18465,7 @@ msgstr ""
 msgid "sell a building"
 msgstr ""
 
-#: games/tysiac.rb:1506
+#: games/tysiac.rb:1510
 msgid "set the final contract"
 msgstr ""
 
@@ -18269,11 +18536,11 @@ msgstr ""
 msgid "sunk"
 msgstr ""
 
-#: games/krowa_support/presentation.rb:153
+#: games/krowa_support/presentation.rb:161
 msgid "surrendered"
 msgstr ""
 
-#: games/ludo.rb:261
+#: games/ludo.rb:297
 msgid "switch between player names and colours"
 msgstr ""
 
@@ -18361,6 +18628,22 @@ msgstr ""
 msgid "to %{score} points; %{variants}"
 msgstr ""
 
+#: games/ludo.rb:407
+msgid "to home lane %{position}"
+msgstr ""
+
+#: games/ludo.rb:405
+msgid "to the base"
+msgstr ""
+
+#: games/ludo.rb:406
+msgid "to the finish"
+msgstr ""
+
+#: games/ludo.rb:408
+msgid "to track %{position}"
+msgstr ""
+
 msgid "toggle mouse control"
 msgstr ""
 
@@ -18371,7 +18654,7 @@ msgstr ""
 msgid "track"
 msgstr ""
 
-#: games/ludo.rb:669
+#: games/ludo.rb:762
 msgid "track %{position}"
 msgstr ""
 
@@ -18397,7 +18680,7 @@ msgstr ""
 msgid "unique, 10 points"
 msgstr ""
 
-#: games/categories.rb:1148
+#: games/categories.rb:1150
 msgid "unique, 2 points"
 msgstr ""
 
@@ -18441,7 +18724,7 @@ msgstr ""
 msgid "waiting for a game"
 msgstr ""
 
-#: games/categories.rb:613
+#: games/categories.rb:615
 msgid "waiting for the judge"
 msgstr ""
 
@@ -18449,11 +18732,11 @@ msgstr ""
 msgid "waiting for the next question"
 msgstr ""
 
-#: games/categories.rb:615
+#: games/categories.rb:617
 msgid "waiting for the next round"
 msgstr ""
 
-#: games/categories.rb:611 games/quiz_party.rb:441
+#: games/categories.rb:613 games/quiz_party.rb:441
 msgid "waiting to reveal"
 msgstr ""
 
@@ -18539,11 +18822,11 @@ msgstr ""
 msgid "write vertically"
 msgstr ""
 
-#: games/categories.rb:609
+#: games/categories.rb:611
 msgid "writing"
 msgstr ""
 
-#: games/ludo.rb:314 games/uno.rb:16
+#: games/ludo.rb:350 games/uno.rb:16
 msgid "yellow"
 msgstr ""
 

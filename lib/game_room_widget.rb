@@ -3,6 +3,7 @@ require_relative "network_errors"
 require_relative "context_help"
 require_relative "table_presets"
 require_relative "game_room_ui"
+require_relative "table_roster_reader"
 
 require_relative "game_room_localization"
 
@@ -14,7 +15,7 @@ module GameRoomWidget
     include GameRoomUI::PingControl
     attr_reader :snapshots
 
-    def initialize(loader:, opener:, labeler:, id_for:, active: -> { true }, clock: -> { Process.clock_gettime(Process::CLOCK_MONOTONIC) }, worker: nil, foreground: nil, manual_refresh: -> {}, creator: nil, invitations: nil, program: nil, on_visit: nil)
+    def initialize(loader:, opener:, labeler:, id_for:, active: -> { true }, clock: -> { Process.clock_gettime(Process::CLOCK_MONOTONIC) }, worker: nil, foreground: nil, manual_refresh: -> {}, creator: nil, invitations: nil, program: nil, on_visit: nil, roster: nil)
       @game_room_program = program
       @on_visit = on_visit
       @loader = loader
@@ -45,7 +46,13 @@ module GameRoomWidget
         empty_label: _("Loading Game Room tables")
       )
       on(:select) { open_selected }
-      bind_widget_actions if @creator || @invitations
+      if roster
+        @roster_reader = GameRoomTableRosterReader.new(loader: roster, selected: -> { selected_snapshot },
+          id_for: @id_for, active: -> { active? && !@creating && !@entry_refresh }, speaker: ->(text) { speak(text) })
+        on(:move) { @roster_reader.invalidate }
+        on(:blur) { @roster_reader.invalidate }
+      end
+      bind_widget_actions if @creator || @invitations || @roster_reader
     end
 
     def focus(*arguments)
@@ -68,6 +75,12 @@ module GameRoomWidget
       return if @entry_refresh || @creating
       if active?
         update_game_room_ping
+        @roster_reader&.update
+        if @roster_reader && GameRoomTablePresets.pressed?(self, 'w', :control)
+          GameRoomTablePresets.consume_key(self)
+          @roster_reader.request
+          return
+        end
         # Native first-press detection excludes repeats and checks the exact
         # modifiers. Consume here before ListBox's character search.
         if @invitations && GameRoomTablePresets.pressed?(self, 'j', :control)
@@ -112,6 +125,7 @@ module GameRoomWidget
     end
 
     def close
+      @roster_reader&.close
       @worker.close
     end
 
@@ -136,6 +150,7 @@ module GameRoomWidget
       # Do not register these shortcuts globally or on other main-screen tabs.
       disable_contextinglobal
       bind_context do |menu|
+        menu.option(GameRoomContent.utf8(_("Read the table participants"))) { @roster_reader.request } if @roster_reader
         menu.option(GameRoomContent.utf8(_("Accept invitation"))) { accept_invitation } if @invitations
         (@creator ? creation_actions : []).each do |_key, slot, label|
           menu.option(GameRoomContent.utf8(label)) { create_table(slot) }
@@ -143,6 +158,7 @@ module GameRoomWidget
       end
       tips = (@creator ? creation_actions : []).map { |_key, slot, label| GameRoomContextHelp.shortcut_tip(slot == nil ? 'Ctrl+N' : GameRoomTablePresets.shortcut(slot), label) }
       tips.unshift(GameRoomContextHelp.shortcut_tip('Ctrl+J', _("Accept invitation"))) if @invitations
+      tips.unshift(GameRoomContextHelp.shortcut_tip('Ctrl+W', _("Read the table participants"))) if @roster_reader
       tips << GameRoomContent.utf8(_("Ctrl+F4: read HTTP ping and available Communications relay or P2P ping.")) if @game_room_program
       GameRoomContextHelp.replace([self], tips)
     end
@@ -186,6 +202,7 @@ module GameRoomWidget
     end
 
     def refresh_on_entry
+      @roster_reader&.invalidate
       @entry_refresh = true
       @generation += 1
       @announce_refresh = false

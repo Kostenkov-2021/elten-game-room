@@ -9,6 +9,7 @@ require "fileutils"
 module GameRoomTestRunner
   ROOT = File.expand_path("..", __dir__)
   DEFAULT_TIMEOUT = 180
+  OUTPUT_DRAIN_TIMEOUT = 0.5
 
   def self.expand(entries, root: ROOT)
     Dir.chdir(root) do
@@ -29,12 +30,18 @@ module GameRoomTestRunner
     results = []
     scripts.each_with_index do |entry, index|
       started = Process.clock_gettime(Process::CLOCK_MONOTONIC)
-      captured, timed_out, status = +"", false, nil
+      captured, timed_out, status = +"".b, false, nil
       command = [entry.fetch(:env, {}), RbConfig.ruby, *entry.fetch(:ruby_args, []),
         entry.fetch(:script), *entry.fetch(:args, [])]
       Open3.popen2e(*command, chdir: root) do |input, stream, waiter|
         input.close
-        reader = Thread.new { captured << stream.read }
+        reader = Thread.new do
+          begin
+            loop { captured << stream.readpartial(16_384) }
+          rescue EOFError
+            nil
+          end
+        end
         unless waiter.join(timeout)
           timed_out = true
           # Only the owned test process, never ELTEN or another Ruby instance.
@@ -42,9 +49,20 @@ module GameRoomTestRunner
           waiter.join
         end
         status = waiter.value
-        reader.join
+        # A descendant can retain stdout even after the scenario has exited.
+        # Never let that pipe defeat the process timeout, and keep partial logs.
+        unless reader.join(OUTPUT_DRAIN_TIMEOUT)
+          timed_out = true
+          reader.kill.join
+          captured << "\nTest output did not close after the process exited.\n"
+        end
+        reader.value
+      ensure
+        reader&.kill&.join if reader&.alive?
       end
       captured = captured.encode("UTF-8", invalid: :replace, undef: :replace)
+      # readpartial preserves CRLF on Windows; match the former text-mode read.
+      captured = captured.gsub("\r\n", "\n") if File::ALT_SEPARATOR == "\\"
       outcome = timed_out ? "timeout" : !status.success? ? "failed" : captured.match?(/^\s*SKIP\b/) ? "skipped" : "passed"
       result = {test: entry.fetch(:script), outcome: outcome,
         seconds: (Process.clock_gettime(Process::CLOCK_MONOTONIC) - started).round(3),

@@ -56,7 +56,8 @@ spoken_result(game, replay, repo, event)
 assert(history.count { |e| e.text == game.result_text(replay) } == 1, "99 history lost winner")
 
 game = GameRoomGames::Ludo.new
-session = {"options"=>JSON.generate(game.default_options)}
+# This regression needs a pass on one, not the newer default exit-on-one rule.
+session = {"options"=>JSON.generate(game.normalize_options("enter_on_one"=>false))}
 events = [{"id"=>1,"actor"=>"Alice","action"=>"roll","value"=>"1"}]
 replay = game.replay(session, events, repo)
 assert(replay.state[:roll] == nil && replay.current_player == "Bob", "Ludo turn did not advance")

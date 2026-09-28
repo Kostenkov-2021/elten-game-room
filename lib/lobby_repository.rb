@@ -65,11 +65,21 @@ class LobbyRepository
     @transport.discover_rooms(game: game)
   end
 
-  def open_table_snapshots(game: nil)
-    return open_tables(game: game).map do |row|
+  def open_table_snapshots(game: nil, hide_inactive: false)
+    return open_tables(game: game).reject { |row| hide_inactive && inactive_playing_table?(row) }.map do |row|
       snapshot = @transport.room_snapshot(row)
       snapshot == nil ? TableSnapshot.new(table: row, members: [owner_of(row)], bots: bots_for(row)) : native_snapshot(snapshot)
     end
+  end
+
+  def inactive_playing_table?(row)
+    stamp = row['last_activity_at']
+    row['status'] == 'playing' && stamp.is_a?(Integer) && stamp.positive? &&
+      GameRoomClock.synchronized? && GameRoomClock.now - stamp >= 45 * 60
+  end
+
+  def discovered_roster(snapshot)
+    @transport.discovered_roster(snapshot.table)
   end
 
   def snapshot_for(row, force: false)
@@ -140,7 +150,7 @@ class LobbyRepository
   end
 
   def successor_for(snapshot, departing)
-    session = @transport.game_sessions(snapshot.table).last
+    session = @transport.game_sessions(snapshot.table).max_by { |row| row["__stack_sequence"].to_i }
     seats = session && session["__players"]
     preferred = Array(seats) + snapshot.game_participants + snapshot.members
     preferred.find { |name| GameRoomParticipants.human?(name) &&

@@ -15,6 +15,16 @@
 - Zwykła partia ma jednego wykonawcę, planowanie poza blokadą zapisu, ponowną
   walidację przed zapisem i most prezentacji na aktywnym wątku UI. Realtime
   ma osobną pętlę. Nie dodawać pracy UI/klawiatury do workera ani pollingu.
+- Nie przywracać drugiego schedulera botów w `GameScreen`: gry turowe
+  wykonuje `GameRoomSessionRunner`, boty realtime ich własny klient. Testy
+  zapisu i potwierdzania ruchów bota muszą przechodzić przez aktywnego wykonawcę.
+- Cofnięcie zamrożenia nieudanego zapisu wymaga potwierdzenia własnej granicy,
+  tej samej partii i aktualnego gospodarza. Nie odblokowywać nowszego zapisu.
+  Przyjęcie zaproszenia i zwykłe wyjście współdzielą ochronę przekazania
+  prywatnej fazy i ponawiają ją tuż przed zwolnieniem obecnego stołu.
+- Kolejność partii wynika z `__stack_sequence`, nie z losowego identyfikatora.
+  Zdalny obserwator Ponga prezentuje pełne snapshoty, bez odtwarzania od zera
+  historii odbić, której nie otrzymał. Nadal weryfikuje nadawcę i epokę.
 - Błąd programu nie jest rozłączeniem: zachować diagnostykę i zatrzymać
   ponawianie wadliwej akcji. Celowy fallback ma być jawny i ograniczony.
 - Cache prezentacji nie może pomijać zdarzeń ani dzielić mutowalnych modeli;
@@ -348,8 +358,9 @@ Szczegóły procedury: `docs/BUILDING.md`. Licencje i autorstwo zachowaj.
 
 - Po każdej zmianie pytań, odpowiedzi, podziału lub dodaniu zestawu uruchom
   `ruby tools/export-quiz-text.rb` i dołącz aktualne pliki `docs/quiz-questions/*.txt`.
-- Pliki do czytania zawierają treść, odpowiedzi A–D i wskazanie poprawnej
-  odpowiedzi, **bez identyfikatorów pytań**. Nie edytuj ich ręcznie: źródłem
+- Pliki do czytania zawierają kolejny numer w osobnej linijce przed pytaniem
+  (od 1 w każdym zestawie), treść, odpowiedzi A–D i wskazanie poprawnej
+  odpowiedzi, **bez technicznych identyfikatorów pytań**. Nie edytuj ich ręcznie: źródłem
   prawdy są zestawy w `content/`. Pełny Wiedźmin i oba podzestawy muszą być zgodne.
 - `ruby tools/export-quiz-text.rb --check` oraz `test/quiz_text_export_test.rb`
   wykrywają nieaktualne kopie. Przy nowym zestawie sprawdź także jego obecność

@@ -71,38 +71,13 @@ full, games, books_screen = packs.map(&:data)
 full_questions = full.fetch("questions")
 game_questions = games.fetch("questions")
 book_screen_questions = books_screen.fetch("questions")
-audit_path = File.expand_path("../diagnostics/quiz-factual-audit-220/WITCHER_FINAL_DECISIONS.json", File.expand_path("..", __dir__))
-audit = JSON.parse(File.read(audit_path, encoding: "UTF-8"))
-recovery_path = File.expand_path("../diagnostics/quiz-recovery-audit-after-221/ALL_RECHECK_DECISIONS.json", File.expand_path("..", __dir__))
-recovery = JSON.parse(File.read(recovery_path, encoding: "UTF-8"))
-restored_decisions = recovery.fetch("decisions").select do |row|
-  row.fetch("pack_id") == "quiz.witcher.pl" && row.fetch("decision") == "restore"
+# Portable checks use the committed correction report. The independent comparison
+# with original audit decisions is retained in historical/witcher_medium_audit_test.
+report = JSON.parse(File.read(File.expand_path('../docs/QUIZ_SEMANTIC_CORRECTIONS_239.json', __dir__), encoding: 'UTF-8'))
+expected_counts = report.fetch('summary').fetch('counts')
+packs.each do |pack|
+  assert(pack.data.fetch('questions').length == expected_counts.fetch(pack.id), 'Witcher count differs from committed report')
 end
-retained_decisions = audit.fetch("decisions").reject { |row| row.fetch("decision") == "remove" } + restored_decisions
-retained_by_id = retained_decisions.to_h { |row| [row.fetch("id"), row] }
-forum_corrections = JSON.parse(File.read(File.expand_path('../docs/QUIZ_FORUM_CORRECTIONS_239.json', __dir__), encoding: 'UTF-8')).fetch('quiz.witcher.pl').to_h { |row| [row.fetch('id'), row] }
-forum_corrections.each_value do |correction|
-  row = retained_by_id.fetch(correction.fetch('id'))
-  assert(row.fetch('reviewed') == correction.fetch('before'), 'Forum correction lost its audited baseline')
-  row['reviewed'] = correction.fetch('after')
-end
-semantic_corrections = JSON.parse(File.read(File.expand_path('../docs/QUIZ_SEMANTIC_CORRECTIONS_239.json', __dir__), encoding: 'UTF-8')).fetch('changes')
-semantic_corrections.select { |r| r.fetch('pack_id') == 'quiz.witcher.pl' }.each do |correction|
-  id = correction.fetch('id')
-  row = retained_by_id.fetch(id)
-  assert(row.fetch('reviewed') == correction.fetch('before'), 'Semantic correction lost its audited baseline')
-  assert(row.fetch('medium') == correction.fetch('medium_before'), 'Medium correction lost its audited baseline') if correction.key?('medium_before')
-  if correction.fetch('after')
-    row['reviewed'] = correction.fetch('after')
-    row['medium'] = correction.fetch('medium_after') if correction.key?('medium_after')
-  else
-    retained_by_id.delete(id)
-  end
-end
-expected_media = retained_by_id.values.group_by { |row| row.fetch("medium") }.transform_values(&:length)
-assert(full_questions.length == retained_by_id.length, "the full Witcher set does not match the factual audit and corrections")
-assert(game_questions.length == expected_media.fetch("g"), "the game set has the wrong size")
-assert(book_screen_questions.length == expected_media.fetch("b", 0) + expected_media.fetch("s", 0), "the books and screen set has the wrong size")
 
 full_ids = full_questions.map { |question| question.fetch("id") }
 game_ids = game_questions.map { |question| question.fetch("id") }
@@ -116,13 +91,13 @@ assert((game_ids + book_screen_ids).sort == full_ids.sort, "the detailed sets do
 classification = GameRoomContent::WitcherPolishMediumData.load
 assert(classification.fetch("version") == 6, "the medium map has the wrong data version")
 assert(classification.fetch("media").keys.sort == full_ids.sort, "the medium map does not cover every question")
-assert(classification.fetch("media").values.tally == expected_media, "the reviewed medium totals do not match the audit")
+assert(classification.fetch("media").values.all? { |medium| %w[g b s].include?(medium) }, "the medium map has an unknown classification")
 assert(game_ids.all? { |id| classification.fetch("media").fetch(id) == "g" }, "the game set contains another medium")
 assert(book_screen_ids.all? { |id| classification.fetch("media").fetch(id) != "g" }, "the books and screen set contains a game question")
 
-full_questions.each do |question|
-  expected = retained_by_id.fetch(question.fetch("id")).fetch("reviewed")
-  assert(question == expected, "the source differs from the reviewed audit decision for #{question.fetch('id')}")
+by_id = full_questions.to_h { |question| [question.fetch('id'), question] }
+(game_questions + book_screen_questions).each do |question|
+  assert(question == by_id.fetch(question.fetch('id')), 'Detailed Witcher set changed a shared source question')
 end
 assert(classification.fetch("prompts").empty?, "clarified prompts should be stored in the audited shared source")
 assert(full_questions.none? { |question| question.fetch("prompt").include?("] —") }, "an imported actor name still ends in a bracket")
@@ -159,4 +134,4 @@ context = GameRoomGames::ActionContext.new(
   assert((replayed.state[:choices] - available_categories).empty?, "#{set_id} replayed a category from another set")
 end
 
-puts "Witcher medium split tests passed: #{full_ids.length} audited stable IDs, exact partition, lazy packs, Polish names, start and replay"
+puts "Witcher medium split tests passed: #{full_ids.length} stable IDs, committed counts, exact partition, lazy packs, Polish names, start and replay"

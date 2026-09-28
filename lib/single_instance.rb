@@ -111,6 +111,7 @@ module GameRoomSingleInstance
 
     def dispatch_game_room_entry
       return if @game_room_dispatching_entry
+      return if @table_network_view&.dig(:layout)&.form&.game_room_pending_operation
       request = GameRoomSingleInstance.take(self)
       return unless request
       begin

@@ -19,7 +19,11 @@ rows = [WidgetSnapshot.new(table: { "__id" => 1, "game" => "uno", "owner" => "Bo
   WidgetSnapshot.new(table: { "__id" => 4, "game" => "uno", "owner" => "Alice" })]
 app = EltenGameRoom.allocate
 lobby, transport = Object.new, Object.new
-lobby.define_singleton_method(:open_table_snapshots) { loads += 1; rows }
+lobby.define_singleton_method(:open_table_snapshots) do |hide_inactive: false|
+  assert(hide_inactive, 'Widget did not request the public-list inactivity filter')
+  loads += 1
+  rows
+end
 lobby.define_singleton_method(:owner_of) { |row| row["owner"] }
 transport.define_singleton_method(:start) { }
 app.instance_variable_set(:@transport, transport)

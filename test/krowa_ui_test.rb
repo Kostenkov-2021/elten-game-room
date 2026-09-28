@@ -9,16 +9,14 @@ game = run.game
 row = {"__id" => 2, "owner" => "Alice", "game" => "krowa", "max_players" => 8,
   "status" => "playing", "game_options" => run.session["options"]}
 room = LobbyRepository::TableSnapshot.new(table: row, members: ["Alice"], bots: [])
-controller = Object.new
-controller.define_singleton_method(:cancel) { |_| }
-screen = GameScreen.allocate
+controller = GameRoomBots::TurnController.new
+run.repository.define_singleton_method(:bot_turn_controller) { |_table_id| controller }
+screen = GameScreen.new(program: run.program, repository: run.repository, game: game,
+  session: run.session, table: row, table_owner: "Alice",
+  room_snapshot_provider: -> { room }, synchronizer: nil)
 screen.define_singleton_method(:getkeychar) { "" }
-{
-  game: game, repository: run.repository, session: run.session, table: row,
-  table_owner: "Alice", room_snapshot: room, surface_state: {},
-  history_navigator: GameRoomHistory::Navigator.new, bot_turn_controller: controller,
-  turn_history_entries: {}, activity_entries: []
-}.each { |key, value| screen.instance_variable_set("@#{key}", value) }
+screen.instance_variable_set(:@room_snapshot, room)
+screen.instance_variable_set(:@activity_entries, [])
 Form.driver = lambda do |form|
   layout = screen.instance_variable_get(:@layout)
   answer = layout.surface.fields.first

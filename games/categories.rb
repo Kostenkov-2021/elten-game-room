@@ -269,6 +269,8 @@ module GameRoomGames
             state[:decisions] = {}
             state[:review_finished] = false
             state[:round_scores] = {}
+            alphabet = LANGUAGE_LETTERS.fetch(options["answer_language"].to_s)
+            state[:used_letters].clear if (alphabet - state[:used_letters]).empty?
             state[:used_letters] << parsed[:letter]
             state[:phase] = :answering
             accepted_event = true

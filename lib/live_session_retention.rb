@@ -7,7 +7,8 @@ class GameRoomLiveSessionStore
     DISCOVERY_CACHE_LIMIT = 100
     ROOM_MAPS = %i[records record_keys message_records recovered_moves stack_cursors
       received_sequences private_game_messages record_generations validated_records
-      published_discovery discovery_retry_at attachments control_locks discovered].freeze
+      published_discovery discovery_retry_at discovery_due activity_publish_at realtime_activity
+      attachments control_locks discovered].freeze
 
     # Local only. The fixed lock order is Store -> Transport -> Repository.
     # Keep the snapshot and dependent cleanup in one critical section so a

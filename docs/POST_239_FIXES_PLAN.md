@@ -1,8 +1,10 @@
 # Kolejne poprawki po buildzie 239
 
-Stan: 26 września 2026. Cały poniższy plan wdrożono w źródłach.
-Opisy „do wdrożenia” w dalszych punktach dokumentują pierwotny przegląd,
+Stan punktów 1–9: 26 września 2026. Ten zakres wdrożono w źródłach.
+Opisy „do wdrożenia” w punktach 1–9 dokumentują pierwotny przegląd,
 nie oznaczają pozostawionych zadań. Podsumowanie wykonania poniżej.
+Siedem nowych punktów z 27 września 2026 znajduje się w osobnym
+[bieżącym planie poprawek](CURRENT_FIXES_PLAN.md); nie są jeszcze wdrożone.
 Osobno zatwierdzono utworzenie trzech tabel statystyk na serwerze oraz
 zakres zbierania dokładnie taki jak w PR #21. Status tej operacji poniżej.
 Po wdrożeniu uzupełnić changelog z pominięciem zmiany Ctrl+M oraz ponownie

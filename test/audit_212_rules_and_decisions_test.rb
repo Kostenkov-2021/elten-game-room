@@ -22,11 +22,11 @@ checkers = GameRoomGames::Checkers.new
   rules &= ~GameRoomGames::Checkers::DEFER_CAPTURE_REMOVAL unless deferred
   st = checkers.send(:initial_state, players, checkers.normalize_options('board_size' => 10, 'rules' => rules))
   st[:board] = Array.new(10) { Array.new(10) }
-  st[:board][4][3] = '0k'; st[:board][6][5] = '1m'; st[:board][2][1] = '1m'
-  move = checkers.send(:moves_for_state, st, 'A').find { |m| m.from == [3,4] && m.to == [6,7] }
+  st[:board][4][4] = '0k'; st[:board][6][6] = '1m'; st[:board][2][2] = '1m'
+  move = checkers.send(:moves_for_state, st, 'A').find { |m| m.from == [4,4] && m.to == [7,7] }
   assert(move, 'checkers first jump')
   checkers.send(:apply_move!, st, move, 'A')
-  reverse = checkers.send(:moves_for_state, st, 'A').any? { |m| m.to == [0,1] }
+  reverse = checkers.send(:moves_for_state, st, 'A').any? { |m| m.to == [1,1] }
   assert(reverse != deferred, 'capture blockers must follow the configured variant')
   clone = checkers.send(:duplicate_state, st)
   clone[:capture_blockers] << [1,1]

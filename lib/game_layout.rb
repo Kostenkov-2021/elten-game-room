@@ -132,6 +132,12 @@ module GameRoomLayout
       super
     end
 
+    # Realtime clients own and remove their timer; rebinding game commands
+    # must not detach a still displayed field between HTTP operations.
+    def retain_binding_timer(timer)
+      @screen_timers&.delete(timer)
+    end
+
     def add_tip(tip)
       @screen_tips ||= []
       return if @screen_tips.include?(tip)
@@ -142,7 +148,8 @@ module GameRoomLayout
   end
 
   class Screen
-    attr_accessor :activity_cursor, :session_id
+    attr_accessor :activity_cursor, :session_id, :game_client
+    attr_reader :binding_generation
     attr_reader :surface, :history, :users, :chat, :back_button, :form,
       :primary_button, :restart_button, :waiting_status, :phase
 
@@ -182,6 +189,7 @@ module GameRoomLayout
     end
 
     def begin_bindings
+      @binding_generation = @binding_generation.to_i + 1
       binding_controls.each(&:reset_bindings!)
       GameRoomContextHelp.replace(@form.fields, [], source: :game)
       @form.game_shortcut_signatures = []

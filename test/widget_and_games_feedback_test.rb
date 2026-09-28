@@ -67,9 +67,8 @@ check.call("Ludo player digits, last roll author and spatial ordering") do
   assert(observed.message.start_with?("Alice:"), "spectator starts from first seat")
   state[:pawns] = [[4, 2, -1, 57], [42, -1, -1, -1], [-1, -1, -1, -1]]
   labels = game.send(:all_pawn_browse_choices, state).map(&:label)
-  assert(labels[0].include?("track 3") && labels[0].include?("Alice") && labels[0].include?("2"), "sort common track, not pawn number")
-  assert(labels[1].include?("track 4") && labels[1].include?("Bob"), "players must interleave on common track")
-  assert(labels[2].include?("track 5"), "track ordering")
+  assert(labels.first(3) == ["Alice, track 3", "Bob, track 4", "Alice, track 5"],
+    "sort the shared track across players, without pawn numbers")
   assert(labels.length == 12, "base/home/finished pawns lost")
 end
 

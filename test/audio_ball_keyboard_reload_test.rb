@@ -74,11 +74,22 @@ old['lib/audio_ball/keyboard.rb'] = File.binread(File.join(__dir__, 'fixtures/au
 current = keyboard_reload_sources(ARGV[1])
 target = EltenAPI::KeyboardState.singleton_class
 EltenAPI::KeyboardState.reset
-legacy_runtime, legacy, = keyboard_reload_runtime(old)
+legacy_runtime, legacy, legacy_surfaces = keyboard_reload_runtime(old)
 legacy.install
+reload_key_frame
+if legacy.respond_to?(:activate)
+  # Newer installers capture only while their game field is active. Model
+  # an actual focused field rather than expecting global key collection.
+  legacy_field = legacy_surfaces::AudioBallField.new('Previous Audio Ball').extend(EltenAPI::UI)
+  legacy_field.focus
+end
 reload_key_frame(events: [[0x26, true]], held: [0x26])
 assert(legacy.frame.is_a?(Array), 'old installer did not produce keyboard metadata')
-old_format = legacy.frame.respond_to?(:held) ? 'Frame with boolean marker' : 'legacy Array'
+old_format = if legacy.frame.respond_to?(:held)
+  target.instance_variable_get(:@game_room_audio_ball_keyboard_bridge) == true ? 'Frame with boolean marker' : 'Frame with rebindable bridge'
+else
+  'legacy Array'
+end
 legacy_runtime.dispose
 legacy.define_singleton_method(:capture) { |*| raise 'Retired application observer was called' }
 assert(!EltenPrograms.const_defined?(:GameRoomKeyboardReloadTest, false), 'host did not unload the old app namespace')

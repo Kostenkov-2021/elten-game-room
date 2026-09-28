@@ -1,5 +1,7 @@
 # encoding: UTF-8
-$LOAD_PATH.unshift(File.expand_path("..", __dir__))
+$LOAD_PATH.unshift(File.expand_path("../..", __dir__))
+require_relative '../support/historical_quiz_evidence'
+HistoricalQuizEvidence.require_files!
 
 def _(text)
   text
@@ -10,23 +12,23 @@ def p_(_context, text)
 end
 
 require "json"
-require_relative "../lib/game_content"
-require_relative "../content/languages"
-require_relative "../content/quiz_general_en"
-require_relative "../content/quiz_general_en_data"
-require_relative "../content/quiz_pl_wikidata"
-require_relative "../content/quiz_pl_wikidata_data"
-require_relative "../content/quiz_witcher_pl"
-require_relative "../content/quiz_witcher_pl_data"
-require_relative "../content/quiz_witcher_pl_medium_data"
+require_relative "../../lib/game_content"
+require_relative "../../content/languages"
+require_relative "../../content/quiz_general_en"
+require_relative "../../content/quiz_general_en_data"
+require_relative "../../content/quiz_pl_wikidata"
+require_relative "../../content/quiz_pl_wikidata_data"
+require_relative "../../content/quiz_witcher_pl"
+require_relative "../../content/quiz_witcher_pl_data"
+require_relative "../../content/quiz_witcher_pl_medium_data"
 
 def assert(condition, message)
   raise message unless condition
 end
 
-root = File.expand_path("..", __dir__)
-audit_root = File.expand_path("../diagnostics/quiz-factual-audit-220", root)
-recovery_root = File.expand_path("../diagnostics/quiz-recovery-audit-after-221", root)
+root = File.expand_path("../..", __dir__)
+audit_root = HistoricalQuizEvidence.path('quiz-factual-audit-220')
+recovery_root = HistoricalQuizEvidence.path('quiz-recovery-audit-after-221')
 recovery_payload = JSON.parse(File.read(File.join(recovery_root, "ALL_RECHECK_DECISIONS.json"), encoding: "UTF-8"))
 recovery_rows = recovery_payload.fetch("decisions")
 forum_corrections = JSON.parse(File.read(File.join(root, 'docs/QUIZ_FORUM_CORRECTIONS_239.json'), encoding: 'UTF-8'))

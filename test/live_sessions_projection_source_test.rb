@@ -1,7 +1,7 @@
 require_relative "support/native_live_sessions"
 
 store = GameRoomLiveSessionStore.new(Object.new)
-native = Struct.new(:metadata, :discovery_metadata, :closed?).new({"owner" => "Alice"}, {}, false)
+native = Struct.new(:metadata, :discovery_metadata, :closed?, :owner?).new({"owner" => "Alice"}, {}, false, true)
 store.instance_variable_get(:@sessions)[1] = native
 def projection_record(store, sequence, kind, data)
   store.send(:ingest_record, 1, sequence: sequence, message_id: "projection-#{sequence}", sender: "Alice", created_at: sequence,

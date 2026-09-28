@@ -37,6 +37,10 @@ module GameRoomRealtime
 
     private
 
+    def note_play_activity
+      @activity_transport&.note_realtime_activity(@activity_table, @activity_session)
+    end
+
     def register_ping_channel
       @ping_service = GameRoomPing.for(@program)
       @ping_service.communications_channel = @channel

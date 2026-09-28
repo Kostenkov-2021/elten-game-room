@@ -24,8 +24,9 @@ module GameRoomPong
     attr_reader :engine, :snapshot, :paused
     def _(source); GameRoomContent.utf8(super(source)); end
 
-    def initialize(program, game, clock: -> { Process.clock_gettime(Process::CLOCK_MONOTONIC) }, channel_factory: nil, audio: nil, mouse: nil)
+    def initialize(program, game, clock: -> { Process.clock_gettime(Process::CLOCK_MONOTONIC) }, channel_factory: nil, audio: nil, mouse: nil, transport: nil)
       @program, @game, @clock = program, game, clock
+      @activity_transport = transport
       @channel_factory = channel_factory || ->(**args) { GameRoomRealtime::EventChannel.new(**args) }
       @audio = audio || Audio.new(program, clock: clock)
       @mouse = mouse || MouseControl.new
@@ -38,6 +39,7 @@ module GameRoomPong
     end
 
     def bind_screen(session_id:, table_id:, owner:, viewer:, members:)
+      @activity_table, @activity_session = table_id, session_id
       @owner, @viewer = owner.to_s, viewer.to_s
       @connection_started_at = @clock.call
       @match = Digest::SHA256.hexdigest("GameRoom:axel_pong:#{table_id}:#{session_id}")[0, 24]
@@ -135,6 +137,7 @@ module GameRoomPong
     end
 
     def attach_view(form, surface)
+      return if @form.equal?(form) && @surface.equal?(surface) && @timer && @replay && !@replay.finished?
       detach_view
       return unless surface.respond_to?(:present) && @replay && !@replay.finished?
       @form, @surface = form, surface
@@ -142,6 +145,7 @@ module GameRoomPong
       @surface.on_input_reset = -> { @mouse.suspend } if @surface.respond_to?(:on_input_reset=)
       @timer = GameRoomRealtime::Timer.new(clock: @clock) { frame }
       @form.add_timer(@timer)
+      @form.retain_binding_timer(@timer) if @form.respond_to?(:retain_binding_timer)
       present
     end
 
@@ -167,7 +171,9 @@ module GameRoomPong
         # Only an actually updated game form drives its own timer. A chat
         # control passed on its own does not. Never take game input from a
         # network/progress window or the chat-only update path.
-        if !@replay || @replay.finished? || (@form && options[:ui].equal?(@form))
+        if GameRoomRealtime::TaskUI.updates_form?(options[:ui], @form)
+          # The owned form's existing timer advances the client once.
+        elsif !@replay || @replay.finished?
           tick
         else
           begin

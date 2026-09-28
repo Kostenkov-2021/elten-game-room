@@ -160,14 +160,18 @@ module GameRoomScreens
 
   class Settings
     INVITATION_POLICIES = %w[contacts nobody everyone].freeze
+    attr_reader :table_watch_baseline
 
-    def initialize(values, games:, program: nil, preset_editor: nil, preset_writer: nil, table_watch_available: true)
+    def initialize(values, games:, program: nil, preset_editor: nil, preset_writer: nil,
+      table_watch_available: true, table_watch_loader: nil)
       @program = program
       @values = values.to_h
       @games = games.to_a
       @preset_editor = preset_editor
       @preset_writer = preset_writer
       @table_watch_available = table_watch_available
+      @table_watch_loader = table_watch_loader
+      @table_watch_baseline = @values["table_watch_games"].to_a.dup if table_watch_available
     end
 
     def wait
@@ -203,8 +207,7 @@ module GameRoomScreens
       watched_games = if @table_watch_available
         multiple_game_list(watched_header, @values["table_watch_games"])
       else
-        EditBox.new(watched_header, type: EditBox::Flags::ReadOnly | EditBox::Flags::MultiLine,
-          text: GameRoomContent.utf8(_("New-table subscriptions are unavailable without access to server settings. Other settings can still be changed.")), quiet: true)
+        watched_games_status(watched_header, loading: @table_watch_loader != nil)
       end
       watched_contacts = CheckBox.new(
         GameRoomContent.utf8(_("Notify me about new tables only from contacts")),
@@ -278,6 +281,34 @@ module GameRoomScreens
       end
       sections.on(:move) { refresh_section.call }
       refresh_section.call
+      if @table_watch_loader
+        loaded = false
+        form.add_timer(FormTimer.new(0.1, repeat: true) do
+          next if loaded
+          snapshot = @table_watch_loader.call
+          next if snapshot[:state] == :loading
+          loaded = true
+          previous = watched_games
+          @table_watch_available = snapshot[:state] == :ready
+          @table_watch_baseline = snapshot[:games].dup if @table_watch_available
+          watched_games = if @table_watch_available
+            multiple_game_list(watched_header, @table_watch_baseline)
+          else
+            watched_games_status(watched_header, loading: false)
+          end
+          # Replace one slot; all other controls, edits, category and focus
+          # stay put. Hidden-state indices on the native Form are unchanged.
+          position = form.fields.index(previous)
+          if form.index == position
+            previous.trigger(:blur)
+            previous.blur if previous.respond_to?(:blur)
+          end
+          form.fields[position] = watched_games
+          groups[2][1] = watched_games
+          refresh_section.call
+          watched_games.focus if form.index == position && !form.game_room_background_help?
+        end)
+      end
       save_button.on(:press) do
         # Native ListBox leaves Enter to the form's accept button. Handle it
         # only here, not again in :select, so one press opens one editor.
@@ -325,6 +356,13 @@ module GameRoomScreens
     end
 
     private
+
+    def watched_games_status(header, loading:)
+      text = loading ? _("Loading notification settings") :
+        _("New-table subscriptions are unavailable without access to server settings. Other settings can still be changed.")
+      EditBox.new(header, type: EditBox::Flags::ReadOnly | EditBox::Flags::MultiLine,
+        text: GameRoomContent.utf8(text), quiet: true)
+    end
 
     def multiple_game_list(header, selected)
       control = ListBox.new(

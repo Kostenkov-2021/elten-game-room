@@ -1,6 +1,7 @@
 require_relative "game_room_preferences"
 require_relative "context_help"
 require_relative "game_room_ping"
+require_relative "game_room_pending_operation"
 
 # The host handles function keys before Form events. Intercept dispatch, not
 # saved QuickActions or host sources. Only a currently waiting Game Room form
@@ -104,6 +105,7 @@ module GameRoomUI
     attr_accessor :game_room_general_help_tips, :game_room_text_help_tips
     attr_accessor :game_room_background_help_enabled
     attr_accessor :game_room_entry_boundary
+    attr_accessor :game_room_pending_operation
 
     def initialize(fields, program: nil, **options)
       @game_room_program = program
@@ -133,6 +135,8 @@ module GameRoomUI
     end
 
     def accept_game_room_invitation
+      operation = game_room_pending_operation || @game_room_help_owner&.game_room_pending_operation
+      return operation.reject_action if operation
       return unless @game_room_program&.respond_to?(:switch_to_invited_table, true)
 
       clear_game_room_key
@@ -158,7 +162,7 @@ module GameRoomUI
         # The existing invitation path owns admission, confirmation and cleanup.
         accept_game_room_invitation
       end
-      if game_room_entry_boundary && game_room_hotkeys_active? && !game_room_background_help?
+      if game_room_entry_boundary && game_room_hotkeys_active? && !game_room_background_help? && !game_room_pending_operation
         @game_room_program.dispatch_game_room_entry if @game_room_program&.respond_to?(:dispatch_game_room_entry)
       end
       dispatch_pending_game_room_events
@@ -238,7 +242,7 @@ module GameRoomUI
     end
 
     def game_room_hotkeys_active?
-      @game_room_waiting == true || @game_room_help_owner != nil
+      @game_room_waiting == true || @game_room_help_owner != nil || game_room_pending_operation&.active? == true
     end
 
     def game_room_hotkey_action(key)
@@ -312,7 +316,7 @@ module GameRoomUI
       # parallel Game Room (e.g. opened over Conference) needs its own delivery
       # before the usual timers check for replay changes. Covered windows must
       # not run here; background help is updated by its waiting parent once.
-      return unless @game_room_waiting && !@game_room_help_owner
+      return unless (@game_room_waiting || game_room_pending_operation&.active?) && !@game_room_help_owner
       return unless $mainthread && $currentthread.equal?(Thread.current)
       @game_room_program.cleanup_game_room_launches if @game_room_program&.respond_to?(:cleanup_game_room_launches)
       return if Thread.current.equal?($mainthread)

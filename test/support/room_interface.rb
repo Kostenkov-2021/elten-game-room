@@ -1,5 +1,6 @@
 require_relative "ui"
 require_relative "log"
+require_relative "manual_form_timer"
 
 class Program
   def self.server_app(**_options); end
@@ -8,16 +9,6 @@ end
 module Session
   def self.name
     "Alice"
-  end
-end
-
-class FormTimer
-  def initialize(_interval, repeat:, &callback)
-    @callback = callback
-  end
-
-  def fire
-    @callback.call
   end
 end
 

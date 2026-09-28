@@ -219,7 +219,7 @@ end
 check('Personal Ctrl+P and its context entry are scoped to Audio Ball and Pong without resuming gameplay') do
   [GameRoomGames::AudioBall.new, GameRoomGames::AxelPong.new, GameRoomGames::Makao.new].each do |game|
     users, chat = ListBox.new(['Alice'], header: 'Users'), EditBox.new('Chat', text: 'draft')
-    layout = Struct.new(:form, :users, :back_button).new(Form.new([users, chat]), users, nil)
+    layout = Struct.new(:form, :users, :back_button).new(GameRoomUI::Form.new([users, chat]), users, nil)
     calls = 0
     GameRoomParticipantMenu.bind(layout, available: -> { [] }, game: game,
       settings: -> { calls += 1 }) { raise 'Personal settings dispatched a shared game action' }

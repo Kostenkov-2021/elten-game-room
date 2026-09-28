@@ -1,8 +1,122 @@
 require_relative 'match_runner'
 require_relative '../../lib/spades_learning'
-require_relative 'match_runner'
 
 module SpadesLearning
+  TrainingReport = Struct.new(:policy, :generations, :accepted, :history, keyword_init: true)
+  Evaluation = Struct.new(
+    :games, :wins, :losses, :neutral_wins, :average_reward,
+    :average_margin, :average_actions, :average_rounds,
+    :bid_accuracy_margin, :candidate_bid_error,
+    :opponent_bid_error, :candidate_bid_bias, :opponent_bid_bias,
+    :candidate_contract_rate, :opponent_contract_rate,
+    :candidate_average_overtricks, :opponent_average_overtricks,
+    :candidate_average_shortfall, :opponent_average_shortfall,
+    :average_table_bid_gap, :average_table_bid_deficit,
+    :incomplete_games, :scenarios,
+    keyword_init: true
+  ) do
+    def policy_quality(role, quicksand:)
+      contract_rate = public_send("#{role}_contract_rate").to_f
+      bid_error = public_send("#{role}_bid_error").to_f
+      bid_bias = public_send("#{role}_bid_bias").to_f.abs
+      overtricks = public_send("#{role}_average_overtricks").to_f
+      shortfall = public_send("#{role}_average_shortfall").to_f
+      overtrick_cost = quicksand ? 0.55 : 0.14
+      contract_rate * 2.0 - bid_error * 0.35 - bid_bias * 0.45 -
+        overtricks * overtrick_cost - shortfall * 0.45
+    end
+
+    def quality_advantage(quicksand:)
+      policy_quality(:candidate, quicksand: quicksand) -
+        policy_quality(:opponent, quicksand: quicksand)
+    end
+  end
+  CampaignReport = Struct.new(
+    :profile, :policy, :series, :accepted_series, :plateau, :history,
+    keyword_init: true
+  )
+
+  Scenario = Struct.new(
+    :id, :player_count, :team_size, :score_limit, :quicksand,
+    keyword_init: true
+  ) do
+    def team?
+      team_size.to_i > 0
+    end
+
+    def unit_count
+      team? ? player_count.to_i / team_size.to_i : player_count.to_i
+    end
+
+    def rotation_count
+      unit_count
+    end
+
+    def options
+      {
+        "score_limit" => score_limit.to_i,
+        "team_size" => team_size.to_i,
+        "quicksand" => quicksand == true
+      }
+    end
+
+    def profile
+      "#{quicksand == true ? 'quicksand' : 'standard'}_#{team? ? 'team' : 'individual'}"
+    end
+  end
+
+  module ScenarioMatrix
+    module_function
+
+    INDIVIDUAL_COUNTS = [3, 4, 5, 6].freeze
+    TEAM_ARRANGEMENTS = [[4, 2], [6, 2], [6, 3]].freeze
+    # Full 300-point matches are the strategic reference. Short matches often
+    # end before standard bags reach the -100 penalty and therefore reward
+    # locally profitable but globally poor overtricks.
+    TRAINING_SCORE_LIMITS = [300].freeze
+    BENCHMARK_SCORE_LIMITS = [300].freeze
+    DEFAULT_SCORE_LIMITS = BENCHMARK_SCORE_LIMITS
+
+    def for_profile(profile, score_limits: DEFAULT_SCORE_LIMITS)
+      key = profile.to_s
+      raise ArgumentError, "unknown Spades profile: #{profile}" if !PROFILE_KEYS.include?(key)
+
+      quicksand = key.start_with?("quicksand")
+      arrangements = if key.end_with?("team")
+        TEAM_ARRANGEMENTS
+      else
+        INDIVIDUAL_COUNTS.map { |count| [count, 0] }
+      end
+      score_limits.to_a.map(&:to_i).uniq.flat_map do |score_limit|
+        arrangements.map do |player_count, team_size|
+          Scenario.new(
+            id: [key, "p#{player_count}", "t#{team_size}", "s#{score_limit}"].join("-"),
+            player_count: player_count,
+            team_size: team_size,
+            score_limit: score_limit,
+            quicksand: quicksand
+          )
+        end
+      end
+    end
+
+    def for_arrangement(profile, player_count:, team_size:, score_limits: DEFAULT_SCORE_LIMITS)
+      key = profile.to_s
+      raise ArgumentError, "unknown Spades profile: #{profile}" if !PROFILE_KEYS.include?(key)
+
+      quicksand = key.start_with?("quicksand")
+      score_limits.to_a.map(&:to_i).uniq.map do |score_limit|
+        Scenario.new(
+          id: [key, "p#{player_count}", "t#{team_size}", "s#{score_limit}"].join("-"),
+          player_count: player_count.to_i,
+          team_size: team_size.to_i,
+          score_limit: score_limit,
+          quicksand: quicksand
+        )
+      end
+    end
+  end
+
   class Arena
     attr_reader :scenarios
 

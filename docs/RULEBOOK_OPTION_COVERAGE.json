@@ -43,6 +43,7 @@
   "four_in_a_row": {},
   "ludo": {
     "enter_on_six": "options",
+    "enter_on_one": "options",
     "extra_on_six": "options",
     "exact_finish": "options",
     "three_sixes": "options",

@@ -25,7 +25,7 @@ module GameRoomGames
     }.freeze
     PLAYABLE_COORDINATES = [8, 10, 12].each_with_object({}) do |size, result|
       result[size] = Array.new(size) do |y|
-        Array.new(size) { |x| [x, y].freeze if (x + y).odd? }
+        Array.new(size) { |x| [x, y].freeze if (x + y).even? }
       end.flatten(1).compact.freeze
     end.freeze
 
@@ -1022,7 +1022,7 @@ module GameRoomGames
     end
 
     def dark?(x, y)
-      (x + y).odd?
+      (x + y).even?
     end
 
     def rule?(mask, flag)

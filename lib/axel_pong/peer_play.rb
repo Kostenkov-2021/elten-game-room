@@ -56,9 +56,9 @@ module GameRoomPong
         (!host? && @engine.turn.zero? && (@host_serve_wait == true || now < @host_ready_at))
       set_paused(!healthy || waiting, waiting: healthy && waiting)
       @engine.automatic_for(@side, Preferences.read(@program)['auto_return']) if @side != nil
-      raw = sample_pointer_input(raw, healthy)
-      input = playable_input(raw, active: was_playable && !@paused && @engine.goal == nil, moving: healthy)
-      input['move'] = raw.fetch('move', 0) if healthy
+      raw = sample_pointer_input(raw, true)
+      input = playable_input(raw, active: was_playable && !@paused && @engine.goal == nil, moving: true)
+      input['move'] = raw.fetch('move', 0)
       if host? || @side != nil
         inputs = Array.new(@players.length) { {} }
         inputs[@side] = input if @side != nil
@@ -71,7 +71,9 @@ module GameRoomPong
               emit_peer_effects(event) if host? && event['action'] == 'hit'
             end
             emit_peer_walls if host?
-          elsif healthy
+          else
+            # Positioning is local even while waiting for a relay/HTTP result.
+            # This does not advance the ball or retain a paused hit/serve.
             @engine.position(inputs, now_ms: (frame_at * 1000).to_i)
           end
         end
@@ -107,6 +109,7 @@ module GameRoomPong
       @bots = host? ? bots.map { |side| Bot.new(side, level: options['difficulty'], rng: Random.new(seed + side + 1)) } : []
       @bots.each { |bot| bot.step(@engine) }
       @snapshot = host? ? @engine.snapshot : nil
+      @observer_turn = 0
       reset_rally_feedback
       @host_ready = false
       @host_serve_wait = false
@@ -191,6 +194,10 @@ module GameRoomPong
       end
       queued.each do |sender, packet|
         data = packet['d']
+        # A remote spectator listens to the owner's complete snapshot (fx
+        # included). It has no playable physics timeline and may have joined
+        # halfway through a rally. Only presentation notices need this lane.
+        next if @side == nil && !host? && !%w[point hurry].include?(data['action'])
         future_action = data['r'] == @replay.state[:rally] && peer_event_waiting?(data)
         if data['r'] == @replay.state[:rally] + 1 || future_action
           # The durable score may arrive after the next reliable serve. Keep
@@ -234,6 +241,7 @@ module GameRoomPong
           end
         end
         emit_peer_effects(data) if applied && host? && data['action'] == 'hit'
+        note_play_activity if applied && %w[serve hit shield_hit].include?(data['action'])
       end
     end
 
@@ -291,6 +299,7 @@ module GameRoomPong
     end
 
     def emit_peer_event(data)
+      note_play_activity if %w[serve hit shield_hit].include?(data['action'])
       # A local human/bot match does not wait for a network endpoint. Observers
       # can later catch up from snapshots; no other player depends on this lane.
       return if local_match? && (!@epoch || !@channel.connected?)

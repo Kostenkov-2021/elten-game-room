@@ -87,7 +87,7 @@ module GameRoomGames
           GameRoomRules.translate("Three consecutive sixes lose the turn is on by default. The third six ends your turn without a move for that roll. Moves made after the first two sixes stay on the board: they are not undone."),
           GameRoomRules.translate("Two pawns of one player form a blockade is on by default. Turning it off removes the restrictions caused by opposing pairs on the track. It does not remove safe entry squares or change the length of the route.")),
         rule_section(:presentation, GameRoomRules.translate("Names or colours"),
-          GameRoomRules.translate("Positions are read with the player first, followed by the square, without pawn numbers. Ctrl+C switches between player names and colours. C always reads who has each colour. Red, blue, yellow and green follow the fixed seats at the table. Your choice is saved on this computer for future tables; it does not change other people's settings or the game history.")),
+          GameRoomRules.translate("Positions are read with the name or colour first, followed by the square, without pawn numbers. Ctrl+C switches names and colours throughout the game announcements and your view of game history. C always reads who has each colour. Red, blue, yellow and green follow the fixed seats at the table. Your choice is saved on this computer for future tables. It does not change other people's settings or the recorded moves. Chat and table membership messages keep the actual names.")),
         rule_section(:controls, GameRoomRules.translate("Game keyboard shortcuts"),
           GameRoomRules.translate("1: read your pawns; for an observer, read the first player's pawns."),
           GameRoomRules.translate("2: read the next player's pawns in seating order."),
@@ -179,6 +179,42 @@ module GameRoomGames
       end
     end
 
+    def history_presentation_depends_on_surface_state?; true; end
+
+    def history_entries_for_display(replay, _viewer, surface_state: {})
+      replay.history.map do |entry|
+        data = entry.value
+        next entry unless data.is_a?(Hash) && data.key?(:ludo_seat)
+        copy = entry.dup
+        copy.text = display_history_entry(entry, data, surface_state)
+        copy
+      end
+    end
+
+    def describe_event_for_display(event, repository, replay, viewer, surface_state: {})
+      event_id = repository.event_id(event).to_i
+      history_entries_for_display(replay, viewer, surface_state: surface_state).filter_map do |entry|
+        entry.text if entry.event_id.to_i == event_id && [:roll, :move, :capture, :pass, :turn_end].include?(entry.kind)
+      end
+    end
+
+    def turn_announcement(replay, viewer)
+      return if replay == nil || replay.finished? || replay.current_player == nil
+      return _("It is your turn.") if same_user?(replay.current_player, viewer)
+      _("Turn: %{player}.") % {player: display_player(replay.state, replay.current_player)}
+    end
+
+    def turn_transition_history_entry(before_replay, after_replay, event_id:)
+      entry = super
+      entry.value = {ludo_seat: player_index(after_replay.players, entry.actor)}.freeze if entry
+      entry
+    end
+
+    def result_text(replay)
+      return super unless replay.winner
+      _("%{player} won the game.") % {player: display_player(replay.state, replay.winner)}
+    end
+
     def action_for(selection, replay, actor, context: nil)
       state = replay.state
       return [:finished, nil] if replay.finished?
@@ -249,7 +285,7 @@ module GameRoomGames
       ordered = replay.state[:players].rotate(player || 0)
       shortcuts = ordered.each_with_index.map do |owner, index|
         announcement_shortcut(key: (index + 1).to_s,
-          label: _("read %{player}'s pawn positions") % { player: display_player(replay.state, owner) },
+          label: _("read positions: %{player}") % { player: display_player(replay.state, owner) },
           message: _("%{player}: %{positions}.") % {
             player: display_player(replay.state, owner),
             positions: pawn_status_labels(replay.state, player_index(replay.state[:players], owner)).join("; ")
@@ -294,7 +330,7 @@ module GameRoomGames
         return {message: _("%{player} wins the game.") % {player: display_player(replay.state, replay.winner)}}
       end
       if feature == :turn && !replay.finished?
-        return {message: _("%{player}'s turn.") % {player: display_player(replay.state, replay.current_player)}}
+        return {message: _("Turn: %{player}.") % {player: display_player(replay.state, replay.current_player)}}
       end
       if feature == :material
         return {message: replay.players.each_with_index.map { |name, index|
@@ -316,8 +352,60 @@ module GameRoomGames
 
     def display_player(state, name)
       index = player_index(state[:players], name)
-      return participant_name(name) if index == nil || board_presentation_preferences.to_h["player_labels"] != "colours"
-      player_colour(index)
+      historical_player(name, index)
+    end
+
+    def historical_player(name, index, presentation = {})
+      mode = presentation.to_h.fetch("player_labels", board_presentation_preferences.to_h["player_labels"])
+      mode == "colours" && index != nil ? player_colour(index) : participant_name(name)
+    end
+
+    def starting_history(players)
+      entry = super
+      entry.value = {ludo_seat: nil, players: players.dup.freeze}.freeze
+      entry
+    end
+
+    def display_history_entry(entry, data, presentation)
+      player = historical_player(entry.actor, data[:ludo_seat], presentation)
+      case entry.kind
+      when :start
+        _("Game started: %{players}.") % {players: data[:players].each_with_index.map { |name, i| historical_player(name, i, presentation) }.join(", ")}
+      when :roll
+        _("%{player} rolled %{value}.") % {player: player, value: data[:roll]}
+      when :turn_end
+        _("%{player}: three consecutive sixes; end of turn.") % {player: player}
+      when :pass
+        _("%{player}: no legal move.") % {player: player}
+      when :move
+        _("%{player}, %{from} %{to}.") % {player: player,
+          from: progress_from(data[:ludo_seat], data[:from]), to: progress_to(data[:ludo_seat], data[:to])}
+      when :capture
+        text = _("%{player}: captured %{opponent}, %{from}; back to the base.") % {
+          player: player, opponent: historical_player(data[:opponent], data[:opponent_seat], presentation),
+          from: progress_from(data[:ludo_seat], data[:to])}
+        data[:count] > 1 ? _("%{text} Capture %{index} of %{count}.") % {text: text, index: data[:index], count: data[:count]} : text
+      when :turn
+        _("Turn: %{player}.") % {player: player}
+      when :result
+        _("%{player} won the game.") % {player: player}
+      else
+        entry.text
+      end
+    end
+
+    def progress_from(player, progress)
+      return _("from the base") if progress < 0
+      return _("from the finish") if progress == FINISH_PROGRESS
+      return _("from home lane %{position}") % {position: progress - OUTER_LENGTH + 1} if progress >= OUTER_LENGTH
+      _("from track %{position}") % {position: global_track_index(player, progress) + 1}
+    end
+
+    def progress_to(player, progress)
+      return _("to the base") if progress < 0
+      return _("to the finish") if progress == FINISH_PROGRESS
+      return _("to home lane %{position}") % {position: progress - OUTER_LENGTH + 1} if progress >= OUTER_LENGTH
+      _("to track %{position}") % {position: global_track_index(player, progress) + 1}
     end
 
     def main_status_items(replay, viewer)
@@ -326,7 +414,7 @@ module GameRoomGames
       elsif same_user?(replay.state[:current_player], viewer) && replay.state[:phase] == :awaiting_roll
         _("Roll the die")
       else
-        _("Waiting for %{player}") % { player: display_player(replay.state, replay.state[:current_player]) }
+        _("Waiting for a move: %{player}") % { player: display_player(replay.state, replay.state[:current_player]) }
       end
       [GameSurfaces::PawnTrackItem.new(id: "status", label: label)]
     end
@@ -470,25 +558,25 @@ module GameRoomGames
       state[:last_roll_player] = actor
       state[:consecutive_sixes] = value == 6 ? state[:consecutive_sixes] + 1 : 0
       event_id = repository.event_id(event)
+      player = player_index(state[:players], actor)
       history << HistoryEntry.new(
         key: "roll:#{event_id}", text: _("%{player} rolled %{value}.") % { player: participant_name(actor), value: value },
-        event_id: event_id, actor: actor, kind: :roll, value: value
+        event_id: event_id, actor: actor, kind: :roll, value: {ludo_seat: player, roll: value}.freeze
       )
       if state[:options]["three_sixes"] && state[:consecutive_sixes] >= 3
         history << HistoryEntry.new(
           key: "three_sixes:#{event_id}", text: _("Three consecutive sixes; %{player}'s turn ends.") % { player: participant_name(actor) },
-          event_id: event_id, actor: actor, kind: :turn_end
+          event_id: event_id, actor: actor, kind: :turn_end, value: {ludo_seat: player}.freeze
         )
         advance_turn!(state, actor)
         return true
       end
 
-      player = player_index(state[:players], actor)
       choices = legal_pawn_indices(state, player)
       if choices.empty?
         history << HistoryEntry.new(
           key: "no_move:#{event_id}", text: _("%{player} has no legal pawn move.") % { player: participant_name(actor) },
-          event_id: event_id, actor: actor, kind: :pass
+          event_id: event_id, actor: actor, kind: :pass, value: {ludo_seat: player}.freeze
         )
         if value == 6 && state[:options]["extra_on_six"]
           state[:phase] = :awaiting_roll
@@ -537,9 +625,10 @@ module GameRoomGames
       }
       history << HistoryEntry.new(
         key: "move:#{event_id}", text: text, event_id: event_id, actor: actor,
-        kind: :move, field: progress_label(player, destination)
+        kind: :move, field: progress_label(player, destination),
+        value: {ludo_seat: player, from: previous, to: destination}.freeze
       )
-      captured.each do |other, captured_pawn|
+      captured.each_with_index do |(other, captured_pawn), index|
         history << HistoryEntry.new(
           key: "capture:#{event_id}:#{other}:#{captured_pawn}",
           text: _("%{player} sent pawn %{pawn} belonging to %{opponent} back to the base.") % {
@@ -547,14 +636,18 @@ module GameRoomGames
             pawn: captured_pawn + 1,
             opponent: participant_name(state[:players][other])
           },
-          event_id: event_id, actor: actor, kind: :capture, value: captured.length
+          event_id: event_id, actor: actor, kind: :capture,
+          value: {ludo_seat: player, opponent: state[:players][other], opponent_seat: other,
+            to: destination, index: index + 1, count: captured.length}.freeze
         )
       end
       if state[:pawns][player].all? { |progress| progress == FINISH_PROGRESS }
         state[:winner] = actor
         state[:current_player] = nil
         state[:phase] = :finished
-        history << result_history(event_id: event_id, winner: actor)
+        result = result_history(event_id: event_id, winner: actor)
+        result.value = {ludo_seat: player}.freeze
+        history << result
       elsif state[:roll] == 6 && state[:options]["extra_on_six"]
         state[:phase] = :awaiting_roll
         state[:roll] = nil

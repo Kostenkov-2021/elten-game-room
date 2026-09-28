@@ -77,6 +77,14 @@ Ustaw `supports_bots?`, wystaw pełną listę legalnych akcji i zarejestruj
 strategię. Bot może używać heurystyk lub przeszukiwania, ale wybrana akcja musi
 wrócić do zwykłego `action_for`; strategia nie może sama dopisywać zdarzeń.
 
+Gra turowa pozostawia `session_runner? == true`: wspólny
+`GameRoomSessionRunner` planuje, sprawdza aktualność i zapisuje decyzję.
+Nie dodawaj drugiego wykonawcy do `GameScreen` ani kontrolki gry.
+Gra realtime wyłącza ten runner tylko wtedy, gdy jej klient ma własną
+pętlę fizyki i botów; automatyczny zapis punktu nadal przechodzi zwykłą
+granicą zatwierdzania akcji. Narzędzia treningowe i raporty trzymaj w `tools/`,
+nie w bibliotekach ładowanych przez zainstalowaną grę.
+
 Sprawdź osobno:
 
 - brak legalnego ruchu;

@@ -183,7 +183,7 @@ class NativeLiveSessionsBroker
     end
 
     def limits; {"discovery_refresh" => true}; end
-    def state; @core.closed ? :closed : :active; end
+    def state; @core.closed ? :closed : :open; end
 
     def refresh(timeout: 45)
       @discovery_metadata = @core.discovery_metadata
@@ -253,6 +253,10 @@ class NativeLiveSessionsBroker
     end
 
     def user; @endpoint.user; end
+
+    def limits
+      {"max_stack_entry_bytes" => @core.stack_entry_bytes, "max_stack_entries" => @core.stack_entries}
+    end
 
     def participants
       @core.participants.values

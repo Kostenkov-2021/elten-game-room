@@ -42,6 +42,7 @@ class Form
       raise 'Game did not progress while help was open' if $help_frames > 5000
       Form.driver.call(self)
       update
+      Thread.pass # The real session worker, not a synchronous UI bot, must run.
     end
   end
   def update
@@ -56,6 +57,7 @@ end
 
 def screen_fixture(game, bots: 0)
   $help_clock, $help_frames = 0.0, 0
+  $game_room_test_user = 'Alice' # Host identity also exists on the managed worker.
   h = NativeRoomHarness.new(game: game, users: bots > 0 ? ['Alice'] : %w[Alice Bob], bots: bots)
   h.start
   sync = GameRoomSync::Controller.new(transport: h.transports['Alice'], table_id: h.table['__id'],
@@ -63,6 +65,7 @@ def screen_fixture(game, bots: 0)
   screen = GameScreen.new(program: ProgramDouble.new(h.broker.endpoint('Alice')),
     repository: h.repositories['Alice'], game: game, session: h.session,
     table: h.table, table_owner: 'Alice', synchronizer: sync,
+    game_services: {transport: h.transports['Alice']},
     room_snapshot_provider: -> {
       data = h.transports['Alice'].room_snapshot(h.table)
       data && LobbyRepository::TableSnapshot.new(**data)

@@ -29,10 +29,10 @@ module GameRoomGames
     def _(source); GameRoomContent.utf8(super(source)); end
     def participant_name(player); GameRoomContent.utf8(super(player)); end
 
-    def build_client(program, **_services)
+    def build_client(program, **services)
       require_relative '../lib/audio_ball/audio'
       require_relative '../lib/audio_ball/client'
-      GameRoomAudioBall::Client.new(program, self)
+      GameRoomAudioBall::Client.new(program, self, transport: services[:transport])
     end
 
     def audio_tutorial_entries

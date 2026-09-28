@@ -30,10 +30,11 @@ audio_ball_test('fixed roster, real-time capabilities and ordered table options'
   assert(game.supports_bots? && !game.supports_bot_move_delay?, 'continuous bots inherited turn-based pacing')
   assert(!game.supports_saved_games?, 'unfinished real-time matches can be saved')
   definitions = game.effective_option_definitions
-  assert(definitions.map(&:key) == %w[mode difficulty sets_to_win], 'game options duplicate privacy or have the wrong order')
-  assert(definitions.map { |definition| definition.choices.map(&:value) } == [['classic'], [1, 2, 3, 4, 5], [1, 2, 3]], 'unsupported mode, difficulty or match length is offered')
+  assert(definitions.map(&:key) == %w[mode difficulty sets_to_win p2p_enabled p2p_participants_limit], 'game options duplicate privacy or have the wrong order')
+  assert(definitions.first(3).map { |definition| definition.choices.map(&:value) } == [['classic'], [1, 2, 3, 4, 5], [1, 2, 3]], 'unsupported mode, difficulty or match length is offered')
   assert(definitions[1].choices.map(&:label) == ['Very easy', 'Easy', 'Normal', 'Hard', 'Very hard'], 'difficulty labels do not match their numeric values')
-  assert(game.default_options == {'mode' => 'classic', 'difficulty' => 3, 'sets_to_win' => 1}, 'Audio Ball defaults changed')
+  assert(game.default_options == {'mode' => 'classic', 'difficulty' => 3, 'sets_to_win' => 1,
+    'p2p_enabled' => false, 'p2p_participants_limit' => 8}, 'Audio Ball defaults changed')
   assert(game.normalize_options('mode' => 'arcade', 'difficulty' => 99, 'sets_to_win' => 0) == game.default_options, 'invalid choices did not fall back to defaults')
   assert(game.normalize_options(difficulty: '3', sets_to_win: '2')['sets_to_win'] == 2, 'choice values stopped normalizing to numbers')
   assert(game.options_error({}, player_count: 2) == nil, 'two-player roster was rejected')
@@ -309,7 +310,7 @@ audio_ball_test('authored rules explain fixed scoring, sound, timing and every a
   assert(book.documents.map(&:id) == [:rules, :controls, :current_options], 'Audio Ball rules bypass the standard three-document help')
   rules = book.documents.first.text
   ['one against one', 'bot', 'Classic', '25 steps', 'on the right', 'on the left', 'two steps',
-    'press the matching defence key once', 'then release it', 'last direction', 'Every new ball needs a new press',
+    'press the matching defence key once', 'then release it', 'last active defence', 'most recently pressed key still held', 'Every new ball needs a new press',
     'even if the shot type is the same', 'Preparing', 'ten seconds', 'as long as you like', 'random',
     'every two completed points', 'across sets', '7 points', 'lead by at least two', '1, 2 or 3', 'five-second',
     'set number', 'who is serving'].each do |text|

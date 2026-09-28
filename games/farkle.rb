@@ -422,11 +422,14 @@ module GameRoomGames
         score_for_face(index + 1, count) || -100_000
       end
       scores << ordinary if ordinary >= 0
-      if dice.length == 5 && ([1, 2, 3, 4, 5] - dice).empty?
-        scores << 100
-      end
-      if dice.length == 5 && ([2, 3, 4, 5, 6] - dice).empty?
-        scores << 100
+      if dice.length.between?(5, 6)
+        [[1, 2, 3, 4, 5], [2, 3, 4, 5, 6]].each do |straight|
+          next unless (straight - dice).empty?
+          remainder = counts.each_with_index.sum do |count, index|
+            score_for_face(index + 1, count - (straight.include?(index + 1) ? 1 : 0)) || -100_000
+          end
+          scores << 100 + remainder if remainder >= 0
+        end
       end
       scores << 200 if dice.length == 6 && counts.all? { |count| count == 1 }
       scores << 150 if dice.length == 6 && counts.count(2) == 3

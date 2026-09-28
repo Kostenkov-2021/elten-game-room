@@ -322,7 +322,7 @@ polish_238, english_238 = document_238.split('## English', 2)
 end
 
 entry_239 = entries.find { |entry| entry.build == 239 }
-assert(entry_239.version == '2.0.4' && entry_239.changes.length == 26 && entry_239.changes.uniq.length == 26,
+assert(entry_239.version == '2.0.4' && entry_239.changes.length == 27 && entry_239.changes.uniq.length == 27,
   'build 239 must contain the approved changes and minimum ELTEN version')
 assert(entry_239.changes.any? { |text| text.include?('P2P') && text.include?('off by default') && text.include?('defaulting to 8') && text.include?('relay server') }, 'optional P2P settings or relay fallback missing')
 assert(entry_239.changes.any? { |text| text.include?('Ctrl+F4') && text.include?('HTTP') && text.include?('Communications') && text.include?('P2P') && text.include?('Mixed') }, 'ping transport distinctions missing')
@@ -346,4 +346,25 @@ polish_239, english_239 = document_239.split('## English', 2)
   assert(actual == expected, 'build 239 approved text differs between the document and runtime')
 end
 
-puts "Changelog tests passed: first launch, updates, downgrade, Enter, storage, old notes preserved and bilingual build 239 notes"
+entry_240 = entries.find { |entry| entry.build == 240 }
+assert(entry_240.version == '2.0.4.1' && entry_240.changes.length == 17 && entry_240.changes.uniq.length == 17,
+  'build 240 must contain the approved user-facing changes without duplicates')
+assert(entry_240.changes.first.include?('Danil (Kostenkov-2021)'), 'Russian translation author missing')
+assert(entry_240.changes[1].include?('paulinux'), 'Daily Krowa author missing')
+assert(entry_240.changes.last.include?('balteam'), 'Player-count correction author missing')
+assert(entry_240.changes.any? { |text| text.include?('Press Enter') && text.include?("Users list") && text.include?("ELTEN's standard user menu") },
+  'The user-menu note must explicitly explain Enter on the participants list')
+assert(entry_240.changes.all? { |text| !catalog[text].to_s.empty? }, 'build 240 has an untranslated change')
+assert(GameRoomChangelog.pending_entries(239, 240).map(&:build) == [240], 'build 240 repeats older changes')
+assert(GameRoomChangelog.pending_entries(nil, 240).map(&:build) == [240], 'first build 240 launch repeats history')
+assert(GameRoomChangelog.pending_entries(240, 240).empty?, 'build 240 reopens after being read')
+assert(GameRoomChangelog.list_items([entry_240]).first == 'Version 2.0.4.1, build 240', 'build 240 heading differs')
+document_240 = File.read(File.expand_path('../docs/CHANGELOG_2_0_4_1.md', __dir__), encoding: 'UTF-8')
+assert(document_240.start_with?('# Game Room 2.0.4.1 — build 240'), 'build 240 document heading differs')
+polish_240, english_240 = document_240.split('## English', 2)
+[polish_240, english_240].zip([entry_240.changes.map { |text| catalog.fetch(text) }, entry_240.changes]).each do |section, expected|
+  actual = section.lines.grep(/^- /).map { |line| line.delete_prefix('- ').strip }
+  assert(actual == expected, 'build 240 approved text differs between the document and runtime')
+end
+
+puts "Changelog tests passed: first launch, updates, downgrade, Enter, storage, old notes preserved and bilingual build 240 notes"

@@ -45,12 +45,16 @@ registry.ids.each do |id|
   # This is an explicit editorial index, not a keyword-based assertion of
   # factual correctness. A new option must receive a reviewed chapter.
   keys = game.effective_option_definitions.map(&:key)
-  local_keys = keys - ["bot_delay"]
+  # Transport configuration is shared infrastructure, not a game rule. Its
+  # presence, validation and current-options text have dedicated P2P tests.
+  # Keep the editorial index strict for each game's own rules.
+  transport_keys = game.respond_to?(:p2p_option_definitions) ? game.p2p_option_definitions.map(&:key) : []
+  local_keys = keys - ["bot_delay"] - transport_keys
   assert(local_keys.sort == coverage.fetch(id).keys.sort, "an option lacks a reviewed explanation for #{id}: #{local_keys - coverage[id].keys}")
   coverage.fetch(id).each do |key, chapter|
     assert(ids.include?(chapter) && chapter != "controls", "#{id}/#{key} points to no rule chapter")
   end
-  options_count += keys.length
+  options_count += local_keys.length
   book = game.rule_book(options: game.default_options)
   assert(book.documents.map(&:id) == [:rules, :controls, :current_options], "table rules changed their three-document structure for #{id}")
   if keys.include?("bot_delay")

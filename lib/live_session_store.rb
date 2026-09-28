@@ -10,6 +10,7 @@ require_relative "game_session_clock"
 require_relative "table_control"
 require_relative "game_statistics_identity"
 require_relative "game_room_presence_identity"
+require_relative "game_room_background"
 
 # The authoritative, ephemeral state of one Game Room table lives in one
 # discoverable LiveSession.  Every mutation is appended to the session stack;
@@ -77,6 +78,11 @@ class GameRoomLiveSessionStore
     @inactive_rooms = {}
     @room_io = {}
     @retained_subscriptions = {}
+    @discovery_due, @activity_publish_at, @realtime_activity = {}, {}, {}
+    @discovery_work_lock = Mutex.new
+    runtime = Programs.current_runtime if defined?(Programs) && Programs.respond_to?(:current_runtime)
+    @discovery_work = GameRoomBackground::Work.new(runtime: runtime)
+    @program.class.manage(@discovery_work) if @program.class.respond_to?(:manage)
   end
 
   def start
@@ -101,6 +107,7 @@ class GameRoomLiveSessionStore
       current.dispatch_events(32)
     ensure
       @callback_dispatch_mutex.unlock
+      dispatch_discovery_publication
     end
   end
 
@@ -320,13 +327,18 @@ class GameRoomLiveSessionStore
   # callback. A room change updates its public description, not its identity.
   # Failed publication must not turn an already committed game action into a
   # failed action. Retain the old fingerprint so the next sync can retry.
-  def publish_discovery(table_id)
+  def publish_discovery(table_id, expected_session: nil)
     begin_room_io(table_id)
     session = active_session(table_id)
     return false unless session&.owner? && session.respond_to?(:update_discovery_metadata)
+    return false if expected_session && !session.equal?(expected_session)
     lock = @mutex.synchronize { @control_locks[table_id] ||= Mutex.new }
-    return false unless lock.try_lock
+    unless lock.try_lock
+      queue_discovery_publication(table_id, delay: 1)
+      return false
+    end
     begin
+      return false unless active_session(table_id).equal?(session) && session.owner?
       row = table_for(table_id)
       return false unless row
       metadata = session.metadata.to_h.merge(control_metadata(session)).merge(
@@ -334,14 +346,30 @@ class GameRoomLiveSessionStore
         "game_options" => row["game_options"], "status" => row["status"],
         "bot_count" => row["bot_count"], "player_count" => row["player_count"],
         "max_players" => row["max_players"])
+      previous = session.discovery_metadata.to_h['last_activity_at'].to_i
+      activity = row['last_activity_at'].to_i
+      deadline = @mutex.synchronize { @activity_publish_at.fetch(table_id, 0) }
+      now = Process.clock_gettime(Process::CLOCK_MONOTONIC)
+      if activity > previous && now < deadline
+        queue_discovery_publication(table_id, delay: deadline - now)
+        activity = previous
+      end
+      metadata['last_activity_at'] = activity if activity.positive?
+      metadata['roster'] = discovery_roster(table_id, session, row)
+      metadata.delete('roster') unless metadata['roster']
       return false if @published_discovery[table_id] == metadata
-      return false if Process.clock_gettime(Process::CLOCK_MONOTONIC) < @discovery_retry_at.fetch(table_id, 0)
+      if now < @discovery_retry_at.fetch(table_id, 0)
+        queue_discovery_publication(table_id, delay: @discovery_retry_at[table_id] - now)
+        return false
+      end
       session.update_discovery_metadata(compact_discovery(metadata), timeout: 5)
+      @mutex.synchronize { @activity_publish_at[table_id] = now + 60 } if activity > previous
       @published_discovery[table_id] = metadata
       @discovery_retry_at.delete(table_id)
       true
     rescue StandardError => error
       @discovery_retry_at[table_id] = Process.clock_gettime(Process::CLOCK_MONOTONIC) + 5
+      queue_discovery_publication(table_id, delay: 5)
       log_warning("discovery publication", table_id, error)
       false
     ensure
@@ -633,9 +661,16 @@ class GameRoomLiveSessionStore
       raise ArgumentError, "The saved game is too large to restore safely"
     end
     archive_id = restore ? SecureRandom.uuid : nil
-    chunks = archive ? archive_chunks(archive, archive_id: archive_id, actor: actor) : []
-
     ensure_current(table_id, force: true)
+    # Requested capacities are not a grant: use this session's server limits.
+    # Preflight the entire import before writing its checkpoint or chunks.
+    chunks = if archive
+      limits = active_session(table_id).limits
+      archive_chunks(archive, archive_id: archive_id, actor: actor,
+        byte_limit: limits.fetch('max_stack_entry_bytes'), entry_limit: limits.fetch('max_stack_entries'))
+    else
+      []
+    end
     state = table_for(table_id)
     members = connected_users(table_id)
     observers = observer_users(table_id, members: members)
@@ -784,13 +819,23 @@ class GameRoomLiveSessionStore
     (imported + current).sort_by { |row| row["__id"].to_i }
   end
 
-  def freeze_game(session, frozen: true)
+  def freeze_game(session, frozen: true, expected_boundary: nil)
     table_id = table_identifier(session["table_id"])
+    return false if expected_boundary && active_session(table_id) == nil
     ensure_current(table_id, force: true)
+    latest = game_sessions(table_id).max_by { |row| row["__stack_sequence"].to_i }
+    current = latest.to_h["__id"].to_i == session["__id"].to_i && same_user?(endpoint.user, owner_for(table_id))
+    if expected_boundary
+      boundary = records_for(table_id).reverse.find { |record| record.packet["kind"] == "game_boundary" && record.packet.dig("data", "session_id") == session["__id"].to_i }
+      # Only release this operation's pause, never a later save, aborted match
+      # or a different master's game. The confirmed record is the receipt.
+      return false unless !frozen && current && boundary && boundary.message_id == expected_boundary.message_id &&
+        boundary.packet.dig("data", "frozen") == true && !game_aborted?(table_id, session["__id"])
+    end
+    raise GameRoomNetworkErrors::GamePaused, "The game controller changed" unless current
     raise GameRoomNetworkErrors::GamePaused, "The game was ended by the master" if game_aborted?(table_id, session["__id"])
-    boundary = append_record(table_id, "game_boundary", { "session_id" => session["__id"].to_i, "frozen" => frozen == true }, actor: endpoint.user)
-    game_events(session, force: true)
-    boundary
+    # Return the confirmed write before any subsequent snapshot/network read.
+    append_record(table_id, "game_boundary", { "session_id" => session["__id"].to_i, "frozen" => frozen == true }, actor: endpoint.user)
   end
 
   def game_frozen?(table_id, session_id)
@@ -1417,6 +1462,7 @@ class GameRoomLiveSessionStore
   end
 
   def emit_record_change(table_id, record)
+    queue_discovery_publication(table_id, activity_only: true) if activity_record?(record)
     kind = record.packet["kind"].to_s
     data = record.packet["data"].to_h
     case kind
@@ -1430,6 +1476,7 @@ class GameRoomLiveSessionStore
   end
 
   def emit_change(table_id, kind, value)
+    queue_discovery_publication(table_id) if kind == :table || kind == :game_started
     @changed&.call(table_id.to_i, kind.to_sym, value)
   rescue StandardError => error
     log_warning("change callback", table_id, error)
@@ -1536,6 +1583,11 @@ class GameRoomLiveSessionStore
     row["player_count"] = latest.packet.dig("data", "players").to_a.length if latest && row["status"] == "playing"
     row["created_at"] = metadata["created_at"].to_i if row["created_at"].to_i <= 0 && metadata
     row["updated_at"] = row["created_at"].to_i if row["updated_at"].to_i <= 0
+    published_activity = session&.discovery_metadata.to_h['last_activity_at'].to_i
+    realtime = @mutex.synchronize { @realtime_activity[table_id] }
+    realtime_time = realtime && realtime[0].equal?(session) && realtime[1] == latest_id ? realtime[2] : 0
+    activity = [row['last_activity_at'].to_i, published_activity, realtime_time].max
+    row['last_activity_at'] = activity if activity.positive?
     row["__live_session_id"] = session.id.to_s if session&.respond_to?(:id)
     row.delete('__statistics_room_id')
     identity = metadata['statistics_room_id']
@@ -1580,6 +1632,9 @@ class GameRoomLiveSessionStore
       # Order is provided by the stack, including old clients whose payload
       # contains a skewed wall-clock timestamp.
       row["updated_at"] = record.created_at.to_i
+      if activity_record?(record) && !record.estimated_time
+        row['last_activity_at'] = [row['last_activity_at'].to_i, record.created_at.to_i].max
+      end
     end
     [row, changes]
   end
@@ -1603,7 +1658,8 @@ class GameRoomLiveSessionStore
       "game_options" => discovery_options(metadata),
       "player_count" => metadata.key?("player_count") ? [[metadata["player_count"].to_i, 0].max, MAX_CAPACITY].min : 1,
       "created_at" => metadata["created_at"].to_i,
-      "updated_at" => metadata["created_at"].to_i
+      "updated_at" => metadata["created_at"].to_i,
+      "last_activity_at" => metadata['last_activity_at'].is_a?(Integer) && metadata['last_activity_at'].positive? ? metadata['last_activity_at'] : nil
     }
   end
 
@@ -1696,13 +1752,13 @@ class GameRoomLiveSessionStore
 
   # A roster row can be larger than a move (eight Unicode participant names).
   # Respect both native byte and item limits before publishing anything.
-  def archive_chunks(archive, archive_id:, actor:)
+  def archive_chunks(archive, archive_id:, actor:, byte_limit: STACK_ENTRY_BYTES, entry_limit: STACK_ENTRIES)
     chunks, current = [], []
     fits = lambda do |events, index|
       events.length <= ARCHIVE_EVENTS_PER_RECORD && JSON.generate({
         'version' => PROTOCOL, 'kind' => 'game_archive', 'actor' => actor.to_s,
         'data' => {'archive_id' => archive_id, 'index' => index, 'events' => events}
-      }).bytesize <= STACK_ENTRY_BYTES
+      }).bytesize <= byte_limit
     end
     archive.each do |event|
       unless fits.call(current + [event], chunks.length)
@@ -1713,7 +1769,7 @@ class GameRoomLiveSessionStore
       current << event
     end
     chunks << current unless current.empty?
-    raise ArgumentError, 'The saved game is too large to restore safely' if chunks.length > STACK_ENTRIES - 8
+    raise ArgumentError, 'The saved game is too large to restore safely' if chunks.length > entry_limit - 8
     chunks
   end
 
@@ -1866,6 +1922,8 @@ class GameRoomLiveSessionStore
   def compact_discovery(metadata)
     result = metadata.dup
     result.delete('statistics_room_id')
+    # Optional roster information must never evict settings or control anchors.
+    result.delete('roster') if JSON.generate(result).bytesize > DISCOVERY_BYTES && !result.key?('game_options')
     if result.key?('game_options')
       options = result['game_options'].to_s
       raise ArgumentError, 'Game options are too large' if options.bytesize > MAX_OPTIONS_BYTES
@@ -1875,6 +1933,7 @@ class GameRoomLiveSessionStore
         result['options_z'] = Base64.strict_encode64(Zlib::Deflate.deflate(options))
       end
     end
+    result.delete('roster') if JSON.generate(result).bytesize > DISCOVERY_BYTES
     raise ArgumentError, 'Table discovery metadata is too large' if JSON.generate(result).bytesize > DISCOVERY_BYTES
     result
   end
@@ -1972,3 +2031,5 @@ end
 require_relative 'live_session_record_validator'
 require_relative 'live_session_retention'
 GameRoomLiveSessionStore.include(GameRoomLiveSessionStore::Retention)
+require_relative 'live_session_discovery'
+GameRoomLiveSessionStore.include(GameRoomLiveSessionStore::Discovery)

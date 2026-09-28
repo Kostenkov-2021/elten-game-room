@@ -68,6 +68,14 @@ module GameSurfaces
   end
 
   module ActionEmitter
+    def action_guard=(guard)
+      @action_guard = guard
+    end
+
+    def action_allowed?
+      @action_guard == nil || @action_guard.call
+    end
+
     def on_action(&handler)
       @action_handler = handler
       self
@@ -92,6 +100,7 @@ module GameSurfaces
     private
 
     def emit_action(kind, name, payload = {}, source: nil)
+      return unless action_allowed?
       @action_handler&.call(
         Action.new(kind: kind, name: name, payload: payload, source: source)
       )
@@ -405,6 +414,21 @@ module GameSurfaces
   end
 
   class RefreshAwareEditBox < EditBox
+    def initialize(*arguments, **options)
+      super
+      on(:change) { @game_room_edit_generation = game_room_edit_generation + 1 }
+    end
+
+    def game_room_edit_generation
+      @game_room_edit_generation.to_i
+    end
+
+    def set_text(*arguments, **options)
+      @game_room_edit_generation = game_room_edit_generation + 1
+      super
+    end
+    alias settext set_text
+
     attr_reader :last_focus_spoken
 
     class ContextShortcutFilter

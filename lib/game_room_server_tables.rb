@@ -29,8 +29,6 @@ class GameRoomServerTables
   end
   private_constant :Table
 
-  attr_reader :access_state, :last_error
-
   def initialize(program, client: nil)
     @server_app_uuid = program.server_app_uuid.to_s
     raise ArgumentError, "ELTEN Game Room server application is not declared" if @server_app_uuid.empty?
@@ -41,6 +39,8 @@ class GameRoomServerTables
     @tables = {}
     @raw_tables = {}
     @mutex = Mutex.new
+    @operation_mutex = Mutex.new
+    @access_generation = 0
     reset_access!
   end
 
@@ -52,11 +52,19 @@ class GameRoomServerTables
   end
 
   def available?
-    @access_state == :available
+    access_state == :available
   end
 
   def stamp_required?
-    @access_state == :stamp_required
+    access_state == :stamp_required
+  end
+
+  def access_state
+    @mutex.synchronize { @access_state }
+  end
+
+  def last_error
+    @mutex.synchronize { @last_error }
   end
 
   def reset_access!
@@ -66,27 +74,36 @@ class GameRoomServerTables
   # Every application entry probes again, regardless of the previous result or
   # the client's developer mode. The server also permits the author without a stamp.
   def check_access(username:)
-    @mutex.synchronize do
+    generation, table = @mutex.synchronize do
       reset_access_state
+      [@access_generation, raw_table("game_room_users")]
+    end
+    @operation_mutex.synchronize do
+      return false unless @mutex.synchronize { @access_generation == generation }
       begin
-        raw_table("game_room_users").select(where: { "username" => username.to_s }, limit: 1)
-        @access_state = :available
-        true
+        table.select(where: { "username" => username.to_s }, limit: 1)
+        @mutex.synchronize do
+          return false unless @access_generation == generation
+
+          @access_state = :available
+          true
+        end
       rescue EltenLink::Error => error
-        record_failure(error)
+        @mutex.synchronize { record_failure(error) if @access_generation == generation }
         false
       end
     end
   end
 
   def perform(default: nil)
-    @mutex.synchronize do
-      return default if !available?
+    generation = @mutex.synchronize { @access_generation }
+    @operation_mutex.synchronize do
+      return default unless @mutex.synchronize { @access_generation == generation && @access_state == :available }
 
       begin
         yield
       rescue EltenLink::Error => error
-        record_failure(error)
+        @mutex.synchronize { record_failure(error) if @access_generation == generation }
         raise
       end
     end
@@ -99,6 +116,7 @@ class GameRoomServerTables
   end
 
   def reset_access_state
+    @access_generation += 1
     @access_state = :unchecked
     @last_error = nil
   end

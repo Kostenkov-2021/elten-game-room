@@ -298,6 +298,29 @@ module GameRoomChangelog
         "Lack of access to server tables no longer blocks the entire Settings window. Settings that do not need that access remain available.",
         "Reduced unnecessary calculations when updating games and planning bot moves, and limited the retention of unneeded data from tables you have left."
       ].freeze
+    ).freeze,
+    Entry.new(
+      version: "2.0.4.1",
+      build: 240,
+      changes: [
+        "Added a Russian interface and a Russian pack of 36 quiz questions by Danil (Kostenkov-2021). Choose the interface language in Settings > General, and the question language when creating a table.",
+        "Added Daily Krowa rankings by paulinux. You can publish results and browse rankings for individual days. Today's solution remains hidden; you can view the word for earlier days.",
+        "Krowa's Word Tower now allows more attempts and includes eight new nouns. A custom dictionary is available only in the single-player Random word mode, not in Daily Krowa.",
+        "Reduced interface stalls on slow connections. While a move is being sent, you can still browse available information and use help. In arcade games, waiting for a score to be saved no longer blocks local paddle movement.",
+        "The widget and join list hide tables with a game in progress after 45 minutes without activity. This does not close the table; resuming the game or chat makes it visible again.",
+        "Ctrl+W on a selected table in the widget or join window reads its players and observers without joining it.",
+        "Press Enter on a person in the table's Users list to open ELTEN's standard user menu, where you can send a message, call them or add them to your contacts.",
+        "Improved Ludo announcements. Your choice of player names or colours now also applies to moves, turn announcements, scores and history. Move descriptions are shorter and omit unnecessary piece numbers.",
+        "Corrected move geometry and square numbering in Checkers on 8 by 8, 10 by 10 and 12 by 12 boards.",
+        "Fixed watching an ongoing rally in Axel Pong after joining a match already in progress.",
+        "Removed the rustling sound at the start of Audio Ball's standard high-ball sound. The Audiodisc sound pack is unchanged.",
+        "Farkle now correctly recognises a five-dice straight together with an additional scoring die.",
+        "In Categories, after using the entire alphabet, you can continue playing with the letters available again.",
+        "Fixed resuming larger saved games, including Scrabble, and a case where a failed save left the game paused.",
+        "Fixed selecting the next table master after successive games at one table, and safeguards when switching to another table through an invitation.",
+        "In the 1000 card game, an invalid play record no longer prevents subsequent valid moves from being replayed.",
+        "Corrected messages about the required number of players and the current number of users at the table, thanks to balteam."
+      ].freeze
     ).freeze
   ].freeze
 

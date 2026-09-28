@@ -1,9 +1,13 @@
 # Pytania do przeglądania poza grą
 
 Każdy plik TXT odpowiada jednemu zestawowi dostępnemu w quizie. Zawiera
-pytanie, cztery odpowiedzi A–D i poprawną odpowiedź. Nie pokazuje technicznych
-identyfikatorów pytań. Aby zgłosić błąd, wystarczy podać nazwę zestawu i treść
-pytania. Pełny Wiedźmin zawiera również pytania z obu zestawów szczegółowych.
+numer w osobnej linijce przed pytaniem, pytanie, cztery odpowiedzi A–D
+i poprawną odpowiedź. Numeracja zaczyna się od 1 w każdym pliku i dotyczy
+bieżącej kolejności pytań, nie ich technicznych identyfikatorów. Aby zgłosić
+błąd, wystarczy podać nazwę zestawu i treść pytania. Pełny Wiedźmin zawiera
+również pytania z obu zestawów szczegółowych.
+
+Rosyjski zestaw wiedzy ogólnej znajduje się w `obshchie-znaniya-ru.txt`.
 
 To generowane kopie do redakcji, nie druga baza gry. Poprawki wprowadza się
 w źródłowej bazie `content/`, następnie odtwarza listy:

@@ -92,6 +92,14 @@ class GameRoomTransport
     @live_store.discover_rooms(game: game, include_private: include_private)
   end
 
+  def discovered_roster(table)
+    @live_store.discovered_roster(table)
+  end
+
+  def note_realtime_activity(table_id, session_id)
+    @live_store.note_realtime_activity(table_id, session_id)
+  end
+
   def current_room(user)
     @live_store.current_room(user)
   end
@@ -160,8 +168,8 @@ class GameRoomTransport
     @live_store.game_events(session, force: force)
   end
 
-  def freeze_game(session, frozen: true)
-    @live_store.freeze_game(session, frozen: frozen)
+  def freeze_game(session, frozen: true, expected_boundary: nil)
+    @live_store.freeze_game(session, frozen: frozen, expected_boundary: expected_boundary)
   end
 
   def pending_invitations

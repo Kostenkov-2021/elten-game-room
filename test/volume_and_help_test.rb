@@ -80,7 +80,8 @@ driver = lambda do |current|
     assert(list.is_a?(EditBox) && (list.flags & EditBox::Flags::ReadOnly) != 0 && (list.flags & EditBox::Flags::MultiLine) != 0, "help is not read-only multiline text")
     lines = list.text.split("\n")
     assert(lines.first(4) == ["Game action", "Duplicate", "Room action", "Native field tip"], "help order/deduplication")
-    assert(lines[-6] == "History action" && lines.uniq == lines, "general order/duplicates")
+    assert(lines[4] == "History action" && lines.uniq == lines, "general order/duplicates")
+    assert(lines[5].start_with?("Ctrl+J") && lines[5].include?("Accept invitation"), "global invitation help missing or out of order")
     assert(list.key_processed(:key_enter) == false, "Enter cannot close help")
     EltenAPI::QuickActions.hotkey_actions(1).each(&:call)
     EltenAPI::QuickActions.hotkey_actions(1).each(&:call)
@@ -170,8 +171,8 @@ class Notice
 end
 EltenGameRoom.define_singleton_method(:normalized_settings) { state.merge("invitation_notifications" => "everyone", "invitation_sounds" => true) }
 EltenGameRoom.define_singleton_method(:play_sound_from_asset) { |name, volume:| played << [name, volume] }
-mapped = EltenGameRoom.map_notification(Notice.new)
 before = played.length
+mapped = EltenGameRoom.map_notification(Notice.new)
 assert(played.length == before, "mapping played notification")
 2.times { mapped.sound }
 assert(played.length == before + 1 && played.last == ["notice", 0.07], "notification scaled/deduplicated incorrectly")

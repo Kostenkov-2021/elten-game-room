@@ -12,9 +12,9 @@ forms = 0
   [1, 2, 3, 4, 5].product([1, 2, 3]).each do |difficulty, sets|
     Form.option_encoding_driver = lambda do |form|
       fields = form.fields.select { |field| field.is_a?(CheckBox) || field.is_a?(ListBox) }
-      raise 'Audio Ball table has unexpected controls' unless fields.length == 4
+      raise 'Audio Ball table has unexpected controls' unless fields.length == 5
       labels = fields.map { |field| field.is_a?(CheckBox) ? field.label : field.header }
-      raise "Wrong Audio Ball tab order: #{labels.inspect}" unless labels == ['Private table', 'Game mode', 'Difficulty and ball speed', 'Sets to win']
+      raise "Wrong Audio Ball tab order: #{labels.inspect}" unless labels == ['Private table', 'Game mode', 'Difficulty and ball speed', 'Sets to win', 'Full P2P (direct connections between participants)']
       raise 'Classic is not the only Audio Ball mode' unless fields[1].options == ['Classic']
       raise 'The lobby is missing a difficulty or has wrong labels' unless fields[2].options == ['Very easy', 'Easy', 'Normal', 'Hard', 'Very hard']
       raise 'Table privacy was not preserved' unless fields[0].checked == private_table
@@ -25,7 +25,8 @@ forms = 0
     end
     result = app.send(:configure_game_options, game, creating_table: true, initial_private_table: private_table)
     raise 'Audio Ball creation lost privacy or selected choices' unless result == {
-      private_table: private_table, game_options: {'mode' => 'classic', 'difficulty' => difficulty, 'sets_to_win' => sets}}
+      private_table: private_table, game_options: {'mode' => 'classic', 'difficulty' => difficulty, 'sets_to_win' => sets,
+        'p2p_enabled' => false, 'p2p_participants_limit' => 8}}
   end
 end
 repo = Object.new

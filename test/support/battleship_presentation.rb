@@ -13,9 +13,13 @@ require_relative "log"
 
 module EltenAPI::Tasks
   class Cancelled < StandardError; end unless const_defined?(:Cancelled)
-  def self.run(**_options)
-    token = Object.new
-    def token.raise_if_cancelled!; end
+  class CancellationToken
+    def cancel; @cancelled = true; end
+    def cancelled?; @cancelled == true; end
+    def raise_if_cancelled!; raise Cancelled if cancelled?; end
+  end unless const_defined?(:CancellationToken)
+  def self.run(**options)
+    token = options[:cancellation_token] || CancellationToken.new
     yield nil, token
   end
 end

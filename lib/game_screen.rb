@@ -81,6 +81,7 @@ class GameScreen
     @room_snapshot = nil
     @surface_state = {}
     @board_preferences = GameRoomBoardPreferences.new(program, game.id)
+    @game.board_presentation_preferences = @board_preferences.values
     @selected_surface_action = nil
     @history_index = 0
     @users_index = 0
@@ -114,8 +115,6 @@ class GameScreen
       HiddenSubmissions::ProgramStorage.new(@program)
     )
     @random_source = GameRoomRandom::LocalSecureSource.new
-    @bot_coordinator = GameRoomBots::Coordinator.new
-    @bot_turn_controller = @repository.bot_turn_controller(table_id)
   end
 
   def attach_table_layout(layout)
@@ -165,19 +164,16 @@ class GameScreen
     start_session_runner
     loop do
       signal_received_at = @pending_signal_received_at
-      confirmation_pending = !@session_runner && @bot_turn_controller.waiting_for_confirmation?
-      verification_forced = !@session_runner && @bot_turn_controller.verification_due?
       using_cached_payload = false
       snapshot_started_at = monotonic_time
       log_signal_timing("snapshot_started", signal_received_at)
       presentation_only = @presentation_refresh_requested && @last_game_payload != nil
       @presentation_refresh_requested = false
-      verification_forced = false if presentation_only
       payload = presentation_only ? @last_game_payload : nil
       payload = network_task(
         _("Updating game"),
         ui: refresh_input_ui,
-        silent: confirmation_pending || @automatic_recovery_pending || @new_session_id != nil
+        silent: @automatic_recovery_pending || @new_session_id != nil
       ) do
         @synchronizer.synchronize(complete: @new_session_id == nil) do
           room_snapshot = @room_snapshot || @room_snapshot_provider.call
@@ -186,7 +182,7 @@ class GameScreen
               @session,
               # Native notifications already carry persisted events. Only a
               # failed/uncertain operation needs to bypass local stack metadata.
-              force_events: (@automatic_recovery_pending || verification_forced) && !@synchronizer.reconciled?
+              force_events: @automatic_recovery_pending && !@synchronizer.reconciled?
             ),
             room_snapshot,
             @activity_entries || activity_entries_for(room_snapshot)
@@ -213,8 +209,6 @@ class GameScreen
           end
           next
         end
-        @bot_turn_controller.defer_verification
-        verification_forced = false
         payload = @last_game_payload
         using_cached_payload = true
       elsif payload[0] == nil || payload[1] == nil
@@ -259,16 +253,7 @@ class GameScreen
       process_new_events(replay, signal_received_at: signal_received_at)
       process_new_table_activity(replay)
       @pending_signal_received_at = nil
-      if !using_cached_payload
-        verify_pending_move(replay)
-        confirmation = @bot_turn_controller.observe(
-          session_id: @repository.session_id(@session),
-          events: snapshot.events,
-          confirmed_event_ids: @repository.confirmed_event_ids(@session),
-          verified: verification_forced
-        ) unless @session_runner
-        log_bot_confirmation(confirmation) if ![:idle, :cooldown, :waiting_for_confirmation].include?(confirmation)
-      end
+      verify_pending_move(replay) unless using_cached_payload
 
       if !@session["__frozen"] && !replay.finished? && !using_cached_payload && perform_automatic_action(replay)
         @suppress_surface_focus = true
@@ -276,24 +261,7 @@ class GameScreen
       end
       @game_client&.after_events(replay, Session.name, context: action_context)
       revision = @repository.events_revision(snapshot.events)
-      bot_actor = @session["__frozen"] || event_presentation_busy? ? nil : pending_bot_actor(replay)
-      if bot_actor != nil
-        @bot_turn_controller.schedule_decision(
-          session_id: @repository.session_id(@session), actor: bot_actor,
-          revision: @game.bot_delay_revision(replay, revision),
-          delay: @game.bot_move_delay(replay, bot_actor, context: action_context)
-        )
-      end
-      bot_lease = if bot_actor == nil
-        nil
-      else
-        @bot_turn_controller.acquire(
-          session_id: @repository.session_id(@session),
-          actor: bot_actor,
-          revision: revision
-        )
-      end
-      action = wait_for_action(replay, revision, bot_actor: bot_actor, bot_lease: bot_lease)
+      action = wait_for_action(replay, revision)
       if @latest_wait_replay != nil
         replay = @latest_wait_replay
         @latest_wait_replay = nil
@@ -301,8 +269,9 @@ class GameScreen
 
       case action
       when :game_action
-        submit_action(replay)
-        clear_chat_draft if @clear_chat_after_action
+        accepted = submit_action(replay)
+        clear_chat_draft(receipt: @chat_submission) if accepted && @clear_chat_after_action
+        @chat_submission = nil
         @clear_chat_after_action = false
         @suppress_surface_focus = true
       when :new_session
@@ -375,6 +344,8 @@ class GameScreen
     @layout.form.game_room_background_help_enabled = false if @layout
     @event_presentation&.close
     @game_client&.close
+    @layout&.begin_bindings
+    @layout.game_client = nil if @layout
   end
 
   # Used only when a screen has not received its first valid snapshot yet.
@@ -472,17 +443,16 @@ class GameScreen
     end
   end
 
-  def wait_for_action(replay, revision, bot_actor: nil, bot_lease: nil)
+  def wait_for_action(replay, revision)
     replay = @event_presentation.visible_replay if event_presentation_busy? && @event_presentation.visible_replay != nil
     action = nil
-    bot_token = bot_lease == nil ? nil : EltenAPI::Tasks::CancellationToken.new
-    history_items = combined_history_items(replay)
     user_items = room_user_items(replay)
     @game.board_presentation_preferences = @board_preferences.values
     @game.prepare_view(replay, Session.name, context: action_context)
     view_spec = @game.game_view_spec(replay, Session.name)
     @board_view_spec = view_spec.surface
     @surface_state = @board_preferences.restore(@board_view_spec, @surface_state)
+    history_items = combined_history_items(replay)
     phase = replay.finished? ? :finished : :active
     @finished_at = phase == :finished ? (@layout&.phase == :active ? monotonic_time : @finished_at) : nil
     phase_changed = @layout != nil && (@layout.phase != phase || @focus_new_game == true)
@@ -505,6 +475,7 @@ class GameScreen
     end
     @focus_new_game = false
     @layout.session_id = @repository.session_id(@session)
+    @layout.game_client = @game_client
     layout = @layout
     layout.begin_bindings
     layout.back_button.label = _("Leave")
@@ -554,12 +525,14 @@ class GameScreen
     end
     shortcuts = normalized_game_shortcuts(@game.game_shortcuts(replay, Session.name))
     handle_shortcut = lambda do |shortcut|
-      next if action != nil
+      pending = form.game_room_pending_operation
+      if pending
+        next pending.reject_action unless pending.safe_shortcut?(shortcut)
+      else
+        next if action != nil
+      end
       next if event_presentation_busy? && ![:announcement, :browse, :surface].include?(shortcut.kind)
       next if @session["__frozen"] && ![:announcement, :browse, :surface].include?(shortcut.kind)
-      if bot_actor != nil && !@game.actions_during_bot_turn? && ![:announcement, :browse, :surface].include?(shortcut.kind)
-        next
-      end
 
       active_shortcut = refreshed_announcement_shortcut(shortcut, replay, Session.name)
       selection = activate_game_shortcut(active_shortcut, surface, replay: replay)
@@ -582,8 +555,11 @@ class GameScreen
       end
       if selection == :inline_refresh
         remember_position.call
+        if pending
+          refresh_history_control(history, replay)
+          next
+        end
         action = :refresh
-        cancel_bot_decision(bot_token, :human_shortcut)
         form.resume
         next
       end
@@ -592,7 +568,6 @@ class GameScreen
       remember_position.call
       @selected_surface_action = selection
       action = :game_action
-      cancel_bot_decision(bot_token, :human_shortcut)
       form.resume
     end
     bind_game_shortcuts(
@@ -631,18 +606,26 @@ class GameScreen
       end
       actions
     end, game: @game, options: @game.options_from_json(@session["options"]), room: -> { @room_snapshot },
+      user_menu: ->(user) { @program.__send__(:usermenu, user) if action == nil },
       control: -> { {active: !replay.finished?, players: @repository.players_for(@session), controllers: @session.fetch('__controllers', {})} },
       settings: GameRoomParticipantMenu.settings_callback(@game, client: @game_client),
       read_options: -> {
       source = replay.finished? ? @room_snapshot&.table.to_h["game_options"] : @session["options"]
       speak(@game.table_options_announcement(@game.options_from_json(source)))
     }) do |requested, participant|
+      if form.game_room_pending_operation
+        if requested == :rules
+          show_game_rules(replay)
+        else
+          form.game_room_pending_operation.reject_action
+        end
+        next
+      end
       next if action != nil
 
       remember_position.call
       @selected_participant = participant
       action = requested == :leave ? :back : requested
-      cancel_bot_decision(bot_token, :participant_menu)
       form.resume
     end
     layout.restart_button.on(:press) do
@@ -664,9 +647,7 @@ class GameScreen
         next
       end
       next if event_presentation_busy?
-      next if bot_actor != nil && !@game.actions_during_bot_turn?
 
-      cancel_bot_decision(bot_token, :human_surface_action)
 
       if selection["_stay_open"] == true
         remember_position.call
@@ -682,6 +663,8 @@ class GameScreen
     end
     @game_client.attach_view(form, surface) if @game_client.respond_to?(:attach_view)
     back_button.on(:press) do
+      next form.game_room_pending_operation.reject_action if form.game_room_pending_operation
+      next if action != nil
       if surface.cancel_pending_action?
         surface.cancel_pending_action!
         remember_position.call
@@ -704,20 +687,21 @@ class GameScreen
       elsif submission.kind == :chat && @send_chat == nil
         alert(_("Chat is not available."))
       elsif submission.kind == :chat
+        @chat_submission = GameRoomUI::ChatSubmission.capture(chat, session_id: layout.session_id)
         @pending_chat_message = submission.text
         action = :chat
-        cancel_bot_decision(bot_token, :chat)
         form.resume
       elsif submission.kind == :movement
         next if @session["__frozen"] || event_presentation_busy?
+        @chat_submission = GameRoomUI::ChatSubmission.capture(chat, session_id: layout.session_id)
         @selected_surface_action = submission.action
         @clear_chat_after_action = true
         action = :game_action
-        cancel_bot_decision(bot_token, :chat_command)
         form.resume
       end
     end
     form.add_timer(FormTimer.new(TIMER_INTERVAL, repeat: true) do
+      next if form.game_room_pending_operation
       next if action != nil
 
       presentation_changed = @event_presentation&.advance
@@ -726,7 +710,7 @@ class GameScreen
       publish_session_view(replay, surface)
       automatic_due = automatic_action_due?(replay)
       sync_event = @synchronizer.next_event(
-        allow_recovery: recovery_allowed?(automatic_due, bot_actor)
+        allow_recovery: recovery_allowed?(automatic_due)
       )
       local_action = if @session_runner || replay.finished? || connection_recovery_pending? || event_presentation_busy? || presentation_changed
         nil
@@ -748,13 +732,11 @@ class GameScreen
 
       if sync_event&.kind == :closed
         action = :room_closed
-        cancel_bot_decision(bot_token, :room_closed)
         form.resume_for_refresh
       elsif sync_event&.kind == :game_started
         remember_position.call
         @new_session_id = sync_event.session_id
         action = :new_session
-        cancel_bot_decision(bot_token, :new_session_signal)
         form.resume_for_refresh
       elsif sync_event&.kind == :game_changed
         remember_position.call
@@ -765,17 +747,14 @@ class GameScreen
         # Confirm the event revision before rebuilding the form so duplicate
         # or already-applied notifications stay invisible to the user.
         action = :check_signal
-        cancel_bot_decision(bot_token, :game_signal)
         form.resume_for_refresh
       elsif sync_event&.kind == :table_changed
         remember_position.call
         action = :room_refresh
-        cancel_bot_decision(bot_token, :room_change_signal)
         form.resume_for_refresh
       elsif sync_event&.kind == :recovery
         remember_position.call
         action = :recovery_refresh
-        cancel_bot_decision(bot_token, :connection_recovery)
         form.resume_for_refresh
       elsif presentation_changed || @game_client&.refresh_due?
         remember_position.call
@@ -785,283 +764,118 @@ class GameScreen
         remember_position.call
         action = :refresh
         form.resume_for_refresh
-      elsif bot_actor != nil && bot_lease == nil && !connection_recovery_pending? && @bot_turn_controller.verification_due?
-        remember_position.call
-        action = :bot_verification
-        form.resume_for_refresh
-      elsif bot_actor != nil && bot_lease == nil && !connection_recovery_pending? && @bot_turn_controller.ready?(
-        session_id: @repository.session_id(@session),
-        actor: bot_actor
-      )
-        remember_position.call
-        action = :bot_ready
-        form.resume_for_refresh
       end
     end)
 
-    run_bot_turn = lambda do
-      next :idle if bot_token == nil || bot_lease == nil
-
-      bot_started_at = monotonic_time
-      bot_phase = replay.state.is_a?(Hash) ? replay.state[:phase] : nil
-      Log.debug(
-        "ELTEN Game Room bot decision started " \
-        "table=#{table_id} session=#{@repository.session_id(@session)} " \
-        "game=#{@game.id} actor=#{bot_actor} phase=#{bot_phase || 'none'} " \
-        "events=#{replay.accepted_events.length}"
-      )
-      decision = begin
-        calculate_bot_decision(replay, form: form, cancellation_token: bot_token)
-      rescue EltenAPI::Tasks::Cancelled => error
-        Log.debug(
-          "ELTEN Game Room bot decision cancelled " \
-          "table=#{table_id} session=#{@repository.session_id(@session)} " \
-          "actor=#{bot_actor} elapsed_ms=#{((monotonic_time - bot_started_at) * 1_000).round(1)} " \
-          "reason=#{error.message}"
-        )
-        nil
-      end
-      Log.debug(
-        "ELTEN Game Room bot decision finished " \
-        "table=#{table_id} session=#{@repository.session_id(@session)} " \
-        "actor=#{bot_actor} elapsed_ms=#{((monotonic_time - bot_started_at) * 1_000).round(1)} " \
-        "decision=#{decision == nil ? 'none' : 'ready'}"
-      )
-      if decision == nil || action != nil
-        @bot_turn_controller.cancel(bot_lease)
-        bot_lease = nil
-        bot_token = nil
-        next action == nil ? :idle : :interrupted
-      end
-
-      remember_position.call
-      changed = perform_bot_turn(replay, decision, lease: bot_lease, form: form)
-      # The form remains interactive while the network task submits the bot's
-      # move. Preserve anything typed during that task before deciding whether
-      # the screen needs to be rebuilt.
-      remember_position.call
-      waiting_for_confirmation = @bot_turn_controller.waiting_for_confirmation?
-      @bot_turn_controller.cancel(bot_lease) if !waiting_for_confirmation
-      bot_lease = nil
-      bot_token = nil
-      changed ? :changed : :unchanged
+    if announce_finished_focus
+      speech_wait
+      form.wait
+    elsif !silent_entry
+      form.wait
+    else
+      layout.wait_without_announcement
     end
 
-    waited_once = false
-    background_work = false
-    pending_game_refresh = false
     loop do
-      if bot_token != nil
-        background_work = true
-        bot_result = run_bot_turn.call
-        if bot_result == :changed
-          @latest_wait_replay = replay
-          return action if action != nil && !maintenance_action?(action)
-          return :refresh if action == nil
-
-          pending_game_refresh = true
+      case action
+      when :inline_game_action
+        selection = @selected_surface_action
+        @selected_surface_action = nil
+        inline_result = submit_inline_action(replay, selection)
+        if inline_result != nil
+          replay, inserted = inline_result
+          newest_id = inserted.map { |event| @repository.event_id(event) }.max.to_i
+          revision = [revision[0].to_i + inserted.length, [revision[1].to_i, newest_id].max]
         end
-        return action if action != nil && !maintenance_action?(action)
-      end
-
-      if action == nil
-        if !waited_once && announce_finished_focus && !background_work
-          speech_wait
-          form.wait
-        elsif !waited_once && !silent_entry && !background_work
-          form.wait
-        else
-          layout.wait_without_announcement
-        end
-        waited_once = true
-      end
-
-      restart_bot = false
-      loop do
-        cancelled_bot = bot_token != nil && bot_token.cancelled?
-        case action
-        when :inline_game_action
-          selection = @selected_surface_action
-          @selected_surface_action = nil
-          inline_result = submit_inline_action(replay, selection)
-          if inline_result != nil
-            replay, inserted = inline_result
-            newest_id = inserted.map { |event| @repository.event_id(event) }.max.to_i
-            revision = [revision[0].to_i + inserted.length, [revision[1].to_i, newest_id].max]
-          end
-        when :check_signal
-          remote_action, remote_session_id = synchronized_network_task(
-            _("Checking for game updates"),
-            ui: refresh_input_ui, complete: false
-          ) do
-            remote_game_update(revision)
-          end || [nil, nil]
-          if remote_action == :new_session
-            @new_session_id = remote_session_id
-            action = :new_session
-            break
-          elsif remote_action == :refresh
-            action = :refresh
-            break
-          end
-          @pending_signal_received_at = nil
-        when :room_refresh
-          room_status, snapshot, activity_entries, remote_action, remote_session_id = synchronized_network_task(
-            _("Updating table"),
-            ui: refresh_input_ui, complete: false
-          ) do
-            room_update = fetch_room_snapshot
-            # Replacing a participant and changing the master are table
-            # notifications, not game moves. The persisted move revision can
-            # stay unchanged while the hand, turn and permissions all change.
-            # Consult the already received session projection as well; this
-            # does not force another network read or rebuild for ordinary chat.
-            room_update + (room_update.first == :updated ? remote_game_update(revision) : [nil, nil])
-          end || [:failed, nil, []]
-          if room_status == :closed
-            action = :room_closed
-            break
-          elsif room_status == :updated
-            apply_room_snapshot(users, history, replay, snapshot, activity_entries)
-          end
-          if remote_action == :new_session
-            @new_session_id = remote_session_id
-            action = :new_session
-            break
-          elsif remote_action == :refresh || (room_status == :updated && !departed_players_for_replacement(replay, snapshot).empty?)
-            action = :refresh
-            break
-          end
-        when :recovery_refresh
-          recovery_started_at = monotonic_time
-          payload = synchronized_network_task(_("Updating game"), ui: refresh_input_ui) do
-            recover_game_update(revision)
-          end
-          room_status, snapshot, activity_entries, remote_action, remote_session_id = payload || [:failed, nil, [], nil, nil]
-          Log.debug(
-            "ELTEN Game Room connection recovery " \
-            "table=#{table_id} session=#{@repository.session_id(@session)} " \
-            "elapsed_ms=#{((monotonic_time - recovery_started_at) * 1_000).round(1)} " \
-            "room_status=#{room_status} remote_action=#{remote_action || 'none'}"
-          )
-          if room_status == :closed
-            action = :room_closed
-            break
-          end
-          apply_room_snapshot(users, history, replay, snapshot, activity_entries) if room_status == :updated
-          if remote_action == :new_session
-            @new_session_id = remote_session_id
-            action = :new_session
-            break
-          elsif remote_action == :refresh || (room_status == :updated && !departed_players_for_replacement(replay, snapshot).empty?)
-            action = :refresh
-            break
-          end
-        when :bot_verification
-          background_work = true
-          verified_snapshot = network_task(_("Checking computer move"), ui: form, silent: true) do
-            @synchronizer.synchronize do
-              @repository.snapshot_for(@session, force_events: true)
-            end
-          end
-          remember_position.call
-          if verified_snapshot == nil
-            @bot_turn_controller.defer_verification
-          else
-            @session = verified_snapshot.session
-            verified_revision = @repository.events_revision(verified_snapshot.events)
-            confirmation = @bot_turn_controller.observe(
-              session_id: @repository.session_id(@session),
-              events: verified_snapshot.events,
-              confirmed_event_ids: @repository.confirmed_event_ids(@session),
-              verified: true
-            )
-            log_bot_confirmation(confirmation) if ![:idle, :cooldown, :waiting_for_confirmation].include?(confirmation)
-            if @last_game_payload != nil
-              @last_game_payload = [verified_snapshot, @last_game_payload[1], @last_game_payload[2]]
-            end
-            if verified_revision != revision
-              action = :refresh
-              break
-            end
-          end
-          if @bot_turn_controller.ready?(
-            session_id: @repository.session_id(@session),
-            actor: bot_actor
-          )
-            action = :bot_ready
-            next
-          end
-        when :bot_ready
-          bot_lease = @bot_turn_controller.acquire(
-            session_id: @repository.session_id(@session),
-            actor: bot_actor,
-            revision: revision
-          )
-          if bot_lease != nil
-            bot_token = EltenAPI::Tasks::CancellationToken.new
-            action = nil
-            restart_bot = true
-            break
-          end
-        else
+      when :check_signal
+        remote_action, remote_session_id = synchronized_network_task(
+          _("Checking for game updates"),
+          ui: refresh_input_ui, complete: false
+        ) do
+          remote_game_update(revision)
+        end || [nil, nil]
+        if remote_action == :new_session
+          @new_session_id = remote_session_id
+          action = :new_session
           break
-        end
-
-        if pending_game_refresh
+        elsif remote_action == :refresh
           action = :refresh
           break
         end
-
-        if cancelled_bot
-          @bot_turn_controller.cancel(bot_lease)
-          bot_lease = nil
-          bot_token = nil
-          if bot_actor != nil && @bot_turn_controller.ready?(
-            session_id: @repository.session_id(@session),
-            actor: bot_actor
-          )
-            action = :bot_ready
-            next
-          end
+        @pending_signal_received_at = nil
+      when :room_refresh
+        room_status, snapshot, activity_entries, remote_action, remote_session_id = synchronized_network_task(
+          _("Updating table"),
+          ui: refresh_input_ui, complete: false
+        ) do
+          room_update = fetch_room_snapshot
+          # Replacing a participant and changing the master are table
+          # notifications, not game moves. The persisted move revision can
+          # stay unchanged while the hand, turn and permissions all change.
+          # Consult the already received session projection as well; this
+          # does not force another network read or rebuild for ordinary chat.
+          room_update + (room_update.first == :updated ? remote_game_update(revision) : [nil, nil])
+        end || [:failed, nil, []]
+        if room_status == :closed
+          action = :room_closed
+          break
+        elsif room_status == :updated
+          apply_room_snapshot(users, history, replay, snapshot, activity_entries)
         end
-
-        action = nil
-        layout.wait_without_announcement
+        if remote_action == :new_session
+          @new_session_id = remote_session_id
+          action = :new_session
+          break
+        elsif remote_action == :refresh || (room_status == :updated && !departed_players_for_replacement(replay, snapshot).empty?)
+          action = :refresh
+          break
+        end
+      when :recovery_refresh
+        recovery_started_at = monotonic_time
+        payload = synchronized_network_task(_("Updating game"), ui: refresh_input_ui) do
+          recover_game_update(revision)
+        end
+        room_status, snapshot, activity_entries, remote_action, remote_session_id = payload || [:failed, nil, [], nil, nil]
+        Log.debug(
+          "ELTEN Game Room connection recovery " \
+          "table=#{table_id} session=#{@repository.session_id(@session)} " \
+          "elapsed_ms=#{((monotonic_time - recovery_started_at) * 1_000).round(1)} " \
+          "room_status=#{room_status} remote_action=#{remote_action || 'none'}"
+        )
+        if room_status == :closed
+          action = :room_closed
+          break
+        end
+        apply_room_snapshot(users, history, replay, snapshot, activity_entries) if room_status == :updated
+        if remote_action == :new_session
+          @new_session_id = remote_session_id
+          action = :new_session
+          break
+        elsif remote_action == :refresh || (room_status == :updated && !departed_players_for_replacement(replay, snapshot).empty?)
+          action = :refresh
+          break
+        end
+      else
+        break
       end
-      next if restart_bot
-
-      @latest_wait_replay = replay
-      return action
+      action = nil
+      layout.wait_without_announcement
     end
+    @latest_wait_replay = replay
+    action
   ensure
     # Ctrl+F1 opens its background help only after this wait returns. Preserve the
     # current game-field descriptions before removing handlers and their tips.
     @rules_shortcut_snapshot = if action == :rules && @layout != nil
       GameRoomContextHelp.game_field_tips(@layout.game_help_fields)
     end
-    @game_client.detach_view if @game_client.respond_to?(:detach_view)
-    @bot_turn_controller.cancel(bot_lease)
-    @layout&.begin_bindings
   end
 
-  def maintenance_action?(action)
-    [
-      :inline_game_action,
-      :check_signal,
-      :room_refresh,
-      :recovery_refresh,
-      :bot_verification,
-      :bot_ready
-    ].include?(action)
-  end
-
-  # Recovery waits until no automatic action or bot calculation is active, so
-  # reconnecting cannot interrupt a valid move and strand the current turn.
-  def recovery_allowed?(automatic_due, bot_actor)
+  # Do not reconnect across an automatic realtime point submission.
+  def recovery_allowed?(automatic_due)
     return true if connection_recovery_pending? || @new_session_id != nil
 
-    !automatic_due && bot_actor == nil
+    !automatic_due
   end
 
   def normalized_game_shortcuts(shortcuts)
@@ -1122,7 +936,11 @@ class GameScreen
     when :surface
       return nil if surface == nil || !surface.respond_to?(:handle_command)
 
-      result = surface.handle_command(shortcut.action_name, shortcut.payload)
+      payload = shortcut.payload
+      if @layout&.form&.game_room_pending_operation && %w[navigate_playable_card navigate_playable_tile].include?(shortcut.action_name.to_s)
+        payload = payload.merge("auto_action" => nil, "auto_card_id" => nil)
+      end
+      result = surface.handle_command(shortcut.action_name, payload)
       return result if result.is_a?(GameSurfaces::Action)
 
       if result && @board_preferences && @board_preferences.remember(shortcut.action_name, @board_view_spec, surface.state)
@@ -1320,7 +1138,11 @@ class GameScreen
       nested = GameRoomGames::GameShortcut.new(key: shortcut.key, kind: :browse, label: choice.label, prompt: choice.label, choices: children)
       browse_shortcut_choices(nested)
     end
-    form.wait
+    if @layout&.form&.game_room_pending_operation
+      @layout.form.open_game_room_background_help(form)
+    else
+      form.wait
+    end
     EltenAPI::KeyboardState.clear_current_frame if defined?(EltenAPI::KeyboardState)
   end
 
@@ -1505,7 +1327,6 @@ class GameScreen
     @presentation_refresh_requested = false
     @automatic_recovery_pending = false
     @focus_new_game = true
-    @bot_turn_controller.switch_session(@repository.session_id(session)) unless @session_runner
     @synchronizer.update_session(@repository.session_id(session), discard_pending: true).synchronized!
     @surface_state = {}
     @selected_surface_action = nil
@@ -1663,6 +1484,9 @@ class GameScreen
     message = (pending_message == nil ? @chat_text : pending_message).to_s.strip
     return if message.empty? || @send_chat == nil
 
+    receipt = @chat_submission
+    @chat_submission = nil
+
     entry = network_task(_("Sending chat message"), ui: :none) do
       @synchronizer.synchronize(complete: false) do
         @send_chat.call(@table, message, @room_snapshot&.members.to_a)
@@ -1676,14 +1500,17 @@ class GameScreen
     GameRoomSounds.play(@program, "chatmsg")
     text = @activity_repository&.text_for(entry, game_name: @game_name, global: false)
     speak(text, stop: false, break_sequence: false) if !text.to_s.empty?
-    clear_chat_draft
+    clear_chat_draft(receipt: receipt)
   end
 
-  def clear_chat_draft
+  def clear_chat_draft(receipt: nil)
+    if receipt
+      return false unless receipt.clear_if_current(@chat_control, session_id: @layout&.session_id)
+    end
     @chat_text = ""
     @chat_index = 0
     @chat_check = 0
-    if @chat_control != nil
+    if @chat_control != nil && receipt == nil
       @chat_control.set_text("")
       @chat_control.index = 0
       @chat_control.check = 0
@@ -1712,96 +1539,6 @@ class GameScreen
   def users_header
     count = @room_snapshot == nil ? 0 : @room_snapshot.participants.length
     _("Users at the table (%{count})") % { count: count }
-  end
-
-  def pending_bot_actor(replay)
-    return nil if @session_runner
-    return nil if @session["__frozen"]
-    return nil if connection_recovery_pending? || @new_session_id != nil
-    return nil if !same_user?(@table_owner, Session.name)
-
-    @bot_coordinator.pending_bot(@game, replay)
-  end
-
-  def calculate_bot_decision(replay, form:, cancellation_token:)
-    context = action_context
-    players = @repository.players_for(@session)
-    bot_task(form: form, cancellation_token: cancellation_token) do
-      GameRoomExecutionPolicy.bot_decision(game: @game, session: @session, replay: replay,
-        repository: @repository, coordinator: @bot_coordinator, context: context, players: players)
-    end
-  end
-
-  def perform_bot_turn(replay, decision, lease:, form:)
-    return false if connection_recovery_pending? || event_presentation_busy?
-    return false if !same_user?(@table_owner, Session.name)
-    return false if decision == nil
-
-    context = action_context
-    status, plan = @game.action_for(
-      decision.action,
-      replay,
-      decision.actor,
-      context: context
-    )
-    if status != :ok
-      # Storage reports this failure once until a write succeeds. It is not
-      # a bad bot decision and must not flood logs on every automatic check.
-      if status != :local_storage_unavailable
-        Log.warning("ELTEN Game Room bot chose a rejected action: #{@game.id}, #{status}")
-      end
-      return false
-    end
-    validate_action_plan!(plan)
-    return false if !action_plan_fits_transport?(plan, silent: true)
-    return false if !@bot_turn_controller.submitting(lease, events: plan.events)
-
-    submission_started_at = monotonic_time
-    Log.debug(
-      "ELTEN Game Room bot submission started " \
-      "table=#{table_id} session=#{@repository.session_id(@session)} " \
-      "game=#{@game.id} actor=#{decision.actor} events=#{plan.events.length}"
-    )
-    inserted = begin
-      network_task(_("Computer is moving"), ui: form, silent: true) do
-        @repository.append_events(
-          session: @session,
-          sequence: @repository.next_sequence(@session, replay.accepted_events),
-          events: plan.events,
-          recipients: game_recipients,
-          actor: decision.actor
-        )
-      end
-    rescue Exception
-      @bot_turn_controller.submission_failed(lease)
-      raise
-    end
-    Log.debug(
-      "ELTEN Game Room bot submission finished " \
-      "table=#{table_id} session=#{@repository.session_id(@session)} " \
-      "actor=#{decision.actor} elapsed_ms=#{((monotonic_time - submission_started_at) * 1_000).round(1)} " \
-      "inserted=#{inserted == nil ? 0 : inserted.length}"
-    )
-    if inserted == nil
-      @bot_turn_controller.submission_failed(lease)
-      Log.warning(
-        "ELTEN Game Room bot submission is uncertain; waiting for server state " \
-        "table=#{table_id} session=#{@repository.session_id(@session)} actor=#{decision.actor}"
-      )
-      return false
-    end
-
-    event_ids = inserted.map { |event| @repository.event_id(event) }
-    @pending_event_ids = event_ids
-    @bot_turn_controller.submitted(lease, event_ids: event_ids)
-    true
-  end
-
-  def log_bot_confirmation(result)
-    Log.debug(
-      "ELTEN Game Room bot confirmation " \
-      "table=#{table_id} session=#{@repository.session_id(@session)} result=#{result}"
-    )
   end
 
   def perform_automatic_action(replay)
@@ -2191,11 +1928,17 @@ class GameScreen
   def network_task(title, ui: nil, silent: false, &operation)
     return nil if @synchronizer&.waiting?
 
-    ui = @layout.form if @layout&.form&.game_room_background_help?
+    if @layout&.binding_generation.to_i > 0
+      token = EltenAPI::Tasks::CancellationToken.new
+      pending = GameRoomUI::PendingOperation.new(layout: @layout, table_id: table_id,
+        session_id: @layout.session_id, token: token, title: title)
+      ui = pending
+    end
     options = { title: title, cancellable: true, show_after: 5.0 }
     options[:ui] = ui if ui != nil
+    options[:cancellation_token] = token if token
     if @game_client.respond_to?(:network_task_ui)
-      token = EltenAPI::Tasks::CancellationToken.new
+      token ||= EltenAPI::Tasks::CancellationToken.new
       task_ui = @game_client.network_task_ui(ui: ui, title: title, show_after: 5.0, cancellation_token: token)
       options[:ui], options[:cancellation_token] = task_ui, token
     end
@@ -2236,6 +1979,16 @@ class GameScreen
     nil
   ensure
     task_ui&.close
+    remember_layout_position if pending&.active?
+    pending&.close
+  end
+
+  def remember_layout_position
+    snapshot = @layout.snapshot
+    @surface_state, @surface_identity = snapshot.surface_state, snapshot.surface_identity
+    @history_index, @history_follows_tail = snapshot.history_index, snapshot.history_follows_tail
+    @users_index, @form_index, @focus_location = snapshot.users_index, snapshot.form_index, snapshot.focus_location
+    @chat_text, @chat_index, @chat_check = snapshot.chat_text, snapshot.chat_index, snapshot.chat_check
   end
 
   def connection_recovery_pending?
@@ -2253,29 +2006,6 @@ class GameScreen
     return :none if @focus_location.to_a[0]&.to_sym != :chat
 
     @chat_control
-  end
-
-  # Bot policies may perform a complete-round search. The worker calculates the
-  # decision while Tasks.run keeps the owned game form active, so navigation,
-  # informational shortcuts, speech and audio continue during the search.
-  def bot_task(form:, cancellation_token:, &operation)
-    EltenAPI::Tasks.run(
-      title: _("Computer is thinking"),
-      ui: form,
-      cancellable: false,
-      cancellation_token: cancellation_token,
-      &operation
-    )
-  end
-
-  def cancel_bot_decision(token, reason)
-    return false if token == nil
-
-    Log.debug(
-      "ELTEN Game Room bot cancellation requested " \
-      "table=#{table_id} session=#{@repository.session_id(@session)} reason=#{reason}"
-    )
-    token.cancel
   end
 
   def monotonic_time

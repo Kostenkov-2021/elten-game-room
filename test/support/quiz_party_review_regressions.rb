@@ -16,9 +16,10 @@ Time.singleton_class.prepend(QuizRegressionClock)
 
 class QuizReviewFixture
   attr_reader :h, :game, :contexts
-  def initialize(users = %w[Alice Bob Carol Dave])
+  def initialize(users = %w[Alice Bob Carol Dave], bots: 0)
     @game = GameRoomGames::QuizParty.new
-    @h = NativeRoomHarness.new(game: game, users: users, options: game.default_options.merge("answer_time" => 5))
+    @h = NativeRoomHarness.new(game: game, users: users, bots: bots,
+      options: game.default_options.merge("answer_time" => 5, "bot_delay" => 0))
     h.start
     @contexts = users.to_h do |u|
       [u, GameRoomGames::ActionContext.new(session_id: h.session["__id"], table_id: h.table["__id"], now: 1000,

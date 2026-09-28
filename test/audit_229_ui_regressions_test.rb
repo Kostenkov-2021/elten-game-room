@@ -1,4 +1,5 @@
 require_relative "support/game_option_form"
+require_relative "support/manual_form_timer"
 
 game = GameRoomGames::Rummy.new
 app = EltenGameRoom.allocate

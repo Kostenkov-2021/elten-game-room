@@ -76,9 +76,9 @@ def verify_real_ui(runtime, language)
   assert_equal([Encoding::ASCII_8BIT], runtime.source_encodings.uniq, "Sources bypassed the binary runtime boundary")
   assert_equal(["settings.json"], runtime.settings_reads, "Saved language was not read once before constants were built")
   expected_menu = if language == "pl"
-    ["Utwórz nowy stół", "Dołącz do stołu", "Zasady gry", "Zaproszenia", "Zapisane gry", "Rankingi", "Ustawienia", "Co nowego"]
+    ["Utwórz nowy stół", "Dołącz do stołu", "Zasady gry", "Zaproszenia", "Zapisane gry", "Rankingi", "Statystyki", "Ustawienia", "Co nowego"]
   else
-    ["Create a new table", "Join a table", "Game rules", "Invitations", "Saved games", "Leaderboards", "Settings", "What's new"]
+    ["Create a new table", "Join a table", "Game rules", "Invitations", "Saved games", "Leaderboards", "Statistics", "Settings", "What's new"]
   end
   assert_equal(expected_menu, app::MAIN_OPTIONS, "Host locale overrode the actual MAIN_OPTIONS constant")
   chess = app::GAME_REGISTRY.build("chess")
@@ -168,7 +168,7 @@ test("future Czech MO is independent of host resources and falls back only to kn
     assert(EltenAPI::Dictionary::Languages.none? { |language| language.realcode.downcase.start_with?("cs") }, "Czech fixture leaked into the host languages")
     assert(ns::GameRoomLocalization.available_languages.include?({ id: "cs", label: "Čeština" }), "New catalog needs a host language registration")
     assert_equal("Vytvořit stůl", app::MAIN_OPTIONS.first, "Primary Czech catalog was not used for a real constant")
-    assert_equal("Nastavení", app::MAIN_OPTIONS[6], "Primary translation was replaced by fallback")
+    assert_equal("Nastavení", app::MAIN_OPTIONS[7], "Primary translation was replaced by fallback")
     assert_equal("Zasady gry", app::MAIN_OPTIONS[2], "Missing primary label ignored known Polish or used an unknown language")
     assert_equal("Szachy", app::GAME_REGISTRY.build("chess").name, "Missing primary game name did not use known Polish")
     quiz = app::GAME_REGISTRY.build("quiz")

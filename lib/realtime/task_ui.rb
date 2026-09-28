@@ -6,6 +6,10 @@ module GameRoomRealtime
   # time client alive while its usual game form is detached for a server read
   # or write. It never pumps the UI, refreshes a form, or runs UI on a worker.
   class TaskUI
+    def self.updates_form?(ui, form)
+      form && (ui.equal?(form) || (ui.is_a?(GameRoomUI::PendingOperation) && ui.form.equal?(form)))
+    end
+
     def initialize(ui:, title:, show_after:, cancellation_token:, clock:, tick:)
       @ui, @title, @show_after, @token = ui, title, show_after, cancellation_token
       @title = GameRoomContent.utf8(@title.to_s)

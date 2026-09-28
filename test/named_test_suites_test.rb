@@ -7,7 +7,7 @@ root = GameRoomTestRunner::ROOT
 suites = {
   "run-five-game-tests" => [25, "test/new_games_116_test.rb", "tools/check-five-game-translations.rb"],
   "run-connection-recovery-tests" => [18, "test/connection_recovery_test.rb", "test/packaged_rules_encoding_test.rb"],
-  "run-quiz-tests" => [33, "test/quiz_data_cleanup_test.rb", "test/synchronization_regressions_test.rb"],
+  "run-quiz-tests" => [31, "test/quiz_data_cleanup_test.rb", "test/synchronization_regressions_test.rb"],
   "run-audit-212-tests" => [40, "test/audit_212_rules_and_decisions_test.rb", "tools/check-five-game-translations.rb"]
 }
 suites.each do |name, (count, first, last)|
@@ -17,6 +17,14 @@ suites.each do |name, (count, first, last)|
   assert(paths.length == count && paths.first == first && paths.last == last, "#{name}: selection/translation check changed: #{paths.inspect}")
   assert(paths.uniq == paths, "#{name}: duplicate entries")
 end
+
+output, status = Open3.capture2e(RbConfig.ruby, File.join(root, 'tools/run-quiz-tests.rb'), '--historical-audit', '--list')
+paths = output.lines.map(&:strip)
+historical = %w[quiz_factual_audit quiz_recovery_audit witcher_medium_audit].map { |name| "test/historical/#{name}_test.rb" }
+assert(status.success? && paths.length == 34 && paths.last(3) == historical && paths.uniq == paths,
+  'explicit historical quiz selection lost provenance checks')
+assert((GameRoomTestRunner.expand(['test/*_test.rb']).map { |entry| entry[:script] } & historical).empty?,
+  'private audit evidence is required by the portable suite')
 
 Dir.mktmpdir("game-room-named-suite-") do |folder|
   preload = File.join(folder, "preload.rb")

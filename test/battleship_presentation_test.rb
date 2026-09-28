@@ -61,7 +61,8 @@ Form.driver = lambda do |form|
     assert(screen.instance_variable_get(:@selected_surface_action) == nil, "input during playback submitted another shot")
     current = h.replay("Alice")
     assert(!screen.send(:perform_automatic_action, current), "automatic action bypassed sound pause")
-    assert(!screen.send(:perform_bot_turn, current, Object.new, lease: nil, form: form), "bot bypassed sound pause")
+    # Bot pacing uses the shared worker's published busy view; the real
+    # worker boundary is exercised by game_session_runner_test.
     # Another client can advance the authoritative game while this one's audio
     # is slower. The received event must be queued, not ignored or shown early.
     h.submit("Bob", { "action" => "select", "x" => 9, "y" => 9 }, context: context)

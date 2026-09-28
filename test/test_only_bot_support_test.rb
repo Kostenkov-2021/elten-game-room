@@ -36,4 +36,9 @@ assert(!gate.ready?, 'legacy cooldown missing')
 now = 1.0
 assert(gate.ready?, 'legacy gate remains blocked')
 assert(GameRoomBots.const_defined?(:TurnController, false), 'active controller disappeared')
+require_relative '../lib/spades_learning'
+%i[TrainingReport Evaluation CampaignReport Scenario ScenarioMatrix].each do |name|
+  assert(!SpadesLearning.const_defined?(name, false), "training-only #{name} leaked into Spades runtime")
+end
+assert(SpadesLearning.const_defined?(:Policy, false), 'runtime Spades policy disappeared')
 puts 'Test-only sequence and legacy pacing moved without changing their behavior; runtime exposes neither'

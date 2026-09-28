@@ -130,9 +130,9 @@ module GameRoomGames
       end
     end
 
-    def build_client(program, **_services)
+    def build_client(program, **services)
       require_relative '../lib/axel_pong/client'
-      GameRoomPong::Client.new(program, self)
+      GameRoomPong::Client.new(program, self, transport: services[:transport])
     end
 
     def session_runner?; false; end

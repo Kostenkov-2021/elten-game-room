@@ -27,6 +27,11 @@ module GameSurfaces
       @surfaces.flat_map(&:fields)
     end
 
+    def action_guard=(guard)
+      super
+      @surfaces.each { |surface| surface.action_guard = guard }
+    end
+
     # Layout may place selected game controls after the shared chat/history.
     # Actions and remembered state still belong to their original surface.
     def fields_for_parts(ids)

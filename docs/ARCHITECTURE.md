@@ -98,12 +98,14 @@ wyłącznie wskazany komputer. Wszystkie operacje sprawdzają aktualny stan i
 uprawnienia także po otwarciu menu. Powrót z zasad zachowuje wcześniejszy fokus
 i szkic czatu.
 
-Przyjmowanie i odrzucanie zaproszeń jest dostępne w menu kontekstowym listy
-menu głównego, przez Ctrl+J i Ctrl+Shift+J. Pozycja „Zaproszenia” nadal otwiera
-standardową ścieżkę przyjmowania. Powiadomienie pozwala przyjąć lub odrzucić
-konkretne zaproszenie, z weryfikacją jego aktualności i usunięciem powiadomienia
-po obsłużeniu. Formularze nie przechwytują globalnie skrótów zaproszeń;
-nie są one dostępne z planszy, czatu ani historii.
+Ctrl+J oraz pozycja „Zaproszenia” w menu kontekstowym działają w całym
+Game Roomie, również na polu gry, w czacie i historii. Ctrl+J na widgecie
+korzysta z tej samej ścieżki, kierując obsługę do aktywnej instancji programu.
+Odrzucanie przez Ctrl+Shift+J pozostaje skrótem menu głównego.
+Powiadomienie pozwala przyjąć lub odrzucić konkretne zaproszenie.
+Wszystkie te wejścia sprawdzają jego aktualność i sprzątają je dopiero po
+obsłużeniu; przejście do innego stołu zachowuje ograniczenia opuszczania
+bieżącej partii. Nie należy dodawać osobnych mechanizmów do poszczególnych pól.
 
 `RoomPresentation` przechowuje identyfikator uczestnika oddzielnie od etykiety.
 Gra udostępnia `participant_scores(replay)`: mapę uczestników na punkty albo

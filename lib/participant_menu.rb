@@ -87,9 +87,22 @@ module GameRoomParticipantMenu
     active ? [:abort_game] : [:edit_options]
   end
 
-  def bind(layout, available:, read_options: nil, game: nil, options: nil, settings: nil, pong_settings: nil, room: nil, control: nil, &dispatch)
+  def bind(layout, available:, read_options: nil, game: nil, options: nil, settings: nil, pong_settings: nil, room: nil, control: nil, user_menu: nil, &dispatch)
     # Keep the former keyword as a compatibility alias for its host action.
     settings ||= pong_settings if game&.personal_settings_action == :show_pong_settings
+    if user_menu
+      layout.users.on(:select) do
+        participant = layout.selected_participant.to_s.dup
+        next if participant.empty? || !GameRoomParticipants.human?(participant)
+
+        # The row is a presentation, not a login. Capture the real identity
+        # before the native menu can open another scene or update the roster.
+        result = user_menu.call(participant)
+        if result != "ALT" && layout.form.fields[layout.form.index.to_i].equal?(layout.users)
+          layout.users.focus
+        end
+      end
+    end
     supplied = available
     available = -> do
       actions = supplied.call + (read_options == nil ? [] : [:table_options])
@@ -109,6 +122,9 @@ module GameRoomParticipantMenu
         key = entry.action == :edit_options && focused.is_a?(EditBox) ? "" : entry.menu_key
         menu.option(entry.label, nil, key) do
           next if !available.call.include?(entry.action)
+          if layout.form.game_room_pending_operation && ![:table_options, :rules].include?(entry.action)
+            next layout.form.game_room_pending_operation.reject_action
+          end
 
           if entry.action == :table_options
             read_options.call

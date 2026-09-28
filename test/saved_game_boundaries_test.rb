@@ -57,11 +57,21 @@ assert(monopoly.save_game_error(mono_replay) != nil, "Monopoly saved during auct
 # Clocks use the archived game time rather than wall time during the break.
 deal = { "id" => 200, "sequence" => 1, "actor" => "Alice", "action" => "deal", "value" => "1|0|0123456789abcdef0123456789abcdef|1030", "created_at" => 1000 }
 options = JSON.generate(uno.normalize_options("thinking_time" => 30))
-clock_session = { "__players" => %w[Alice Bob], "options" => options, "__clock_offset" => Time.now.to_i - 1010 }
-clock_replay = uno.replay(clock_session, [deal], SavedGames::ReplayRepository.new)
-assert(clock_replay.accepted_events.length == 1, "timed deal fixture invalid")
-timed = uno.game_shortcuts(clock_replay, "Alice").find { |shortcut| shortcut.key == "t" }
-assert(timed.message.include?("20"), "offline pause consumed UNO thinking time: #{timed.message}")
+sample = 1_800_000_000
+original_clock = GameRoomClock.method(:now)
+GameRoomClock.define_singleton_method(:now) { sample }
+begin
+  clock_session = { "__players" => %w[Alice Bob], "options" => options, "__clock_offset" => sample - 1010 }
+  clock_replay = uno.replay(clock_session, [deal], SavedGames::ReplayRepository.new)
+  assert(clock_replay.accepted_events.length == 1, "timed deal fixture invalid")
+  timed = uno.game_shortcuts(clock_replay, "Alice").find { |shortcut| shortcut.key == "t" }
+  assert(timed.message.end_with?("20 seconds remain."), "offline pause consumed UNO thinking time: #{timed.message}")
+  sample += 7
+  timed = uno.game_shortcuts(clock_replay, "Alice").find { |shortcut| shortcut.key == "t" }
+  assert(timed.message.end_with?("13 seconds remain."), "resumed UNO thinking time did not advance: #{timed.message}")
+ensure
+  GameRoomClock.define_singleton_method(:now, original_clock)
+end
 
 # Missing archive pieces are not exposed as an incomplete game to readers.
 owner.deactivate_table(table_id: table["__id"])

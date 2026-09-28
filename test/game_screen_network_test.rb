@@ -210,17 +210,6 @@ module EltenAPI
   end
 end
 
-form = Object.new
-token = Object.new
-task_result = screen.send(:bot_task, form: form, cancellation_token: token) do |progress, task_token|
-  [progress, task_token]
-end
-task_options = EltenAPI::Tasks.game_screen_test_options
-assert(task_options[:ui].equal?(form), "bot thinking did not keep the game form active")
-assert(task_options[:cancellation_token].equal?(token), "bot thinking did not use the form cancellation token")
-assert(task_options[:cancellable] == false, "bot thinking opened a separate cancellation interface")
-assert(task_result[1].equal?(token), "bot thinking changed the worker cancellation token")
-
 screen.instance_variable_set(:@repository, Object.new)
 network_result = screen.send(:network_task, "Sending assessment") { :sent }
 network_options = EltenAPI::Tasks.game_screen_test_options
@@ -287,16 +276,14 @@ screen.send(:stop_pending_speech)
 assert(speech_stopped, "leaving a game did not stop queued history speech")
 
 assert(
-  screen.send(:recovery_allowed?, false, nil),
+  screen.send(:recovery_allowed?, false),
   "an idle human turn disabled connection recovery"
 )
 assert(
-  !screen.send(:recovery_allowed?, false, "bot:7:1"),
-  "connection recovery could still cancel an active bot decision"
-)
-assert(
-  !screen.send(:recovery_allowed?, true, nil),
+  !screen.send(:recovery_allowed?, true),
   "an automatic action did not postpone connection recovery"
 )
+screen.instance_variable_set(:@new_session_id, 99)
+assert(screen.send(:recovery_allowed?, true), "a new match cannot recover its connection")
 
 puts "Game screen network policy tests passed"

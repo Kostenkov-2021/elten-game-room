@@ -126,7 +126,8 @@ module PongDoublesLobbyTest
     assert(mode.index == 0, "Single was not initially selected")
     assert(difficulty.options[difficulty.index] == "Normal", "Match type changed the default difficulty")
     assert(target.options[target.index] == "11", "Match type changed the default target")
-    assert(form.hidden_controls == [form.fields[6]] && form.fields[6].is_a?(EditBox), "Creation must hide only the custom point target")
+    assert(form.hidden_controls == [form.fields[6], form.fields[8]] &&
+      form.hidden_controls.all? { |field| field.is_a?(EditBox) }, "Creation must hide the custom point target and disabled P2P limit")
     assert(form.accept_button == button(form, "Create table"), "Creation has the wrong default action")
     assert(form.cancel_button == button(form, "Cancel"), "Creation lost Cancel")
   end
@@ -155,7 +156,8 @@ module PongDoublesLobbyTest
     row = app.opened_tables.first
     stored = app.lobby.snapshot_for(row, force: true).table
     options = JSON.parse(stored.fetch("game_options"))
-    expected = {"arcade" => false, "team_size" => mode == "Doubles" ? 2 : 0, "difficulty" => 2, "target" => 11, "custom_target" => 11}
+    expected = {"arcade" => false, "team_size" => mode == "Doubles" ? 2 : 0, "difficulty" => 2, "target" => 11, "custom_target" => 11,
+      "p2p_enabled" => false, "p2p_participants_limit" => 8}
     assert(options == expected, "The actual creation form did not persist its selected match type and defaults")
     assert_no_game(app, stored)
     stored

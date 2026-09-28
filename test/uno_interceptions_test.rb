@@ -66,18 +66,14 @@ def play_event(game, state, card, actor = "Alice", id = 1)
   [applied, history, event]
 end
 
-def drive_screen(game, state, pending_bot: nil, thinking: false, card: "R51", key: nil)
+def drive_screen(game, state, card: "R51", key: nil)
   repo = InterceptionRepository.new(state[:players])
-  screen = GameScreen.allocate
   table = { "__id" => 7, "owner" => "Alice", "game" => game.id, "name" => "Probe", "status" => "playing", "max_players" => 8 }
   room = LobbyRepository::TableSnapshot.new(table: table, members: state[:players], bots: [])
-  controller = GameRoomBots::TurnController.new
-  {
-    game: game, repository: repo, session: { "__id" => 1, "options" => JSON.generate(state[:options]) },
-    table: table, table_owner: "Alice", room_snapshot: room, surface_state: {},
-    history_navigator: GameRoomHistory::Navigator.new, bot_turn_controller: controller,
-    turn_history_entries: {}, activity_entries: []
-  }.each { |name, value| screen.instance_variable_set("@#{name}", value) }
+  screen = GameScreen.new(program: Object.new, repository: repo, game: game,
+    session: { "__id" => 1, "options" => JSON.generate(state[:options]) },
+    table: table, table_owner: "Alice", room_snapshot_provider: -> { room }, synchronizer: nil)
+  screen.instance_variable_set(:@room_snapshot, room)
   screen.define_singleton_method(:getkeychar) { "" }
   Form.driver = lambda do |form|
     layout = screen.instance_variable_get(:@layout)
@@ -91,16 +87,8 @@ def drive_screen(game, state, pending_bot: nil, thinking: false, card: "R51", ke
     # A blocked selection ends the probe without hanging the test runner.
     layout.back_button.trigger(:press) if screen.instance_variable_get(:@selected_surface_action) == nil
   end
-  token = nil
-  screen.define_singleton_method(:calculate_bot_decision) do |_replay, form:, cancellation_token:|
-    token = cancellation_token
-    Form.driver.call(form)
-    GameRoomBots::Decision.new(actor: pending_bot, action: select_card("R60"), available_actions: [])
-  end
-  screen.define_singleton_method(:perform_bot_turn) { |*_args, **_options| raise "Obsolete bot move was submitted" }
-  lease = thinking ? controller.acquire(session_id: 1, actor: pending_bot, revision: [0, 0]) : nil
-  result = screen.send(:wait_for_action, replay_of(state), [0, 0], bot_actor: pending_bot, bot_lease: lease)
-  [result, screen.instance_variable_get(:@selected_surface_action), token]
+  result = screen.send(:wait_for_action, replay_of(state), [0, 0])
+  [result, screen.instance_variable_get(:@selected_surface_action)]
 end
 
 failures = []
@@ -175,12 +163,13 @@ check.call("all readers replay the same penalty once without disclosing the atte
   assert(copies.first.history.last.text == "Too late!", "Penalty discloses card or has wrong text")
 end
 
-check.call("Enter works during local bot wait and calculation; obsolete calculation is cancelled") do
-  [false, true].each do |thinking|
+check.call("Enter works during human and bot turns") do
+  # Cancellation while the strategy is running belongs to the real shared
+  # worker, covered by game_session_runner_input_test, not a second UI worker.
+  ["Bob", "bot:7:1"].each do |opponent|
     ["R51", "G30", "NW0"].each do |card|
-      result, action, token = drive_screen(uno, position(uno, "bot:7:1"), pending_bot: "bot:7:1", thinking: thinking, card: card)
-      assert(result == :game_action && action["card_id"] == card, "Bot swallowed #{card}, thinking=#{thinking}")
-      assert(token.cancelled?, "Bot calculation was not cancelled") if thinking
+      result, action = drive_screen(uno, position(uno, opponent), card: card)
+      assert(result == :game_action && action["card_id"] == card, "#{opponent}'s turn swallowed #{card}")
     end
   end
   result, action, = drive_screen(uno, position(uno), card: "R51")
@@ -190,10 +179,10 @@ end
 check.call("UNO action shortcuts work during a bot turn") do
   state = position(uno, "bot:7:1")
   state[:hands]["Alice"] = ["R51"]
-  result, action, = drive_screen(uno, state, pending_bot: "bot:7:1", key: "u")
+  result, action, = drive_screen(uno, state, key: "u")
   assert(result == :game_action && action["action"] == "uno", "Bot blocked U")
   state[:buzzer_active] = true
-  result, action, = drive_screen(uno, state, pending_bot: "bot:7:1", key: "b")
+  result, action, = drive_screen(uno, state, key: "b")
   assert(result == :game_action && action["action"] == "buzz", "Bot blocked buzzer")
 end
 

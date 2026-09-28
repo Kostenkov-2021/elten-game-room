@@ -2,6 +2,7 @@
 # answers and owner-observer progression before the new file-boundary cases.
 require_relative "support/quiz_party_review_regressions"
 require_relative "support/hidden_submission_files"
+require_relative "support/session_runner"
 require "tmpdir"
 
 Dir.mktmpdir("quiz-storage-217-") do |dir|
@@ -48,14 +49,25 @@ Dir.mktmpdir("quiz-storage-217-") do |dir|
   assert(decision != nil, "bot did not select an answer")
   status, plan = f.game.action_for(decision.action, bot_state, decision.actor, context: f.contexts["Alice"])
   assert(status == :local_storage_unavailable && plan.nil?, "bot save exception escaped or sent an unsaved answer")
-  # Exercise the actual screen branch from the second reported stack.
-  screen = GameScreen.allocate
-  screen.instance_variable_set(:@table_owner, "Alice")
-  screen.instance_variable_set(:@game, f.game)
-  screen.define_singleton_method(:action_context) { f.contexts["Alice"] }
-  f.h.as("Alice") do
-    assert(!screen.send(:perform_bot_turn, bot_state, decision, lease: nil, form: nil), "screen treated failed storage as a submitted bot action")
+  # Exercise the current production bot path, with a real bot in the shared
+  # room rather than invoking the obsolete GameScreen bot scheduler.
+  bot_fixture = QuizReviewFixture.new(["Alice"], bots: 1)
+  runner = runner_for(bot_fixture.h)
+  runner.instance_variable_get(:@context_template).hidden_submissions =
+    HiddenSubmissions::Vault.new(HiddenSubmissions::ProgramStorage.new(program))
+  bot_attempts = 0
+  model = runner.instance_variable_get(:@game)
+  validate = model.method(:action_for)
+  model.define_singleton_method(:action_for) do |selection, replay, actor, **options|
+    bot_attempts += 1 if actor.start_with?('bot:')
+    validate.call(selection, replay, actor, **options)
   end
+  before = bot_fixture.h.events("Alice").length
+  step(bot_fixture.h, runner, count: 3)
+  assert(bot_attempts > 0, "test never reached the real bot storage boundary")
+  assert(bot_fixture.h.events("Alice").length == before, "failed bot storage wrote an unsaved answer")
+  assert(!runner.instance_variable_get(:@turn).waiting_for_confirmation?, "failed storage waits for a nonexistent bot write")
+  runner.close
   program.blocked = []
   program.retry_now
   # Restore a fresh replay; the local test mutation above never touched wire data.

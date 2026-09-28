@@ -20,6 +20,10 @@ class Form
   def wait; Form.settings_access_driver.call(self); end
   def resume; end
 end
+class FormTimer
+  def initialize(*_args, **_kwargs, &block); @callback = block; end
+  def update; @callback.call; end
+end
 
 require_relative '../__app'
 
@@ -37,6 +41,14 @@ repository.define_singleton_method(:load) { |user| reads << user; loaded }
 repository.define_singleton_method(:save) { |user, games| writes << [user, games]; save_result }
 EltenGameRoom.define_singleton_method(:table_watch_repository) { repository }
 EltenGameRoom.define_singleton_method(:table_watch_set_games) { |games| cache_updates << games }
+EltenGameRoom.define_singleton_method(:table_watch_start) do |refresh:|
+  raise 'Settings must explicitly refresh' unless refresh
+  reads << 'Alice'
+  cache_updates << loaded unless mode == :load_failure
+end
+EltenGameRoom.define_singleton_method(:table_watch_preferences_snapshot) do
+  { state: mode == :load_failure ? :unavailable : :ready, games: loaded }
+end
 EltenGameRoom.define_singleton_method(:contacts_settings_changed) { |_settings| }
 
 app = EltenGameRoom.allocate
@@ -62,6 +74,7 @@ select_games = nil
 select_language = nil
 Form.settings_access_driver = lambda do |form|
   opened += 1
+  form.instance_variable_get(:@timers).to_a.each(&:update)
   sections = form.fields.first
   assert(sections.options.length == 6, 'Some local settings categories disappeared')
   sections.options.each_index do |index|

@@ -9,7 +9,7 @@ def assert(value, message); raise message unless value; end
 
 game = GameRoomGames::AxelPong.new
 options = game.option_definitions
-assert(options.map(&:key) == %w[arcade team_size difficulty target custom_target], 'Pong option order changed')
+assert(options.map(&:key) == %w[arcade team_size difficulty target custom_target p2p_enabled p2p_participants_limit], 'Pong option order changed')
 mode = options[1]
 assert(mode.kind == :choice && mode.default == 0, 'Single is not the default arrow-key choice')
 assert(mode.choices.map { |choice| [choice.value, choice.label] } == [[0, 'Single'], [2, 'Doubles']], 'wrong Single/Doubles choices')

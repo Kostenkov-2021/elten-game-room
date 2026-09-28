@@ -5,11 +5,10 @@ require_relative 'support/host_source'
 require_relative 'support/binary_rule_dictionary'
 host = EltenTestHost.root
 native_source = ENV.fetch('ELTEN_EDIT_BOX_SOURCE', File.join(host, 'src/ui/controls/edit_box.rb'))
-module EltenAPI
-  module Controls
-    FormBase = FakeControl unless const_defined?(:FormBase, false)
-  end
-end
+# Native EditBox deliberately does not call a base initializer. Its native
+# FormBase registers handlers lazily; FakeControl requires super and is not
+# a faithful base for this test of the real control and its change events.
+load EltenTestHost.file('src/ui/form.rb')
 module EltenLink
   def self.legacy_line_to_text(text, eol:); text; end
 end
@@ -28,6 +27,9 @@ native_text_scope.const_set(:EditBox, native)
   native_text_scope.module_eval(BinaryRulesLoad.read(path), path, 1)
 end
 view = native_text_scope.const_get(:GameRoomHistory)::View.new(header: 'Historia żółta'.b)
+generation = view.game_room_edit_generation
+view.trigger(:change)
+raise 'Native change callback was not registered' unless view.game_room_edit_generation == generation + 1
 view.replace_entries(["Łukasz: pierwszy\nwiersz drugi", 'Żaneta: drugi'])
 raise 'Not a native text control' unless view.is_a?(native)
 raise 'Native flags differ' unless view.flags == native::Flags::ReadOnly | native::Flags::MultiLine

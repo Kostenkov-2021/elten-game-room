@@ -1,6 +1,7 @@
 require "json"
 require "digest"
 require_relative "../lib/game_room_presence_store"
+require_relative "support/host_source"
 
 $presence_assertions = 0
 $presence_tests = 0
@@ -645,8 +646,7 @@ presence_test("cancellation and account pinning at every boundary") do
 end
 
 presence_test("real host Apps/AppTable offline transport") do
-  host = ENV.fetch("ELTEN_HOST_SOURCE", File.expand_path("../../elten3", __dir__))
-  require File.join(host, "src/eltenlink/apps")
+  require EltenTestHost.file("src/eltenlink/apps.rb")
 
   class PresenceSdkClient
     attr_reader :memory, :requests

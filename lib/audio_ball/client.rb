@@ -20,8 +20,9 @@ module GameRoomAudioBall
     STREAM_TIMEOUT = 4.0
     attr_reader :engine, :snapshot, :paused
 
-    def initialize(program, game, clock: -> { Process.clock_gettime(Process::CLOCK_MONOTONIC) }, channel_factory: nil, audio: nil)
+    def initialize(program, game, clock: -> { Process.clock_gettime(Process::CLOCK_MONOTONIC) }, channel_factory: nil, audio: nil, transport: nil)
       @program, @game, @clock = program, game, clock
+      @activity_transport = transport
       @channel_factory = channel_factory || ->(**args) { GameRoomRealtime::EventChannel.new(**args) }
       @audio = audio || Audio.new(program, clock: clock)
       @paused, @closed = true, false
@@ -34,6 +35,7 @@ module GameRoomAudioBall
     end
 
     def bind_screen(session_id:, table_id:, owner:, viewer:, members:)
+      @activity_table, @activity_session = table_id, session_id
       @owner, @viewer = owner.to_s, viewer.to_s
       @connection_started = @clock.call
       @match = Digest::SHA256.hexdigest("GameRoom:audio_ball:#{table_id}:#{session_id}")[0, 24]
@@ -96,6 +98,7 @@ module GameRoomAudioBall
     def presents_game_result?(replay); replay.finished? && replay.state[:rally] == @announced_rally && presents_point?; end
 
     def attach_view(form, surface)
+      return if @form.equal?(form) && @surface.equal?(surface) && @timer && @replay && !@replay.finished?
       detach_view
       return unless surface.respond_to?(:present) && @replay && !@replay.finished?
       @form, @surface = form, surface
@@ -106,6 +109,7 @@ module GameRoomAudioBall
       @surface.on_audio_ball_command = method(:local_command) if @surface.respond_to?(:on_audio_ball_command=)
       @timer = GameRoomRealtime::Timer.new(clock: @clock) { frame }
       @form.add_timer(@timer)
+      @form.retain_binding_timer(@timer) if @form.respond_to?(:retain_binding_timer)
       present
     end
 
@@ -170,8 +174,8 @@ module GameRoomAudioBall
 
     def network_task_ui(**options)
       GameRoomRealtime::TaskUI.new(**options, clock: @clock, tick: -> {
-        if @form && options[:ui].equal?(@form)
-          tick
+        if GameRoomRealtime::TaskUI.updates_form?(options[:ui], @form)
+          # The owned form's existing timer advances the client once.
         else
           begin
             @network_wait = true
@@ -338,6 +342,7 @@ module GameRoomAudioBall
         end
         next false if data['turn'] > @engine.turn + 1
         if @engine.apply(data.reject { |key, _| key == 'r' })
+          note_play_activity if %w[hit defend].include?(data['action'])
           @clock_reset = true
           transition_audio(data)
         end
@@ -460,6 +465,7 @@ module GameRoomAudioBall
 
     def drain_transitions
       while (data = @engine.take_transition)
+        note_play_activity if %w[hit defend].include?(data['action'])
         transition_audio(data)
         emit_event(data)
       end

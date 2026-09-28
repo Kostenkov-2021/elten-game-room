@@ -1,6 +1,7 @@
 require "json"
 require_relative "ui"
 require_relative "elten_array_shuffle"
+require_relative "host_source"
 
 # ELTEN evaluates decompressed sources as binary strings, unlike Ruby's
 # ordinary require. Reproduce that boundary without installing or running UI.
@@ -21,8 +22,7 @@ module BinaryRulesLoad
     require "zip"
     require "zstd-ruby"
     require "stringio"
-    host_source = ENV['ELTEN_HOST_SOURCE'] || File.expand_path('../../elten3', __dir__)
-    require File.join(host_source, 'src/eapi/programsigning')
+    require EltenTestHost.file('src/eapi/programsigning.rb')
     @entries = {}
     Zip::File.open(path) do |zip|
       manifest = JSON.parse(zip.read("__manifest.json")).fetch("payload")

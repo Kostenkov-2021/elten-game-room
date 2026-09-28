@@ -86,7 +86,7 @@ begin
     keys = ludo.custom_game_shortcuts(replay, "Żaneta")
     assert(keys.find { |key| key.key == "1" }.message.start_with?("Żaneta:"), "binary player digit")
     label = keys.find { |key| key.key == "v" && key.modifiers == [:shift] }.choices.first.label
-    assert(label == expected.call("base, Łucja, pawn 1", "baza, Łucja, pionek 1"), "binary position label: #{label}")
+    assert(label == expected.call("Łucja, base", "Łucja, baza"), "binary position label: #{label}")
     makao = GameRoomGames::Makao.new
     option = makao.option_definitions.find { |definition| definition.key == "allow_playable_draw" }
     assert(option.label == expected.call("Allow drawing with a playable card", "Pozwalaj dobierać mimo posiadania pasującej karty"), "drawing option language")

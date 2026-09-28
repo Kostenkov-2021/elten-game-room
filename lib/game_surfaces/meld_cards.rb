@@ -367,6 +367,7 @@ module GameSurfaces
     end
 
     def send_table_action(action)
+      return unless action_allowed?
       close_view(speak: false) if action["action"] == "take"
       emit_action(action["kind"], action["action"], action.reject { |k, _| %w[kind action].include?(k) })
     end

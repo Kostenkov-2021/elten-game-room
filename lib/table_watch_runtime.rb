@@ -13,6 +13,7 @@ module GameRoomTableWatchRuntime
       @table_watch_sender = nil
       @table_watch_loader&.close
       @table_watch_loader = nil
+      @table_watch_load_state = nil
       @table_watch_receipt_writer&.close
       @table_watch_pruned = {}
       @table_watch_clock = GameRoomTableWatch::Clock.new
@@ -49,11 +50,17 @@ module GameRoomTableWatchRuntime
     @table_watch_receiver
   end
 
-  def table_watch_start
+  def table_watch_start(refresh: false)
     receiver = table_watch_receiver
-    return if @table_watch_loader || receiver.games != nil || receiver.user.empty?
+    sharing = @table_watch_loader && @table_watch_load_state == :loading
+    table_watch_preferences_snapshot
+    return if sharing
+    return if receiver.user.empty? || @table_watch_loader&.busy?
+    return if !refresh && (@table_watch_loader || receiver.games != nil)
+    @table_watch_loader&.close
     runtime = Programs.current_runtime if defined?(Programs) && Programs.respond_to?(:current_runtime)
     @table_watch_loader = GameRoomBackground::Work.new(runtime: runtime)
+    @table_watch_load_state = :loading
     user = receiver.user
     @table_watch_loader.start do
       GameRoomClock.synchronize
@@ -62,21 +69,32 @@ module GameRoomTableWatchRuntime
   end
 
   def table_watch_set_games(games)
+    receiver = table_watch_receiver
     @table_watch_loader&.close
     @table_watch_loader = nil
-    table_watch_receiver.games = games
+    receiver.games = games
+    @table_watch_load_state = :ready
+  end
+
+  # Both the extension and Settings drain the same finite read. No callbacks
+  # retain a form, and a pending/failed read never means an empty selection.
+  def table_watch_preferences_snapshot
+    receiver = table_watch_receiver
+    if @table_watch_loader && (result = @table_watch_loader.take)
+      games, error = result
+      receiver.games = games unless error
+      @table_watch_load_state = error ? :unavailable : :ready
+      # One attempt per startup, not a background preference poll. Opening
+      # Settings retries explicitly; no failed read can overwrite the server.
+      Log.warning("Game Room watched games could not be loaded: #{error.class}") if error && defined?(Log)
+    end
+    state = @table_watch_load_state || (receiver.games == nil ? :loading : :ready)
+    { state: state, games: state == :ready ? receiver.games.to_a.dup : nil }
   end
 
   def table_watch_tick
     receiver = table_watch_receiver
     table_watch_start
-    if @table_watch_loader && (result = @table_watch_loader.take)
-      games, error = result
-      receiver.games = games unless error
-      # One attempt per startup, not a background preference poll. Opening
-      # Settings retries explicitly; no failed read can overwrite the server.
-      Log.warning("Game Room watched games could not be loaded: #{error.class}") if error && defined?(Log)
-    end
     @table_watch_sender&.tick
     @table_watch_receipt_writer&.tick
     if (!GameRoomClock.server_available? || GameRoomClock.synchronized?) && defined?(EltenAPI::NotificationService) && EltenAPI::NotificationService.respond_to?(:active_notifications)
@@ -105,6 +123,7 @@ module GameRoomTableWatchRuntime
     @table_watch_loader&.close
     @table_watch_sender = nil
     @table_watch_loader = nil
+    @table_watch_load_state = nil
   end
 
   def announce_new_public_table(row)

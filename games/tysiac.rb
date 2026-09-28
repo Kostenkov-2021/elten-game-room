@@ -857,7 +857,11 @@ module GameRoomGames
 
     def apply_play(state, event, actor, repository, history)
       return false if state[:phase] != :playing || !same_user?(state[:current_player], actor)
-      mode, card = parse_play(event["value"])
+      begin
+        mode, card = parse_play(event["value"])
+      rescue ArgumentError
+        return false
+      end
       player = player_key(state, actor)
       return false if !state[:hands][player].include?(card)
       return false if !legal_cards(state, player).include?(card)

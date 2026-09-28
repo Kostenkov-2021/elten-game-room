@@ -9,6 +9,18 @@ def assert(condition, message)
   raise message if !condition
 end
 
+# Reflect the recorded search fixtures onto the corrected board. The position
+# and candidate move must be reflected together; production has one geometry.
+def reflect_checkers_action(action, size)
+  reflected = action.dup
+  %w[from_x to_x].each { |key| reflected[key] = size - 1 - action.fetch(key) }
+  if !action['capture'].to_s.empty?
+    x, y = action['capture'].split(',').map(&:to_i)
+    reflected['capture'] = "#{size - 1 - x},#{y}"
+  end
+  reflected
+end
+
 def deterministic_checkers_environment(name:, size:, plies:, salt:, seed:)
   game = GameRoomGames::Checkers.new
   environment = GameRoomSimulation::Environment.new_game(
@@ -21,7 +33,7 @@ def deterministic_checkers_environment(name:, size:, plies:, salt:, seed:)
     break if environment.finished?
 
     actor = environment.active_actor
-    actions = environment.legal_actions(actor).sort_by { |action| game.bot_action_key(action) }
+    actions = environment.legal_actions(actor).sort_by { |action| game.bot_action_key(reflect_checkers_action(action, size)) }
     raise "#{name}: deterministic setup has no move" if actions.empty?
 
     selected = actions[(index * 7 + salt) % actions.length]
@@ -150,6 +162,7 @@ quality_cases = [
 
 quality_cases.each do |item|
   game, environment = deterministic_checkers_environment(**item.reject { |key, _value| key == :previous })
+  previous = reflect_checkers_action(item[:previous], item[:size])
   choice, elapsed, stats = choose_checkers_move(game, environment)
   assert(choice != nil, "#{item[:name]}: optimized bot returned no move")
   assert(environment.legal_actions(environment.active_actor).include?(choice), "#{item[:name]}: optimized bot returned an illegal move")
@@ -157,8 +170,8 @@ quality_cases.each do |item|
     assert(stats[:completed_depth] == 7, "#{item[:name]}: optimized bot did not complete depth seven")
   end
 
-  if choice != item[:previous]
-    previous_value = exact_checkers_value(game, environment, item[:previous])
+  if choice != previous
+    previous_value = exact_checkers_value(game, environment, previous)
     optimized_value = exact_checkers_value(game, environment, choice)
     assert(
       optimized_value >= previous_value,

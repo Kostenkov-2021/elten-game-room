@@ -33,6 +33,7 @@ class InvitationAppDriver < EltenGameRoom
     program = ProgramDouble.new(broker.endpoint(user, fresh: fresh))
     @transport = GameRoomTransport.new(program)
     @lobby = LobbyRepository.new(program, transport: @transport, server_tables: {})
+    @games = GameRepository.new(program, transport: @transport, server_tables: {})
     @table_activity = TableActivityRepository.new(server_tables: {}, transport: @transport)
     @invitation_notifications = InvitationNotifications.new(client: user, app_uuid: "test-app", gateway: gateway)
     @invitations = InvitationRepository.new(transport: @transport,

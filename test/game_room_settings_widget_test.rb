@@ -189,7 +189,8 @@ transport = Object.new
 transport.define_singleton_method(:start) { true }
 widget_lobby = Object.new
 widget_lobby.define_singleton_method(:owner_of) { |row| row["owner"] }
-widget_lobby.define_singleton_method(:open_table_snapshots) do
+widget_lobby.define_singleton_method(:open_table_snapshots) do |hide_inactive:|
+  assert(hide_inactive == true, "Widget omitted the inactive-table filter")
   [available, unavailable, rows.find { |snapshot| snapshot.table["game"] == "makao" }]
 end
 filter_app = EltenGameRoom.allocate

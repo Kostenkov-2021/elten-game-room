@@ -31,7 +31,9 @@ module GameRoomPong
     end
 
     def announce_hurry(data)
-      return false unless @engine.turn.zero? && !@engine.goal && data['side'] == @engine.server
+      turn = @side == nil && !host? ? @observer_turn.to_i : @engine.turn
+      goal = @side == nil && !host? ? @snapshot && @snapshot['goal'] : @engine.goal
+      return false unless turn.zero? && !goal && data['side'] == @engine.server
       speak(_('%{player}, serve within ten seconds or your opponent receives a point.') % {
         player: GameRoomContent.utf8(GameRoomParticipants.display_name(@players[data['side']])) })
       true
