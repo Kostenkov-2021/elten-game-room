@@ -1,13 +1,8 @@
+require_relative "../../lib/game_surfaces/specifications"
 def _(text)
   text
 end
 
-module GameSurfaces
-  CardChoice = Struct.new(:id, :label, :value, keyword_init: true)
-  Card = Struct.new(:id, :label, :value, :choices, keyword_init: true)
-  CardZoneSpec = Struct.new(:id, :header, :cards, :empty_label, :hand_order, :hand_epoch, keyword_init: true)
-  CardTableSpec = Struct.new(:zones, keyword_init: true)
-end
 
 require "json"
 require_relative "../../lib/game_random"

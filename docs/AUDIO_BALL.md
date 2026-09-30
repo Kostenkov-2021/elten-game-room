@@ -1,22 +1,9 @@
 # Audio Ball
 
-## Scope
-
-Audio Ball is a new Game Room game, ID `audio_ball`. It supports exactly two
-players: two humans, a human and a bot, or bots controlled by the table owner.
-The owner may spectate. Audio Ball's implementation does not change Pong's
-physics or the shared transport. Imported from PR #13 by `budyn1211` for
-Game Room 2.0.3/build 237, retaining the author's rules, controls and assets.
-The release adaptations below add agreed-goal presentation, independent
-announcer gain and accurate pause descriptions; they do not change the rules.
-
-The later PR follow-up through `73e9eac` is integrated,
-including the authored rules and reusable audio tutorial. Its difficulty scale
-was replaced with the user's approved five levels below. These later changes,
-shared nonblocking help and the Pong chat-input fix are in the re-signed build
-237 of 23 September. The local sound packs described in `AUDIO_BALL_SOUND_PACKS.md`
-are a subsequent source-only change, not yet in that installer.
-See also `BACKGROUND_HELP.md` and `AUDIO_TUTORIAL.md`.
+Gra `audio_ball` obsługuje dwóch graczy (ludzi lub boty); gospodarz może
+obserwować. Autorem pierwotnej implementacji jest `budyn1211` (PR #13).
+Wspólny transport opisuje [REALTIME.md](REALTIME.md), a podgląd dźwięków
+[AUDIO_TUTORIAL.md](AUDIO_TUTORIAL.md).
 
 ## Controls and rules
 
@@ -105,9 +92,8 @@ on the finished screen; close cancels and releases resources. No speech
 completion barrier controls gameplay. English and Polish strings are included,
 with `stop: false` and `break_sequence: false` for synthesized messages.
 Accepted-point announcements are deduplicated across frames and reconnections.
-Pong assets retain their existing shipped attribution. The original four Audio Ball
-flight/preparation cues are documented in `AUDIO_BALL_SOUND_LICENSES.md`, with
-attribution in `THIRD_PARTY_NOTICES.md`.
+Provenance, transformations and license status of current recordings are in
+[THIRD_PARTY_NOTICES.md](../THIRD_PARTY_NOTICES.md).
 
 ## Runtime ownership and event route
 
@@ -146,34 +132,37 @@ A spectator instead resumes after validating and restoring a fresh owner
 snapshot, without resetting the players' match. Late spectators restore the
 current snapshot rather than waiting for unavailable historical transitions.
 
-## Native test prerequisites
+## Local sound packs
 
-Native input regressions require an Elten source checkout. Set `ELTEN_HOST_SOURCE`
-to its directory before running `ruby tools/run-tests.rb` or the native Audio Ball
-tests. CI checks out public `dawidpieper/elten3` at
-`389153fa29d750c3aee90d2a789984490cb97825` into `.ci/elten3` and sets this variable.
-The host's keyboard and UI sources are loaded without launching Elten. A missing
-configured host is an error, not a silently skipped native regression. The binary
-wrapper without an installer argument verifies packaged-style source loading and
-does not require the installer-decoding gems.
+Ctrl+P saves `audio_ball.sound_pack` (`default` / `audiodisc`) in local
+settings; cancel preserves the current pack and malformed values use default.
+This is not a table option. Switching packs does not restart score announcements
+or send game events. Managed streams are cached outside the frame loop and
+released on close. Only an accepted, deduplicated defense plays the stop cue.
 
-## Verification boundaries
+| Cue | Default ID | Audiodisc ID |
+| --- | --- | --- |
+| Up | audio_ball_up | audio_ball_audiodisc_up |
+| Left | audio_ball_left | audio_ball_audiodisc_center |
+| Down | audio_ball_down | audio_ball_audiodisc_down |
+| Prepare | audio_ball_prepare | audio_ball_audiodisc_ready |
+| Defense | audio_ball_stopped | audio_ball_audiodisc_stop |
+| Goal | Pong effect variants | audio_ball_audiodisc_goal |
 
-The `test/audio_ball_*_test.rb` scripts cover engine, bot, audio, game replay,
-startup, keyboard focus, table creation, binary PL/EN/fallback loading,
-announcements, client recovery, real GameScreen/GameRepository scheduling,
-and complete matches through real fields and EventChannel.
+## Ordered keyboard input and reload
 
-The relay fixture substitutes external Communications sessions and finite
-network work, not the production EventChannel. Audio tests use fake host sound
-handles. Local host Tasks and Dictionary classes have also been exercised.
-These checks are not a live Internet match or an audible device test.
+The local Keyboard observer attaches at most 32 ordered game-key events,
+modifiers and the held state of the same sample to the native result.
+It neither rewrites host fields nor records chat. Release/repress is a new
+input; autorepeat and a second down without up are not. Focus, modifiers,
+help and suppression still block gameplay input. A backend without ordered
+events uses a limited fallback. Defense remains scoped to the incoming flight.
 
-The default complete runner currently stops at an existing Farkle strategy
-assertion, reproduced on clean base b255f1d. A separate verification run executes
-all scripts and compares failing old scripts with the clean base; its final
-results are stored outside the source tree with the user's project notes.
-
-Before distribution, perform a live match in compatible Game Room clients and
-listen to the four cues on headphones. The left-shot recording has a lower
-measured RMS than the other flight cues; no arbitrary gain boost was applied.
+`Keyboard.install` rebinds the existing host extension to the current runtime
+on reload, including old boolean installation markers. It does not accumulate
+wrappers, retain old closures or replay stale input. Validate old-to-new and
+repeated reloads in one process through `test/games/audio_ball/keyboard_reload_test.rb`;
+a clean start does not cover this lifecycle. Other Audio Ball regressions are
+in the same directory. Native tests require final ELTEN 3.0.4 via
+`ELTEN_HOST_SOURCE`; fake sound handles and relay fixtures do not verify
+physical audio or multiplayer on different networks.

@@ -1,9 +1,0 @@
-{
-  "%{player} builds a house on %{property}.": "%{player} buduje dom na %{property}.",
-  "%{player} builds a hotel on %{property}.": "%{player} buduje hotel na %{property}.",
-  "%{player} sells a house on %{property}.": "%{player} sprzedaje dom na %{property}.",
-  "%{player} sells a hotel on %{property}.": "%{player} sprzedaje hotel na %{property}.",
-  "%{player} sells all buildings in the %{group}.": "%{player} sprzedaje wszystkie budynki z grupy: %{group}.",
-  "%{player} mortgages %{property}.": "%{player} zastawia %{property}.",
-  "%{player} unmortgages %{property}.": "%{player} wykupuje zastaw: %{property}."
-}

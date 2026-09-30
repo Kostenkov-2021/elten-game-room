@@ -164,13 +164,13 @@ module GameRoomPong
       @stepped = false
     end
 
-    def suspend
+    def suspend(reset_keyboard: true)
       @backend.suspend
       @active = @stepped = false
       @clicked = @button_held = @button_blocked = false
       @position = @last_motion = nil
       @dx = @dy = @mouse_dir = @mouse_tick = 0
-      @keyboard.reset_repeat
+      @keyboard.reset_repeat if reset_keyboard
       nil
     end
 

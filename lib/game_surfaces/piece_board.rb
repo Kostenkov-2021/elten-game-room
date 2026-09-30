@@ -1,34 +1,10 @@
+require_relative "specifications"
 require_relative "../game_room_localization"
 
 module GameSurfaces
   using GameRoomLocalization::Translations
-  Piece = Struct.new(:id, :label, :owner, :kind, :value, keyword_init: true)
-  PieceBoardSpec = Struct.new(
-    :id,
-    :width,
-    :height,
-    :header,
-    :pieces,
-    :row_origin,
-    :selectable,
-    :targets,
-    :empty_label,
-    :cell_labels,
-    :activation_action,
-    :navigable,
-    :navigable_by_coordinate_label_set,
-    :silent_positions_by_coordinate_label_set,
-    :silent_sound,
-    :coordinate_label_sets,
-    :coordinate_label_names,
-    :default_coordinate_label_set,
-    :default_orientation,
-    :orientation_labels,
-    :square_details,
-    :origin_error,
-    :destination_error,
-    keyword_init: true
-  )
+
+
 
   class PieceBoard
     include ActionEmitter
@@ -698,12 +674,6 @@ module GameSurfaces
       state_value(state, key, default).to_i
     end
 
-    def state_value(state, key, default)
-      return default if !state.respond_to?(:key?)
-      return state[key] if state.key?(key)
-      return state[key.to_sym] if state.key?(key.to_sym)
 
-      default
-    end
   end
 end

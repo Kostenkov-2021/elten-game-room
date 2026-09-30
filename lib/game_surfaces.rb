@@ -1,3 +1,6 @@
+require_relative "game_surfaces/specifications"
+require_relative "game_surfaces/state_reader"
+require_relative "game_layout"
 require_relative "game_surfaces/card_hand_cursor"
 require_relative "game_surfaces/card_sorting"
 require_relative "game_room_ui"
@@ -11,63 +14,12 @@ module GameSurfaces
     "6" => "^", "7" => "&", "8" => "*", "9" => "(", "0" => ")"
   }.freeze
 
-  MovementCommandResult = Struct.new(:action, :message, keyword_init: true)
 
-  Action = Struct.new(:kind, :name, :payload, :source, keyword_init: true) do
-    def self.from_h(value, source: nil)
-      raise ArgumentError, "surface action must be a hash" if !value.respond_to?(:to_h)
 
-      normalized = {}
-      value.to_h.each { |key, item| normalized[key.to_s] = item }
-      kind = normalized.delete("kind")
-      name = normalized.delete("action") || normalized.delete("name")
-      inherited_source = normalized.delete("source")
-      raise ArgumentError, "surface action requires a kind and action" if kind.to_s.empty? || name.to_s.empty?
 
-      new(kind: kind, name: name, payload: normalized, source: source || inherited_source)
-    end
-
-    def initialize(kind:, name:, payload: {}, source: nil)
-      raise ArgumentError, "surface action payload must be a hash" if !payload.respond_to?(:to_h)
-
-      normalized = {}
-      payload.to_h.each { |key, value| normalized[key.to_s] = value }
-      super(
-        kind: kind.to_s,
-        name: name.to_s,
-        payload: normalized,
-        source: source == nil ? nil : source.to_s
-      )
-    end
-
-    def [](key)
-      normalized = key.to_s
-      return kind if normalized == "kind"
-      return name if normalized == "action" || normalized == "name"
-      return source if normalized == "source"
-
-      payload[normalized]
-    end
-
-    def key?(key)
-      normalized = key.to_s
-      ["kind", "action", "name", "source"].include?(normalized) || payload.key?(normalized)
-    end
-
-    def to_h
-      payload.merge(
-        "kind" => kind,
-        "action" => name,
-        "source" => source
-      ).reject { |_key, value| value == nil }
-    end
-
-    def with_source(value)
-      self.class.new(kind: kind, name: name, payload: payload, source: value)
-    end
-  end
 
   module ActionEmitter
+    include StateReader
     def action_guard=(guard)
       @action_guard = guard
     end
@@ -107,72 +59,24 @@ module GameSurfaces
     end
   end
 
-  # Form#resume ends the current wait. Re-entering Form#wait normally plays
-  # form_marker and focuses the current field again, which is correct after a
-  # nested dialog but noisy after a maintenance refresh. Keep the framework's
-  # normal wait loop without that re-entry announcement. Any one-shot focus
-  # suppression left by older callers must be discarded here so it cannot
-  # silence the user's next arrow movement.
+  # ELTEN 3.0.4 owns quiet refresh and input-safe resume. Only the surface's
+  # one-shot focus suppression needs clearing before returning to its wait.
   class RefreshAwareForm < GameRoomUI::Form
-    # Timer-driven maintenance replaces the surrounding form. Form#resume
-    # performs an extra loop_update, which can consume the next typed character
-    # after the active field has already been snapshotted. Leave that input for
-    # the next form iteration instead.
-    def resume_for_refresh
-      @wait = false
-    end
-
     def wait_without_announcement
-      previous_quiet = @quiet
       current = fields[@index.to_i]
       current.clear_suppressed_focus! if current.respond_to?(:clear_suppressed_focus!)
-      @quiet = false
-      @updated = false
-      wait
-    ensure
-      @quiet = previous_quiet
+      super
     end
   end
 
-  GridSpec = Struct.new(
-    :width,
-    :height,
-    :header,
-    :cells,
-    :row_origin,
-    keyword_init: true
-  )
 
-  FleetGridSpec = Struct.new(
-    :width,
-    :height,
-    :header,
-    :cells,
-    :row_origin,
-    :epoch,
-    :setup_header,
-    :random_label,
-    :manual_label,
-    :place,
-    :complete,
-    :action_name,
-    :status,
-    :bow_check,
-    :confirm_message,
-    :placed_message,
-    :ship_label,
-    :bow_label,
-    :bow_message,
-    :cancel_message,
-    :removed_message,
-    :empty_message,
-    keyword_init: true
-  )
 
-  CardChoice = Struct.new(:id, :label, :value, keyword_init: true)
-  Card = Struct.new(:id, :label, :value, :choices, :shift_choice, :choice_header, :sort_keys, keyword_init: true)
-  CardZoneSpec = Struct.new(:id, :header, :cards, :empty_label, :hand_order, :hand_epoch, keyword_init: true)
-  CardTableSpec = Struct.new(:zones, keyword_init: true)
+
+
+
+
+
+
 
   class OrientedGridBox < GridBox
     def initialize(width, height, row_origin:, column_origin: :left, coordinate_labels: nil, coordinate_first: false, **options)
@@ -304,8 +208,7 @@ module GameSurfaces
       else
         @cells.to_a[@y].to_a[@x].to_s
       end
-      value = coordinate_label
-      value = "#{value}, #{label}" if !label.empty?
+      value = cell_announcement(label)
       if include_header && instance_variable_defined?(:@header) && !@header.to_s.empty?
         separator = " .:?!,".include?(@header.to_s[-1..-1].to_s) ? " " : ": "
         value = "#{@header}#{separator}#{value}"
@@ -313,6 +216,10 @@ module GameSurfaces
       speak(value, pan: position) if spk
       NVDA.braille(value) if defined?(NVDA) && NVDA.check
       true
+    end
+
+    def cell_announcement(label)
+      label.empty? ? coordinate_label : "#{coordinate_label}, #{label}"
     end
 
     def coordinate_label(x = @x, y = @y)
@@ -630,11 +537,7 @@ module GameSurfaces
     end
 
     def state_value(state, key, default)
-      return default if !state.respond_to?(:key?)
-      return state[key].to_i if state.key?(key)
-      return state[key.to_sym].to_i if state.key?(key.to_sym)
-
-      default
+      GameSurfaces::StateReader.integer(state, key, default)
     end
   end
 

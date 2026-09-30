@@ -1,6 +1,7 @@
 require 'json'
 require_relative 'table_control'
 require_relative 'game_statistics_identity'
+require_relative 'game_event_protocol'
 
 # Pure stack validation. Only earlier accepted starts enter the index; neither
 # future starts nor rejected authors can grant permission to a game action.
@@ -99,8 +100,8 @@ class GameRoomLiveSessionStore
           events.is_a?(Array) && events.length.between?(1, ARCHIVE_EVENTS_PER_RECORD) && events.all? do |event|
             next event.keys.sort == %w[id players] && positive_integer?(event['id']) && GameRoomTableControl.valid_players?(event['players']) if event.is_a?(Hash) && event.key?('players')
             event.is_a?(Hash) && positive_integer?(event["id"]) && event["sequence"].is_a?(Integer) && event["sequence"] >= 0 &&
-              nonempty_text?(event["actor"]) && event["actor"].length <= 64 && nonempty_text?(event["action"]) && event["action"].length <= 32 &&
-              event["value"].is_a?(String) && event["value"].length <= 64 && event["created_at"].is_a?(Integer) && event["created_at"] >= 0
+              nonempty_text?(event["actor"]) && event["actor"].length <= 64 && GameRoomEventProtocol.valid_wire_command?(event) &&
+              event["created_at"].is_a?(Integer) && event["created_at"] >= 0
           end
       when "game_boundary"
         same_user?(sender, owner) && same_user?(actor, owner) && positive_integer?(data["session_id"]) &&
@@ -129,11 +130,7 @@ class GameRoomLiveSessionStore
       session_id = data["session_id"]
       commands = data["events"]
       return false if !positive_integer?(session_id) || !data["sequence"].is_a?(Integer) || data["sequence"] < 0
-      return false if !commands.is_a?(Array) || commands.empty? || commands.length > 50
-      return false if commands.any? do |command|
-        !command.is_a?(Hash) || !nonempty_text?(command["action"]) || command["action"].length > 32 ||
-          !command["value"].is_a?(String) || command["value"].length > 64 || !nonempty_text?(command["move_id"])
-      end
+      return false unless GameRoomEventProtocol.valid_wire_commands?(commands)
 
       game = @starts[session_id]
       return false if game == nil

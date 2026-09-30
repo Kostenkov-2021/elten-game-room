@@ -15,14 +15,14 @@ class GameRoomTableBackground
   end
 
   def initialize(program:, transport:, repository:, lobby:, activity_repository:,
-    table:, session_id:, activity_cursor:, screen_builder:, covered: nil)
+    table:, session_id:, activity_cursor:, screen_builder:, covered: nil, form: nil)
     @program, @transport, @repository, @lobby = program, transport, repository, lobby
     @activity_repository, @table = activity_repository, table.dup
     @viewer = Session.name.to_s
     @table_id = lobby.table_id(table)
     @activity_cursor, @screen_builder = activity_cursor, screen_builder
     @ui_thread = Thread.current
-    @covered = covered || -> { defined?($currentthread) && $currentthread && $currentthread != @ui_thread }
+    @covered = covered || -> { GameRoomBackgroundPolicy.covered?(@ui_thread, program: @program, form: form) }
     @lock, @wake = Mutex.new, ConditionVariable.new
     @closed, @dirty, @handed_over = false, true, false
     @feed = transport.subscribe_game_session(@table_id)
@@ -128,8 +128,8 @@ class GameRoomTableBackground
     players = @repository.players_for(session).map { |player| GameRoomParticipants.display_name(player) }
     speak_table(_("Game started: %{players}.") % {players: players.join(", ")})
     game = @program.send(:game_definition, session["game"])
-    # Realtime clients have their own UI/Communications lifecycle. Announce
-    # their start, but do not create them inside another application's scene.
+    # The same screen is later adopted by the visible table. Realtime clients
+    # own a separate active-UI progress timer, including a start while covered.
     return unless game&.session_runner? && game.validation_error(game.options_from_json(session["options"])) == nil
     screen = @screen_builder.call(session, game, table)
     @game_screen = screen

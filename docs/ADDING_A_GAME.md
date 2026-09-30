@@ -101,12 +101,13 @@ wywołuje `rule_book`, dlatego brak zasad zostanie wykryty przy starcie.
 
 Angielskie komunikaty oznaczaj `_`, `n_`, `p_` lub `np_`, a w głównym module
 pliku włącz `using GameRoomLocalization::Translations`. Zasady mają osobną
-strukturę angielską w `docs/rulebooks`; generuj je przez
+strukturę angielską w `tools/data/rulebooks` i przypisanie opcji do rozdziałów
+w `tools/rulebook_option_chapters.json`; generuj je przez
 `ruby tools/compile-rulebooks.rb`. Następnie `ruby tools/translations.rb update`
 dopisze wiadomości do katalogów. Tłumacz edytuje wyłącznie `locale/PL.po`
 lub PO innego języka; `compile PL` tworzy MO oraz polskie widoki zgodności.
 Nie dodawaj nowych ręcznie utrzymywanych fragmentów tłumaczeń JSON.
-Szczegóły: `locale/README.md`.
+Szczegóły: `docs/TRANSLATIONS.md`.
 
 ## 6. Napisz testy
 
@@ -122,4 +123,4 @@ Minimalny zestaw obejmuje:
 - bota, jeśli jest obsługiwany;
 - regresję dla każdego naprawianego błędu.
 
-Na końcu uruchom `ruby tools/run-tests.rb`.
+Na końcu uruchom `ruby test/run.rb`.

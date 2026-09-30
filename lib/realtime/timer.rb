@@ -1,21 +1,21 @@
 module GameRoomRealtime
-  # The native FormTimer uses wall time. A match must not jump when the PC
-  # clock changes; keep the existing form lifecycle but use a monotonic clock.
-  class Timer < FormTimer
+  # ELTEN owns the timer lifecycle and monotonic scheduling. A zero-interval
+  # native timer lets the match's injected clock retain its immediate first
+  # frame and start-to-start cadence, without catching up missed frames.
+  class Timer < EltenAPI::Controls::FormTimer
     def initialize(clock:, interval: 0.008, &block)
-      @clock, @interval, @callback = clock, interval, block
-      super(interval, repeat: true, autostart: false)
-      start
+      super(0, repeat: true) do
+        now = clock.call
+        if @due == nil || now >= @due
+          @due = now + interval
+          block.call
+        end
+      end
     end
 
-    def start; @due = @clock.call; end
-    def stop; @due = nil; end
-    def update
-      return unless @due
-      now = @clock.call
-      return if now < @due
-      @due = now + @interval
-      @callback.call
+    def stop
+      @due = nil
+      super
     end
   end
 end

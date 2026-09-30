@@ -1,6 +1,7 @@
+require_relative "specifications"
 module GameSurfaces
-  Command = Struct.new(:id, :label, :enabled, :payload, keyword_init: true)
-  CommandPanelSpec = Struct.new(:commands, keyword_init: true)
+
+
 
   class CommandPanel
     include ActionEmitter

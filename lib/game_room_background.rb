@@ -1,50 +1,133 @@
 require "thread"
 
-# One finite context-aware operation, no UI, pump, polling loop or modal task.
-# The owner drains the result during its existing update and closes this object
-# with the application. Network operations retain their own bounded timeouts.
+# Finite native tasks, drained by their owners' existing updates. ELTEN limits
+# a runtime to four workers; pending work waits in FIFO order without another
+# scheduler, UI pump, thread or retrying the operation itself.
 module GameRoomBackground
-  class Work
-    def initialize(runtime: nil)
-      @runtime = runtime
-      @result = Queue.new
-      @closed = false
+  module Pending
+    LIMIT = 128
+    LOCK = Mutex.new
+    @items = []
+
+    def self.add(work)
+      LOCK.synchronize do
+        raise EltenAPI::Tasks::Busy, "Game Room background queue is full" if @items.length >= LIMIT
+        @items << work
+      end
+      dispatch
     end
 
-    def busy?; @thread&.alive? || !@result.empty?; end
-    def closed?; @closed; end
+    def self.remove(work)
+      LOCK.synchronize { @items.delete(work) }
+    end
+
+    def self.dispatch
+      return unless LOCK.try_lock
+      begin
+        blocked = {}
+        @items.delete_if do |work|
+          next false if blocked[work.scope]
+          started = work.dispatch
+          blocked[work.scope] = true unless started
+          started
+        end
+      ensure
+        LOCK.unlock
+      end
+    end
+  end
+  private_constant :Pending
+
+  class Work
+    def initialize(runtime: nil)
+      @runtime = runtime || (Programs.current_runtime if defined?(Programs) && Programs.respond_to?(:current_runtime))
+      if @runtime == nil && defined?(Programs)
+        @runtime = Programs.runtime_for(self) if Programs.respond_to?(:runtime_for)
+        @runtime ||= Programs.runtime_from_caller if Programs.respond_to?(:runtime_from_caller)
+      end
+      @lock = Mutex.new
+      @managed_resources = EltenAPI::Resources::Registry.new
+      @closed = false
+      @runtime&.manage(self)
+    end
+
+    attr_reader :managed_resources
+
+    def scope; @runtime&.manifest&.id&.downcase; end
+    def closed?; @lock.synchronize { @closed }; end
+
+    def busy?
+      Pending.dispatch
+      @lock.synchronize { !@closed && !!(@operation || @handle || @result) }
+    end
 
     def start(&operation)
-      return false if @closed || busy?
-      @thread = Thread.new do
-        Thread.current.report_on_exception = false
-        begin
-          work = -> { operation.call }
-          value = if @runtime && defined?(Programs) && Programs.respond_to?(:with_runtime)
-            Programs.with_runtime(@runtime) { work.call }
-          else
-            work.call
-          end
-          @result << [value, nil] unless @closed
-        rescue StandardError => error
-          @result << [nil, error] unless @closed
-        end
+      raise ArgumentError, "operation is required" unless operation
+      @lock.synchronize do
+        return false if @closed || @operation || @handle || @result
+        @operation = operation
       end
+      Pending.add(self)
       true
+    rescue EltenAPI::Tasks::Busy
+      @lock.synchronize { @operation = nil }
+      raise
     end
 
     def take
-      @result.pop(true)
-    rescue ThreadError
-      nil
+      Pending.dispatch
+      @lock.synchronize do
+        return nil if @closed
+        if @result
+          result, @result = @result, nil
+          return result
+        end
+        outcome = @handle&.take
+        if outcome
+          @handle = nil
+          return [outcome.value, outcome.error]
+        end
+        # Native runtime/owner teardown may discard an unfinished result.
+        @handle = nil if @handle&.state == :closed
+        nil
+      end
     end
 
     def close
-      @closed = true
-      @result.clear
-      # Never kill a network write whose commit status could be uncertain.
-      # The in-flight finite call may finish, but cannot schedule more work.
+      @lock.synchronize do
+        return if @closed
+        @closed = true
+        @operation = @result = nil
+        @handle&.close # Discard only: never cancel/kill an uncertain write.
+        @handle = nil
+        @managed_resources.close
+      end
+      Pending.remove(self)
+      @runtime&.release(self)
       nil
+    end
+
+    # Called only by the shared queue. Busy is capacity, not a failed action;
+    # retain the untouched operation until an existing owner update retries.
+    def dispatch
+      @lock.synchronize do
+        return true if @closed || !@operation
+        operation = @operation
+        start = -> { EltenAPI::Tasks.start(owner: self) { operation.call } }
+        @handle = if defined?(Programs) && Programs.respond_to?(:with_runtime)
+          Programs.with_runtime(@runtime, &start)
+        else
+          start.call
+        end
+        @operation = nil
+        true
+      rescue EltenAPI::Tasks::Busy
+        false
+      rescue StandardError => error
+        @operation = nil
+        @result = [nil, error]
+        true
+      end
     end
   end
 end

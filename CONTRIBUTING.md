@@ -9,7 +9,7 @@ ważna jak poprawność reguł gry.
 1. Utwórz gałąź od aktualnego `main`.
 2. Jedna gałąź i jeden pull request powinny rozwiązywać jeden spójny problem.
 3. Dodawaj lub aktualizuj test odtwarzający zmieniane zachowanie.
-4. Uruchom `ruby tools/run-tests.rb`.
+4. Uruchom `ruby test/run.rb`.
 5. W opisie pull requesta podaj przyczynę, zakres zmiany i sposób ręcznego
    sprawdzenia w ELTEN-ie.
 
@@ -46,10 +46,11 @@ Jedynym edytowalnym źródłem tłumaczeń danego języka jest jego plik
 `locale/<LANG>.po`, np. `PL.po`. Używamy standardu GetText jak ELTEN.
 Po zmianach angielskich napisów uruchom `ruby tools/translations.rb update`;
 po tłumaczeniu `ruby tools/translations.rb compile PL` i `check PL`.
-Dawne `*-pl.json`, polskie pola zasad i polskie listy zmian są generowane
-z PO i nie mogą nadpisywać pracy tłumacza. Słowniki Scrabble/Krowy, pytania
+Polskie pola zasad i polskie listy zmian są generowane z PO i nie mogą
+nadpisywać pracy tłumacza. W `locale/` są wyłącznie PO/MO, szablon POT
+i instrukcja; nie dodawaj fragmentów JSON. Słowniki Scrabble/Krowy, pytania
 quizu i karty Taboo pozostają osobnymi danymi rozgrywki.
-Zależności i dokładny przebieg: `locale/README.md`.
+Zależności i dokładny przebieg: `docs/TRANSLATIONS.md`.
 
 ## Nowe gry
 
@@ -57,3 +58,18 @@ Nowa gra powinna mieć stabilne reguły, deterministyczne odtwarzanie z listy
 zdarzeń, testy legalnych i nielegalnych ruchów oraz dostępny interfejs oparty na
 wspólnych powierzchniach. Szczegółowa lista kontrolna jest w
 `docs/ADDING_A_GAME.md`.
+
+## Dokumentacja i artefakty
+
+Jedynym README jest główny `README.md`. Szczegółowe instrukcje umieszczaj
+w `docs/` i podpinaj do indeksu; nie twórz README w podkatalogach.
+Wejścia generatorów należą do `tools/data/`, w tym JSON-y zasad
+w `tools/data/rulebooks/`. Czytelne eksporty pytań quizu pozostają w `docs/`.
+
+`docs/` zawiera bieżące kontrakty, instrukcje i czytelne eksporty treści;
+indeks jest w [docs/INDEX.md](docs/INDEX.md). Aktualizuj dokument właściciela
+zachowania zamiast dopisywać raport oznaczony datą lub numerem buildu.
+Historię implementacji zachowuje Git. Wyniki testów, benchmarków, jednorazowych
+audytów i diagnostyk zapisuj w ignorowanym `tmp/` albo poza repozytorium.
+Dane wzorcowe wymagane przez testy należą do `test/fixtures/`; mają opisywać
+oczekiwane zachowanie, bez całych raportów i dzienników ich powstawania.

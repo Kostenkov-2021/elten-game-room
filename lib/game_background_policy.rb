@@ -3,6 +3,24 @@
 module GameRoomBackgroundPolicy
   module_function
 
+  # loop_update moves the just-completed controls to lastactivecontrols before
+  # the next form/menu update. An Alt menu on the SAME UI thread therefore
+  # covers the game too; checking only $currentthread misses that case.
+  def covered?(ui_thread, program: nil, form: nil)
+    return true if defined?($currentthread) && $currentthread && !$currentthread.equal?(ui_thread)
+    controls = defined?($lastactivecontrols) && $lastactivecontrols
+    return false unless controls.is_a?(Array) && !controls.empty?
+    current_form = form.respond_to?(:call) ? form.call : form
+    if current_form
+      return false if controls.include?(current_form)
+      help = current_form.game_room_background_help_form if current_form.respond_to?(:game_room_background_help_form)
+      return false if help && controls.include?(help)
+      true
+    else
+      !controls.any? { |control| control.respond_to?(:game_room_program) && control.game_room_program.equal?(program) }
+    end
+  end
+
   def outside?(program, covered: false)
     return true if !window_foreground?
     active = defined?($activecontrols) && $activecontrols.to_a.reverse.find do |control|

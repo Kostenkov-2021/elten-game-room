@@ -1,83 +1,53 @@
 require "thread"
 require_relative "network_errors"
 
-# The only wall-clock fallback is for offline tools/tests before a connection.
-# Online entry points synchronize on an existing network/background task.
-# Reading a clock, moving focus or announcing a notification NEVER sends HTTP.
+# ELTEN 3.0.4 owns synchronization, monotonic time, retry and account changes.
+# This adapter only keeps the game's Numeric clock/error contract. No read
+# starts HTTP, waits for a sample or accesses the host's private lifecycle.
 module GameRoomClock
   CLOCK_LOCK = Mutex.new
   class Clock
-    REFRESH_AFTER = 300.0
-    RETRY_AFTER = 60.0
-
-    def initialize(fetch: nil, elapsed: -> { Process.clock_gettime(Process::CLOCK_MONOTONIC) },
-      wall: -> { Time.now.to_f })
-      @fetch, @elapsed, @wall = fetch, elapsed, wall
-      @lock, @refresh_lock = Mutex.new, Mutex.new
+    def initialize(source: nil, wall: -> { Time.now.to_f })
+      @source, @wall = source, wall
     end
 
     def now
-      @lock.synchronize do
-        @anchor ? @anchor[0] + @elapsed.call - @anchor[1] : @wall.call.to_f
+      native = source
+      return @wall.call.to_f unless native # Standalone rules/tools only.
+
+      sample = native.now
+      value = sample.to_f if sample.is_a?(Time) || sample.is_a?(Numeric)
+      unless value && value.finite? && value > 0
+        raise GameRoomNetworkErrors::ClockUnavailable, "Server clock is not synchronized"
       end
+      value
     end
+
+    alias synchronize now
 
     def synchronized?
-      @lock.synchronize { @anchor != nil }
+      !!source&.synchronized?
     end
 
-    def synchronize
-      return now unless @fetch
-      @refresh_lock.synchronize do
-        if @retry_at && @elapsed.call < @retry_at
-          raise @last_error unless synchronized?
-          return now
-        end
-        fresh = @lock.synchronize { @anchor && @elapsed.call - @anchor[1] < REFRESH_AFTER }
-        return now if fresh
-        begin
-          stamp = @fetch.call
-          value = stamp.is_a?(Time) || stamp.is_a?(Numeric) ? stamp.to_f : 0
-          raise GameRoomNetworkErrors::ClockUnavailable, "Invalid server clock" unless value.finite? && value > 0
-          @lock.synchronize { @anchor = [value, @elapsed.call] }
-          @retry_at = @last_error = nil
-        rescue StandardError => error
-          raise if defined?(EltenAPI::Tasks::Cancelled) && error.is_a?(EltenAPI::Tasks::Cancelled)
-          raise unless GameRoomNetworkErrors.expected?(error) || error.is_a?(IOError) || error.is_a?(SystemCallError)
-          @retry_at, @last_error = @elapsed.call + RETRY_AFTER, error
-          # A connection gap must not replace a confirmed clock with the OS clock.
-          raise unless synchronized?
-        end
-      end
-      now
+    def server_available?
+      source != nil
+    end
+
+    private
+
+    def source
+      @source || (EltenAPI::ServerClock if defined?(EltenAPI::ServerClock))
     end
   end
 
   class << self
     def clock
       return @clock if @clock
-      CLOCK_LOCK.synchronize { @clock ||= build_clock }
+      CLOCK_LOCK.synchronize { @clock ||= Clock.new }
     end
 
-    def build_clock
-      Clock.new(fetch: -> {
-        # Do not use the host helper's Time.now fallback for invalid replies.
-        response = EltenLink::Client.new.api_data("GET", "/api/v1/system/time", nil, timeout: 5)
-        value = response.is_a?(Hash) ? response["time"] : nil
-        raise GameRoomNetworkErrors::ClockUnavailable, "Invalid server clock" unless value.is_a?(Numeric) && value > 0
-        value
-      }, wall: -> {
-        sample = EltenAPI::NotificationService.server_time if defined?(EltenAPI::NotificationService) && EltenAPI::NotificationService.respond_to?(:server_time)
-        sample.to_f > 0 ? sample.to_f : Time.now.to_f
-      })
-    end
-    private :build_clock
-
-    def server_available?
-      defined?(EltenLink::System) && EltenLink::System.respond_to?(:server_time) && defined?(EltenLink::Client)
-    end
-
-    def synchronize; server_available? ? clock.synchronize : now; end
+    def server_available?; clock.server_available?; end
+    def synchronize; clock.synchronize; end
     def now; clock.now; end
     def synchronized?; clock.synchronized?; end
   end

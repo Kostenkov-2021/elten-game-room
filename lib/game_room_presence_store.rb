@@ -3,6 +3,7 @@ require_relative "game_room_analytics_client"
 
 module GameRoomPresence
   class Unavailable < StandardError; end
+  class UnsafeReport < Unavailable; end
 
   module Schema
     TABLE = "room_presence".freeze
@@ -23,13 +24,17 @@ module GameRoomPresence
   class Store
     PAYLOAD_FIELDS = %w[room_key game private_room people playing].freeze
     CLEANUP_PAGE = 64
+    LIVE_PREVIOUS_SLOTS = 5
+    CLEANUP_INTERVAL = 900
 
-    def initialize(app_uuid:, user:, reporter_key:, client: nil, api: nil, current_user: -> { Session.name }, clock: -> { GameRoomClock.now })
+    def initialize(app_uuid:, user:, reporter_key:, client: nil, api: nil, current_user: -> { Session.name }, clock: -> { GameRoomClock.now },
+      monotonic: -> { Process.clock_gettime(Process::CLOCK_MONOTONIC) })
       raise ArgumentError, "Invalid room presence reporter key" unless digest?(reporter_key)
       @app_uuid, @user = app_uuid.to_s.dup.freeze, user.to_s.dup.freeze
       @installation_key = reporter_key.dup.freeze
       @client, @api = client || EltenLink::Client.new, api || EltenLink::Apps
       @current_user, @clock = current_user, clock
+      @monotonic = monotonic
       @published_keys = {}
       @cleanup_cursor = 0
     end
@@ -50,7 +55,10 @@ module GameRoomPresence
         @published_keys[row["reporter_key"]] = true
         write_row(table, row, cancellation_token)
       end
-      prune_expired(table, slot, cancellation_token)
+      if !@cleanup_at || @monotonic.call >= @cleanup_at
+        prune_expired(table, slot, cancellation_token)
+        @cleanup_at = @monotonic.call + CLEANUP_INTERVAL
+      end
       check_context!(cancellation_token)
       true
     end
@@ -83,16 +91,18 @@ module GameRoomPresence
 
     private
 
-    # One bounded page per heartbeat, including after a restart. Access flags
+    # At most one bounded page per 15 minutes of publishing, not a separate job.
+    # Keep a full slot of grace beyond the reader's six-slot window. Access flags
     # are supplied by ELTEN, not by public payloads. Never remove others' rows
     # (the developer account may have broader server-side rights).
     def prune_expired(table, slot, token)
-      rows = select_rows(table, token, where: {"seen_slot" => {"lte" => slot - 3},
+      expired = slot - LIVE_PREVIOUS_SLOTS - 2
+      rows = select_rows(table, token, where: {"seen_slot" => {"lte" => expired},
         "__id" => {"gte" => @cleanup_cursor + 1}}, order: [["__id", "asc"]],
         include_access: true, limit: CLEANUP_PAGE)
       rows.each do |row|
         @cleanup_cursor = row["__id"]
-        next unless row.dig("__access", "owner") == true && row["seen_slot"].is_a?(Integer) && row["seen_slot"] <= slot - 3
+        next unless row.dig("__access", "owner") == true && row["seen_slot"].is_a?(Integer) && row["seen_slot"] <= expired
         fresh = select_rows(table, token, where: {"__id" => row["__id"]}, include_access: true, limit: 1).first
         next unless fresh && fresh.dig("__access", "owner") == true &&
           fresh["seen_slot"] == row["seen_slot"] && fresh["reporter_key"] == row["reporter_key"]
@@ -148,13 +158,13 @@ module GameRoomPresence
       upper = snapshot.first["__id"]
       previous_id = 0
       loop do
-        rows = select_rows(table, token, where: {"seen_slot" => {"in" => [slot - 1, slot]},
+        rows = select_rows(table, token, where: {"seen_slot" => {"in" => live_slots(slot)},
           "__id" => {"gte" => previous_id + 1}},
           columns: Schema::FIELDS + ["__id"], order: [["__id", "asc"]], limit: page_limit)
+        break if rows.empty?
         unless rows.each_cons(2).all? { |first, second| first["__id"] < second["__id"] }
           raise Unavailable, "Room presence pagination is not ordered"
         end
-        page_size = rows.length
         beyond_snapshot = rows.any? { |row| row["__id"] > upper }
         rows = rows.take_while { |row| row["__id"] <= upper }
         rows.each do |row|
@@ -163,16 +173,17 @@ module GameRoomPresence
             raise Unavailable, "Room presence pagination did not advance within its snapshot"
           end
           previous_id = id
-          unless row["seen_slot"].is_a?(Integer) && [slot - 1, slot].include?(row["seen_slot"])
+          unless row["seen_slot"].is_a?(Integer) && live_slots(slot).include?(row["seen_slot"])
             raise Unavailable, "Room presence escaped its expiry window"
           end
           read_room(row)
         end
         keys = rows.map { |row| row["reporter_key"] }.uniq
         canonical_records(table, keys, upper, page_limit, token).each do |row|
-          yield row if [slot - 1, slot].include?(row["seen_slot"])
+          yield row if live_slots(slot).include?(row["seen_slot"])
         end
-        break if page_size < page_limit || beyond_snapshot || previous_id >= upper
+        # Short pages are not EOF: the endpoint can cap them below our limit.
+        break if beyond_snapshot || previous_id >= upper
       end
     end
 
@@ -266,6 +277,10 @@ module GameRoomPresence
       (value / 60).floor
     end
 
+    def live_slots(slot)
+      ((slot - LIVE_PREVIOUS_SLOTS)..slot).to_a
+    end
+
     def write_values(data, slot)
       raise ArgumentError, "Invalid room presence payload" unless data.is_a?(Array) && data.all? { |room| valid_room?(room) }
       rooms = {}
@@ -306,8 +321,8 @@ module GameRoomPresence
         permissions.is_a?(Hash) && %w[select insert update delete].all? { |key| permissions[key] == true } &&
         permissions.all? { |key, value| %w[select insert update delete].include?(key) || value == false } &&
         limit.is_a?(Integer) && limit > 0
-      raise Unavailable, "Room presence lacks the required privacy protections" unless safe
-      [limit, 2000].min
+      raise UnsafeReport, "Room presence lacks the required privacy protections" unless safe
+      [limit, 1000].min
     end
   end
 end

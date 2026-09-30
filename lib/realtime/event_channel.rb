@@ -29,9 +29,13 @@ module GameRoomRealtime
     def tick
       super
       dispatch_events
+    rescue StandardError => error
+      record_error(error, stage: :event_tick)
+      reconnect(reason: 'EventTickFailed')
     end
 
     def send_event(data)
+      raise @internal_error if @internal_error
       return false unless !@closed && !@reconnect_requested && @event_protocol && connected? && data.is_a?(String) && data.bytesize <= Protocol::MAX_BYTES
       required = required_names
       return true if event_targets.empty? && required.empty?
@@ -45,6 +49,10 @@ module GameRoomRealtime
       # before reusing its worker, preserving deliveries and FIFO ordering.
       dispatch_events
       !@closed && !@reconnect_requested
+    rescue StandardError => error
+      record_error(error, stage: :event_send)
+      reconnect(reason: 'EventSendFailed')
+      false
     end
 
     def take_events
@@ -56,7 +64,7 @@ module GameRoomRealtime
     end
 
     def reconnect(reason: nil)
-      return if @reconnect_requested || @closed
+      return if @internal_error || @reconnect_requested || @closed
       invalidate_events
       @event_work.cancel
       super(reason: reason)
@@ -77,10 +85,10 @@ module GameRoomRealtime
         if value.is_a?(Array) && value[0] == @event_generation && value[1] == :recipients_missing && !@closed
           @event_outbox.length >= LIMIT ? reconnect(reason: 'ReliableOutboxFull') : @event_outbox.unshift(value[2])
         elsif value.is_a?(Array) && value[0] == @event_generation && value[1] && !@closed
-          @last_error = value[1]
+          record_error(value[1], stage: :reliable)
           reconnect
         elsif error && !@closed
-          @last_error = error.class.to_s
+          record_error(error, stage: :reliable_worker)
           reconnect
         elsif value.is_a?(Array) && value[0] == @event_generation && !@closed
           @metrics.observe(:queue_wait, value[4])
@@ -151,7 +159,7 @@ module GameRoomRealtime
         rescue StandardError => error
           # Keep the generation even on failure: an old send must not tear
           # down a replacement channel which already works.
-          [generation, error.class.to_s]
+          [generation, error]
         end
       end
       @event_outbox.shift if started
@@ -170,6 +178,8 @@ module GameRoomRealtime
       names = @required_members || event_targets.map(&:user)
       names.map { |name| name.to_s.downcase }.reject { |name| name.casecmp?(@viewer) }.uniq.freeze
     end
+
+    def invitation_priority_names; required_names; end
 
     def missing_required(names, targets)
       names - targets.map { |target| target.user.to_s.downcase }
@@ -224,7 +234,8 @@ module GameRoomRealtime
       @event_sequences = {}
       return unless @event_protocol
       session.on_reliable do |message|
-        receive_message(session, :reliable, message)
+        next if @closed || !@session.equal?(session)
+        guarded_callback(:reliable_message) { receive_message(session, :reliable, message) }
       end
     end
   end

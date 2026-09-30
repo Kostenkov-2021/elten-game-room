@@ -1,8 +1,12 @@
 require_relative "ui"
 require_relative "log"
+FormTimer = EltenAPI::Controls::FormTimer unless defined?(FormTimer)
 
 class Program
-  def self.server_app(**_options); end
+  def self.server_app(**options); @server_app_uuid = options.fetch(:uuid); end
+  def self.server_app_uuid
+    @server_app_uuid || (superclass.server_app_uuid if superclass.respond_to?(:server_app_uuid))
+  end
 end
 
 module Session

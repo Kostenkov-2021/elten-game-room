@@ -1,3 +1,4 @@
+require_relative "base"
 require_relative "../lib/game_bots"
 require_relative "../lib/game_tree_search"
 require_relative "../lib/board_presentation"
@@ -43,23 +44,7 @@ module GameRoomGames
     end
 
     def rule_sections
-      # Generated from docs/rulebooks/reversi.json; see tools/compile-rulebooks.rb.
-      [
-        rule_section(:turning, GameRoomRules.translate("Turn your opponent's discs into your own"),
-          GameRoomRules.translate("Reversi is played by two people on an 8 by 8 board. Four discs are already in the centre: two black and two white. The first player is black and starts. Unlike in many board games, captured discs stay on the board and change colour. You want more discs of your colour when the game ends, not necessarily after every move."),
-          GameRoomRules.translate("Normally you place one disc on an empty square so that one or more opposing discs lie between the new disc and one of your existing discs. They must form an uninterrupted straight line. For example, placing black next to a row of white, white, black turns both white discs black."),
-          GameRoomRules.translate("This works horizontally, vertically and diagonally. If your move encloses discs in several directions, all those discs turn at once. You do not choose which lines to capture. An empty square interrupts a line, and the newly turned discs do not trigger a second chain of captures elsewhere.")),
-        rule_section(:options, GameRoomRules.translate("Passing and playing without a capture"),
-          GameRoomRules.translate("Mandatory capture is enabled by default. With it, every placement must turn at least one opposing disc. If you switch it off, a move without a capture is also allowed, but the new disc must be next to an existing disc, including diagonally. You still cannot play on an occupied square or in an isolated part of the board. A move that does enclose opposing discs always turns them."),
-          GameRoomRules.translate("Allow passing is also enabled by default. It lets you give the turn to your opponent even when you have a legal move. You may do this repeatedly; voluntary passes alone do not produce a draw. Switch the option off if you want players to pass only when they cannot place a disc."),
-          GameRoomRules.translate("The game ends when the board is full or neither player has a legal placement under the selected rules. The player with more discs wins; equal numbers mean a draw. Having no move yourself does not end the game if your opponent can still play.")),
-        rule_section(:controls, GameRoomRules.translate("Game keyboard shortcuts"),
-          GameRoomRules.translate("Arrows: browse squares."),
-          GameRoomRules.translate("Enter: place a disc on the selected square."),
-          GameRoomRules.translate("P: pass when the table rules allow it."),
-          GameRoomRules.translate("S: read each player's number of discs."),
-          GameRoomRules.translate("T: read whose turn it is."))
-      ]
+      generated_rule_sections
     end
 
     def supports_bots?
@@ -227,7 +212,10 @@ module GameRoomGames
 
     def legal_placement?(board, x, y, marker, options)
       return false unless marker && inside?(x, y) && board[y][x] == nil
-      return !flips_for(board, x, y, marker).empty? if rules_key(options)[1]
+      if rules_key(options)[1]
+        each_capture_line(board, x, y, marker) { return true }
+        return false
+      end
       DIRECTIONS.any? { |dx, dy| inside?(x + dx, y + dy) && board[y + dy][x + dx] != nil }
     end
 
@@ -350,19 +338,29 @@ module GameRoomGames
     end
 
     def flips_for(board, x, y, marker)
-      return [] if marker == nil || !inside?(x, y) || board[y][x] != nil
+      flips = []
+      each_capture_line(board, x, y, marker) do |dx, dy, length|
+        1.upto(length) { |step| flips << [x + dx * step, y + dy * step] }
+      end
+      flips
+    end
+
+    # Both legality and execution use the same traversal. The predicate can
+    # stop at the first enclosed line without allocating discarded squares.
+    def each_capture_line(board, x, y, marker)
+      return if marker == nil || !inside?(x, y) || board[y][x] != nil
 
       opponent = marker == 0 ? 1 : 0
-      DIRECTIONS.flat_map do |dx, dy|
-        line = []
+      DIRECTIONS.each do |dx, dy|
+        length = 0
         cx = x + dx
         cy = y + dy
         while inside?(cx, cy) && board[cy][cx] == opponent
-          line << [cx, cy]
+          length += 1
           cx += dx
           cy += dy
         end
-        inside?(cx, cy) && board[cy][cx] == marker ? line : []
+        yield dx, dy, length if length > 0 && inside?(cx, cy) && board[cy][cx] == marker
       end
     end
 
@@ -395,3 +393,5 @@ module GameRoomGames
     end
   end
 end
+
+require_relative 'generated/rulebooks/reversi'

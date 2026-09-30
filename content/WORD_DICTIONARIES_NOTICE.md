@@ -18,7 +18,7 @@ Changes made by ELTEN Game Room: UTF-8/NFC, lower case, removal of format
 quotes, filtering to 2–15 letters of the language's tile alphabet,
 deduplication, sorting and compressed block storage. No definitions or
 word-finding suggestions. Original and transformed checksums are in pack
-metadata; tools/build-word-dictionaries.rb reproduces this transformation.
+metadata; tools/build-scrabble-dictionaries.rb reproduces this transformation.
 Structural checks are not an independent linguistic audit of every word.
 
 ## Wordnik license (preserved in full)

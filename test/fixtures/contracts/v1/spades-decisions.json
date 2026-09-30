@@ -1,0 +1,986 @@
+[
+  {
+    "events": 1,
+    "omniscient": false,
+    "actor": "Bob",
+    "available": [
+      {
+        "kind": "command",
+        "action": "bid_0",
+        "bid": 0
+      },
+      {
+        "kind": "command",
+        "action": "bid_1",
+        "bid": 1
+      },
+      {
+        "kind": "command",
+        "action": "bid_2",
+        "bid": 2
+      },
+      {
+        "kind": "command",
+        "action": "bid_3",
+        "bid": 3
+      },
+      {
+        "kind": "command",
+        "action": "bid_4",
+        "bid": 4
+      },
+      {
+        "kind": "command",
+        "action": "bid_5",
+        "bid": 5
+      },
+      {
+        "kind": "command",
+        "action": "bid_6",
+        "bid": 6
+      },
+      {
+        "kind": "command",
+        "action": "bid_7",
+        "bid": 7
+      },
+      {
+        "kind": "command",
+        "action": "bid_8",
+        "bid": 8
+      },
+      {
+        "kind": "command",
+        "action": "bid_9",
+        "bid": 9
+      },
+      {
+        "kind": "command",
+        "action": "bid_10",
+        "bid": 10
+      },
+      {
+        "kind": "command",
+        "action": "bid_11",
+        "bid": 11
+      },
+      {
+        "kind": "command",
+        "action": "bid_12",
+        "bid": 12
+      },
+      {
+        "kind": "command",
+        "action": "bid_13",
+        "bid": 13
+      },
+      {
+        "kind": "command",
+        "action": "bid_14",
+        "bid": 14
+      },
+      {
+        "kind": "command",
+        "action": "bid_15",
+        "bid": 15
+      },
+      {
+        "kind": "command",
+        "action": "bid_16",
+        "bid": 16
+      },
+      {
+        "kind": "command",
+        "action": "bid_17",
+        "bid": 17
+      }
+    ],
+    "action": {
+      "kind": "command",
+      "action": "bid_5",
+      "bid": 5
+    },
+    "rng": [
+      429,
+      287,
+      603,
+      248,
+      748,
+      145,
+      499,
+      473
+    ]
+  },
+  {
+    "events": 3,
+    "omniscient": false,
+    "actor": "Alice",
+    "available": [
+      {
+        "kind": "command",
+        "action": "bid_0",
+        "bid": 0
+      },
+      {
+        "kind": "command",
+        "action": "bid_1",
+        "bid": 1
+      },
+      {
+        "kind": "command",
+        "action": "bid_2",
+        "bid": 2
+      },
+      {
+        "kind": "command",
+        "action": "bid_3",
+        "bid": 3
+      },
+      {
+        "kind": "command",
+        "action": "bid_4",
+        "bid": 4
+      },
+      {
+        "kind": "command",
+        "action": "bid_5",
+        "bid": 5
+      },
+      {
+        "kind": "command",
+        "action": "bid_6",
+        "bid": 6
+      },
+      {
+        "kind": "command",
+        "action": "bid_7",
+        "bid": 7
+      },
+      {
+        "kind": "command",
+        "action": "bid_8",
+        "bid": 8
+      },
+      {
+        "kind": "command",
+        "action": "bid_9",
+        "bid": 9
+      },
+      {
+        "kind": "command",
+        "action": "bid_10",
+        "bid": 10
+      },
+      {
+        "kind": "command",
+        "action": "bid_11",
+        "bid": 11
+      },
+      {
+        "kind": "command",
+        "action": "bid_12",
+        "bid": 12
+      },
+      {
+        "kind": "command",
+        "action": "bid_13",
+        "bid": 13
+      },
+      {
+        "kind": "command",
+        "action": "bid_14",
+        "bid": 14
+      },
+      {
+        "kind": "command",
+        "action": "bid_15",
+        "bid": 15
+      },
+      {
+        "kind": "command",
+        "action": "bid_16",
+        "bid": 16
+      },
+      {
+        "kind": "command",
+        "action": "bid_17",
+        "bid": 17
+      }
+    ],
+    "action": {
+      "kind": "command",
+      "action": "bid_9",
+      "bid": 9
+    },
+    "rng": [
+      429,
+      287,
+      603,
+      248,
+      748,
+      145,
+      499,
+      473
+    ]
+  },
+  {
+    "events": 7,
+    "omniscient": false,
+    "actor": "Carol",
+    "available": [
+      {
+        "kind": "card",
+        "action": "select",
+        "zone": "hand",
+        "card": "3H",
+        "card_id": "3H"
+      },
+      {
+        "kind": "card",
+        "action": "select",
+        "zone": "hand",
+        "card": "7H",
+        "card_id": "7H"
+      },
+      {
+        "kind": "card",
+        "action": "select",
+        "zone": "hand",
+        "card": "4D",
+        "card_id": "4D"
+      },
+      {
+        "kind": "card",
+        "action": "select",
+        "zone": "hand",
+        "card": "4C",
+        "card_id": "4C"
+      },
+      {
+        "kind": "card",
+        "action": "select",
+        "zone": "hand",
+        "card": "QH",
+        "card_id": "QH"
+      },
+      {
+        "kind": "card",
+        "action": "select",
+        "zone": "hand",
+        "card": "6D",
+        "card_id": "6D"
+      },
+      {
+        "kind": "card",
+        "action": "select",
+        "zone": "hand",
+        "card": "7D",
+        "card_id": "7D"
+      },
+      {
+        "kind": "card",
+        "action": "select",
+        "zone": "hand",
+        "card": "8H",
+        "card_id": "8H"
+      },
+      {
+        "kind": "card",
+        "action": "select",
+        "zone": "hand",
+        "card": "4H",
+        "card_id": "4H"
+      },
+      {
+        "kind": "card",
+        "action": "select",
+        "zone": "hand",
+        "card": "9D",
+        "card_id": "9D"
+      },
+      {
+        "kind": "card",
+        "action": "select",
+        "zone": "hand",
+        "card": "8C",
+        "card_id": "8C"
+      },
+      {
+        "kind": "card",
+        "action": "select",
+        "zone": "hand",
+        "card": "6H",
+        "card_id": "6H"
+      },
+      {
+        "kind": "card",
+        "action": "select",
+        "zone": "hand",
+        "card": "6C",
+        "card_id": "6C"
+      }
+    ],
+    "action": {
+      "kind": "card",
+      "action": "select",
+      "zone": "hand",
+      "card": "3H",
+      "card_id": "3H"
+    },
+    "rng": [
+      429,
+      287,
+      603,
+      248,
+      748,
+      145,
+      499,
+      473
+    ]
+  },
+  {
+    "events": 13,
+    "omniscient": false,
+    "actor": "Bob",
+    "available": [
+      {
+        "kind": "card",
+        "action": "select",
+        "zone": "hand",
+        "card": "AC",
+        "card_id": "AC"
+      },
+      {
+        "kind": "card",
+        "action": "select",
+        "zone": "hand",
+        "card": "KH",
+        "card_id": "KH"
+      },
+      {
+        "kind": "card",
+        "action": "select",
+        "zone": "hand",
+        "card": "2H",
+        "card_id": "2H"
+      },
+      {
+        "kind": "card",
+        "action": "select",
+        "zone": "hand",
+        "card": "TC",
+        "card_id": "TC"
+      },
+      {
+        "kind": "card",
+        "action": "select",
+        "zone": "hand",
+        "card": "AH",
+        "card_id": "AH"
+      },
+      {
+        "kind": "card",
+        "action": "select",
+        "zone": "hand",
+        "card": "9H",
+        "card_id": "9H"
+      },
+      {
+        "kind": "card",
+        "action": "select",
+        "zone": "hand",
+        "card": "5D",
+        "card_id": "5D"
+      },
+      {
+        "kind": "card",
+        "action": "select",
+        "zone": "hand",
+        "card": "8D",
+        "card_id": "8D"
+      },
+      {
+        "kind": "card",
+        "action": "select",
+        "zone": "hand",
+        "card": "2D",
+        "card_id": "2D"
+      },
+      {
+        "kind": "card",
+        "action": "select",
+        "zone": "hand",
+        "card": "JC",
+        "card_id": "JC"
+      }
+    ],
+    "action": {
+      "kind": "card",
+      "action": "select",
+      "zone": "hand",
+      "card": "2H",
+      "card_id": "2H"
+    },
+    "rng": [
+      429,
+      287,
+      603,
+      248,
+      748,
+      145,
+      499,
+      473
+    ]
+  },
+  {
+    "events": 17,
+    "omniscient": false,
+    "actor": "Carol",
+    "available": [
+      {
+        "kind": "card",
+        "action": "select",
+        "zone": "hand",
+        "card": "7H",
+        "card_id": "7H"
+      },
+      {
+        "kind": "card",
+        "action": "select",
+        "zone": "hand",
+        "card": "QH",
+        "card_id": "QH"
+      },
+      {
+        "kind": "card",
+        "action": "select",
+        "zone": "hand",
+        "card": "8H",
+        "card_id": "8H"
+      },
+      {
+        "kind": "card",
+        "action": "select",
+        "zone": "hand",
+        "card": "4H",
+        "card_id": "4H"
+      },
+      {
+        "kind": "card",
+        "action": "select",
+        "zone": "hand",
+        "card": "6H",
+        "card_id": "6H"
+      }
+    ],
+    "action": {
+      "kind": "card",
+      "action": "select",
+      "zone": "hand",
+      "card": "QH",
+      "card_id": "QH"
+    },
+    "rng": [
+      429,
+      287,
+      603,
+      248,
+      748,
+      145,
+      499,
+      473
+    ]
+  },
+  {
+    "events": 1,
+    "omniscient": true,
+    "actor": "Bob",
+    "available": [
+      {
+        "kind": "command",
+        "action": "bid_0",
+        "bid": 0
+      },
+      {
+        "kind": "command",
+        "action": "bid_1",
+        "bid": 1
+      },
+      {
+        "kind": "command",
+        "action": "bid_2",
+        "bid": 2
+      },
+      {
+        "kind": "command",
+        "action": "bid_3",
+        "bid": 3
+      },
+      {
+        "kind": "command",
+        "action": "bid_4",
+        "bid": 4
+      },
+      {
+        "kind": "command",
+        "action": "bid_5",
+        "bid": 5
+      },
+      {
+        "kind": "command",
+        "action": "bid_6",
+        "bid": 6
+      },
+      {
+        "kind": "command",
+        "action": "bid_7",
+        "bid": 7
+      },
+      {
+        "kind": "command",
+        "action": "bid_8",
+        "bid": 8
+      },
+      {
+        "kind": "command",
+        "action": "bid_9",
+        "bid": 9
+      },
+      {
+        "kind": "command",
+        "action": "bid_10",
+        "bid": 10
+      },
+      {
+        "kind": "command",
+        "action": "bid_11",
+        "bid": 11
+      },
+      {
+        "kind": "command",
+        "action": "bid_12",
+        "bid": 12
+      },
+      {
+        "kind": "command",
+        "action": "bid_13",
+        "bid": 13
+      },
+      {
+        "kind": "command",
+        "action": "bid_14",
+        "bid": 14
+      },
+      {
+        "kind": "command",
+        "action": "bid_15",
+        "bid": 15
+      },
+      {
+        "kind": "command",
+        "action": "bid_16",
+        "bid": 16
+      },
+      {
+        "kind": "command",
+        "action": "bid_17",
+        "bid": 17
+      }
+    ],
+    "action": {
+      "kind": "command",
+      "action": "bid_6",
+      "bid": 6
+    },
+    "rng": [
+      429,
+      287,
+      603,
+      248,
+      748,
+      145,
+      499,
+      473
+    ]
+  },
+  {
+    "events": 3,
+    "omniscient": true,
+    "actor": "Alice",
+    "available": [
+      {
+        "kind": "command",
+        "action": "bid_0",
+        "bid": 0
+      },
+      {
+        "kind": "command",
+        "action": "bid_1",
+        "bid": 1
+      },
+      {
+        "kind": "command",
+        "action": "bid_2",
+        "bid": 2
+      },
+      {
+        "kind": "command",
+        "action": "bid_3",
+        "bid": 3
+      },
+      {
+        "kind": "command",
+        "action": "bid_4",
+        "bid": 4
+      },
+      {
+        "kind": "command",
+        "action": "bid_5",
+        "bid": 5
+      },
+      {
+        "kind": "command",
+        "action": "bid_6",
+        "bid": 6
+      },
+      {
+        "kind": "command",
+        "action": "bid_7",
+        "bid": 7
+      },
+      {
+        "kind": "command",
+        "action": "bid_8",
+        "bid": 8
+      },
+      {
+        "kind": "command",
+        "action": "bid_9",
+        "bid": 9
+      },
+      {
+        "kind": "command",
+        "action": "bid_10",
+        "bid": 10
+      },
+      {
+        "kind": "command",
+        "action": "bid_11",
+        "bid": 11
+      },
+      {
+        "kind": "command",
+        "action": "bid_12",
+        "bid": 12
+      },
+      {
+        "kind": "command",
+        "action": "bid_13",
+        "bid": 13
+      },
+      {
+        "kind": "command",
+        "action": "bid_14",
+        "bid": 14
+      },
+      {
+        "kind": "command",
+        "action": "bid_15",
+        "bid": 15
+      },
+      {
+        "kind": "command",
+        "action": "bid_16",
+        "bid": 16
+      },
+      {
+        "kind": "command",
+        "action": "bid_17",
+        "bid": 17
+      }
+    ],
+    "action": {
+      "kind": "command",
+      "action": "bid_9",
+      "bid": 9
+    },
+    "rng": [
+      429,
+      287,
+      603,
+      248,
+      748,
+      145,
+      499,
+      473
+    ]
+  },
+  {
+    "events": 7,
+    "omniscient": true,
+    "actor": "Carol",
+    "available": [
+      {
+        "kind": "card",
+        "action": "select",
+        "zone": "hand",
+        "card": "3H",
+        "card_id": "3H"
+      },
+      {
+        "kind": "card",
+        "action": "select",
+        "zone": "hand",
+        "card": "7H",
+        "card_id": "7H"
+      },
+      {
+        "kind": "card",
+        "action": "select",
+        "zone": "hand",
+        "card": "4D",
+        "card_id": "4D"
+      },
+      {
+        "kind": "card",
+        "action": "select",
+        "zone": "hand",
+        "card": "4C",
+        "card_id": "4C"
+      },
+      {
+        "kind": "card",
+        "action": "select",
+        "zone": "hand",
+        "card": "QH",
+        "card_id": "QH"
+      },
+      {
+        "kind": "card",
+        "action": "select",
+        "zone": "hand",
+        "card": "6D",
+        "card_id": "6D"
+      },
+      {
+        "kind": "card",
+        "action": "select",
+        "zone": "hand",
+        "card": "7D",
+        "card_id": "7D"
+      },
+      {
+        "kind": "card",
+        "action": "select",
+        "zone": "hand",
+        "card": "8H",
+        "card_id": "8H"
+      },
+      {
+        "kind": "card",
+        "action": "select",
+        "zone": "hand",
+        "card": "4H",
+        "card_id": "4H"
+      },
+      {
+        "kind": "card",
+        "action": "select",
+        "zone": "hand",
+        "card": "9D",
+        "card_id": "9D"
+      },
+      {
+        "kind": "card",
+        "action": "select",
+        "zone": "hand",
+        "card": "8C",
+        "card_id": "8C"
+      },
+      {
+        "kind": "card",
+        "action": "select",
+        "zone": "hand",
+        "card": "6H",
+        "card_id": "6H"
+      },
+      {
+        "kind": "card",
+        "action": "select",
+        "zone": "hand",
+        "card": "6C",
+        "card_id": "6C"
+      }
+    ],
+    "action": {
+      "kind": "card",
+      "action": "select",
+      "zone": "hand",
+      "card": "3H",
+      "card_id": "3H"
+    },
+    "rng": [
+      429,
+      287,
+      603,
+      248,
+      748,
+      145,
+      499,
+      473
+    ]
+  },
+  {
+    "events": 13,
+    "omniscient": true,
+    "actor": "Bob",
+    "available": [
+      {
+        "kind": "card",
+        "action": "select",
+        "zone": "hand",
+        "card": "AC",
+        "card_id": "AC"
+      },
+      {
+        "kind": "card",
+        "action": "select",
+        "zone": "hand",
+        "card": "KH",
+        "card_id": "KH"
+      },
+      {
+        "kind": "card",
+        "action": "select",
+        "zone": "hand",
+        "card": "2H",
+        "card_id": "2H"
+      },
+      {
+        "kind": "card",
+        "action": "select",
+        "zone": "hand",
+        "card": "TC",
+        "card_id": "TC"
+      },
+      {
+        "kind": "card",
+        "action": "select",
+        "zone": "hand",
+        "card": "AH",
+        "card_id": "AH"
+      },
+      {
+        "kind": "card",
+        "action": "select",
+        "zone": "hand",
+        "card": "9H",
+        "card_id": "9H"
+      },
+      {
+        "kind": "card",
+        "action": "select",
+        "zone": "hand",
+        "card": "5D",
+        "card_id": "5D"
+      },
+      {
+        "kind": "card",
+        "action": "select",
+        "zone": "hand",
+        "card": "8D",
+        "card_id": "8D"
+      },
+      {
+        "kind": "card",
+        "action": "select",
+        "zone": "hand",
+        "card": "2D",
+        "card_id": "2D"
+      },
+      {
+        "kind": "card",
+        "action": "select",
+        "zone": "hand",
+        "card": "JC",
+        "card_id": "JC"
+      }
+    ],
+    "action": {
+      "kind": "card",
+      "action": "select",
+      "zone": "hand",
+      "card": "9H",
+      "card_id": "9H"
+    },
+    "rng": [
+      429,
+      287,
+      603,
+      248,
+      748,
+      145,
+      499,
+      473
+    ]
+  },
+  {
+    "events": 17,
+    "omniscient": true,
+    "actor": "Carol",
+    "available": [
+      {
+        "kind": "card",
+        "action": "select",
+        "zone": "hand",
+        "card": "7H",
+        "card_id": "7H"
+      },
+      {
+        "kind": "card",
+        "action": "select",
+        "zone": "hand",
+        "card": "QH",
+        "card_id": "QH"
+      },
+      {
+        "kind": "card",
+        "action": "select",
+        "zone": "hand",
+        "card": "8H",
+        "card_id": "8H"
+      },
+      {
+        "kind": "card",
+        "action": "select",
+        "zone": "hand",
+        "card": "4H",
+        "card_id": "4H"
+      },
+      {
+        "kind": "card",
+        "action": "select",
+        "zone": "hand",
+        "card": "6H",
+        "card_id": "6H"
+      }
+    ],
+    "action": {
+      "kind": "card",
+      "action": "select",
+      "zone": "hand",
+      "card": "QH",
+      "card_id": "QH"
+    },
+    "rng": [
+      429,
+      287,
+      603,
+      248,
+      748,
+      145,
+      499,
+      473
+    ]
+  }
+]

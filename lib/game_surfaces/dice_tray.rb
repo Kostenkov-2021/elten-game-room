@@ -1,16 +1,10 @@
+require_relative "specifications"
 require_relative "../game_room_localization"
 
 module GameSurfaces
   using GameRoomLocalization::Translations
-  Die = Struct.new(:id, :value, :sides, :held, :label, :enabled, keyword_init: true)
-  DiceTraySpec = Struct.new(
-    :id,
-    :header,
-    :dice,
-    :commands,
-    :empty_label,
-    keyword_init: true
-  )
+
+
 
   class DiceTray
     include ActionEmitter
@@ -118,11 +112,7 @@ module GameSurfaces
     end
 
     def state_value(state, key, default)
-      return default if !state.respond_to?(:key?)
-      return state[key].to_i if state.key?(key)
-      return state[key.to_sym].to_i if state.key?(key.to_sym)
-
-      default
+      GameSurfaces::StateReader.integer(state, key, default)
     end
   end
 end

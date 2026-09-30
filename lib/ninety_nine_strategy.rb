@@ -3,6 +3,38 @@ require_relative "game_bots"
 require_relative "game_random"
 
 module NinetyNinePlanning
+  # Sampled worlds own an immutable value graph. Search branches copy only
+  # the collections this reducer changes; all shared leaves stay frozen.
+  # This contract is local to the planner, never a general snapshot policy.
+  class State < Hash
+    def self.from(source)
+      owned = Marshal.load(Marshal.dump(source))
+      freeze_tree(owned, {})
+      new.replace(owned)
+    end
+
+    def self.freeze_tree(value, seen)
+      return value if value.frozen? || seen[value.object_id]
+      seen[value.object_id] = true
+      case value
+      when Hash then value.each { |key, item| freeze_tree(key, seen); freeze_tree(item, seen) }
+      when Array then value.each { |item| freeze_tree(item, seen) }
+      end
+      value.freeze
+    end
+    private_class_method :freeze_tree
+
+    def fork
+      dup.tap do |copy|
+        copy[:tokens] = self[:tokens].dup
+        copy[:eliminated] = self[:eliminated].dup
+        copy[:hands] = self[:hands].transform_values(&:dup)
+        copy[:draw_pile] = self[:draw_pile].dup
+        copy[:discard] = self[:discard].dup
+      end
+    end
+  end
+
   module Transition
     module_function
 
@@ -10,7 +42,7 @@ module NinetyNinePlanning
     # draw immediately.  The live game still uses its normal play/draw events;
     # this is only a pure preview for the bot's search tree.
     def play(game, source, actor, action)
-      state = Marshal.load(Marshal.dump(source))
+      state = (source.is_a?(State) ? source : State.from(source)).fork
       card, mode = action["card"].to_s.split("|", 2)
       player = state[:players].find { |candidate| game.send(:same_user?, candidate, actor) }
       return nil if player == nil || !state[:hands].fetch(player, []).include?(card)
@@ -18,7 +50,7 @@ module NinetyNinePlanning
       old_total = state[:total].to_i
       new_total = game.send(:total_after_card, old_total, card, mode)
       state[:hands][player].delete_at(state[:hands][player].index(card))
-      state[:discard] << card
+      state[:discard] << card.freeze
       state[:total] = new_total
       rank = card.to_s[1]
       state[:direction] *= -1 if rank == "4" && active_players(state).length > 2
@@ -155,7 +187,7 @@ module NinetyNinePlanning
       state[:draw_pile] = unseen
       state[:planning_seed] = seed_for(index)
       state[:planning_recycles] = 0
-      state
+      State.from(state)
     end
 
     private

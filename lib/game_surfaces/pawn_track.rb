@@ -1,6 +1,7 @@
+require_relative "specifications"
 module GameSurfaces
-  PawnTrackItem = Struct.new(:id, :label, :action, keyword_init: true)
-  PawnTrackSpec = Struct.new(:id, :header, :items, :empty_label, :activation_action, :menus, :player_labels, keyword_init: true)
+
+
 
   # A compact, accessible surface for race games in which the meaningful
   # information is a pawn's logical position, not its coordinates on a drawn
@@ -115,12 +116,6 @@ module GameSurfaces
       end
     end
 
-    def state_value(state, key, default)
-      return default if !state.respond_to?(:key?)
-      return state[key] if state.key?(key)
-      return state[key.to_sym] if state.key?(key.to_sym)
 
-      default
-    end
   end
 end

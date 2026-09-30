@@ -17,15 +17,21 @@ module EltenAPI::Tasks
   end
 end
 
+# Share the actual host timer type with realtime subclasses. Advance only
+# ordinary maintenance timers with the fixture clock; realtime keeps native
+# lifecycle/update and the match clock supplied by the client.
+Object.send(:remove_const, :FormTimer)
+FormTimer = EltenAPI::Controls::FormTimer
 class FormTimer
-  def initialize(interval, repeat: false, autostart: true, &block)
-    @interval, @repeat, @block = interval, repeat, block
-    @due = $help_clock + interval if autostart
-  end
+  alias native_update update
   def update
-    return unless @due && $help_clock >= @due
-    @due = @repeat ? $help_clock + @interval : nil
-    @block.call
+    return native_update unless instance_of?(FormTimer)
+    return if @monotonic_starttime == nil || @completed
+    @fixture_due ||= $help_clock + @time
+    return unless $help_clock >= @fixture_due
+    @fixture_due = $help_clock + @time
+    @completed = true unless @repeat
+    @action.call
   end
 end
 class FakeControl
@@ -55,7 +61,7 @@ class Form
   def keyboard_idle_frame?; true; end
 end
 
-def screen_fixture(game, bots: 0)
+def screen_fixture(game, bots: 0, **screen_options)
   $help_clock, $help_frames = 0.0, 0
   $game_room_test_user = 'Alice' # Host identity also exists on the managed worker.
   h = NativeRoomHarness.new(game: game, users: bots > 0 ? ['Alice'] : %w[Alice Bob], bots: bots)
@@ -66,7 +72,7 @@ def screen_fixture(game, bots: 0)
     repository: h.repositories['Alice'], game: game, session: h.session,
     table: h.table, table_owner: 'Alice', synchronizer: sync,
     game_services: {transport: h.transports['Alice']},
-    room_snapshot_provider: -> {
+    **screen_options, room_snapshot_provider: -> {
       data = h.transports['Alice'].room_snapshot(h.table)
       data && LobbyRepository::TableSnapshot.new(**data)
     })

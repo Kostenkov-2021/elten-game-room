@@ -3,13 +3,15 @@ require_relative "game_room_transport"
 require_relative "game_participants"
 require_relative "participant_replay"
 require_relative "bot_turn_gate"
+require_relative "game_event_protocol"
+require_relative "game_session_contracts"
 
 class GameRepository
-  GameSnapshot = Struct.new(:session, :events, keyword_init: true)
+  GameSnapshot = GameRoomSessionContracts::GameSnapshot
 
-  MAX_EVENTS_PER_ACTION = 50
-  MAX_ACTION_LENGTH = 32
-  MAX_VALUE_LENGTH = 64
+  MAX_EVENTS_PER_ACTION = GameRoomEventProtocol::MAX_EVENTS
+  MAX_ACTION_LENGTH = GameRoomEventProtocol::MAX_ACTION_LENGTH
+  MAX_VALUE_LENGTH = GameRoomEventProtocol::MAX_VALUE_LENGTH
   MAX_PLAYERS = 8
   MAX_PLAYER_LENGTH = 64
   PLAYERS_FORMAT_VERSION = 1
@@ -53,16 +55,16 @@ class GameRepository
     table_id = row_id(table)
     return nil if table_id <= 0
 
-    return @transport.game_sessions(table, force: force)
-      .sort_by { |row| -row["__stack_sequence"].to_i }
-      .find { |row| valid_session_for_table?(row, table, players: players_for(row)) }
+    @transport.find_game_session(table, force: force) do |row|
+      valid_session_for_table?(row, table, players: players_for(row))
+    end
   end
 
   def latest_session_id_for_table(table)
     table_id = row_id(table)
     return 0 if table_id <= 0
 
-    latest = @transport.game_sessions(table).max_by { |row| row["__stack_sequence"].to_i }
+    latest = @transport.find_game_session(table)
     return session_id(latest)
   end
 
@@ -193,17 +195,7 @@ class GameRepository
     end
     current = with_players(session, players)
     commands = events.to_a
-    if commands.empty? || commands.length > MAX_EVENTS_PER_ACTION
-      raise ArgumentError, "The game action contains an invalid number of events"
-    end
-
-    commands.each do |command|
-      action = command_value(command, "action").to_s
-      value = command_value(command, "value").to_s
-      raise ArgumentError, "A game event requires an action" if action.empty?
-      raise ArgumentError, "The game event action is too long" if action.length > MAX_ACTION_LENGTH
-      raise ArgumentError, "The game event value is too long" if value.length > MAX_VALUE_LENGTH
-    end
+    GameRoomEventProtocol.validate_commands!(commands)
     return @transport.append_game_action(
       session: current,
       sequence: sequence,
@@ -280,12 +272,7 @@ class GameRepository
   end
 
   def command_value(command, key)
-    return command.public_send(key) if command.respond_to?(key)
-    return nil if !command.respond_to?(:key?)
-    return command[key] if command.key?(key)
-    return command[key.to_sym] if command.key?(key.to_sym)
-
-    nil
+    GameRoomEventProtocol.command_value(command, key)
   end
 
   def events_for(session, force: false)

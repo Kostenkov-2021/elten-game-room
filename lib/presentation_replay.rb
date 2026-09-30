@@ -1,4 +1,5 @@
 require_relative "../games/base"
+require_relative "game_snapshot"
 
 # Presentation owns its copies: clients, turn-history merging and incremental
 # reducers must never mutate the canonical model or the next cached prefix.
@@ -52,7 +53,7 @@ class GameRoomPresentationReplay
   end
 
   def copy(value)
-    Marshal.load(Marshal.dump(value))
+    GameRoomSnapshot.copy(value)
   rescue TypeError
     # A future game can still use full reconstruction if its presentation
     # contains an object that cannot be copied. Never share a mutable model.

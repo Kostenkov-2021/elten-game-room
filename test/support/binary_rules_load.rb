@@ -64,7 +64,7 @@ module BinaryRulesLoad
   end
 
   def self.localization_runtime(language)
-    paths = @entries ? @entries.keys.grep(%r{\Alocale/[^/]+[.]mo\z}) : Dir.glob(File.join(ROOT, "locale/*.mo"))
+    paths = @entries ? @entries.keys.grep(%r{\Alocale/[^/]+[.]mo\z}) : Dir.glob("*.mo", base: File.join(ROOT, "locale")).map { |name| File.join(ROOT, 'locale', name) }
     files = paths.to_h { |path| [File.basename(path, ".mo").downcase, File.expand_path(path, ROOT)] }
     GameRoomTestLocalization.runtime(language, files: files, reader: method(:read))
   end
@@ -97,7 +97,7 @@ Kernel.prepend(BinaryRulesLoad::Requires)
 require_relative "localization"
 module Programs
   def self.current_runtime
-    @binary_localization_runtime ||= BinaryRulesLoad.localization_runtime(:pl)
+    Thread.current[:game_room_test_runtime] || (@binary_localization_runtime ||= BinaryRulesLoad.localization_runtime(:pl))
   end
 end
 BinaryRulesLoad.load(File.join(BinaryRulesLoad::ROOT, "__app.rb"))

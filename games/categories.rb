@@ -82,34 +82,7 @@ module GameRoomGames
     end
 
     def rule_sections
-      # Generated from docs/rulebooks/categories.json; see tools/compile-rulebooks.rb.
-      [
-        rule_section(:sheet, GameRoomRules.translate("One letter, several kinds of answer"),
-          GameRoomRules.translate("Countries and cities is played by two to eight people. Each round draws a letter and several categories. Write a word or name beginning with that letter for each category. For example, with B and the categories country, city and animal, you might write Brazil, Berlin and bear. The entries must fit their categories, not merely start with the right letter."),
-          GameRoomRules.translate("One participant is the judge for that round and does not write answers or earn points. The others fill in their own sheets. Each field accepts up to 48 characters. You may leave a field empty rather than invent an answer. Submit the sheet when finished; it cannot be changed once submitted. Answers stay hidden while anyone is still writing.")),
-        rule_section(:judging, GameRoomRules.translate("A person judges the answers"),
-          GameRoomRules.translate("When all sheets are submitted or the answer time ends, writing closes and the answers are revealed. The judge sees identical answers grouped within each category and decides whether they fit the letter, category and meaning. This is not automatic dictionary scoring: discuss doubtful entries with the judge."),
-          GameRoomRules.translate("A unique correct answer is worth 2 points. An accepted repeated answer gives each author 1 point, as does an answer judged partially correct. An incorrect or empty answer gives zero. Everyone can see the grades and authors. Once every answer group has been assessed, the judge finishes the review and the round's points are added to the scores.")),
-        rule_section(:pools, GameRoomRules.translate("Choose a pool, then draw categories from it"),
-          GameRoomRules.translate("Answer language is Polish by default; English is also available. It chooses the alphabet for letter draws and the language you agree to answer in, not the interface language. Category labels follow your interface. Letters do not repeat until the selected alphabet has been used up."),
-          GameRoomRules.translate("The Easy pool contains country, city, first name, animal, plant, thing, profession, food and colour. Medium adds surname, famous person, sport, vehicle, clothing, body part, building, musical instrument and book. Hard adds film, song, music group, river, mountain, island, language, invention and chemical element. These names describe the pool, not a different scoring system."),
-          GameRoomRules.translate("Custom lets you select your own pool from those 27 categories, and remembers the last custom choice locally. Categories shown in each round chooses how many are drawn from the pool: one to nine, default six. It cannot exceed the size of your pool. For example, choosing all nine Easy categories with six per round still draws only six, and the selection may differ next round.")),
-        rule_section(:judge, GameRoomRules.translate("Who judges and how long you write"),
-          GameRoomRules.translate("Rotating judge is the default: the role moves around the seating order, so everyone sometimes judges instead of scoring. Table master judges every round makes the creator the permanent judge and removes that person from the scoring competition. With two participants, that setting leaves one answering player and one permanent judge."),
-          GameRoomRules.translate("Answer time defaults to 90 seconds. Set zero for unlimited time, or 10\u20133600 seconds. Only writing is timed, not judging. Near the deadline the game warns you; at the deadline it submits the text still in your fields rather than clearing it first. A participant whose answers do not arrive during closing is treated as having empty entries. Without a time limit, all answering players must submit to move on.")),
-        rule_section(:finish, GameRoomRules.translate("Equal rounds and tied scores"),
-          GameRoomRules.translate("Target score defaults to 100 and can be 10\u20131000. With a rotating judge, reaching it does not stop play at once: finish the current full judge cycle, so everyone has judged equally often. With a permanent judge, the completed scoring round can decide the result. The highest eligible total wins, not necessarily the first person who touched the target."),
-          GameRoomRules.translate("A tied lead can give a shared victory or require extra play, the default. In extra play only the tied leaders remain in contention. An outside participant judges if possible; if everyone is tied, judging continues over complete cycles. A permanent judge keeps that role. Further play continues until the tied lead is resolved. This game does not support saving a partly completed match.")),
-        rule_section(:controls, GameRoomRules.translate("Game keyboard shortcuts"),
-          GameRoomRules.translate("Tab: next answer field, submission control or review group."),
-          GameRoomRules.translate("Shift+Tab: previous answer field or review group."),
-          GameRoomRules.translate("Arrows: during review, select a grade."),
-          GameRoomRules.translate("Enter: confirm the selected grade or submission action."),
-          GameRoomRules.translate("Ctrl+T: read the remaining answer time, also while typing."),
-          GameRoomRules.translate("T: outside answer entry, read the letter and judge."),
-          GameRoomRules.translate("S: outside answer entry, read the scores."),
-          GameRoomRules.translate("V: outside answer entry, read round information."))
-      ]
+      generated_rule_sections
     end
 
     def option_definitions
@@ -235,210 +208,14 @@ module GameRoomGames
       state = initial_state(players, options)
       accepted = []
       history = [starting_history(players)]
-      winner = nil
-      draw = false
-
+      frame = GameRoomReduction::Frame.new(state: state, players: players, options: options, history: history, draw: false)
       events.each do |event|
-        action = event["action"].to_s
-        actor = repository.actor_of(event, session)
-        next if actor.to_s.empty?
-        event_id = repository.event_id(event)
-        value = event["value"].to_s
-        accepted_event = false
-
-        case action
-        when "category_round"
-          parsed = parse_round(value)
-          expected_round = state[:completed_rounds] + 1
-          expected_attempt = state[:attempt] + 1
-          expected_judge = judge_index(options, players, expected_round, state)
-          if owner?(players, actor) && [:setup, :round_complete].include?(state[:phase]) &&
-              parsed != nil && parsed[:round] == expected_round && parsed[:attempt] == expected_attempt &&
-              parsed[:judge_index] == expected_judge && valid_round_letter?(parsed[:letter], options, state[:used_letters]) &&
-              valid_round_categories?(parsed[:categories], options)
-            state[:attempt] = parsed[:attempt]
-            state[:round] = parsed[:round]
-            state[:judge] = players[parsed[:judge_index]]
-            state[:letter] = parsed[:letter]
-            state[:round_categories] = parsed[:categories]
-            state[:deadline] = parsed[:deadline]
-            state[:active_players] = contestants_for_round(players, state[:judge], state)
-            state[:commitments] = {}
-            state[:reveals] = {}
-            state[:reveal_parts] = {}
-            state[:decisions] = {}
-            state[:review_finished] = false
-            state[:round_scores] = {}
-            alphabet = LANGUAGE_LETTERS.fetch(options["answer_language"].to_s)
-            state[:used_letters].clear if (alphabet - state[:used_letters]).empty?
-            state[:used_letters] << parsed[:letter]
-            state[:phase] = :answering
-            accepted_event = true
-            history << history_entry(
-              event_id,
-              _("Round %{round} started. Letter: %{letter}.") % { round: state[:round], letter: state[:letter] },
-              actor,
-              :round_start
-            )
-            history << history_entry(
-              event_id,
-              _("Categories: %{categories}.") % {
-                categories: state[:round_categories].map { |category| category_label(category) }.join(", ")
-              },
-              actor,
-              :round_categories
-            )
-            history << history_entry(
-              event_id,
-              _("%{player} is the judge.") % { player: participant_name(state[:judge]) },
-              state[:judge],
-              :judge
-            )
-          end
-        when "answer_commit"
-          if state[:phase] == :answering && includes_player?(state[:active_players], actor) &&
-              !player_hash_key?(state[:commitments], actor) && /\A[0-9a-f]{64}\z/.match?(value)
-            state[:commitments][canonical_player(state[:active_players], actor)] = value
-            accepted_event = true
-            history << history_entry(
-              event_id,
-              _("%{player} submitted their answers.") % { player: participant_name(actor) },
-              actor,
-              :submission
-            )
-          end
-        when "answers_closed"
-          if state[:phase] == :answering && owner?(players, actor)
-            state[:phase] = :revealing
-            accepted_event = true
-            history << history_entry(event_id, _("Answering has closed."), actor, :answers_closed)
-          end
-        when "answer_nonce"
-          accepted_event = accept_reveal_part(state, actor, :nonce, value, event, event_id, history)
-        when /\Aanswer_(\d+)\z/
-          category_index = Regexp.last_match(1).to_i
-          if category_index.between?(0, round_category_ids(state).length - 1)
-            accepted_event = accept_reveal_part(state, actor, category_index, value, event, event_id, history)
-          end
-        when "review_started"
-          if state[:phase] == :revealing && (owner?(players, actor) || same_user?(state[:judge], actor))
-            state[:phase] = :review
-            accepted_event = true
-            missing = state[:commitments].keys.reject { |player| player_hash_key?(state[:reveals], player) }
-            if !missing.empty?
-              history << history_entry(
-                event_id,
-                _("Missing reveals count as blank answers: %{players}.") % {
-                  players: missing.map { |player| participant_name(player) }.join(", ")
-                },
-                actor,
-                :missing_answers
-              )
-            end
-          end
-        when "review_correct", "review_incorrect", "review_unique", "review_partial", "review_duplicate"
-          item = review_item_by_id(state, value)
-          decision = normalize_review_decision(action.sub("review_", ""), item)
-          if state[:phase] == :review && same_user?(state[:judge], actor) && item != nil &&
-              REVIEW_DECISIONS.include?(decision) && state[:decisions][item[:id]] != decision &&
-              !state[:review_finished]
-            previous = state[:decisions][item[:id]]
-            state[:decisions][item[:id]] = decision
-            accepted_event = true
-            history << history_entry(
-              event_id,
-              previous == nil ? review_decision_text(item, decision) : review_change_text(item, previous, decision),
-              actor,
-              :review
-            )
-          end
-        when "review_clear"
-          item = review_item_by_id(state, value)
-          if state[:phase] == :review && same_user?(state[:judge], actor) && item != nil &&
-              state[:decisions].key?(item[:id]) && !state[:review_finished]
-            previous = state[:decisions].delete(item[:id])
-            accepted_event = true
-            history << history_entry(event_id, review_clear_text(item, previous), actor, :review)
-          end
-        when "review_finished"
-          if state[:phase] == :review && same_user?(state[:judge], actor) &&
-              all_reviews_assessed?(state) && !state[:review_finished]
-            state[:review_finished] = true
-            accepted_event = true
-            history << history_entry(event_id, _("The judge finished reviewing the answers."), actor, :review_end)
-          end
-        when "review_commit"
-          decisions = parse_review_commit(state, value)
-          if state[:phase] == :review && same_user?(state[:judge], actor) && decisions != nil &&
-              !state[:review_finished]
-            review_items(state).each do |item|
-              decision = decisions.fetch(item[:id])
-              previous = state[:decisions][item[:id]]
-              next if previous == decision
-
-              state[:decisions][item[:id]] = decision
-              history << history_entry(
-                event_id,
-                previous == nil ? review_decision_text(item, decision) : review_change_text(item, previous, decision),
-                actor,
-                :review
-              )
-            end
-            state[:review_finished] = true
-            accepted_event = true
-            history << history_entry(event_id, _("The judge finished reviewing the answers."), actor, :review_end)
-          end
-        when "round_score"
-          parsed = parse_score(value)
-          expected = expected_round_scores(state)
-          scored_player = parsed == nil ? nil : state[:active_players][parsed[:player_index]]
-          if state[:phase] == :review && owner?(players, actor) && reviews_complete?(state) &&
-              scored_player != nil && expected[scored_player] == parsed[:points] &&
-              !player_hash_key?(state[:round_scores], scored_player)
-            player = scored_player
-            state[:round_scores][player] = parsed[:points]
-            state[:scores][player] = state[:scores].fetch(player, 0) + parsed[:points]
-            accepted_event = true
-            history << history_entry(
-              event_id,
-              _("%{player} scored %{points} points in this round.") % {
-                player: participant_name(player),
-                points: parsed[:points]
-              },
-              player,
-              :score
-            )
-          end
-        when "round_finished"
-          if state[:phase] == :review && owner?(players, actor) && round_scores_complete?(state)
-            state[:completed_rounds] += 1
-            state[:phase] = :round_complete
-            accepted_event = true
-            history << history_entry(
-              event_id,
-              _("Round %{round} ended.") % { round: state[:completed_rounds] },
-              actor,
-              :round_end
-            )
-            winner, draw = update_match_ending(state, history, event_id)
-            state[:phase] = :finished if winner != nil || draw
-          end
-        when "round_cancelled"
-          if [:revealing, :review].include?(state[:phase]) && owner?(players, actor)
-            state[:phase] = :round_complete
-            accepted_event = true
-            history << history_entry(
-              event_id,
-              _("The round was cancelled. The judge order did not advance."),
-              actor,
-              :round_cancelled
-            )
-          end
-        end
-
-        accepted << event if accepted_event
+        input = GameRoomReduction.decode(event, session, repository)
+        next unless input
+        accepted << event if apply_replay_event(frame, input)
       end
 
+      winner, draw = frame.winner, frame.draw
       state[:winner] = winner
       state[:draw] = draw
       GameRoomSessionClock.attach(state, session)
@@ -1346,7 +1123,7 @@ module GameRoomGames
       when "film" then _("Film")
       when "song" then _("Song")
       when "music_group" then _("Music group")
-      when "river" then _("River")
+      when "river" then p_("categories", "River")
       when "mountain" then _("Mountain")
       when "island" then _("Island")
       when "language" then _("Language")
@@ -1515,3 +1292,7 @@ module GameRoomGames
 
   end
 end
+
+require_relative 'categories/reduction'
+
+require_relative 'generated/rulebooks/categories'

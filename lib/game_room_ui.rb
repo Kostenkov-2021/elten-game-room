@@ -1,3 +1,4 @@
+require_relative 'host_bridge'
 require_relative "game_room_preferences"
 require_relative "context_help"
 require_relative "game_room_ping"
@@ -68,18 +69,8 @@ module GameRoomUI
     target = EltenAPI::QuickActions.singleton_class
     return if target.instance_variable_get(:@game_room_dispatch_bridge_version).to_i >= 3
 
-    bridge = target.instance_variable_get(:@game_room_dispatch_bridge)
-    bridge = nil unless bridge.is_a?(Module) && target.ancestors.include?(bridge)
-    # Boolean-marker releases did not retain their module. Reuse only our own
-    # source-owned wrapper; never replace another extension's dispatcher.
-    bridge ||= target.ancestors.take_while { |ancestor| !ancestor.equal?(target) }.find do |candidate|
-      next false unless candidate.instance_methods(false).include?(:hotkey_actions)
-      path = candidate.instance_method(:hotkey_actions).source_location&.first.to_s.tr('\\', '/')
-      path.end_with?('/lib/game_room_ui.rb')
-    end
-    bridge ||= Module.new
-    target.prepend(bridge) unless target.ancestors.include?(bridge)
-    target.instance_variable_set(:@game_room_dispatch_bridge, bridge)
+    GameRoomHostBridge.prepare(target, marker: :@game_room_dispatch_bridge,
+      method_name: :hotkey_actions, source: '/lib/game_room_ui.rb')
     # A lexical block retains its app namespace even without a program local.
     # Replace legacy method bodies, and compile the host bridge outside it.
     TOPLEVEL_BINDING.eval(<<~'RUBY', __FILE__, __LINE__ + 1)
@@ -156,6 +147,7 @@ module GameRoomUI
     end
 
     def update
+      @game_room_program.send(:announce_volume_save_error) if @game_room_program&.respond_to?(:announce_volume_save_error, true)
       if game_room_hotkeys_active? && @game_room_program&.respond_to?(:switch_to_invited_table, true) &&
           main_shortcut_pressed?('j', first: true)
         # Handle this before the focused field, including chat and modal forms.
@@ -165,7 +157,7 @@ module GameRoomUI
       if game_room_entry_boundary && game_room_hotkeys_active? && !game_room_background_help? && !game_room_pending_operation
         @game_room_program.dispatch_game_room_entry if @game_room_program&.respond_to?(:dispatch_game_room_entry)
       end
-      dispatch_pending_game_room_events
+      maintain_game_room_scene
       if game_room_background_help?
         # Keep the native game wait alive, but send keyboard input only to the
         # help form. Maintenance may resume that wait; the help/caret survives
@@ -311,18 +303,13 @@ module GameRoomUI
 
     private
 
-    def dispatch_pending_game_room_events
-      # The native main loop already dispatches on the main thread. An active
-      # parallel Game Room (e.g. opened over Conference) needs its own delivery
-      # before the usual timers check for replay changes. Covered windows must
-      # not run here; background help is updated by its waiting parent once.
+    def maintain_game_room_scene
+      # ELTEN 3.0.4 dispatches main and parallel scene endpoints in loop_update.
+      # The form only maintains application-owned discovery/retention work.
       return unless (@game_room_waiting || game_room_pending_operation&.active?) && !@game_room_help_owner
       return unless $mainthread && $currentthread.equal?(Thread.current)
       @game_room_program.cleanup_game_room_launches if @game_room_program&.respond_to?(:cleanup_game_room_launches)
-      return if Thread.current.equal?($mainthread)
-      return unless @game_room_program&.respond_to?(:dispatch_pending_game_room_events)
-
-      @game_room_program.dispatch_pending_game_room_events
+      @game_room_program.maintain_game_room_scene if @game_room_program&.respond_to?(:maintain_game_room_scene)
     end
 
     def clear_game_room_key

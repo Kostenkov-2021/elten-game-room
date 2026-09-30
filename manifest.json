@@ -2,8 +2,8 @@
   "id": "c24d98cc-9ccd-4d50-b801-459da324ff60",
   "name": "ELTEN Game Room",
   "description": "Accessible multiplayer games for ELTEN users.",
-  "version": "2.0.4.1",
-  "build_id": "240",
+  "version": "2.0.4.2",
+  "build_id": "241",
   "EltenAPIVersion": "3.0.4",
   "main_language": "en",
   "supported_languages": [

@@ -1,25 +1,10 @@
+require_relative "specifications"
 require_relative "../game_room_localization"
 
 module GameSurfaces
   using GameRoomLocalization::Translations
-  QuestionOption = Struct.new(:id, :label, :value, keyword_init: true)
-  QuestionSpec = Struct.new(
-    :id,
-    :prompt,
-    :mode,
-    :options,
-    :value,
-    :submit_label,
-    :show_submit_button,
-    :required,
-    :read_only,
-    :max_length,
-    :submit_on_select,
-    :prompt_in_choices,
-    :clear_on_submit,
-    :extra_commands,
-    keyword_init: true
-  )
+
+
 
   class QuestionSurface
     include ActionEmitter
@@ -244,12 +229,6 @@ module GameSurfaces
       raise ArgumentError, "question option ids must be unique" if ids.uniq.length != ids.length
     end
 
-    def state_value(state, key, default)
-      return default if !state.respond_to?(:key?)
-      return state[key] if state.key?(key)
-      return state[key.to_sym] if state.key?(key.to_sym)
 
-      default
-    end
   end
 end

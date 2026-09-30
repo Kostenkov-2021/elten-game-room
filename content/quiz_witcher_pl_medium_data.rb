@@ -1,5 +1,5 @@
 # encoding: UTF-8
-# Generated from the reviewed semantic corrections; see docs/QUIZ_SEMANTIC_CORRECTIONS_239.json.
+# Question data and provenance: content/QUIZ_DATA_NOTICE.md. Integrity reference: test/fixtures/quiz/questions.json.
 require 'json'
 module GameRoomContent
   module WitcherPolishMediumData

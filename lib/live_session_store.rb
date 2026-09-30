@@ -11,6 +11,8 @@ require_relative "table_control"
 require_relative "game_statistics_identity"
 require_relative "game_room_presence_identity"
 require_relative "game_room_background"
+require_relative "game_event_protocol"
+require_relative "game_session_contracts"
 
 # The authoritative, ephemeral state of one Game Room table lives in one
 # discoverable LiveSession.  Every mutation is appended to the session stack;
@@ -47,37 +49,24 @@ class GameRoomLiveSessionStore
     keyword_init: true
   )
 
-  def initialize(program, changed: nil, endpoint_provider: nil)
+  def initialize(program, changed: nil, endpoint_provider: nil, presence_changed: nil)
     @program = program
     @changed = changed
+    @presence_changed = presence_changed
     @endpoint_provider = endpoint_provider || -> { @program.live_sessions }
     @endpoint = nil
     @invitation_endpoint = nil
+    @rooms = {}
     @sessions = {}
     @native_session_ids = {}
-    @records = Hash.new { |hash, key| hash[key] = [] }
-    @record_keys = Hash.new { |hash, key| hash[key] = {} }
-    @clock_revisions = Hash.new(0)
-    @message_records = Hash.new { |hash, key| hash[key] = {} }
-    @pending_moves = {}
-    @recovered_moves = Hash.new { |hash, key| hash[key] = [] }
-    @stack_cursors = Hash.new(0)
-    @received_sequences = Hash.new { |hash, key| hash[key] = {} }
     @discovered = {}
     @pending_invitations = {}
     @resolved_invitations = {}
-    @private_game_messages = Hash.new { |hash, key| hash[key] = [] }
     @mutex = Mutex.new
     @callback_dispatch_mutex = Mutex.new
     @published_discovery = {}
     @discovery_retry_at = {}
-    @record_generations = Hash.new(0)
-    @validated_records = {}
-    @control_locks = {}
-    @attachments = {}
     @inactive_rooms = {}
-    @room_io = {}
-    @retained_subscriptions = {}
     @discovery_due, @activity_publish_at, @realtime_activity = {}, {}, {}
     @discovery_work_lock = Mutex.new
     runtime = Programs.current_runtime if defined?(Programs) && Programs.respond_to?(:current_runtime)
@@ -92,9 +81,9 @@ class GameRoomLiveSessionStore
     true
   end
 
-  # ELTEN keeps protocol I/O running while its main scene is suspended, but
-  # does not dispatch callbacks to a parallel scene. Drain only this already
-  # opened endpoint; never reconnect, poll the server or tick other programs.
+  # Workers must observe queued moves even while the app scene is covered,
+  # including before committing a plan. Visible UI delivery belongs to ELTEN.
+  # Never reconnect, poll the server or tick other programs here.
   def dispatch_pending_events
     return 0 unless @callback_dispatch_mutex.try_lock
 
@@ -111,6 +100,11 @@ class GameRoomLiveSessionStore
     end
   end
 
+  def maintain_pending_work
+    dispatch_discovery_publication
+    nil
+  end
+
   # Private live messages never enter the public stack or replay. Consumers
   # still validate the sender, game/round and commitment at the game layer.
   def send_private_game(table_id:, session_id:, recipient:, payload:, message_id:)
@@ -122,12 +116,29 @@ class GameRoomLiveSessionStore
   end
 
   def private_game_messages_pending?(table_id, session_id)
-    @mutex.synchronize { @private_game_messages.fetch(table_id, []).any? { |item| item[:session_id] == session_id.to_i } }
+    @mutex.synchronize { (@rooms[table_id]&.private_game_messages || []).any? { |item| item[:session_id] == session_id.to_i } }
   end
 
   def take_private_game_messages(table_id, session_id)
     @mutex.synchronize do
-      messages = @private_game_messages.delete(table_id) || []
+      messages = room_state(table_id).take_private_game_messages || []
+      messages.select { |item| item[:session_id] == session_id.to_i }
+    end
+  end
+
+  # Replaceable public presentation only, never a stack entry or an accepted
+  # move. Callers send from a worker and validate game/turn/author on receipt.
+  def send_game_preview(table_id:, session_id:, payload:, message_id:)
+    session = active_session(table_id)
+    raise IOError, "The preview connection is unavailable" unless session && !session.closed?
+    raise ArgumentError, "Invalid preview payload" unless payload.is_a?(Hash) && JSON.generate(payload).bytesize <= 2048
+    session.send({"type" => "game_room_preview", "version" => 1,
+      "session_id" => session_id.to_i, "payload" => payload}, message_id: message_id, retries: 0)
+  end
+
+  def take_game_previews(table_id, session_id)
+    @mutex.synchronize do
+      messages = @rooms[table_id]&.take_public_game_previews || []
       messages.select { |item| item[:session_id] == session_id.to_i }
     end
   end
@@ -232,10 +243,6 @@ class GameRoomLiveSessionStore
     end.max_by { |row| [row["created_at"].to_i, row["__id"].to_i] }
   end
 
-  def room_bots(table_id, table)
-    table['bot_players'] || GameRoomParticipants.bots_for(table_id, table['bot_count'].to_i, names: table['bot_names'])
-  end
-
   def room_snapshot(table_or_id, force: false, read_only: false, **read_options)
     table_id = table_identifier(table_or_id)
     return nil if table_id == nil
@@ -252,12 +259,12 @@ class GameRoomLiveSessionStore
     owner = table["owner"].to_s
     members.sort_by! { |member| same_user?(member, owner) ? 0 : 1 }
     publish_discovery(table_id) unless read_only
-    {
+    GameRoomSessionContracts::RoomSnapshot.new(
       table: table,
       members: unique_users(members),
       bots: room_bots(table_id, table),
       observers: observer_users(table_id, members: members)
-    }
+    ).to_h
   end
 
   def set_observer(table_or_id, observing, actor:, subject: nil)
@@ -332,7 +339,7 @@ class GameRoomLiveSessionStore
     session = active_session(table_id)
     return false unless session&.owner? && session.respond_to?(:update_discovery_metadata)
     return false if expected_session && !session.equal?(expected_session)
-    lock = @mutex.synchronize { @control_locks[table_id] ||= Mutex.new }
+    lock = @mutex.synchronize { room_state(table_id).control_lock ||= Mutex.new }
     unless lock.try_lock
       queue_discovery_publication(table_id, delay: 1)
       return false
@@ -439,7 +446,7 @@ class GameRoomLiveSessionStore
 
   def publish_control(table_id, session_id, controllers, checkpoint_from: nil, players: nil, replacement: nil, control_guard: nil)
     begin_room_io(table_id)
-    lock = @mutex.synchronize { @control_locks[table_id] ||= Mutex.new }
+    lock = @mutex.synchronize { room_state(table_id).control_lock ||= Mutex.new }
     lock.synchronize do
       native = active_session(table_id)
       raise ArgumentError, "Only the table master may update controllers" unless native&.owner?
@@ -506,12 +513,13 @@ class GameRoomLiveSessionStore
 
     session.owner? ? session.close : session.leave
     @mutex.synchronize do
-      @pending_moves.delete(table_id)
-      @recovered_moves.delete(table_id)
+      (room_state(table_id).pending_move = nil)
+      room_state(table_id).take_recovered_moves
       @native_session_ids.delete_if { |_native_id, id| id == table_id }
       @sessions.delete(table_id)
       retain_inactive_room(table_id)
     end
+    emit_presence_change
     true
   end
 
@@ -551,52 +559,6 @@ class GameRoomLiveSessionStore
     end
     record = append_record(table_id, "room_activity", data, actor: actor, message_id: message_id)
     activity_record(record)
-  end
-
-  def activity_records(table_or_id)
-    table_id = table_identifier(table_or_id)
-    return [] if table_id == nil
-
-    ensure_current(table_id)
-    ended = {}
-    records = records_for(table_id)
-    base = table_from_metadata(active_session(table_id)&.metadata.to_h, table_id) || {}
-    projection, option_changes = project_room_records(table_id, base, records: records)
-    ledger = control_ledger(table_id)
-    lifecycle = ->(record, kind) { lifecycle_activity(record, kind, ledger: ledger, game: projection['game']) }
-    starts = records.select { |record| record.packet['kind'] == 'game_started' }
-      .group_by { |record| record.packet.dig('data', 'session_id') }
-    records.flat_map do |record|
-      if record.packet["kind"] == "game_boundary" && record.packet.dig("data", "aborted") == true
-        id = record.packet.dig("data", "session_id")
-        next if ended[id]
-        ended[id] = true
-        lifecycle.call(record, "game_aborted")
-      elsif record.packet["kind"] == "room_state" && record.packet.dig("data", "options_changed") == true
-        lifecycle.call(record, "options_changed") if option_changes.include?(record.sequence)
-      elsif record.packet["kind"] == "room_activity"
-        activity_record(record, ledger: ledger)
-      elsif record.packet["kind"] == "room_role" && record.packet.dig("data", "subject")
-        lifecycle.call(record, "role_changed")
-      elsif record.packet["kind"] == GameRoomTableControl::KIND
-        data = record.packet["data"]
-        next [] unless data["from"].zero?
-        changes = []
-        if !same_user?(ledger.owner_at(record.sequence - 1), record.sender)
-          changes << lifecycle.call(record, "owner_changed")
-        end
-        game = starts[data['session_id']]&.first
-        initial = game&.packet&.dig('data', 'players').to_a
-        prior = ledger.players(data['session_id'], initial: initial, before: record.sequence)
-        data.fetch('players', prior).each_with_index do |person, index|
-          next if prior[index] == person
-          changes << lifecycle.call(record, 'player_replaced').merge(
-            'subject' => prior[index], 'replacement' => person,
-            '__id' => record.sequence * EVENT_ID_MULTIPLIER + changes.length)
-        end
-        changes
-      end
-    end.compact
   end
 
   # One confirmed stack record changes the options and supplies its history.
@@ -639,12 +601,6 @@ class GameRoomLiveSessionStore
       "session_id" => id, "frozen" => true, "aborted" => true
     }, actor: endpoint.user, message_id: uuid)
     true
-  end
-
-  def game_aborted?(table_id, session_id)
-    records_for(table_id).any? do |record|
-      record.packet["kind"] == "game_boundary" && record.packet.dig("data", "session_id") == session_id.to_i && record.packet.dig("data", "aborted") == true
-    end
   end
 
   def start_game(table:, game:, players:, options:, actor:, restore: nil)
@@ -728,97 +684,6 @@ class GameRoomLiveSessionStore
     game_session_from(record)
   end
 
-  def game_sessions(table_or_id = nil, force: false)
-    table_id = table_or_id == nil ? nil : table_identifier(table_or_id)
-    ids = table_id == nil ? active_table_ids : [table_id]
-    ids.compact.flat_map do |id|
-      ensure_current(id, force: force)
-      records_for(id).filter_map do |record|
-        game_session_from(record) if record.packet["kind"].to_s == "game_started"
-      end
-    end.sort_by { |row| row["__id"].to_i }
-  end
-
-  def game_session(session_id, table: nil)
-    wanted = positive_identifier(session_id)
-    return nil if wanted == nil
-
-    game_sessions(table).find { |row| row["__id"].to_i == wanted }
-  end
-
-  def append_game_action(session:, sequence:, events:, actor:, controller: false)
-    table_id = positive_identifier(session["table_id"])
-    session_id = positive_identifier(session["__id"] || session["id"])
-    raise ArgumentError, "Invalid game" if table_id == nil || session_id == nil
-    ledger = control_ledger(table_id)
-    raise GameRoomNetworkErrors::GamePaused, "Table master synchronization is pending" unless ledger.complete && same_user?(ledger.current_owner, owner_for(table_id))
-    if session.key?("__control_epoch") && session["__control_epoch"] != ledger.epoch
-      raise GameRoomNetworkErrors::GamePaused, "The game controller changed"
-    end
-    if controller || GameRoomParticipants.bot?(actor)
-      raise ArgumentError, "Only the current table master may control this action" unless same_user?(Session.name, owner_for(table_id))
-    elsif !same_user?(actor, Session.name)
-      raise ArgumentError, "You no longer control this seat"
-    end
-    raise ArgumentError, 'The player is not in this game' unless GameRoomParticipants.includes?(
-      game_session(session_id, table: table_id).to_h.fetch('__players', []), actor)
-    raise GameRoomNetworkErrors::GamePaused, "The game was ended by the master" if game_aborted?(table_id, session_id)
-    raise GameRoomNetworkErrors::GamePaused, "The game is being saved" if game_frozen?(table_id, session_id)
-
-    commands = events.to_a.map do |event|
-      {
-        "action" => command_value(event, "action").to_s,
-        "value" => command_value(event, "value").to_s,
-        "move_id" => SecureRandom.uuid
-      }
-    end
-    record = append_record(table_id, "game_action", {
-      "session_id" => session_id,
-      "sequence" => sequence.to_i,
-      "controller" => controller == true,
-      "control_epoch" => ledger.epoch,
-      "events" => commands
-    }, actor: actor)
-    expand_game_action(record)
-  end
-
-  def game_events(session, force: false)
-    table_id = positive_identifier(session["table_id"])
-    session_id = positive_identifier(session["__id"] || session["id"])
-    return [] if table_id == nil || session_id == nil
-
-    ensure_current(table_id, force: force)
-    records = records_for(table_id)
-    ledger = control_ledger(table_id)
-    starts = records.select { |record| record.packet['kind'] == 'game_started' && record.packet.dig('data', 'session_id') == session_id }
-    # Historical archive lookup used the first start; live action expansion
-    # used the latest start's ID base. Reuse both without changing that format.
-    game_record = starts.first
-    action_game_record = starts.last
-    frozen = false
-    aborted = false
-    imported = if !session["__archive_id"].to_s.empty?
-      (game_record == nil ? [] : archive_events_for(game_record).to_a).reject { |item| item.key?('players') }.map do |event|
-            event.merge("__id" => event["id"], "session_id" => session_id, "table_id" => table_id,
-              "__insertion_user" => game_record.sender, "__controller" => true, "move_id" => "archive:#{game_record.message_id}:#{event['id']}")
-      end
-    else
-      []
-    end
-    current = records.flat_map do |record|
-      if record.packet["kind"] == "game_boundary" && record.packet.dig("data", "session_id") == session_id
-        frozen = record.packet.dig("data", "frozen") == true
-        aborted ||= record.packet.dig("data", "aborted") == true
-      end
-      next [] if record.packet["kind"].to_s != "game_action"
-      next [] if record.packet.dig("data", "session_id").to_i != session_id
-      next [] if frozen || aborted
-
-      expand_game_action(record, game_record: action_game_record, ledger: ledger)
-    end
-    (imported + current).sort_by { |row| row["__id"].to_i }
-  end
-
   def freeze_game(session, frozen: true, expected_boundary: nil)
     table_id = table_identifier(session["table_id"])
     return false if expected_boundary && active_session(table_id) == nil
@@ -838,94 +703,6 @@ class GameRoomLiveSessionStore
     append_record(table_id, "game_boundary", { "session_id" => session["__id"].to_i, "frozen" => frozen == true }, actor: endpoint.user)
   end
 
-  def game_frozen?(table_id, session_id)
-    boundary = records_for(table_id).reverse.find { |record| record.packet["kind"] == "game_boundary" && record.packet.dig("data", "session_id") == session_id.to_i }
-    boundary != nil && boundary.packet.dig("data", "frozen") == true
-  end
-
-  def consume_recovered_game_events(session)
-    table_id = session["table_id"].to_i
-    records = @mutex.synchronize do
-      @recovered_moves.delete(table_id).to_a.map do |record|
-        @message_records[table_id][[record.sender.downcase, record.message_id]] || record
-      end
-    end
-    return [] if game_aborted?(table_id, session["__id"])
-    records.select { |record| record.packet.dig("data", "session_id").to_i == session["__id"].to_i }
-      .flat_map { |record| expand_game_action(record) }
-  end
-
-  def invite_user(table_id:, user:, metadata:)
-    session = active_session(table_identifier(table_id))
-    return false if session == nil
-
-    # The current API accepts a participant identity for invitations, not just
-    # the room owner's identity. Let it validate the actual membership.
-    result = session.invite(user.to_s, metadata: metadata.to_h.merge("purpose" => "game_invitation"))
-    result
-  end
-
-  def pending_invitations
-    prune_invitations
-    recipient = endpoint.user.to_s
-    @mutex.synchronize do
-      @pending_invitations.values.map do |stored|
-        invitation = stored[:invitation]
-        metadata = invitation.invitation_metadata.to_h
-        inviter = invitation.respond_to?(:inviter) ? invitation.inviter.user.to_s : metadata["sender"].to_s
-        {
-          "__id" => stored[:id],
-          "table_id" => stored[:table_id],
-          "sender" => inviter,
-          "recipient" => recipient,
-          "status" => "pending",
-          "created_at" => stored[:created_at],
-          "expires_at" => invitation_expiration(stored),
-          "__native_invitation" => invitation
-        }
-      end
-    end
-  end
-
-  def accept_invitation(table_id:, invitation_id:, participant_metadata: {})
-    stored = take_invitation(table_id, invitation_id)
-    return false if stored == nil
-
-    session = stored[:invitation].accept(participant_metadata: participant_metadata(table_id).merge(participant_metadata.to_h))
-    status = admit_joined_session(stored[:table_id], session)
-    resolve_invitation(stored[:id])
-    status == :joined
-  rescue StandardError
-    restore_invitation(stored) if stored && stored[:invitation].pending?
-    raise
-  end
-
-  def reject_invitation(table_id:, invitation_id:)
-    stored = take_invitation(table_id, invitation_id)
-    return false if stored == nil
-
-    stored[:invitation].reject
-    resolve_invitation(stored[:id])
-    true
-  rescue StandardError
-    restore_invitation(stored) if stored
-    raise
-  end
-
-  # A notification may be opened by a brand-new endpoint. The native server
-  # invitation in fresh discovery, not another endpoint's queue, grants access.
-  def reject_discovered_invitation(table)
-    item = table["__discovered_session"]
-    data = item.respond_to?(:invitation) ? item.invitation : nil
-    raise GameRoomNetworkErrors::UnsupportedInvitation, "The server did not provide the private invitation identity" unless data.is_a?(Hash)
-    native_id = data["invitation_id"] || data["id"]
-    raise GameRoomNetworkErrors::UnsupportedInvitation, "The server did not provide the private invitation identity" if native_id.to_s.empty?
-
-    identity = Struct.new(:id, :invitation_id, :generation).new(item.id, native_id, data["generation"].to_i)
-    endpoint.reject_invitation(identity)
-    true
-  end
-
   def wait_for_room(table_id, timeout: 10.0)
     wanted = table_identifier(table_id)
     return false if wanted == nil
@@ -937,33 +714,6 @@ class GameRoomLiveSessionStore
 
       sleep 0.01
     end
-  end
-
-  # Only invoked by error/gap recovery, never by an ordinary cached read.
-  def pending_move_error(table_id)
-    @mutex.synchronize do
-      pending = @pending_moves[table_id.to_i]
-      pending && (pending[:error] || GameRoomNetworkErrors::PendingMove.new("A game move is awaiting confirmation"))
-    end
-  end
-
-  def reconcile(table_id)
-    table_id = table_identifier(table_id)
-    return false if table_id == nil
-    return false if !ensure_current(table_id, force: true)
-
-    pending = @mutex.synchronize { @pending_moves[table_id] }
-    latest_game = records_for(table_id).reverse.find { |record| record.packet["kind"] == "game_started" }
-    if pending != nil && latest_game != nil && pending[:packet].dig("data", "session_id") != latest_game.packet.dig("data", "session_id")
-      @mutex.synchronize { @pending_moves.delete(table_id) if @pending_moves[table_id].equal?(pending) }
-      pending = nil
-    end
-    if pending != nil
-      # An empty read is not evidence that a timed-out request cannot arrive
-      # later. Keep its UUID, packet, actor, random values and event sequence.
-      write_record(table_id, pending)
-    end
-    true
   end
 
   private
@@ -1033,106 +783,6 @@ class GameRoomLiveSessionStore
     current
   end
 
-  def register_invitation_callback(current)
-    register = @mutex.synchronize do
-      next false if @invitation_endpoint.equal?(current)
-
-      @invitation_endpoint = current
-      true
-    end
-    return if !register
-
-    current.on_invitation { |invitation| receive_invitation(invitation) }
-    return if !current.respond_to?(:next_invitation)
-
-    loop do
-      invitation = current.next_invitation(timeout: 0)
-      break if invitation == nil
-
-      receive_invitation(invitation)
-    end
-  end
-
-  def receive_invitation(invitation)
-    return if invitation.respond_to?(:pending?) && !invitation.pending?
-
-    metadata = invitation.metadata.to_h
-    return if !supported_metadata?(metadata)
-
-    invitation_metadata = invitation.invitation_metadata.to_h
-    return if invitation_metadata["purpose"].to_s != "game_invitation"
-
-    table_id = positive_identifier(metadata["table_id"])
-    invitation_id = positive_identifier(invitation_metadata["invitation_id"])
-    return if table_id == nil || invitation_id == nil
-
-    @mutex.synchronize do
-      return if @resolved_invitations.key?(invitation_id)
-
-      @pending_invitations[invitation_id] = {
-        id: invitation_id,
-        table_id: table_id,
-        invitation: invitation,
-        created_at: GameRoomClock.now.to_i
-      }
-    end
-    emit_change(table_id, :invitation, invitation_id)
-  rescue StandardError => error
-    log_warning("incoming invitation", nil, error)
-  end
-
-  def take_invitation(table_id, invitation_id)
-    prune_invitations
-    id = positive_identifier(invitation_id)
-    room_id = table_identifier(table_id)
-    return nil if id == nil || room_id == nil
-
-    @mutex.synchronize do
-      stored = @pending_invitations[id]
-      next nil if stored == nil || stored[:table_id] != room_id
-
-      @pending_invitations.delete(id)
-    end
-  end
-
-  def restore_invitation(stored)
-    @mutex.synchronize { @pending_invitations[stored[:id]] = stored }
-  end
-
-  def resolve_invitation(id)
-    @mutex.synchronize do
-      @pending_invitations.delete(id.to_i)
-      @resolved_invitations[id.to_i] = GameRoomClock.now.to_i + INVITATION_TTL
-    end
-  end
-
-  def prune_invitations
-    now = GameRoomClock.now.to_i
-    expired = []
-    @mutex.synchronize do
-      @pending_invitations.delete_if do |_id, stored|
-        invitation = stored[:invitation]
-        no_longer_pending = invitation.respond_to?(:pending?) && !invitation.pending?
-        timed_out = invitation_expiration(stored) <= now
-        expired << invitation if timed_out && !no_longer_pending
-        no_longer_pending || timed_out
-      end
-      @resolved_invitations.delete_if { |_id, expires_at| expires_at <= now }
-    end
-    expired.each do |invitation|
-      invitation.reject if !invitation.respond_to?(:pending?) || invitation.pending?
-    rescue StandardError => error
-      log_warning("expired invitation cleanup", nil, error)
-    end
-  end
-
-  def invitation_expiration(stored)
-    local_expiration = stored[:created_at].to_i + INVITATION_TTL
-    invitation = stored[:invitation]
-    native_expiration = invitation.respond_to?(:expires_at) ? invitation.expires_at.to_i : 0
-    native_expiration.positive? ? [local_expiration, native_expiration].min : local_expiration
-  end
-
   def discover_pages(sources: [:created, :invited, :public])
     return [] if !endpoint.respond_to?(:discover_sessions)
 
@@ -1172,22 +822,7 @@ class GameRoomLiveSessionStore
 
     attachment = Object.new
 
-    if session.respond_to?(:on_message)
-      session.on_message(with_metadata: true) do |sender, packet, info|
-        next unless info.respond_to?(:private?) && info.private? &&
-          info.recipient_user.to_s.casecmp(endpoint.user.to_s).zero? && packet.is_a?(Hash) &&
-          packet["type"] == "game_room_private" && packet["version"] == 1 &&
-          packet["session_id"].is_a?(Integer) && packet["session_id"].positive? &&
-          packet["payload"].is_a?(Hash) && JSON.generate(packet["payload"]).bytesize <= 2048
-        @mutex.synchronize do
-          next unless @sessions[table_id].equal?(session)
-          queue = @private_game_messages[table_id]
-          queue << {sender: sender.user.to_s, session_id: packet["session_id"],
-            payload: JSON.parse(JSON.generate(packet["payload"]))}
-          queue.shift while queue.length > 64
-        end
-      end
-    end
+    attach_game_message_handler(table_id, session) if session.respond_to?(:on_message)
 
     if session.respond_to?(:on_stack_message)
       session.on_stack_message(with_metadata: true) do |sender, packet, info|
@@ -1209,8 +844,8 @@ class GameRoomLiveSessionStore
         emit_change(table_id, :recovery, nil)
       end
     end
-    session.on_participant_joined { |_participant| emit_change(table_id, :table, nil) } if session.respond_to?(:on_participant_joined)
-    session.on_participant_left { |_participant, _reason = nil| emit_change(table_id, :table, nil) } if session.respond_to?(:on_participant_left)
+    session.on_participant_joined { |_participant| emit_change(table_id, :table, nil); emit_presence_change } if session.respond_to?(:on_participant_joined)
+    session.on_participant_left { |_participant, _reason = nil| emit_change(table_id, :table, nil); emit_presence_change } if session.respond_to?(:on_participant_left)
     session.on_owner_changed { |_previous, _current| emit_change(table_id, :table, nil) } if session.respond_to?(:on_owner_changed)
     session.on_discovery_metadata_changed { |_metadata| emit_change(table_id, :table, nil) } if session.respond_to?(:on_discovery_metadata_changed)
     if session.respond_to?(:on_closed)
@@ -1221,26 +856,61 @@ class GameRoomLiveSessionStore
           # discard the new membership's pending move/private messages.
           current = @sessions[table_id]
           next false if current && !current.equal?(session)
-          next false unless @attachments[table_id].equal?(attachment)
+          next false unless room_state(table_id).attachment.equal?(attachment)
           @sessions.delete(table_id)
-          @pending_moves.delete(table_id)
-          @recovered_moves.delete(table_id)
-          @private_game_messages.delete(table_id)
+          (room_state(table_id).pending_move = nil)
+          room_state(table_id).take_recovered_moves
+          room_state(table_id).take_private_game_messages
+          room_state(table_id).take_public_game_previews
           @native_session_ids.delete(session.id.to_s) if session.respond_to?(:id)
           retain_inactive_room(table_id)
           true
         end
-        emit_change(table_id, :closed, nil) if current_closed
+        if current_closed
+          emit_change(table_id, :closed, nil)
+          emit_presence_change
+        end
       end
     end
     @mutex.synchronize do
       @sessions[table_id] = session
-      @attachments[table_id] = attachment
+      room_state(table_id).attachment = attachment
       @inactive_rooms.delete(table_id)
       @native_session_ids[session.id.to_s] = table_id if session.respond_to?(:id)
     end
     ensure_current(table_id, force: true) if session.respond_to?(:stack_read)
+    emit_presence_change
     session
+  end
+
+  def attach_game_message_handler(table_id, session)
+    session.on_message(with_metadata: true) do |sender, packet, info|
+      if info.respond_to?(:private?) && !info.private? && packet.is_a?(Hash) &&
+          packet["type"] == "game_room_preview" && packet["version"] == 1 &&
+          packet["session_id"].is_a?(Integer) && packet["session_id"].positive? &&
+          packet["payload"].is_a?(Hash) && JSON.generate(packet["payload"]).bytesize <= 2048
+        @mutex.synchronize do
+          next unless @sessions[table_id].equal?(session)
+          queue = room_state(table_id).public_game_previews
+          queue << {sender: sender.user.to_s, session_id: packet["session_id"],
+            payload: JSON.parse(JSON.generate(packet["payload"]))}
+          queue.shift while queue.length > 64
+        end
+        next
+      end
+      next unless info.respond_to?(:private?) && info.private? &&
+        info.recipient_user.to_s.casecmp(endpoint.user.to_s).zero? && packet.is_a?(Hash) &&
+        packet["type"] == "game_room_private" && packet["version"] == 1 &&
+        packet["session_id"].is_a?(Integer) && packet["session_id"].positive? &&
+        packet["payload"].is_a?(Hash) && JSON.generate(packet["payload"]).bytesize <= 2048
+      @mutex.synchronize do
+        next unless @sessions[table_id].equal?(session)
+        queue = room_state(table_id).private_game_messages
+        queue << {sender: sender.user.to_s, session_id: packet["session_id"],
+          payload: JSON.parse(JSON.generate(packet["payload"]))}
+        queue.shift while queue.length > 64
+      end
+    end
   end
 
   def ensure_current(table_id, force: false, cancellation_token: nil, timeout: nil)
@@ -1249,7 +919,7 @@ class GameRoomLiveSessionStore
     return false if session == nil || !session.respond_to?(:stack_read)
 
     last_sequence = session.respond_to?(:stack_state) ? session.stack_state["last_seq"].to_i : 0
-    cursor = @mutex.synchronize { @stack_cursors[table_id].to_i }
+    cursor = @mutex.synchronize { room_state(table_id).stack_cursor.to_i }
     return true if !force && last_sequence <= cursor
 
     read_options = {}
@@ -1281,8 +951,8 @@ class GameRoomLiveSessionStore
       current = @mutex.synchronize do
         next false unless @sessions[table_id].equal?(session)
 
-        @stack_cursors[table_id] = [@stack_cursors[table_id].to_i, next_cursor].max
-        @received_sequences[table_id].delete_if { |seq, _| seq <= @stack_cursors[table_id] }
+        room_state(table_id).stack_cursor = [room_state(table_id).stack_cursor.to_i, next_cursor].max
+        room_state(table_id).received_sequences.delete_if { |seq, _| seq <= room_state(table_id).stack_cursor }
         true
       end
       return false unless current
@@ -1300,192 +970,10 @@ class GameRoomLiveSessionStore
     end_room_io(table_id)
   end
 
-  def append_record(table_id, kind, data, actor:, message_id: nil)
-    session = active_session(table_id)
-    raise ArgumentError, "The room is no longer active" if session == nil
-
-    message_id ||= SecureRandom.uuid
-    packet = {
-      "version" => PROTOCOL,
-      "kind" => kind.to_s,
-      "actor" => actor.to_s,
-      "data" => JSON.parse(JSON.generate(data))
-    }
-    pending = { message_id: message_id, packet: packet, sender: endpoint.user.to_s, writing: false }
-    @mutex.synchronize do
-      raise GameRoomNetworkErrors::PendingMove, "An earlier game move is awaiting confirmation" if @pending_moves.key?(table_id)
-
-      @pending_moves[table_id] = pending if kind.to_s == "game_action"
-    end
-    write_record(table_id, pending)
-  end
-
-  def write_record(table_id, pending)
-    begin_room_io(table_id)
-    acquired = false
-    session = active_session(table_id)
-    raise GameRoomNetworkErrors::PendingMove, "The game connection is not ready" if session == nil
-    @mutex.synchronize do
-      raise GameRoomNetworkErrors::PendingMove, "A game move is already being sent" if pending[:writing]
-
-      pending[:writing] = true
-      acquired = true
-    end
-    result = session.stack_push(pending[:packet], message_id: pending[:message_id])
-    sequence = extract_push_sequence(result)
-    server_time = result.is_a?(Hash) ? (result.dig("entry", "created_at") || result["created_at"]) : nil
-    server_time = nil unless server_time.respond_to?(:to_i) && server_time.to_i.positive?
-    timestamp = server_time || (@record_clock ||= GameRoomSessionClock.new).server_now
-    record = ingest_record(
-      table_id,
-      sequence: sequence,
-      message_id: pending[:message_id],
-      sender: pending[:sender],
-      packet: pending[:packet],
-      created_at: timestamp,
-      estimated_time: server_time == nil,
-      source_session: session
-    )
-    record || confirmed_record(table_id, pending)
-  rescue StandardError => error
-    # A native callback can confirm the write before its HTTP reply fails.
-    confirmed = confirmed_record(table_id, pending)
-    return confirmed if confirmed != nil
-
-    @mutex.synchronize do
-      if acquired && GameRoomNetworkErrors.transient?(error)
-        pending[:uncertain] = true
-        pending[:error] = error
-      end
-      @pending_moves.delete(table_id) if @pending_moves[table_id].equal?(pending) && !GameRoomNetworkErrors.transient?(error)
-    end
-    raise
-  ensure
-    @mutex.synchronize { pending[:writing] = false } if acquired
-    end_room_io(table_id)
-  end
-
-  def confirmed_record(table_id, pending)
-    @mutex.synchronize { @message_records.fetch(table_id, {})[[pending[:sender].downcase, pending[:message_id]]] }
-  end
-
-  def extract_push_sequence(result)
-    candidates = [
-      result.is_a?(Hash) ? result["seq"] : nil,
-      result.is_a?(Hash) ? result.dig("entry", "seq") : nil
-    ]
-    sequence = candidates.map(&:to_i).find { |value| value.positive? }
-    raise GameRoomNetworkErrors::UncertainWrite, "LiveSessions did not return the stored stack position" if sequence == nil
-
-    sequence
-  end
-
-  def ingest_record(table_id, sequence:, message_id:, sender:, packet:, created_at:, estimated_time: false, source_session: nil)
-    seq = sequence.to_i
-    identity = message_id.to_s
-    return nil if seq <= 0 || identity.empty? || !packet.is_a?(Hash)
-    if packet["version"] != PROTOCOL || !packet["data"].is_a?(Hash) || !(packet["actor"].is_a?(String) && !packet["actor"].empty?) || sender.to_s.empty?
-      # Do not print packet contents (they may contain private game data).
-      Log.warning("ELTEN Game Room discarded invalid stack entry for table #{table_id}, sequence #{seq}") if defined?(Log)
-      return nil
-    end
-
-    record = Record.new(
-      table_id: table_id,
-      sequence: seq,
-      message_id: identity,
-      sender: sender.to_s,
-      packet: JSON.parse(JSON.generate(packet)),
-      created_at: normalize_time(created_at),
-      estimated_time: estimated_time
-    )
-    corrected = nil
-    inserted = @mutex.synchronize do
-      # The callback/read may have passed its earlier membership check just
-      # before leave and cache pruning. Never recreate that old collection.
-      next false if source_session && !@sessions[table_id].equal?(source_session)
-
-      key = [seq, identity]
-      if @record_keys[table_id].key?(key)
-        previous = @message_records[table_id][[sender.to_s.downcase, identity]]
-        if previous && previous.sequence == seq && previous.estimated_time && !estimated_time
-          if previous.created_at != record.created_at
-            session_id = previous.packet.dig("data", "session_id").to_i
-            @clock_revisions[[table_id, session_id]] += 1 if session_id > 0
-          end
-          previous.created_at = record.created_at
-          previous.estimated_time = false
-          corrected = previous
-          @record_generations[table_id] += 1
-        end
-        next false
-      end
-
-      @record_keys[table_id][key] = true
-      # A local push acknowledgement can overtake messages not delivered yet.
-      # Only a contiguous prefix is safe as the cursor of subsequent reads.
-      cursor = @stack_cursors[table_id]
-      @received_sequences[table_id][seq] = true if seq > cursor
-      cursor += 1 while @received_sequences[table_id].delete(cursor + 1)
-      @stack_cursors[table_id] = cursor
-      # Even if a late original and a retry occupy different stack positions,
-      # all readers apply this authenticated operation just once.
-      message_key = [sender.to_s.downcase, identity]
-      previous = @message_records[table_id][message_key]
-      next false if previous != nil && previous.sequence <= seq
-      @records[table_id].delete(previous) if previous != nil
-
-      @message_records[table_id][message_key] = record
-      rows = @records[table_id]
-      ordered_append = rows.empty? || rows.last.sequence <= record.sequence
-      rows << record
-      rows.sort_by!(&:sequence) unless ordered_append
-      @record_generations[table_id] += 1
-      pending = @pending_moves[table_id]
-      if pending != nil && pending[:message_id] == identity && pending[:sender].casecmp(sender.to_s) == 0
-        @recovered_moves[table_id] << record if pending[:uncertain]
-        @pending_moves.delete(table_id)
-      end
-      true
-    end
-    emit_record_change(table_id, record) if inserted
-    if corrected
-      if corrected.packet["kind"] == "game_started"
-        emit_change(table_id, :game, corrected.packet.dig("data", "session_id").to_i)
-      else
-        emit_record_change(table_id, corrected)
-      end
-    end
-    inserted ? record : nil
-  rescue JSON::GeneratorError, JSON::ParserError
-    nil
-  end
-
-  def emit_record_change(table_id, record)
-    queue_discovery_publication(table_id, activity_only: true) if activity_record?(record)
-    kind = record.packet["kind"].to_s
-    data = record.packet["data"].to_h
-    case kind
-    when "game_started"
-      emit_change(table_id, :game_started, positive_identifier(data["session_id"]))
-    when "game_action", "game_boundary"
-      emit_change(table_id, :game, positive_identifier(data["session_id"]))
-    else
-      emit_change(table_id, :table, nil)
-    end
-  end
-
-  def emit_change(table_id, kind, value)
-    queue_discovery_publication(table_id) if kind == :table || kind == :game_started
-    @changed&.call(table_id.to_i, kind.to_sym, value)
-  rescue StandardError => error
-    log_warning("change callback", table_id, error)
-  end
-
   def records_for(table_id)
     source, raw, generation, cache = @mutex.synchronize do
-      source = @records.fetch(table_id, nil)
-      [source, source.to_a.dup, @record_generations[table_id], @validated_records[table_id]]
+      source = @rooms[table_id]&.records
+      [source, source.to_a.dup, (@rooms[table_id]&.record_generation || 0), @rooms[table_id]&.validated_records]
     end
     native = active_session(table_id)
     anchor = control_metadata(native)[GameRoomTableControl::ANCHOR_KEY]
@@ -1508,9 +996,9 @@ class GameRoomLiveSessionStore
     @mutex.synchronize do
       # Counters restart after pruning. Check the actual collection and native
       # membership too, so a slower reader cannot publish into a rejoined room.
-      if source && @records.fetch(table_id, nil).equal?(source) &&
-          @sessions[table_id].equal?(native) && @record_generations[table_id] == generation
-        @validated_records[table_id] = {key: key, records: accepted.freeze}
+      if source && @rooms[table_id]&.records.equal?(source) &&
+          @sessions[table_id].equal?(native) && room_state(table_id).record_generation == generation
+        room_state(table_id).validated_records = {key: key, records: accepted.freeze}
       end
     end
     accepted.dup
@@ -1522,366 +1010,13 @@ class GameRoomLiveSessionStore
   end
 
   def control_ledger(table_id, raw: nil, native: active_session(table_id))
-    raw ||= @mutex.synchronize { @records.fetch(table_id, []).dup }
+    raw ||= @mutex.synchronize { (@rooms[table_id]&.records || []).dup }
     GameRoomTableControl.new(founder: native&.metadata.to_h["owner"], records: raw,
       anchor: control_metadata(native)[GameRoomTableControl::ANCHOR_KEY])
   end
 
-  def observer_users(table_id, members: nil)
-    roles = {}
-    starts = {}
-    ledger = control_ledger(table_id)
-    records_for(table_id).each do |record|
-      case record.packet["kind"].to_s
-      when "game_started"
-        starts[record.packet.dig('data', 'session_id')] ||= record
-      when "room_state"
-        data = record.packet["data"].to_h
-        next if !data.key?("observers")
-
-        roles = unique_users(data["observers"].to_a).each_with_object({}) do |user, result|
-          result[user.downcase] = "observer"
-        end
-      when "room_role"
-        target = record.packet.dig("data", "subject") || record.packet["actor"]
-        roles[target.to_s.downcase] = record.packet.dig("data", "role").to_s
-      when GameRoomTableControl::KIND
-        data = record.packet['data']
-        next unless data['players']
-        game = starts[data['session_id']]
-        next unless game
-        prior = ledger.players(data['session_id'], initial: game.packet['data']['players'], before: record.sequence)
-        prior.each { |person| roles[person.downcase] = 'observer' unless GameRoomParticipants.includes?(data['players'], person) }
-        data['players'].each { |person| roles[person.downcase] = 'player' unless GameRoomParticipants.includes?(prior, person) }
-      end
-    end
-    current_members = unique_users(members || connected_users(table_id))
-    current_members.select { |member| roles[member.downcase] == "observer" }
-  end
-
-  def table_for(table_id, fallback: nil)
-    session = active_session(table_id)
-    metadata = session&.metadata.to_h
-    base = fallback || table_from_metadata(metadata || {}, table_id)
-    return nil if base == nil
-
-    row, _changes = project_room_records(table_id, base.dup)
-    row["__id"] = table_id
-    row["id"] = table_id
-    row["owner"] = owner_for(table_id)
-    row["__insertion_user"] = row["owner"].to_s
-    row["private"] = session.respond_to?(:visibility) ? session.visibility.to_sym == :private : base["private"] == true
-    row["max_players"] = bounded_capacity(row["max_players"] || session&.capacity)
-    row["bot_count"] = [[row["bot_count"].to_i, 0].max, row["max_players"]].min
-    row["bot_names"] = Array.new(row["bot_count"]) { |index| row["bot_names"].to_a[index] } if row.key?("bot_names")
-    members = connected_users(table_id)
-    row["player_count"] = (members - observer_users(table_id, members: members)).length + row["bot_count"].to_i
-    row["status"] = "waiting" if row["status"].to_s.empty?
-    latest = records_for(table_id).reverse.find { |record| record.packet["kind"] == "game_started" }
-    latest_id = latest&.packet&.dig("data", "session_id")
-    row["status"] = "waiting" if latest_id && game_aborted?(table_id, latest_id)
-    row["player_count"] = latest.packet.dig("data", "players").to_a.length if latest && row["status"] == "playing"
-    row["created_at"] = metadata["created_at"].to_i if row["created_at"].to_i <= 0 && metadata
-    row["updated_at"] = row["created_at"].to_i if row["updated_at"].to_i <= 0
-    published_activity = session&.discovery_metadata.to_h['last_activity_at'].to_i
-    realtime = @mutex.synchronize { @realtime_activity[table_id] }
-    realtime_time = realtime && realtime[0].equal?(session) && realtime[1] == latest_id ? realtime[2] : 0
-    activity = [row['last_activity_at'].to_i, published_activity, realtime_time].max
-    row['last_activity_at'] = activity if activity.positive?
-    row["__live_session_id"] = session.id.to_s if session&.respond_to?(:id)
-    row.delete('__statistics_room_id')
-    identity = metadata['statistics_room_id']
-    row['__statistics_room_id'] = identity.dup.freeze if GameRoomPresence::Identity.valid?(identity)
-    row
-  end
-
-  # Compare-and-apply in the ordered log, not merely at the sender. Two
-  # overlapping option dialogs cannot overwrite each other or a newer game.
-  def project_room_records(table_id, row, records: records_for(table_id))
-    current_game_id, changes = 0, []
-    records.each do |record|
-      case record.packet["kind"].to_s
-      when "room_created"
-        data = record.packet["data"].to_h
-        row.merge!(data)
-        row["created_at"] = record.created_at.to_i
-      when "room_state"
-        data = record.packet["data"].to_h
-        if data["options_changed"] == true
-          next unless data["expected_session_id"].to_i == current_game_id && data["expected_options"].to_s == row["game_options"].to_s
-          changes << record.sequence
-        end
-        row.merge!(data.reject { |key, _| %w[options_changed expected_options expected_session_id].include?(key) })
-      when "game_started"
-        current_game_id = record.packet.dig("data", "session_id").to_i
-      when GameRoomTableControl::KIND
-        data = record.packet['data']
-        if data['session_id'] == current_game_id && data['players']
-          row['bot_players'] = data['players'].select { |person| GameRoomParticipants.bot?(person) }
-          row['bot_count'] = row['bot_players'].length
-          row['bot_names'] = row['bot_players'].map { |person| GameRoomParticipants.bot_name_token(person) }
-          begin
-            options = JSON.parse(row['game_options'])
-            options[GameRoomTeams::PLAYERS_KEY] = data['players'].dup if options.key?(GameRoomTeams::PLAYERS_KEY)
-            row['game_options'] = JSON.generate(options)
-          rescue JSON::ParserError, TypeError
-            # Validation of the original room options remains authoritative.
-          end
-        end
-      end
-      # Order is provided by the stack, including old clients whose payload
-      # contains a skewed wall-clock timestamp.
-      row["updated_at"] = record.created_at.to_i
-      if activity_record?(record) && !record.estimated_time
-        row['last_activity_at'] = [row['last_activity_at'].to_i, record.created_at.to_i].max
-      end
-    end
-    [row, changes]
-  end
-
-  def table_from_metadata(metadata, table_id)
-    return nil if !supported_metadata?(metadata)
-
-    {
-      "__id" => table_id,
-      "id" => table_id,
-      "__insertion_user" => metadata["owner"].to_s,
-      "__discovery_protocol" => metadata["protocol"].to_i,
-      "name" => metadata["name"].to_s,
-      "game" => metadata["game"].to_s,
-      "owner" => metadata["owner"].to_s,
-      "private" => metadata["private"] == true,
-      "resume_save_id" => metadata["resume_save_id"].to_s,
-      "status" => %w[waiting playing].include?(metadata["status"]) ? metadata["status"] : "waiting",
-      "max_players" => bounded_capacity(metadata["max_players"] || MAX_CAPACITY),
-      "bot_count" => [[metadata["bot_count"].to_i, 0].max, MAX_CAPACITY].min,
-      "game_options" => discovery_options(metadata),
-      "player_count" => metadata.key?("player_count") ? [[metadata["player_count"].to_i, 0].max, MAX_CAPACITY].min : 1,
-      "created_at" => metadata["created_at"].to_i,
-      "updated_at" => metadata["created_at"].to_i,
-      "last_activity_at" => metadata['last_activity_at'].is_a?(Integer) && metadata['last_activity_at'].positive? ? metadata['last_activity_at'] : nil
-    }
-  end
-
-  def table_from_discovered(item, metadata)
-    table_id = positive_identifier(metadata["table_id"])
-    return nil if table_id == nil
-
-    row = table_from_metadata(metadata, table_id)
-    if item.respond_to?(:created_at) && item.created_at.to_i > 0
-      row["created_at"] = row["updated_at"] = item.created_at.to_i
-    end
-    row["max_players"] = bounded_capacity(item.capacity)
-    row["player_count"] = item.participant_count.to_i if !metadata.key?("player_count")
-    row["__native_participant_count"] = item.participant_count.to_i
-    row["__live_session_id"] = item.id.to_s
-    row["private"] = item.visibility.to_sym == :private if item.respond_to?(:visibility)
-    row["__discovered_session"] = item
-    row
-  end
-
-  def game_session_from(record)
-    return nil if record == nil || record.packet["kind"].to_s != "game_started"
-
-    data = record.packet["data"].to_h
-    players = data["players"].to_a.map(&:to_s)
-    id = positive_identifier(data["session_id"])
-    return nil if id == nil || players.empty?
-    return nil if data.key?("archive_id") && archive_events_for(record) == nil
-    clock = game_clock_state(record.table_id, id, data["clock_offset"].to_i)
-    ledger = control_ledger(record.table_id)
-    initial = data.fetch('initial_players', players).dup
-    restored_changes = data['archive_id'] ? archive_events_for(record).select { |item| item.key?('players') } : []
-    replacements = ledger.replacements(id, initial: players).map do |change|
-      {'id' => data['event_id_base'].to_i + change.sequence * EVENT_ID_MULTIPLIER,
-       'players' => change.packet['data']['players'].dup}
-    end
-    players = ledger.players(id, initial: players)
-
-    session = {
-      "__id" => id,
-      "id" => id,
-      "__insertion_user" => record.sender.to_s,
-      "__authority_validated" => true,
-      "__table_owner" => owner_for(record.table_id),
-      "__control_epoch" => ledger.epoch,
-      "__controllers" => {},
-      "__initial_players" => initial,
-      "__seat_changes" => restored_changes + replacements,
-      "__control_ready" => same_user?(ledger.current_owner, owner_for(record.table_id)),
-      "table_id" => table_id_for_record(record),
-      "game" => data["game"].to_s,
-      "player_one" => players[0].to_s,
-      "player_two" => players[1].to_s,
-      "players_json" => JSON.generate(
-        "version" => 1,
-        "seats" => players.each_with_index.map { |player, index| { "id" => index + 1, "controller" => player } }
-      ),
-      "__players" => players,
-      "status" => "active",
-      "options" => data["options"].to_s,
-      "created_at" => data["created_at"].to_i,
-      "updated_at" => data["created_at"].to_i,
-      "__stack_sequence" => record.sequence.to_i,
-      "__server_started_at" => record.created_at.to_i,
-      "__clock_revision" => @mutex.synchronize { @clock_revisions[[record.table_id, id]] },
-      "__archive_id" => data["archive_id"], "__event_id_base" => data["event_id_base"].to_i,
-      "__clock_offset" => clock[:offset], "__frozen_at" => clock[:frozen_at],
-      "__frozen" => clock[:frozen_at] != nil,
-      "__aborted" => game_aborted?(record.table_id, id)
-    }
-    if data.key?('statistics')
-      session['__statistics'] = GameRoomStatistics::Identity.copy(data['statistics'], started_at: record.created_at.to_i)
-    end
-    session
-  end
-
-  def game_clock_state(table_id, session_id, offset)
-    frozen_at = nil
-    records_for(table_id).each do |item|
-      next unless item.packet["kind"] == "game_boundary" && item.packet.dig("data", "session_id") == session_id
-      if item.packet.dig("data", "frozen") == true
-        frozen_at ||= item.created_at.to_i
-      elsif frozen_at != nil
-        offset += [item.created_at.to_i - frozen_at, 0].max
-        frozen_at = nil
-      end
-    end
-    { offset: offset, frozen_at: frozen_at }
-  end
-
-  # A roster row can be larger than a move (eight Unicode participant names).
-  # Respect both native byte and item limits before publishing anything.
-  def archive_chunks(archive, archive_id:, actor:, byte_limit: STACK_ENTRY_BYTES, entry_limit: STACK_ENTRIES)
-    chunks, current = [], []
-    fits = lambda do |events, index|
-      events.length <= ARCHIVE_EVENTS_PER_RECORD && JSON.generate({
-        'version' => PROTOCOL, 'kind' => 'game_archive', 'actor' => actor.to_s,
-        'data' => {'archive_id' => archive_id, 'index' => index, 'events' => events}
-      }).bytesize <= byte_limit
-    end
-    archive.each do |event|
-      unless fits.call(current + [event], chunks.length)
-        chunks << current unless current.empty?
-        current = []
-      end
-      raise ArgumentError, 'The saved game is too large to restore safely' unless fits.call(current + [event], chunks.length)
-      current << event
-    end
-    chunks << current unless current.empty?
-    raise ArgumentError, 'The saved game is too large to restore safely' if chunks.length > entry_limit - 8
-    chunks
-  end
-
-  def archive_events_for(game_record)
-    data = game_record.packet["data"]
-    chunks = records_for(game_record.table_id).select do |item|
-      item.sequence < game_record.sequence && item.packet["kind"] == "game_archive" && item.packet.dig("data", "archive_id") == data["archive_id"]
-    end.sort_by { |item| item.packet.dig("data", "index") }
-    return nil unless chunks.each_with_index.all? { |item, index| item.packet.dig("data", "index") == index }
-    events = chunks.flat_map { |item| item.packet.dig("data", "events") }
-    return nil unless events.length == data["archive_events"] && events.map { |event| event["id"] }.max.to_i == data["event_id_base"]
-    previous = 0
-    players = data.fetch('initial_players', data['players'])
-    return nil unless events.all? do |event|
-      valid = event['id'] > previous
-      if event.key?('players')
-        valid &&= event['players'].length == players.length
-        players = event['players']
-      else
-        valid &&= GameRoomParticipants.includes?(players, event['actor'])
-      end
-      previous = event["id"]
-      valid
-    end
-    return nil unless players == data['players']
-    events
-  end
-
-  def activity_record(record, ledger: nil)
-    return nil if record == nil || record.packet["kind"].to_s != "room_activity"
-
-    data = record.packet["data"].to_h
-    ledger ||= control_ledger(record.table_id)
-    {
-      "__id" => record.sequence.to_i * EVENT_ID_MULTIPLIER,
-      "id" => record.sequence.to_i * EVENT_ID_MULTIPLIER,
-      "table_id" => record.table_id.to_i,
-      "kind" => data["activity_kind"].to_s,
-      "actor" => record.packet["actor"].to_s,
-      "table_owner" => ledger.owner_at(record.sequence),
-      "__authority_validated" => true,
-      "game" => data["game"].to_s,
-      "message" => data["message"].to_s,
-      "subject" => data["subject"].to_s,
-      "invitation_id" => data["invitation_id"].to_i,
-      "created_at" => record.created_at.to_i,
-      "__stack_sequence" => record.sequence.to_i,
-      "__insertion_user" => record.sender.to_s
-    }
-  end
-
-  def lifecycle_activity(record, kind, ledger:, game:)
-    result = { "__id" => record.sequence * EVENT_ID_MULTIPLIER, "table_id" => record.table_id,
-      "kind" => kind, "actor" => record.sender, "__insertion_user" => record.sender,
-      "table_owner" => ledger.owner_at(record.sequence), "game" => game,
-      "__authority_validated" => true,
-      "message" => "", "created_at" => record.created_at, "__stack_sequence" => record.sequence.to_i }
-    data = record.packet["data"]
-    if kind == "options_changed"
-      before = JSON.parse(data["expected_options"])
-      after = JSON.parse(data["game_options"])
-      keys = %w[team_players team_seats]
-      if keys.any? { |key| before[key] != after[key] }
-        result["team_players"] = after["team_players"]
-        result["team_seats"] = after["team_seats"]
-      end
-    elsif kind == "role_changed"
-      result["subject"] = data["subject"]
-      result["role"] = data["role"]
-    end
-    result
-  end
-
-  def table_id_for_record(record)
-    record.table_id.to_i
-  end
-
-  def expand_game_action(record, game_record: nil, ledger: nil)
-    data = record.packet["data"].to_h
-    table_id = table_id_for_record(record)
-    actor = record.packet["actor"].to_s
-    game_record ||= records_for(table_id).reverse.find { |item| item.packet["kind"] == "game_started" && item.packet.dig("data", "session_id") == data["session_id"] }
-    ledger ||= control_ledger(table_id)
-    id_base = game_record&.packet&.dig("data", "event_id_base").to_i
-    Array(data["events"]).each_with_index.map do |command, offset|
-      {
-        "__id" => id_base + record.sequence.to_i * EVENT_ID_MULTIPLIER + offset,
-        "id" => id_base + record.sequence.to_i * EVENT_ID_MULTIPLIER + offset,
-        "__insertion_user" => record.sender.to_s,
-        "__authority_user" => ledger.owner_at(record.sequence),
-        "session_id" => data["session_id"].to_i,
-        "table_id" => table_id,
-        "sequence" => data["sequence"].to_i + offset,
-        "__stack_sequence" => record.sequence.to_i,
-        "__stack_offset" => offset,
-        "move_id" => command["move_id"].to_s,
-        "actor" => actor,
-        "__controller" => data["controller"] == true,
-        "action" => command["action"].to_s,
-        "value" => command["value"].to_s,
-        "created_at" => record.created_at.to_i
-      }
-    end
-  end
-
   def command_value(command, key)
-    return command.public_send(key) if command.respond_to?(key)
-    return nil if !command.respond_to?(:key?)
-    return command[key] if command.key?(key)
-    return command[key.to_sym] if command.key?(key.to_sym)
-
-    nil
+    GameRoomEventProtocol.command_value(command, key)
   end
 
   def owner_for(table_id)
@@ -2033,3 +1168,13 @@ require_relative 'live_session_retention'
 GameRoomLiveSessionStore.include(GameRoomLiveSessionStore::Retention)
 require_relative 'live_session_discovery'
 GameRoomLiveSessionStore.include(GameRoomLiveSessionStore::Discovery)
+
+require_relative 'live_session_room_state'
+
+require_relative "live_session_projections"
+
+require_relative "live_session_writer"
+
+require_relative "live_session_invitations"
+
+require_relative "live_session_archive"

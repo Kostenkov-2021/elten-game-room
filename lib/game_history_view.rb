@@ -45,13 +45,17 @@ module GameRoomHistory
 
     def restore_selection(index:, check:)
       # Native EditBox#text exports CRLF, but its caret counts internal LF.
-      maximum = text.to_s.delete("\r").length
+      maximum = text_len
       self.index = index.to_i.clamp(0, maximum)
       self.check = check.to_i.clamp(0, maximum)
     end
 
     def replace_entries(items, follow_tail: following_tail?)
-      values = items.to_a.map { |item| GameRoomContent.utf8(item).delete("\r").sub(/\n+\z/, '') }
+      # Compare values, not array identity: callers may edit an earlier entry
+      # in place. Already normalized text needs no allocation on a warm view.
+      incoming = items.to_a
+      return if @items == incoming
+      values = incoming.map { |item| GameRoomContent.utf8(item).delete("\r").sub(/\n+\z/, '') }
       return if @items == values
       previous_index, previous_check = index.to_i, check.to_i
       anchors = [previous_index, previous_check].map do |position|

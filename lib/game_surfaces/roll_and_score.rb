@@ -1,12 +1,10 @@
+require_relative "specifications"
 require_relative "../game_room_localization"
 
 module GameSurfaces
   using GameRoomLocalization::Translations
-  ScoreChoice = Struct.new(:id, :label, :value, keyword_init: true)
-  RollAndScoreSpec = Struct.new(
-    :id, :header, :dice, :categories, :can_roll, :force_categories,
-    :empty_label, :roll_number, keyword_init: true
-  )
+
+
 
   # One-field dice surface used by score-sheet games. Enter rolls the selected
   # dice or, when none are selected, opens the local category list. Selecting
@@ -193,12 +191,6 @@ module GameSurfaces
       end
     end
 
-    def state_value(state, key, default)
-      return default if !state.respond_to?(:key?)
-      return state[key] if state.key?(key)
-      return state[key.to_sym] if state.key?(key.to_sym)
 
-      default
-    end
   end
 end

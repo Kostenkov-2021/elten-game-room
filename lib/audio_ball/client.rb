@@ -1,3 +1,4 @@
+require_relative 'client_state'
 require 'digest'
 require_relative 'engine'
 require_relative 'defense_input'
@@ -5,6 +6,7 @@ require_relative 'bot'
 require_relative 'audio'
 require_relative '../realtime/event_channel'
 require_relative '../realtime/timer'
+require_relative '../realtime/progress'
 require_relative '../realtime/task_ui'
 require_relative '../realtime/table_control'
 
@@ -14,22 +16,23 @@ module GameRoomAudioBall
   using GameRoomLocalization::Translations
   class Client
     include GameRoomRealtime::TableControl
+    include GameRoomRealtime::ProgressClient
     SEND_INTERVAL = 0.04
     POINT_PAUSE = 5.7
     SET_PAUSE = 5.0
     STREAM_TIMEOUT = 4.0
-    attr_reader :engine, :snapshot, :paused
+
 
     def initialize(program, game, clock: -> { Process.clock_gettime(Process::CLOCK_MONOTONIC) }, channel_factory: nil, audio: nil, transport: nil)
       @program, @game, @clock = program, game, clock
       @activity_transport = transport
       @channel_factory = channel_factory || ->(**args) { GameRoomRealtime::EventChannel.new(**args) }
       @audio = audio || Audio.new(program, clock: clock)
-      @paused, @closed = true, false
-      @peers, @connections, @deferred = {}, {}, []
-      @sequence = @event_sequence = 0
-      @next_send = 0.0
-      @last_reconnect = -30.0
+      rally_state.paused, @closed = true, false
+      connection_state.peers, connection_state.connections, rally_state.deferred = {}, {}, []
+      connection_state.sequence = connection_state.event_sequence = 0
+      connection_state.next_send = 0.0
+      connection_state.last_reconnect = -30.0
       @selected_lane = nil
       @defense_input = DefenseInput.new
     end
@@ -37,7 +40,7 @@ module GameRoomAudioBall
     def bind_screen(session_id:, table_id:, owner:, viewer:, members:)
       @activity_table, @activity_session = table_id, session_id
       @owner, @viewer = owner.to_s, viewer.to_s
-      @connection_started = @clock.call
+      connection_state.connection_started = @clock.call
       @match = Digest::SHA256.hexdigest("GameRoom:audio_ball:#{table_id}:#{session_id}")[0, 24]
       @base_match, @members_provider = @match, members
       @channel = @channel_factory.call(program: @program, match: @match, owner: @owner,
@@ -48,12 +51,13 @@ module GameRoomAudioBall
     def start
       register_ping_channel
       @audio.load
+      start_progress
       true
     end
 
     def host?; @owner.casecmp?(@viewer); end
     def refresh_due?; false; end
-    def context_data; {'audio_ball_point' => @pending_point}; end
+    def context_data; {'audio_ball_point' => point_state.pending_point}; end
     def action(_selection, _replay, _viewer); false; end
     def error(_status); end
     def automatic_error(_status); end
@@ -70,7 +74,7 @@ module GameRoomAudioBall
       @channel.required_members = (@required + [@owner]).uniq
       reset_rally if changed
       if replay.finished?
-        @paused = true
+        rally_state.paused = true
         detach_view
         unregister_ping_channel
         @channel.close
@@ -80,25 +84,30 @@ module GameRoomAudioBall
     def event(event, before, after, viewer, _repository)
       return unless event['action'] == 'audio_ball_point' && before && after
       rally = after.state[:rally]
-      return unless rally == before.state[:rally] + 1 && rally > @announced_rally.to_i
-      @announced_rally = rally
+      return unless rally == before.state[:rally] + 1 && rally > presentation_state.announced_rally.to_i
+      presentation_state.announced_rally = rally
       return if @replay && rally < @replay.state[:rally]
       result = after.state[:last_point]
       return unless result
       side = after.players.index { |player| player.to_s.casecmp?(viewer.to_s) }
-      preview = @goal_preview if @goal_preview && @goal_preview[:rally] == before.state[:rally] &&
-        @goal_preview[:winner] == result[:winner]
+      preview = point_state.goal_preview if point_state.goal_preview && point_state.goal_preview[:rally] == before.state[:rally] &&
+        point_state.goal_preview[:winner] == result[:winner]
       @audio.point(result[:scores], sets: after.state[:sets], set_finished: result[:set_finished],
         winner: result[:winner], viewer: side, finished: after.finished?, goal_at: preview && preview[:at])
-      @ready_at = point_ready_at(result)
-      @goal_preview = nil
+      rally_state.ready_at = point_ready_at(result)
+      point_state.goal_preview = nil
     end
 
     def presents_game_event?(event); event['action'] == 'audio_ball_point' && presents_point?; end
-    def presents_game_result?(replay); replay.finished? && replay.state[:rally] == @announced_rally && presents_point?; end
+    def presents_game_result?(replay); replay.finished? && replay.state[:rally] == presentation_state.announced_rally && presents_point?; end
 
     def attach_view(form, surface)
-      return if @form.equal?(form) && @surface.equal?(surface) && @timer && @replay && !@replay.finished?
+      if @form.equal?(form) && @surface.equal?(surface) && @timer && @replay && !@replay.finished?
+        # A retained view can have moved to chat since the preceding frame.
+        # Stop capture now; ordinary input refresh reacquires it on return.
+        @surface.deactivate_input if @surface.respond_to?(:deactivate_input) && !@surface.input_selected?(@form)
+        return
+      end
       detach_view
       return unless surface.respond_to?(:present) && @replay && !@replay.finished?
       @form, @surface = form, surface
@@ -107,31 +116,30 @@ module GameRoomAudioBall
       # selected field now; actual input keeps the stricter active-frame guard.
       @surface.activate_input if @surface.respond_to?(:activate_input) && @surface.input_selected?(@form)
       @surface.on_audio_ball_command = method(:local_command) if @surface.respond_to?(:on_audio_ball_command=)
-      @timer = GameRoomRealtime::Timer.new(clock: @clock) { frame }
-      @form.add_timer(@timer)
-      @form.retain_binding_timer(@timer) if @form.respond_to?(:retain_binding_timer)
+      @progress.attach(@form)
+      @timer = @progress.timer
       present
     end
 
     def detach_view
-      @timer&.stop
+      @progress&.detach
       @defense_input.forget_held
       @surface.deactivate_input if @surface.respond_to?(:deactivate_input)
       @surface.on_audio_ball_command = nil if @surface.respond_to?(:on_audio_ball_command=)
       @form.delete_timer(@timer) if @form && @timer
       @timer = @surface = @form = nil
-      @audio.update(@snapshot, viewer: @side || 0, paused: true) if @snapshot
+      @audio.update(rally_state.snapshot, viewer: @side || 0, paused: true) if rally_state.snapshot
     end
 
     def tick
       return if @closed
       @audio.tick if @audio.respond_to?(:tick)
       return if !@replay || @replay.finished?
-      connected = @connected || @channel.connected?
+      connected = connection_state.connected || @channel.connected?
       @channel.tick
-      @connected = @channel.connected?
-      if connected && !@connected && !host? && @side != nil
-        @resync_requested, @paused = true, true
+      connection_state.connected = @channel.connected?
+      if connected && !connection_state.connected && !host? && @side != nil
+        connection_state.resync_requested, rally_state.paused = true, true
       end
     end
 
@@ -147,12 +155,13 @@ module GameRoomAudioBall
       check_connection(now)
       healthy = healthy?(now)
       active = healthy && local_ready?(now)
-      playable = active && !@paused
-      elapsed = @last_frame && !@paused && active && !@clock_reset ? [now - @last_frame, 0.0].max : 0.0
+      playable = active && !rally_state.paused
+      elapsed = rally_state.last_frame && !rally_state.paused && active && !@clock_reset ? [now - rally_state.last_frame, 0.0].max : 0.0
       @clock_reset = false
-      @last_frame, @paused = now, !active
+      rally_state.last_frame, rally_state.paused = now, !active
       commands = @surface ? @surface.input(@form) : []
-      allowed_input = playable && @side != nil && !@network_wait && !@settings_open
+      commands = [] if @background_input # Drain, but never replay keys from the covered view.
+      allowed_input = playable && @side != nil && !@background_input && !@network_wait && !@settings_open
       flight = incoming_flight
       @selected_lane = @defense_input.update(flight: flight,
         enabled: allowed_input && input_flight && input_flight == flight,
@@ -162,11 +171,11 @@ module GameRoomAudioBall
         announce_set
         advance_engine(elapsed)
         commands.each do |command|
-          next unless allowed_input && @engine.phase != :flying
-          drain_transitions if @engine.press(@side, command)
+          next unless allowed_input && rally_state.engine.phase != :flying
+          drain_transitions if rally_state.engine.press(@side, command)
         end
       end
-      @snapshot = @engine&.snapshot
+      rally_state.snapshot = rally_state.engine&.snapshot
       send_state(now, healthy)
       agree_point(now) if host? && healthy
       present
@@ -179,7 +188,7 @@ module GameRoomAudioBall
         else
           begin
             @network_wait = true
-            frame
+            progress_frame
           ensure
             @network_wait = false
           end
@@ -191,7 +200,7 @@ module GameRoomAudioBall
       return if @settings_open || @closed
       opened_here = true
       @settings_open = true
-      @program.send(:show_audio_ball_settings, tick: -> { frame }, clock: @clock)
+      @program.send(:show_audio_ball_settings, tick: -> { progress_frame }, clock: @clock)
     ensure
       if opened_here
         @settings_open = false
@@ -204,6 +213,7 @@ module GameRoomAudioBall
       return if @closed
       @closed = true
       unregister_ping_channel
+      @progress&.close
       detach_view
       @channel&.close
       @audio.close
@@ -215,12 +225,12 @@ module GameRoomAudioBall
     # its connection and input state; the table layer knows no physics fields.
     def reset_table_control
       @defense_input.reset
-      @connection_started = @clock.call
-      @epoch = nil
-      @peers, @connections, @deferred = {}, {}, []
-      @sequence = @event_sequence = 0
-      @pending_point = @goal_preview = @replay = nil
-      @paused = true
+      connection_state.connection_started = @clock.call
+      connection_state.epoch = nil
+      connection_state.peers, connection_state.connections, rally_state.deferred = {}, {}, []
+      connection_state.sequence = connection_state.event_sequence = 0
+      point_state.pending_point = point_state.goal_preview = @replay = nil
+      rally_state.paused = true
       @surface.clear_input if @surface&.respond_to?(:clear_input)
     end
 
@@ -232,42 +242,42 @@ module GameRoomAudioBall
       @defense_input.reset
       @selected_lane = @selected_flight = nil
       server = @replay.state[:server]
-      @engine = server == nil ? nil : Engine.new(level: @replay.state[:options]['difficulty'], server: server)
-      @snapshot = @engine&.snapshot
-      @observer_synced = false
-      @observer_audio_floor = @last_audio_transition = nil
+      rally_state.engine = server == nil ? nil : Engine.new(level: @replay.state[:options]['difficulty'], server: server)
+      rally_state.snapshot = rally_state.engine&.snapshot
+      presentation_state.observer_synced = false
+      presentation_state.observer_audio_floor = @last_audio_transition = nil
       bot_sides = host? ? @players.each_index.select { |side| bot_seat?(@players[side]) } : []
       @controlled = ([@side].compact + bot_sides).uniq
-      seed = Digest::SHA256.hexdigest("#{@match}:#{@epoch}:#{@replay.state[:rally]}")[0, 12].to_i(16)
+      seed = Digest::SHA256.hexdigest("#{@match}:#{connection_state.epoch}:#{@replay.state[:rally]}")[0, 12].to_i(16)
       @bots = bot_sides.map do |side|
         Bot.new(side, level: @replay.state[:options]['difficulty'], rng: Random.new(seed + side))
       end
-      @pending_point = @point_reason = @warning_key = nil
+      point_state.pending_point = point_state.point_reason = presentation_state.warning_key = nil
       @disagreements = {}
       result = @replay.state[:last_point]
-      @ready_at = result ? point_ready_at(result) : @clock.call
-      @last_frame = nil
-      @paused = true
-      @next_send = 0.0
+      rally_state.ready_at = result ? point_ready_at(result) : @clock.call
+      rally_state.last_frame = nil
+      rally_state.paused = true
+      connection_state.next_send = 0.0
       @audio.reset
     end
 
     def synchronize_epoch
-      return unless @channel.epoch && @channel.epoch != @epoch
-      first_local_connection = !@epoch && local_match?
-      @epoch = @channel.epoch
-      @recovering = false
-      @resync_requested = false
-      @connection_started = @clock.call
-      @connections.clear
-      @peers.clear
-      @sequence = @event_sequence = 0
-      @deferred.clear
-      reset_rally unless first_local_connection || @pending_point
+      return unless @channel.epoch && @channel.epoch != connection_state.epoch
+      local_connection = local_match?
+      connection_state.epoch = @channel.epoch
+      connection_state.recovering = false
+      connection_state.resync_requested = false
+      connection_state.connection_started = @clock.call
+      connection_state.connections.clear
+      connection_state.peers.clear
+      connection_state.sequence = connection_state.event_sequence = 0
+      rally_state.deferred.clear
+      reset_rally unless local_connection || point_state.pending_point
     end
 
     def packet_valid?(packet, kind)
-      packet.is_a?(Hash) && packet['m'] == @match && packet['e'] == @epoch &&
+      packet.is_a?(Hash) && packet['m'] == @match && packet['e'] == connection_state.epoch &&
         packet['v'] == GameRoomRealtime::Protocol::VERSION && packet['k'] == kind &&
         [packet['n'], packet['a']].all? { |number| number.is_a?(Integer) && number.between?(0, GameRoomRealtime::Protocol::MAX_SEQUENCE) } && packet['d'].is_a?(Hash)
     end
@@ -282,28 +292,28 @@ module GameRoomAudioBall
           body['turn'].is_a?(Integer) && body['turn'].between?(0, 2**31 - 1) &&
           [nil, 0, 1].include?(body['goal']) && [true, false].include?(body['ready']) &&
           (!body.key?('resync') || [true, false].include?(body['resync']))
-        connection = (@connections[name] ||= GameRoomRealtime::PeerState.new)
-        next unless connection.receive(packet, now: now, last_sent: @sequence)
+        connection = (connection_state.connections[name] ||= GameRoomRealtime::PeerState.new)
+        next unless connection.receive(packet, now: now, last_sent: connection_state.sequence)
         next unless body['r'] == @replay.state[:rally]
-        peer = (@peers[name] ||= GameRoomRealtime::PeerState.new)
-        next unless peer.receive(packet, now: now, last_sent: @sequence)
-        if !host? && @side == nil && @engine && body['state'].is_a?(Hash) && body['turn'] >= @engine.turn
+        peer = (connection_state.peers[name] ||= GameRoomRealtime::PeerState.new)
+        next unless peer.receive(packet, now: now, last_sent: connection_state.sequence)
+        if !host? && @side == nil && rally_state.engine && body['state'].is_a?(Hash) && body['turn'] >= rally_state.engine.turn
           state = body['state']
           next unless state['server'] == @replay.state[:server] && state['level'] == @replay.state[:options]['difficulty'] &&
             state['turn'] == body['turn'] && state['goal'] == body['goal']
-          if @engine.restore(state)
-            @observer_audio_floor = @engine.turn unless @observer_synced
-            @observer_synced = true
-            @recovering = false if @channel.connected?
+          if rally_state.engine.restore(state)
+            presentation_state.observer_audio_floor = rally_state.engine.turn unless presentation_state.observer_synced
+            presentation_state.observer_synced = true
+            connection_state.recovering = false if @channel.connected?
           end
         end
       end
     end
 
     def receive_events
-      return unless @engine
+      return unless rally_state.engine
       @channel.take_events.each do |sender, packet|
-        next if !host? && @side == nil && !@observer_synced
+        next if !host? && @side == nil && !presentation_state.observer_synced
         next unless packet_valid?(packet, 'event')
         data = packet['d']
         next unless valid_event?(data) && (data['r'] - @replay.state[:rally]).between?(0, 1)
@@ -311,37 +321,37 @@ module GameRoomAudioBall
         author = data['action'] == 'point' || bot_seat?(player) ? @owner : player.to_s
         next unless author.casecmp?(sender.to_s) && !sender.to_s.casecmp?(@viewer)
         next if data['action'] == 'warn' && bot_seat?(player)
-        next if @deferred.include?(data)
-        base_turn = data['r'] == @replay.state[:rally] ? @engine.turn : 0
-        if data['turn'] > base_turn + GameRoomRealtime::EventChannel::LIMIT || @deferred.length >= GameRoomRealtime::EventChannel::LIMIT
+        next if rally_state.deferred.include?(data)
+        base_turn = data['r'] == @replay.state[:rally] ? rally_state.engine.turn : 0
+        if data['turn'] > base_turn + GameRoomRealtime::EventChannel::LIMIT || rally_state.deferred.length >= GameRoomRealtime::EventChannel::LIMIT
           recover('AudioBallActionGap')
           break
         end
-        @deferred << data
+        rally_state.deferred << data
       end
-      @deferred.sort_by! { |data| [data['r'], data['turn'], %w[warn point].include?(data['action']) ? 1 : 0] }
-      @deferred.delete_if do |data|
+      rally_state.deferred.sort_by! { |data| [data['r'], data['turn'], %w[warn point].include?(data['action']) ? 1 : 0] }
+      rally_state.deferred.delete_if do |data|
         next true if data['r'] < @replay.state[:rally]
         next false if data['r'] > @replay.state[:rally]
         if data['action'] == 'warn'
-          next false if data['turn'] > @engine.turn
+          next false if data['turn'] > rally_state.engine.turn
           accept_warning(data)
           next true
         end
         if data['action'] == 'point'
-          next false if data['turn'] > @engine.turn
-          preview_goal(data['side']) if !host? && @engine.turn == data['turn'] && @engine.goal == data['side']
+          next false if data['turn'] > rally_state.engine.turn
+          preview_goal(data['side']) if !host? && rally_state.engine.turn == data['turn'] && rally_state.engine.goal == data['side']
           next true
         end
-        if data['turn'] <= @engine.turn
+        if data['turn'] <= rally_state.engine.turn
           # An observer may receive the owner's current snapshot before the
           # matching reliable event. Present its cue once without applying
           # the transition again or playing historical cues on initial join.
           transition_audio(data) if observer_snapshot_cue?(data)
           next true
         end
-        next false if data['turn'] > @engine.turn + 1
-        if @engine.apply(data.reject { |key, _| key == 'r' })
+        next false if data['turn'] > rally_state.engine.turn + 1
+        if rally_state.engine.apply(data.reject { |key, _| key == 'r' })
           note_play_activity if %w[hit defend].include?(data['action'])
           @clock_reset = true
           transition_audio(data)
@@ -374,33 +384,33 @@ module GameRoomAudioBall
     end
 
     def recover(reason)
-      @resync_requested = true if !host? && @side != nil
-      return if @recovering || @clock.call - @last_reconnect < 10.0
-      @last_reconnect = @clock.call
-      @recovering, @paused = true, true
-      @deferred.clear
+      connection_state.resync_requested = true if !host? && @side != nil
+      return if connection_state.recovering || @clock.call - connection_state.last_reconnect < 10.0
+      connection_state.last_reconnect = @clock.call
+      connection_state.recovering, rally_state.paused = true, true
+      rally_state.deferred.clear
       @channel.reconnect(reason: reason)
     end
 
     def check_connection(now)
-      return if local_match? || !@engine
+      return if local_match? || !rally_state.engine
       names = host? ? @required : [@owner]
       expired = names.any? do |name|
-        peer = @connections[name.downcase]
+        peer = connection_state.connections[name.downcase]
         received = host? ? peer&.ack_updated_at : peer&.received_at
-        received ? now - received > STREAM_TIMEOUT : now - @connection_started > 10.0
+        received ? now - received > STREAM_TIMEOUT : now - connection_state.connection_started > 10.0
       end
       recover('AudioBallStatusTimeout') if expired
-      return unless host? && !@pending_point
+      return unless host? && !point_state.pending_point
       @required.each do |name|
-        peer = @peers[name.downcase]
+        peer = connection_state.peers[name.downcase]
         if peer && peer.body['resync']
           recover('AudioBallPeerRejoined')
           next
         end
-        identity = peer && [@engine.turn, @engine.goal, peer.body['turn'], peer.body['goal']]
+        identity = peer && [rally_state.engine.turn, rally_state.engine.goal, peer.body['turn'], peer.body['goal']]
         if !peer || !peer.fresh?(now, timeout: STREAM_TIMEOUT) || peer.body['r'] != @replay.state[:rally] ||
-            (peer.body['turn'] == @engine.turn && peer.body['goal'] == @engine.goal)
+            (peer.body['turn'] == rally_state.engine.turn && peer.body['goal'] == rally_state.engine.goal)
           @disagreements.delete(name)
         elsif @disagreements[name]&.first != identity
           @disagreements[name] = [identity, now]
@@ -411,31 +421,31 @@ module GameRoomAudioBall
     end
 
     def healthy?(now)
-      return false if @recovering || @resync_requested || (!host? && @side == nil && !@observer_synced)
+      return false if connection_state.recovering || connection_state.resync_requested || (!host? && @side == nil && !presentation_state.observer_synced)
       return true if local_match?
       return false unless @channel.connected? && @channel.required_members_present?
       if host?
         @required.all? do |name|
-          peer = @peers[name.downcase]
+          peer = connection_state.peers[name.downcase]
           peer && peer.body['r'] == @replay.state[:rally] && peer.fresh?(now, timeout: STREAM_TIMEOUT) && peer.ack_fresh?(now, timeout: STREAM_TIMEOUT) && peer.body['ready'] && !peer.body['resync']
         end
       else
-        peer = @peers[@owner.downcase]
+        peer = connection_state.peers[@owner.downcase]
         peer && peer.body['r'] == @replay.state[:rally] && peer.fresh?(now, timeout: STREAM_TIMEOUT) && peer.body['ready']
       end
     end
 
     def send_state(now, healthy)
-      signature = @engine && [@engine.turn, @engine.goal, @paused]
-      return unless @epoch && @engine && (now >= @next_send || signature != @sent_signature)
+      signature = rally_state.engine && [rally_state.engine.turn, rally_state.engine.goal, rally_state.paused]
+      return unless connection_state.epoch && rally_state.engine && (now >= connection_state.next_send || signature != @sent_signature)
       @sent_signature = signature
-      @next_send = now + SEND_INTERVAL
-      @sequence += 1
-      body = {'r' => @replay.state[:rally], 'turn' => @engine.turn, 'goal' => @engine.goal,
-        'ready' => local_ready?(now) && (host? ? !!healthy : true), 'resync' => !!@resync_requested}
-      body['state'] = @snapshot if host?
-      ack = host? ? 0 : @connections[@owner.downcase]&.sequence.to_i
-      @channel.send(GameRoomRealtime::Protocol.encode(match: @match, epoch: @epoch, sequence: @sequence,
+      connection_state.next_send = now + SEND_INTERVAL
+      connection_state.sequence += 1
+      body = {'r' => @replay.state[:rally], 'turn' => rally_state.engine.turn, 'goal' => rally_state.engine.goal,
+        'ready' => local_ready?(now) && (host? ? !!healthy : true), 'resync' => !!connection_state.resync_requested}
+      body['state'] = rally_state.snapshot if host?
+      ack = host? ? 0 : connection_state.connections[@owner.downcase]&.sequence.to_i
+      @channel.send(GameRoomRealtime::Protocol.encode(match: @match, epoch: connection_state.epoch, sequence: connection_state.sequence,
         kind: host? ? 'state' : 'input', body: body, ack: ack))
     end
 
@@ -444,7 +454,7 @@ module GameRoomAudioBall
     end
 
     def incoming_flight
-      [@engine, @engine.turn] if @engine && @engine.phase == :flying && @engine.receiver == @side
+      [rally_state.engine, rally_state.engine.turn] if rally_state.engine && rally_state.engine.phase == :flying && rally_state.engine.receiver == @side
     end
 
     def advance_engine(elapsed)
@@ -453,18 +463,18 @@ module GameRoomAudioBall
         seconds = [elapsed, 0.008].min
         defenses = @selected_lane && @selected_flight == incoming_flight ? {@side => @selected_lane} : {}
         @bots.each do |bot|
-          lane = bot.selected_lane(@engine)
+          lane = bot.selected_lane(rally_state.engine)
           defenses[bot.side] = lane if lane
         end
-        @engine.step(seconds, controlled: @controlled, defenses: defenses)
+        rally_state.engine.step(seconds, controlled: @controlled, defenses: defenses)
         drain_transitions
-        @bots.each { |bot| bot.step(@engine, seconds: seconds); drain_transitions }
+        @bots.each { |bot| bot.step(rally_state.engine, seconds: seconds); drain_transitions }
         elapsed -= seconds
       end
     end
 
     def drain_transitions
-      while (data = @engine.take_transition)
+      while (data = rally_state.engine.take_transition)
         note_play_activity if %w[hit defend].include?(data['action'])
         transition_audio(data)
         emit_event(data)
@@ -472,55 +482,55 @@ module GameRoomAudioBall
     end
 
     def emit_event(data)
-      return if !@epoch || !@channel.connected?
-      @event_sequence += 1
-      queued = @channel.send_event(GameRoomRealtime::Protocol.encode(match: @match, epoch: @epoch, sequence: @event_sequence,
+      return if !connection_state.epoch || !@channel.connected?
+      connection_state.event_sequence += 1
+      queued = @channel.send_event(GameRoomRealtime::Protocol.encode(match: @match, epoch: connection_state.epoch, sequence: connection_state.event_sequence,
         kind: 'event', body: data.merge('r' => @replay.state[:rally])))
       recover('AudioBallActionNotQueued') unless queued
     end
 
     def local_command(command)
-      return false unless command == 'hurry' && !@closed && !@paused && !@network_wait && !@settings_open && @side != nil && @engine
-      data = {'action' => 'warn', 'side' => @side, 'turn' => @engine.turn, 'hits' => @engine.hits}
+      return false unless command == 'hurry' && !@closed && !rally_state.paused && !@network_wait && !@settings_open && @side != nil && rally_state.engine
+      data = {'action' => 'warn', 'side' => @side, 'turn' => rally_state.engine.turn, 'hits' => rally_state.engine.hits}
       return false unless accept_warning(data)
       emit_event(data)
       true
     end
 
     def accept_warning(data)
-      return false unless data['hits'] == @engine.hits && (@engine.turn - data['turn']).between?(0, 1)
-      return false unless [:waiting, :prepared].include?(@engine.phase) && data['side'] == 1 - @engine.holder
-      key = [@replay.state[:rally], @engine.hits, @engine.holder]
-      return false if @warning_key == key
-      return false unless @engine.warn(data['side']) || (!host? && @side == nil && @engine.warning)
-      @warning_key = key
+      return false unless data['hits'] == rally_state.engine.hits && (rally_state.engine.turn - data['turn']).between?(0, 1)
+      return false unless [:waiting, :prepared].include?(rally_state.engine.phase) && data['side'] == 1 - rally_state.engine.holder
+      key = [@replay.state[:rally], rally_state.engine.hits, rally_state.engine.holder]
+      return false if presentation_state.warning_key == key
+      return false unless rally_state.engine.warn(data['side']) || (!host? && @side == nil && rally_state.engine.warning)
+      presentation_state.warning_key = key
       @clock_reset = true
-      @audio.hurry(GameRoomParticipants.display_name(@players[@engine.holder]))
+      @audio.hurry(GameRoomParticipants.display_name(@players[rally_state.engine.holder]))
       true
     end
 
     def local_ready?(now)
-      @engine != nil && !@pending_point && !@recovering && !@resync_requested && now >= @ready_at
+      rally_state.engine != nil && !point_state.pending_point && !connection_state.recovering && !connection_state.resync_requested && now >= rally_state.ready_at
     end
 
     def agree_point(now)
-      return if @pending_point || !@engine || @engine.goal == nil
+      return if point_state.pending_point || !rally_state.engine || rally_state.engine.goal == nil
       return unless @required.all? do |name|
-        peer = @peers[name.downcase]
+        peer = connection_state.peers[name.downcase]
         peer && peer.fresh?(now, timeout: STREAM_TIMEOUT) && peer.body['r'] == @replay.state[:rally] &&
-          peer.body['turn'] == @engine.turn && peer.body['goal'] == @engine.goal
+          peer.body['turn'] == rally_state.engine.turn && peer.body['goal'] == rally_state.engine.goal
       end
-      @pending_point = "#{@replay.state[:rally]}:#{@engine.goal}"
-      @pending_point += ':timeout' if @point_reason == 'timeout'
+      point_state.pending_point = "#{@replay.state[:rally]}:#{rally_state.engine.goal}"
+      point_state.pending_point += ':timeout' if point_state.point_reason == 'timeout'
       # Only the owner, after every human agrees, confirms the goal sound.
       # Scores and match results still wait for the accepted LiveSessions event.
-      preview_goal(@engine.goal)
-      emit_event('action' => 'point', 'side' => @engine.goal, 'turn' => @engine.turn)
+      preview_goal(rally_state.engine.goal)
+      emit_event('action' => 'point', 'side' => rally_state.engine.goal, 'turn' => rally_state.engine.turn)
     end
 
     def preview_goal(winner)
-      return if @goal_preview && @goal_preview[:rally] == @replay.state[:rally]
-      @goal_preview = {rally: @replay.state[:rally], winner: winner, at: @clock.call}
+      return if point_state.goal_preview && point_state.goal_preview[:rally] == @replay.state[:rally]
+      point_state.goal_preview = {rally: @replay.state[:rally], winner: winner, at: @clock.call}
       @audio.goal(viewer: @side, winner: winner)
     end
 
@@ -528,13 +538,13 @@ module GameRoomAudioBall
       now = @clock.call
       # Keep the durable five-second set break, also enforced by replay.
       return now + SET_PAUSE if result[:set_finished]
-      preview = @goal_preview if @goal_preview && @goal_preview[:rally] == @replay.state[:rally] - 1 &&
-        @goal_preview[:winner] == result[:winner]
+      preview = point_state.goal_preview if point_state.goal_preview && point_state.goal_preview[:rally] == @replay.state[:rally] - 1 &&
+        point_state.goal_preview[:winner] == result[:winner]
       preview ? [now, preview[:at] + 3.0].max + (POINT_PAUSE - 3.0) : now + POINT_PAUSE
     end
 
     def transition_audio(data)
-      @point_reason = data['reason'] if data['action'] == 'miss'
+      point_state.point_reason = data['reason'] if data['action'] == 'miss'
       return unless %w[prepare defend].include?(data['action'])
       key = [@replay.state[:rally], data['turn'], data['action']]
       return if @last_audio_transition == key
@@ -544,16 +554,16 @@ module GameRoomAudioBall
     end
 
     def observer_snapshot_cue?(data)
-      return false if host? || @side != nil || !@observer_synced
-      return false unless data['turn'] == @engine.turn && data['turn'] > @observer_audio_floor.to_i && @engine.holder == data['side']
-      (data['action'] == 'prepare' && @engine.phase == :prepared) ||
-        (data['action'] == 'defend' && @engine.phase == :waiting)
+      return false if host? || @side != nil || !presentation_state.observer_synced
+      return false unless data['turn'] == rally_state.engine.turn && data['turn'] > presentation_state.observer_audio_floor.to_i && rally_state.engine.holder == data['side']
+      (data['action'] == 'prepare' && rally_state.engine.phase == :prepared) ||
+        (data['action'] == 'defend' && rally_state.engine.phase == :waiting)
     end
 
     def announce_set
       number = @replay.state[:set_number]
-      if @announced_set != number
-        @announced_set = number
+      if presentation_state.announced_set != number
+        presentation_state.announced_set = number
         @audio.announce_set(number)
       end
       service = [number, @replay.state[:rally] / 2]
@@ -564,21 +574,21 @@ module GameRoomAudioBall
       if @audio.respond_to?(:announce)
         @audio.announce(text)
       else
-        speak(text, stop: false, break_sequence: false)
+        announce_progress(text, interrupt: false)
       end
     end
 
     def present
-      return unless @snapshot
-      @surface.present(@snapshot, pause_status) if @surface
-      @audio.update(@snapshot, viewer: @side || 0, paused: @paused)
+      return unless rally_state.snapshot
+      @surface.present(rally_state.snapshot, pause_status) if @surface
+      @audio.update(rally_state.snapshot, viewer: @side || 0, paused: rally_state.paused)
     end
 
     def pause_status
-      return '' unless @paused
-      return _('Waiting for the point to be saved.') if @pending_point || @engine&.goal != nil
+      return '' unless rally_state.paused
+      return _('Waiting for the point to be saved.') if point_state.pending_point || rally_state.engine&.goal != nil
       result = @replay.state[:last_point]
-      if result && @clock.call < @ready_at
+      if result && @clock.call < rally_state.ready_at
         return result[:set_finished] ? _('Break between sets.') : _('Break between points.')
       end
       _('Waiting for players.')

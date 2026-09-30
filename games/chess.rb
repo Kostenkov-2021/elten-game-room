@@ -1,3 +1,5 @@
+require_relative '../lib/board_preference_definition'
+require_relative "../lib/colour_board_presentation"
 require_relative "../lib/game_bots"
 require_relative "../lib/game_tree_search"
 require_relative "board_game"
@@ -7,6 +9,7 @@ require_relative "../lib/game_room_localization"
 module GameRoomGames
   using GameRoomLocalization::Translations
   class Chess < TurnBasedBoardGame
+    include GameRoomColourBoardPresentation
     SIZE = 8
     PIECE_NAMES = {
       "P" => "pawn", "N" => "knight", "B" => "bishop",
@@ -18,6 +21,10 @@ module GameRoomGames
     BISHOP_STEPS = [[1, 1], [1, -1], [-1, 1], [-1, -1]].freeze
     ROOK_STEPS = [[1, 0], [-1, 0], [0, 1], [0, -1]].freeze
     PROMOTIONS = %w[Q R B N].freeze
+
+    def board_preference_definitions
+      [GameRoomBoardPreference.orientation]
+    end
 
     def event_sound_cues(event:, before_replay:, after_replay:, history:, viewer:, random_variant:)
       action = event["action"].to_s
@@ -45,44 +52,7 @@ module GameRoomGames
     end
 
     def rule_sections
-      # Generated from docs/rulebooks/chess.json; see tools/compile-rulebooks.rb.
-      [
-        rule_section(:king, GameRoomRules.translate("The king is what you are protecting"),
-          GameRoomRules.translate("Chess is a game for two players. White moves first, then the players alternate one move at a time. Each begins with a king, queen, two rooks, two bishops, two knights and eight pawns on an 8 by 8 board. Your aim is to attack the opposing king in a way your opponent cannot escape: this is checkmate. You do not actually capture the king."),
-          GameRoomRules.translate("You capture an opposing piece by moving one of yours onto its square. You cannot land on a piece of your own colour. Nor may you make a move that exposes your king to attack, even if the move would otherwise be possible.")),
-        rule_section(:pieces, GameRoomRules.translate("Getting to know the pieces"),
-          GameRoomRules.translate("The rook moves any distance along a row or column. The bishop moves any distance diagonally. The queen combines both movements. None of these pieces can jump over another piece. For example, a rook blocked by your own pawn must wait for the pawn to move or choose another direction."),
-          GameRoomRules.translate("The knight moves in an L: two squares along a row or column, then one square sideways. It can jump over pieces in between. The king normally moves one square in any direction, but never onto a square attacked by the opponent. Two kings therefore cannot stand next to each other."),
-          GameRoomRules.translate("A pawn moves forward towards the opponent's starting side. It advances one square into an empty square. From its starting row it may instead advance two, provided both squares are empty. It captures differently: one square diagonally forward. A pawn cannot move backwards or capture straight ahead."),
-          GameRoomRules.translate("A pawn reaching the farthest row is promoted. Choose a queen, rook, bishop or knight from the list. This choice is not limited to pieces that have already been captured: you can have two queens.")),
-        rule_section(:special, GameRoomRules.translate("Two special moves"),
-          GameRoomRules.translate("Castling moves the king and a rook in one turn. Move your king two squares towards the chosen rook; the program moves the rook to the square the king crossed. Both pieces must still have their original castling rights, and the squares between them must be empty. You cannot castle out of check, through an attacked square or into check. Both kingside and queenside castling are supported."),
-          GameRoomRules.translate("En passant is a special pawn capture. If an opposing pawn advances two squares and finishes beside your pawn, you may capture it as though it had advanced only one. Move diagonally to the square it passed through. This opportunity exists only on your very next move; if you play something else, it is gone.")),
-        rule_section(:mate, GameRoomRules.translate("Check, mate and the end of the game"),
-          GameRoomRules.translate("Check means that your king is under attack. You must answer it by moving the king, capturing the attacker or blocking the attack, whichever is legal. If no legal reply exists, it is checkmate and you lose. If you have no legal move but your king is not attacked, it is stalemate and the game is drawn."),
-          GameRoomRules.translate("Game Room also ends the game automatically on threefold repetition, after 50 moves by each side without a pawn move or capture, and in the insufficient-material positions recognised by the program. You do not have to claim these draws. There is no chess clock or alternative chess variant in the current game.")),
-        rule_section(:controls, GameRoomRules.translate("Game keyboard shortcuts"),
-          GameRoomRules.translate("Arrows: browse squares."),
-          GameRoomRules.translate("Enter: select your piece, then its destination; choose a promotion if needed."),
-          GameRoomRules.translate("V: read legal destinations for the inspected piece."),
-          GameRoomRules.translate("E: read pieces attacking the inspected square."),
-          GameRoomRules.translate("C: read player colours."),
-          GameRoomRules.translate("S: read each player's remaining pieces."),
-          GameRoomRules.translate("Ctrl+Shift+H: rotate the board view."),
-          GameRoomRules.translate("T: read whose turn it is."),
-          GameRoomRules.translate("K: browse your kings."),
-          GameRoomRules.translate("Shift+K: browse the opponent's kings."),
-          GameRoomRules.translate("D: browse your queens."),
-          GameRoomRules.translate("Shift+D: browse the opponent's queens."),
-          GameRoomRules.translate("R: browse your rooks."),
-          GameRoomRules.translate("Shift+R: browse the opponent's rooks."),
-          GameRoomRules.translate("B: browse your bishops."),
-          GameRoomRules.translate("Shift+B: browse the opponent's bishops."),
-          GameRoomRules.translate("N: browse your knights."),
-          GameRoomRules.translate("Shift+N: browse the opponent's knights."),
-          GameRoomRules.translate("P: browse your pawns."),
-          GameRoomRules.translate("Shift+P: browse the opponent's pawns."))
-      ]
+      generated_rule_sections
     end
 
     def replay(session, events, repository)
@@ -404,8 +374,8 @@ module GameRoomGames
           value += sign * (PIECE_VALUES[code[1]] + center + advancement)
         end
       end
-      own_moves = pseudo_moves(state, colour).length
-      other_moves = pseudo_moves(state, opponent).length
+      own_moves = pseudo_move_count(state, colour)
+      other_moves = pseudo_move_count(state, opponent)
       value + (own_moves - other_moves) * 2.0 - (in_check?(state, colour) ? 45 : 0) + (in_check?(state, opponent) ? 45 : 0)
     end
 
@@ -543,32 +513,44 @@ module GameRoomGames
 
     def pseudo_moves(state, colour)
       moves = []
-      state[:board].each_with_index do |row, y|
-        row.each_with_index do |code, x|
-          next if code == nil || code[0] != colour
-          case code[1]
-          when "P" then add_pawn_moves(state, moves, x, y, colour)
-          when "N" then add_step_moves(state, moves, x, y, colour, KNIGHT_STEPS)
-          when "B" then add_slide_moves(state, moves, x, y, colour, BISHOP_STEPS)
-          when "R" then add_slide_moves(state, moves, x, y, colour, ROOK_STEPS)
-          when "Q" then add_slide_moves(state, moves, x, y, colour, BISHOP_STEPS + ROOK_STEPS)
-          when "K"
-            add_step_moves(state, moves, x, y, colour, KING_STEPS)
-            add_castling_moves(state, moves, colour)
-          end
-        end
+      each_pseudo_move(state, colour) do |x, y, tx, ty, kind, value|
+        moves << BoardMove.new(from: [x, y], to: [tx, ty], metadata: kind ? { kind => value } : {})
       end
       moves
     end
 
-    def add_pawn_moves(state, moves, x, y, colour)
+    def pseudo_move_count(state, colour)
+      count = 0
+      each_pseudo_move(state, colour) { count += 1 }
+      count
+    end
+
+    def each_pseudo_move(state, colour, &block)
+      state[:board].each_with_index do |row, y|
+        row.each_with_index do |code, x|
+          next if code == nil || code[0] != colour
+          case code[1]
+          when "P" then each_pawn_move(state, x, y, colour, &block)
+          when "N" then each_step_move(state, x, y, colour, KNIGHT_STEPS, &block)
+          when "B" then each_slide_move(state, x, y, colour, BISHOP_STEPS, &block)
+          when "R" then each_slide_move(state, x, y, colour, ROOK_STEPS, &block)
+          when "Q" then each_slide_move(state, x, y, colour, BISHOP_STEPS + ROOK_STEPS, &block)
+          when "K"
+            each_step_move(state, x, y, colour, KING_STEPS, &block)
+            each_castling_move(state, colour, &block)
+          end
+        end
+      end
+    end
+
+    def each_pawn_move(state, x, y, colour)
       direction = colour == "w" ? 1 : -1
       start = colour == "w" ? 1 : 6
       one = y + direction
       if inside?(x, one) && state[:board][one][x] == nil
-        moves << BoardMove.new(from: [x, y], to: [x, one])
+        yield x, y, x, one
         two = y + direction * 2
-        moves << BoardMove.new(from: [x, y], to: [x, two], metadata: { "double" => "1" }) if y == start && state[:board][two][x] == nil
+        yield x, y, x, two, "double", "1" if y == start && state[:board][two][x] == nil
       end
       [-1, 1].each do |dx|
         tx = x + dx
@@ -576,34 +558,34 @@ module GameRoomGames
         next if !inside?(tx, ty)
         target = state[:board][ty][tx]
         if enemy_piece?(target, colour) && target[1] != "K"
-          moves << BoardMove.new(from: [x, y], to: [tx, ty])
+          yield x, y, tx, ty
         elsif state[:en_passant] == [tx, ty]
-          moves << BoardMove.new(from: [x, y], to: [tx, ty], metadata: { "en_passant" => "1" })
+          yield x, y, tx, ty, "en_passant", "1"
         end
       end
     end
 
-    def add_step_moves(state, moves, x, y, colour, steps)
+    def each_step_move(state, x, y, colour, steps)
       steps.each do |dx, dy|
         tx = x + dx
         ty = y + dy
         next if !inside?(tx, ty)
         target = state[:board][ty][tx]
         next if target != nil && (target[0] == colour || target[1] == "K")
-        moves << BoardMove.new(from: [x, y], to: [tx, ty])
+        yield x, y, tx, ty
       end
     end
 
-    def add_slide_moves(state, moves, x, y, colour, steps)
+    def each_slide_move(state, x, y, colour, steps)
       steps.each do |dx, dy|
         tx = x + dx
         ty = y + dy
         while inside?(tx, ty)
           target = state[:board][ty][tx]
           if target == nil
-            moves << BoardMove.new(from: [x, y], to: [tx, ty])
+            yield x, y, tx, ty
           else
-            moves << BoardMove.new(from: [x, y], to: [tx, ty]) if target[0] != colour && target[1] != "K"
+            yield x, y, tx, ty if target[0] != colour && target[1] != "K"
             break
           end
           tx += dx
@@ -612,7 +594,7 @@ module GameRoomGames
       end
     end
 
-    def add_castling_moves(state, moves, colour)
+    def each_castling_move(state, colour)
       row = colour == "w" ? 0 : 7
       king = state[:board][row][4]
       return if king != "#{colour}K" || in_check?(state, colour)
@@ -621,11 +603,11 @@ module GameRoomGames
       queen_flag = colour == "w" ? "Q" : "q"
       if state[:castling].include?(king_flag) && state[:board][row][5] == nil && state[:board][row][6] == nil &&
           state[:board][row][7] == "#{colour}R" && !attacked?(state, 5, row, opponent) && !attacked?(state, 6, row, opponent)
-        moves << BoardMove.new(from: [4, row], to: [6, row], metadata: { "castle" => "king" })
+        yield 4, row, 6, row, "castle", "king"
       end
       if state[:castling].include?(queen_flag) && state[:board][row][1] == nil && state[:board][row][2] == nil && state[:board][row][3] == nil &&
           state[:board][row][0] == "#{colour}R" && !attacked?(state, 3, row, opponent) && !attacked?(state, 2, row, opponent)
-        moves << BoardMove.new(from: [4, row], to: [2, row], metadata: { "castle" => "queen" })
+        yield 4, row, 2, row, "castle", "queen"
       end
     end
 
@@ -834,35 +816,9 @@ module GameRoomGames
       end
     end
 
-    def colour_assignments(replay)
-      _("White: %{white}. Black: %{black}.") % {
-        white: participant_name(replay.players[0]),
-        black: participant_name(replay.players[1])
-      }
-    end
 
-    def board_orientation(replay, viewer)
-      index = player_index(replay.players, viewer)
-      if index == nil
-        return {
-          default: "normal",
-          labels: {
-            "normal" => _("The first player's pieces are at the bottom."),
-            "rotated" => _("The second player's pieces are at the bottom.")
-          }
-        }
-      end
 
-      own_orientation = index == 0 ? "normal" : "rotated"
-      other_orientation = own_orientation == "normal" ? "rotated" : "normal"
-      {
-        default: own_orientation,
-        labels: {
-          own_orientation => _("Your pieces are at the bottom."),
-          other_orientation => _("The opponent's pieces are at the bottom.")
-        }
-      }
-    end
+
 
     def square_threat_details(state, viewer)
       viewer_colour = colour_for(state, viewer)
@@ -947,3 +903,5 @@ module GameRoomGames
     end
   end
 end
+
+require_relative 'generated/rulebooks/chess'

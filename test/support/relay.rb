@@ -73,7 +73,7 @@ class RelaySession
   def invite(name)
     endpoint.rig.invites << endpoint.rig.now
     target = endpoint.rig.endpoints[name]
-    raise 'PeerUnavailable' if !target || target.closed?
+    raise EltenAPI::Communication::PeerUnavailable, 'PeerUnavailable' if !target || target.closed?
     target.enqueue(RelayInvite.new(target, @group)) if endpoint.rig.now >= endpoint.rig.ignore_until
     true
   end

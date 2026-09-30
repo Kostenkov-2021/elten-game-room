@@ -1,20 +1,7 @@
-# Gra turowa za innym oknem ELTEN-a
+# Wykonanie partii i prezentacja za innym oknem
 
-Wdrożenie w źródłach, 24 września 2026. Nie znajduje się jeszcze w podpisanej
-paczce 2.0.3/build 237. Uzupełnia, a nie zastępuje naprawę opisaną w
-`PARALLEL_SCENE_EVENTS.md` i wcześniejszy eksperyment
-`BACKGROUND_GAME_EXPERIMENT.md`.
-
-## Co zostało oddzielone
-
-Natywne Wiadomości albo forum wstrzymują pętlę przykrytego `GameScreen`.
-Odbiór protokołu sam w sobie nie wystarczał: aplikacja musiała jeszcze
-dostarczyć callback, odtworzyć stan, wybrać dozwoloną akcję automatyczną
-i zapisać ją zwykłą ścieżką. Po zatrzymaniu tej pętli gospodarz nie wykonywał
-ruchu bota, a gracz mógł nie ujawnić wcześniej zatwierdzonej odpowiedzi.
-
-`GameRoomSessionRunner` wykonuje tę część bez formularza. To jeden wykonawca
-dla widocznej i przykrytej gry, nie dodatkowy bot działający obok starego.
+`GameRoomSessionRunner` wykonuje model, polityki automatyczne i boty bez
+formularza. Widoczna i przykryta gra korzystają z tego samego wykonawcy.
 `GameScreen` zachowuje kontrolki, obsługę klawiszy, mowę, dźwięki, fokus,
 historię i dialogi. Za obcym oknem nie są aktualizowane kontrolki ani
 wywoływana synteza z wątku roboczego. Odczyt i efekty już odebranych zdarzeń
@@ -26,13 +13,7 @@ protokół pauzy, wejście i Communications pozostają bez zmian.
 
 ## Mowa i dźwięki podczas otwartych Wiadomości lub forum
 
-Pierwsze wdrożenie wykonawcy obsługiwało model i boty, lecz prezentacja nadal
-czekała na powrót do Game Roomu. Użytkownik odtworzył ten brak. Zapis jego
-próby potwierdził przyrost zdarzeń modelu za Wiadomościami przy niezmienionym
-kursorze prezentacji. Samo zgodne odtworzenie planszy po powrocie nie było
-dowodem działania mowy ani efektów w trakcie przykrycia.
-
-Wykonawca publikuje teraz skopiowany pakiet prezentacji po istniejącym
+Wykonawca publikuje skopiowany pakiet prezentacji po istniejącym
 odczycie stanu; nie odpytuje serwera dodatkowo. `GameRoomBackgroundPresentation`
 rejestruje aktywny ekran i korzysta z wąskiego mostu w `EltenAPI::UI#loop_update`.
 Oryginalna metoda działa bez zmian; po niej tylko aktualny wątek UI może
@@ -60,8 +41,8 @@ Bez aktywnej rejestracji niczego nie odczytuje ani nie odtwarza. Nie zmieniono
 plików źródłowych ELTEN-a. Lokalne dialogi Krowy nadal otwiera jej widoczny
 adapter, nie prezenter działający za innym oknem.
 
-Testy tej poprawki: `game_background_presentation_test.rb` oraz
-`game_background_native_input_test.rb`. Pierwszy obejmuje pełną partię,
+Regresje: `test/ui/game_background_presentation_test.rb` oraz
+`test/ui/game_background_native_input_test.rb`. Pierwszy obejmuje pełną partię,
 rewanż, losowe ID, odczyt wyniku, sekwencję audio, zegar quizu, deduplikację,
 czyszczenie rejestracji i 20 binarnych przeładowań przestrzeni aplikacji.
 Drugi używa natywnych kontrolek, klawiatury i adaptera mowy hosta z kontrolowanym
@@ -102,8 +83,8 @@ Drugi używa natywnych kontrolek, klawiatury i adaptera mowy hosta z kontrolowan
   Rewanż używa nowego ID sesji. Niepewny zapis zachowuje istniejącą ścieżkę
   potwierdzenia, identyfikator wiadomości i backoff; nie jest wysyłany jako
   nowy ruch. Zamknięcie nie zabija wątku w połowie zapisu.
-- Nieudana akcja automatyczna jest ponawiana w ograniczonym tempie, również
-  gdy dotyczy lokalnego szkicu odpowiedzi. Błąd trafia do adaptera UI dopiero
+- Przejściowy błąd zapisu akcji automatycznej podlega backoffowi, również
+  dla lokalnego szkicu. Błąd programu zatrzymuje ponawianie wadliwej akcji. Błąd trafia do adaptera UI dopiero
   z jego własnego wątku. Powrót po zakończonym odzyskiwaniu połączenia nie
   rozpoczyna od nowa historycznej 30-sekundowej przerwy.
 
@@ -127,49 +108,12 @@ publikacji wyniku i prywatne pokazanie rozwiązania po poddaniu) nadal należą
 do adaptera UI. Wykonawca obsługuje stan, ocenę prób i publiczne rozstrzygnięcie,
 nie przenosi dowolnej metody `game_client` do wątku roboczego.
 
-## Weryfikacja i ograniczenia
+## Weryfikacja
 
-Celowane testy obejmują niezależny odbiór zdarzeń, brak podwójnych ruchów,
-widoczną prezentację, powrót do okna, równoległe wejście, planowanie bota,
-potwierdzony i niepotwierdzony zapis, opóźnienie i powielenie callbacków,
-terminy, ukryte odpowiedzi, freeze/unfreeze, przerwanie, zamknięcie, rewanż,
-wiele instancji oraz sprzątnięcie wątku/subskrypcji. Sprawdzono kontrakt
-wykonawcy dla wszystkich 23 gier turowych z botami; gry bez botów mają
-oddzielne przypadki (Scrabble, Taboo, Państwa-miasta, Krowa).
-
-Żywe próby na dwóch kontach obejmują rzeczywiste natywne listy Wiadomości
-i forum, otwierane jedno- i wielokrotnie nad grą. Testy używają normalnych
-handlerów akcji, nie fizycznej klawiatury. Nie otwierają prywatnych rozmów
-ani nie publikują postów. Kontrolowane przerwy i błędy zapisu dodatkowo
-badane są offline; nie jest to próba odcięcia Internetu ani pomiar odsłuchu.
-
-Podczas jednej wczesnej próby host zgłosił rzeczywisty błąd Live Sessions
-i odtworzył stream. UI miał aktywny istniejący backoff, podczas gdy model i bot
-działały. Tamta próba skończyła się przed upływem backoffu i nie potwierdza
-samodzielnego powrotu ekranu. Zachowano jej zapis zamiast zaliczać ją jako
-poprawną; dalsze powtórzenia oraz osobna kontrolowana awaria służą odrębnej
-weryfikacji. Kontrolowana awaria przeszła: po 30,275 s UI sam pokazał
-sześć zaległych zdarzeń, z zachowaniem szkicu i bez dodatkowego wejścia.
-Nie naprawiano protokołu HTTP/2 ELTEN-a.
-
-Zestaw poprzedniego etapu wykonawcy: 65/65 celowanych skryptów, dwie dodatkowe kontrole
-binarnych źródeł/allowlist i 29 kontroli składni. W 30 żywych próbach
-uzyskano 24 zgodne porównania końcowego stanu po przykryciu i dwa poprawne
-testy zamknięcia/przerwania; pozostałe cztery próby mają jawnie opisane
-ograniczenia pomocnika/warunków. Sondy, workery i wstrzyknięty kod usunięto,
-obydwa ELTEN-y pozostawiono na ekranie głównym z zerem zasobów testu.
-Nie wykonano instalacji, restartu, nowej paczki, publikacji ani zmian
-ustawień profili lub schematów.
-
-Surowe wyniki, błędy pomocników, manifest źródeł i stan po sprzątaniu są
-prywatnie w `../diagnostics/session-runner-237/`. Żaden zestaw testów nie
-stanowi dowodu dla wszystkich możliwych partii, komputerów i awarii sieci.
-
-Powyższe 30 prób dotyczyło działania modelu i powrotu do ekranu. Nie traktować
-ich jako dowodu odczytu podczas otwartych Wiadomości. Nowe próby prezentacji
-mają odrębne pliki `PRESENTATION-*` w tym samym prywatnym katalogu. Badają
-normalne stoły na obu kontach, otwierają prawdziwe listy Wiadomości/forum
-i rejestrują wywołania rzeczywistego adaptera syntezy oraz aktywne uchwyty
-audio przed powrotem. Nie zastępują fizycznego odsłuchu; wejście jest
-generowane przez normalne handlery. Po tych próbach użytkownik polecił
-pozostawić kompletną poprawkę w pamięci obu ELTEN-ów, bez sond testowych.
+Testy wykonawcy są w `test/session/`, a prezentacji w
+`test/ui/game_background_presentation_test.rb` i
+`test/ui/game_background_native_input_test.rb`. Sprawdzaj wiele instancji,
+planowanie poza blokadą, niepewny zapis, powrót, deadline, rewanż i zamknięcie.
+Próba żywego klienta musi potwierdzić wyjście mowy i aktywne audio jeszcze
+za natywnym oknem. Zgodny model po powrocie nie dowodzi prezentacji w tle;
+atrapy audio nie zastępują odsłuchu.

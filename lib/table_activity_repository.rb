@@ -2,6 +2,7 @@ require_relative "game_participants"
 require_relative "game_history_navigation"
 require_relative "game_room_clock"
 require_relative "game_content"
+require_relative "game_snapshot"
 
 require_relative "game_room_localization"
 
@@ -32,6 +33,7 @@ class TableActivityRepository
   TABLE_LIMIT = 2_000
   GLOBAL_LIMIT = 200
   MESSAGE_MAX_LENGTH = 400
+  PROJECTION_CACHE_LIMIT = 4_096
 
   def initialize(server_tables:, transport: nil)
     @server_tables = server_tables
@@ -104,10 +106,11 @@ class TableActivityRepository
     return [] if table_id <= 0
 
     if native_live_sessions?
-      entries = @transport.activity_records(table)
-        .filter_map { |row| entry_from(row, table) }
-        .sort_by { |entry| entry.id }
-        .last([[limit.to_i, 1].max, TABLE_LIMIT].min)
+      # Always read the validated projection. Caching only the final ID/count
+      # would miss corrected earlier records or a rejoined room generation.
+      rows = @transport.activity_records(table)
+      entries = native_entries(rows, table)
+      entries = entries.last([[limit.to_i, 1].max, TABLE_LIMIT].min)
       return entries_for_current_visit(entries, table, viewer)
     end
 
@@ -244,25 +247,122 @@ class TableActivityRepository
   end
 
   def merged_history_entries(game_entries:, game_events:, activity_entries:, game_name:)
-    native_order = game_events.to_a.any? { |e| e["__stack_sequence"] || e["move_id"].to_s.start_with?("archive:") } ||
-      activity_entries.to_a.any? { |e| e.stack_sequence }
-    event_times = game_events.to_a.each_with_object({}) do |event, result|
-      result[row_id(event)] = native_order ? event["__stack_sequence"].to_i : event["created_at"].to_i
+    games = game_entries.to_a.map { |entry| [entry.event_id.to_i, entry.text.to_s] }
+    events = game_events.to_a.map { |event| [row_id(event), event["__stack_sequence"], event["created_at"], event["move_id"]] }
+    activities = activity_entries.to_a
+    names = activities.map(&:game).uniq.to_h { |id| [id, game_name.call(id).to_s] }
+    formatted = formatted_activities(activities, names)
+    inputs = [games, events]
+    cacheable = games.length + events.length + activities.length <= PROJECTION_CACHE_LIMIT
+    cached_projection(:@merged_history_projection, inputs, context: formatted, cacheable: cacheable) do |owned|
+      build_merged_history(*owned, formatted)
     end
-    records = game_entries.to_a.each_with_index.map do |entry, index|
-      item = GameRoomHistory::Entry.new(text: entry.text.to_s, category: :game)
-      [event_times.fetch(entry.event_id.to_i, 0), entry.event_id.to_i, 0, index, item]
+  end
+
+  private
+
+  def native_entries(rows, table)
+    context = GameRoomSnapshot.copy({ '__id' => row_id(table), 'owner' => table_owner(table), 'game' => table['game'] })
+    cached = @entry_projection
+    cached = nil unless cached && cached[:context] == context
+    known = cached ? cached[:rows] : {}
+    source = project_values(rows, known, key: method(:row_id)) do |owned|
+      entry_from(owned, context)
     end
-    activity_entries.to_a.each_with_index do |entry, index|
-      text = text_for(entry, game_name: game_name, global: false)
-      category = entry.kind == "chat" ? :chat : :room
-      item = GameRoomHistory::Entry.new(text: text.to_s, category: category)
-      records << [native_order ? entry.stack_sequence.to_i : entry.created_at.to_i, entry.id.to_i, 1, index, item] if !text.to_s.empty?
+    packed = if cached && cached[:source] == source
+      cached[:value]
+    else
+      Marshal.dump(source.filter_map { |item| item[:value] }.sort_by(&:id))
+    end
+    bounded = source.length <= PROJECTION_CACHE_LIMIT
+    @entry_projection = { context: context, rows: retain_projection_items(source),
+      source: bounded ? source : nil, value: bounded ? packed : nil }.freeze
+    Marshal.load(packed)
+  end
+
+  def formatted_activities(activities, names)
+    # Formatting room/chat entries is independent of new game moves. Retain
+    # that work, and its owned input snapshot, across subsequent game turns.
+    context = GameRoomLocalization.cache_token
+    cached = @formatted_activity_projection
+    cached = nil unless cached && cached[:context].equal?(context) && cached[:names] == names
+    known = cached ? cached[:items] : {}
+    own_names = GameRoomSnapshot.copy(names)
+    source = project_values(activities, known, key: ->(entry) { entry.id.to_i }) do |entry|
+      [entry.id.to_i, entry.stack_sequence.to_i, entry.created_at.to_i,
+        entry.kind == 'chat' ? :chat : :room,
+        text_for(entry, game_name: ->(id) { own_names.fetch(id) }, global: false).to_s.freeze].freeze
+    end
+    return cached if cached && cached[:source] == source
+
+    value = { source: source, names: own_names, context: context, items: retain_projection_items(source),
+      rows: source.map { |item| item[:value] }.freeze,
+      native_order: source.any? { |item| item[:input].stack_sequence } }.freeze
+    @formatted_activity_projection = activities.length <= PROJECTION_CACHE_LIMIT ? value : nil
+    value
+  end
+
+  def project_values(values, known, key:)
+    missing, positions = [], []
+    source = values.each_with_index.map do |value, index|
+      item = known[key.call(value)]
+      next item if item && item[:input] == value
+      missing << value
+      positions << index
+      nil
+    end
+    # One owned copy of the changed subset, not one serialization per row or
+    # a fresh snapshot of thousands of unchanged messages on each game move.
+    unless missing.empty?
+      GameRoomSnapshot.copy(missing).each_with_index do |owned, index|
+        source[positions[index]] = { id: key.call(owned), input: owned, value: yield(owned) }.freeze
+      end
+    end
+    source
+  end
+
+  def retain_projection_items(source)
+    source.last(PROJECTION_CACHE_LIMIT).to_h { |item| [item[:id], item] }.freeze
+  end
+
+  def build_merged_history(games, events, formatted)
+    native_order = events.any? { |_id, sequence, _time, move| sequence || move.to_s.start_with?("archive:") } ||
+      formatted[:native_order]
+    event_times = events.each_with_object({}) do |(id, sequence, time, _move), result|
+      result[id] = native_order ? sequence.to_i : time.to_i
+    end
+    records = games.each_with_index.map do |(id, text), index|
+      item = GameRoomHistory::Entry.new(text: text, category: :game)
+      [event_times.fetch(id, 0), id, 0, index, item]
+    end
+    formatted[:rows].each_with_index do |(id, sequence, time, category, text), index|
+      next if text.empty?
+      item = GameRoomHistory::Entry.new(text: text, category: category)
+      records << [native_order ? sequence : time, id, 1, index, item]
     end
     records.sort_by { |record| record[0, 4] }.map(&:last)
   end
 
-  private
+  # Each slot holds one bounded projection. Own both its input and output;
+  # callers may mutate returned entries, source rows, texts or team arrays.
+  # A single assignment publishes a complete cache entry across UI/worker
+  # readers; a concurrent miss can only replace it with another valid entry.
+  def cached_projection(slot, inputs, context: nil, cacheable: true)
+    cached = instance_variable_get(slot)
+    if cacheable && cached && cached[:context].equal?(context) && cached[:inputs] == inputs
+      return Marshal.load(cached[:value])
+    end
+
+    owned_inputs = GameRoomSnapshot.copy(inputs)
+    result = yield(owned_inputs)
+    packed = Marshal.dump(result)
+    if cacheable
+      instance_variable_set(slot, { context: context, inputs: owned_inputs, value: packed }.freeze)
+    else
+      instance_variable_set(slot, nil)
+    end
+    Marshal.load(packed)
+  end
 
   def native_live_sessions?
     @transport.respond_to?(:live_store?) && @transport.live_store?

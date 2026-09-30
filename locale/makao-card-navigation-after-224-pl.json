@@ -1,9 +1,0 @@
-{
-  "This card requires a valid declaration.": "Ta karta wymaga poprawnej deklaracji.",
-  "This card is not in your hand.": "Nie masz tej karty w ręce.",
-  "This card does not defend against the draw penalty.": "Ta karta nie broni przed karą dobierania.",
-  "This card does not defend against the waiting penalty.": "Ta karta nie broni przed karą czekania.",
-  "This card does not satisfy the requested rank.": "Ta karta nie spełnia żądania wartości.",
-  "This card cannot be played now.": "Nie możesz teraz zagrać tej karty.",
-  "Makao can now also be announced during a bot's turn, including while waiting for its move. Catching an unannounced Makao also works during that time. Bot moves now include missing joker declarations and strategically distinct card packages, and catching an unannounced Makao takes priority. The table-card shortcut before dealing now gives a clear message.": "Makao można teraz powiedzieć również w trakcie tury bota, także podczas oczekiwania na jego ruch. Można wtedy również złapać niezgłoszone Makao. Uzupełniono deklaracje jokerów i istotne kolejności paczek kart w ruchach botów. Złapanie niezgłoszonego Makao ma pierwszeństwo. Skrót karty na stole przed rozdaniem podaje teraz jasny komunikat."
-}

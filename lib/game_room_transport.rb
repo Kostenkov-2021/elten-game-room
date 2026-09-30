@@ -3,9 +3,12 @@ require_relative "live_session_store"
 require_relative "game_session_feed"
 
 class GameRoomTransport
+  attr_writer :presence_listener
+
   def initialize(program)
     @program = program
-    @live_store = GameRoomLiveSessionStore.new(program, changed: method(:live_store_changed))
+    @live_store = GameRoomLiveSessionStore.new(program, changed: method(:live_store_changed),
+      presence_changed: -> { @presence_listener&.changed })
     @pending_table_changes = {}
     @pending_game_changes = {}
     @game_change_tables = {}
@@ -29,6 +32,12 @@ class GameRoomTransport
     result = @live_store.dispatch_pending_events
     with_retained_rooms { |_rooms| }
     result
+  end
+
+  def maintain_pending_work
+    @live_store.maintain_pending_work
+    with_retained_rooms { |_rooms| }
+    nil
   end
 
   def with_retained_rooms
@@ -82,6 +91,14 @@ class GameRoomTransport
 
   def take_private_game_messages(table_id, session_id)
     @live_store.take_private_game_messages(table_id, session_id)
+  end
+
+  def send_game_preview(**arguments)
+    @live_store.send_game_preview(**arguments)
+  end
+
+  def take_game_previews(table_id, session_id)
+    @live_store.take_game_previews(table_id, session_id)
   end
 
   def create_room(**arguments)
@@ -160,6 +177,10 @@ class GameRoomTransport
     @live_store.game_session(session_id, table: table)
   end
 
+  def find_game_session(table_or_id, force: false, &predicate)
+    @live_store.find_game_session(table_or_id, force: force, &predicate)
+  end
+
   def append_game_action(**arguments)
     @live_store.append_game_action(**arguments)
   end
@@ -222,6 +243,10 @@ class GameRoomTransport
 
   def connected_users(table_id)
     @live_store.connected_users(table_id)
+  end
+
+  def active_membership?(table_id)
+    @live_store.active_membership?(table_id)
   end
 
   def consume_new_join(table_id, user)

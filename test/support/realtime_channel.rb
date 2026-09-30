@@ -1,23 +1,23 @@
+require_relative 'native_tasks'
 require_relative '../../lib/realtime/channel'
+require_relative 'assertions'
+Object.include(GameRoomTest::Assertions)
 
-def assert(value, message); raise message unless value; end
+# Match the native error hierarchy without loading a network endpoint.
+module EltenAPI
+  module Communication
+    class Error < StandardError; end
+    class ConnectionError < Error; end
+    class PeerUnavailable < Error; end
+    class SessionClosed < Error; end
+    class MessageTooLarge < Error; end
+  end
+end
 
 # Deterministic finite workers. The endpoint/session fake intentionally exposes
 # only the verified public API; no pump, transport internals or live accounts.
-class ChannelWork
-  attr_reader :operation
-  def busy?; @operation || @result; end
-  def start(&block); return false if busy? || @closed; @operation = block; true; end
-  def finish
-    operation, @operation = @operation, nil
-    value = operation.call
-    @result = [value, nil] unless @closed
-  rescue StandardError => error
-    @result = [nil, error] unless @closed
-  end
-  def take; result, @result = @result, nil; result; end
-  def close; @closed = true; @result = nil; end
-end
+require_relative 'manual_work'
+class ChannelWork < GameRoomTest::ManualWork; end
 ChannelParticipant = Struct.new(:id, :user)
 ChannelMessage = Struct.new(:sender, :data)
 class ChannelSession
@@ -35,7 +35,7 @@ class ChannelSession
   def deliver(user, data); @receiver.call(ChannelMessage.new(ChannelParticipant.new(99, user), data)); end
   def transfer; @owner_changed.call(ChannelParticipant.new(7, 'Mallory')); end
   def close; @state = :closed; end
-  def leave; raise 'departure failure' if @leave_error; close; end
+  def leave; raise EltenAPI::Communication::ConnectionError, 'departure failure' if @leave_error; close; end
 end
 class ChannelEndpoint
   attr_reader :creates, :closes

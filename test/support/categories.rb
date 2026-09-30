@@ -1,31 +1,8 @@
+require_relative "../../lib/game_surfaces/specifications"
 def _(text)
   text
 end
 
-module GameSurfaces
-  Action = Struct.new(:kind, :name, :payload, :source, keyword_init: true) do
-    def initialize(kind:, name:, payload: {}, source: nil)
-      super(kind: kind.to_s, name: name.to_s, payload: payload, source: source)
-    end
-
-    def [](key)
-      return kind if key.to_s == "kind"
-      return name if ["action", "name"].include?(key.to_s)
-
-      payload[key.to_s]
-    end
-  end
-  AnswerField = Struct.new(:id, :label, :value, :required, :max_length, :multiline, keyword_init: true)
-  AnswerSheetSpec = Struct.new(:id, :title, :fields, :submit_label, :read_only, keyword_init: true)
-  ReviewItem = Struct.new(:id, :author, :category, :answer, :status, :decision, :decision_ids, keyword_init: true)
-  ReviewDecision = Struct.new(:id, :label, keyword_init: true)
-  ReviewSpec = Struct.new(:id, :header, :items, :decisions, :empty_label, :submit_label, :read_only, keyword_init: true)
-  QuestionSpec = Struct.new(:id, :prompt, :mode, :options, :value, :submit_label, :required, :read_only, :max_length, :submit_on_select, keyword_init: true)
-  Command = Struct.new(:id, :label, :enabled, :payload, keyword_init: true)
-  CommandPanelSpec = Struct.new(:commands, keyword_init: true)
-  SurfacePart = Struct.new(:id, :surface, keyword_init: true)
-  CompositeSpec = Struct.new(:parts, keyword_init: true)
-end
 
 require "json"
 require_relative "../../lib/game_random"

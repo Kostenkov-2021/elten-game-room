@@ -1,8 +1,0 @@
-{
-  "Computer players now receive randomly selected names from Polish or English lists.": "Dodano losowane imiona dla botów, z polskiej lub angielskiej listy.",
-  "Create a new table to add named computers.": "Utwórz nowy stół, aby dodawać boty z imionami.",
-  "Added %{bot}.": "Dodano %{bot}.",
-  "Removed %{bot}.": "Usunięto %{bot}.",
-  "Added %{bot} at %{owner}'s table for %{game}.": "Dodano %{bot} przy stole %{owner}, %{game}.",
-  "Removed %{bot} from %{owner}'s table for %{game}.": "Usunięto %{bot} ze stołu %{owner}, %{game}."
-}

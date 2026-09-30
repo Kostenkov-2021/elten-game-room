@@ -1,12 +1,13 @@
+require_relative "specifications"
 # encoding: UTF-8
 require_relative "../game_room_localization"
 
 module GameSurfaces
   using GameRoomLocalization::Translations
-  Tile = Struct.new(:id, :label, :value, :choices, :choice_header, keyword_init: true)
-  TileChoice = Struct.new(:id, :label, :value, keyword_init: true)
-  TileZoneSpec = Struct.new(:id, :header, :cards, :empty_label, :hand_order, :hand_epoch, keyword_init: true)
-  TileHandSpec = Struct.new(:zones, :table_header, :table, :table_epoch, :default_target, :selection_error, keyword_init: true)
+
+
+
+
 
   # An explicit tile adapter shares only the physical-hand cursor/control.
   # It does not opt board games into card shortcuts or card semantics.

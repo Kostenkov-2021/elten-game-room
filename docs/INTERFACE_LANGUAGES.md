@@ -59,12 +59,12 @@ from Game Room catalogs, plus source English. `X-Language-Name: Čeština` in th
 catalog header supplies a native display name even when host language-name data
 is absent. Invalid/missing catalogs are not offered as installed translations.
 
-No Czech translation is shipped by this change; Czech fixtures test the mechanism.
-Editable translations now live in one `locale/<LANG>.po` per target language.
-`locale/PL.po` was recovered from the complete existing catalog, including the
-messages that had no JSON source. Legacy JSON values and rulebook Polish fields
-are generated compatibility views, never inputs to translation compilation.
-See `locale/README.md` for editing, source updates and creating a Czech draft.
+The current catalogs are Czech, Spanish, Polish and Russian, each with one
+editable `locale/<LANG>.po` and one compiled `<LANG>.mo`. English uses source
+messages. Historical JSON fragments and their exporter have been removed;
+Polish rulebook documents are refreshed from the PO. Release notes live in
+`lib/game_room_changelog.rb` and use the same PO/MO translation workflow.
+See `docs/TRANSLATIONS.md` for editing, source updates and adding another language.
 
 ## Verification
 

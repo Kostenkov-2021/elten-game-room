@@ -14,7 +14,9 @@ module GameRoomSingleInstance
         if @active
           @active
         elsif !launch
-          @active = {program: program, thread: Thread.current, entry: method, requests: []}
+          requests = program.instance_variable_get(:@game_room_initial_requests) || []
+          program.instance_variable_set(:@game_room_initial_requests, nil)
+          @active = {program: program, thread: Thread.current, entry: method, requests: requests}
           program.instance_variable_set(:@game_room_redirected, false)
           nil
         end
@@ -51,6 +53,9 @@ module GameRoomSingleInstance
         return program.__send__(:insert_scene, scene, true)
       end
       begin
+        if program.respond_to?(:prepare_game_room_update, true) && program.__send__(:prepare_game_room_update, method, arguments)
+          return true
+        end
         # Direct table entries bypass the ordinary lobby loop. Give them the
         # same table-switch boundary as normal launches and invitations.
         switched = catch(:game_room_table_switch) { [:completed, yield] }
@@ -60,7 +65,16 @@ module GameRoomSingleInstance
           program.__send__(:run_program_interface, switched)
         end
       ensure
-        @lock.synchronize { @active = nil if @active && @active[:program].equal?(program) }
+        finish_update(program) unless program.instance_variable_get(:@game_room_update_scene)
+      end
+    end
+
+    def finish_update(program)
+      @lock.synchronize do
+        return [] unless @active && @active[:program].equal?(program)
+        requests = @active[:requests]
+        @active = nil
+        requests
       end
     end
 
@@ -133,6 +147,18 @@ module GameRoomSingleInstance
     end
 
     def finalize(value = nil, reason: :normal)
+      if (update = @game_room_update_scene)
+        @game_room_update_scene = nil
+        finalized = false
+        begin
+          result = super(value, reason: reason == :error ? :error : :notification)
+          finalized = true
+          $scene = update unless reason == :error
+          return result
+        ensure
+          GameRoomSingleInstance.finish_update(self) if reason == :error || !finalized
+        end
+      end
       return super unless @game_room_redirected
       # Program#finalize closes the class-wide sound pool. A discarded launch
       # must not silence the actual owner or announce that it has been closed.

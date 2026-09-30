@@ -1,33 +1,10 @@
+require_relative "../../lib/game_surfaces/specifications"
 def _(text)
   text
 end
 
 def n_(singular, plural, count)
   count.to_i == 1 ? singular : plural
-end
-
-# Binary-source checks already loaded the real surfaces: do not replace them
-# with test structs after loading the program.
-unless defined?(GameSurfaces::PacketCardSpec)
-module GameSurfaces
-  Action = Struct.new(:kind, :name, :payload, :source, keyword_init: true)
-  CardChoice = Struct.new(:id, :label, :value, keyword_init: true)
-  Card = Struct.new(:id, :label, :value, :choices, :shift_choice, :choice_header, :sort_keys, keyword_init: true)
-  CardZoneSpec = Struct.new(:id, :header, :cards, :empty_label, :hand_order, :hand_epoch, keyword_init: true)
-  CardTableSpec = Struct.new(:zones, keyword_init: true)
-  GridSpec = Struct.new(:width, :height, :header, :cells, :row_origin, keyword_init: true)
-  FleetGridSpec = Struct.new(:width, :height, :header, :cells, :row_origin, :epoch, :setup_header, :random_label, :manual_label, :place, :complete, :action_name, :status, :bow_check, :confirm_message, :placed_message, :ship_label, :bow_label, :bow_message, :cancel_message, :removed_message, :empty_message, keyword_init: true)
-  Command = Struct.new(:id, :label, :enabled, :payload, keyword_init: true)
-  CommandPanelSpec = Struct.new(:commands, keyword_init: true)
-  PawnTrackItem = Struct.new(:id, :label, :action, keyword_init: true)
-  PawnTrackSpec = Struct.new(:id, :header, :items, :empty_label, :activation_action, :menus, keyword_init: true)
-  Die = Struct.new(:id, :value, :sides, :held, :label, :enabled, keyword_init: true)
-  ScoreChoice = Struct.new(:id, :label, :value, keyword_init: true)
-  RollAndScoreSpec = Struct.new(:id, :header, :dice, :categories, :can_roll, :force_categories, :empty_label, :roll_number, keyword_init: true)
-  PacketCardSpec = Struct.new(:id, :header, :cards, :action_name, :allow_packet, :empty_label, :hand_order, :hand_epoch, :packet_tip, :activation_tip, keyword_init: true)
-  SurfacePart = Struct.new(:id, :surface, keyword_init: true)
-  CompositeSpec = Struct.new(:parts, keyword_init: true)
-end
 end
 
 require "json"

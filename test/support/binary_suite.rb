@@ -1,10 +1,12 @@
-require_relative "../../tools/run-tests"
+require_relative "../run"
 
 # Suite membership is data. No scenario is imported into another scenario.
 module BinaryTestSuite
   def self.run(names, mode: "source", package: ARGV.first, polish: [])
+    unknown = polish - names
+    raise ArgumentError, "Polish scenarios are missing from the suite: #{unknown.join(', ')}" unless unknown.empty?
     entries = names.map do |name|
-      {script: "test/#{name}.rb",
+      {script: "test/#{name}",
         env: {"GAME_ROOM_BINARY_MODE" => mode,
           "GAME_ROOM_BINARY_LANGUAGE" => polish.include?(name) ? "pl" : "en"},
         ruby_args: ["-r", File.expand_path("binary_suite_bootstrap.rb", __dir__)],

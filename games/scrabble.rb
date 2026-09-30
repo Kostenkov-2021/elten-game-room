@@ -26,6 +26,11 @@ module GameRoomGames
 
     def id; "scrabble"; end
     def name; _("Scrabble"); end
+    def background_client?; true; end
+    def build_client(program, transport:, **_services)
+      require_relative "../lib/scrabble_preview"
+      GameRoomScrabblePreview.new(program, self, transport: transport)
+    end
     def maximum_players; 4; end
     def thinking_time_range; 20..600; end
     def content_pack_kind; "word_dictionary"; end

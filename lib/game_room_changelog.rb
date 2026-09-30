@@ -321,6 +321,29 @@ module GameRoomChangelog
         "In the 1000 card game, an invalid play record no longer prevents subsequent valid moves from being replayed.",
         "Corrected messages about the required number of players and the current number of users at the table, thanks to balteam."
       ].freeze
+    ).freeze,
+    Entry.new(
+      version: "2.0.4.2",
+      build: 241,
+      changes: [
+        "Opening a menu no longer holds back game updates, chat, announcements or sounds. This also applies to the waiting room, including participants joining and the start of a game.",
+        "Axel Pong and Audio Ball now keep running behind Messages, the forum and other ELTEN windows, like the other games. Their controls work only in the game field: switching windows does not pause the ball or protect you from losing a point.",
+        "F2 and F3 change sound volume immediately, without waiting for settings to be saved. Changes also affect sounds that are already playing.",
+        "In Axel Pong, a held arrow resumes moving the paddle without an additional key-repeat delay after a brief stall.",
+        "Improved establishing and restoring connections in Axel Pong and Audio Ball, including doubles and games with observers. Renewing a connection no longer restarts an ongoing local rally against bots.",
+        "Fixed an error when opening Krowa's Word Tower before the first word was ready.",
+        "In Scrabble, other players and observers can now follow letters being placed, moved or removed before the word is confirmed. The rest of the rack remains hidden, and points are awarded only after a valid move is confirmed.",
+        "In Scrabble, Shift+1 to Shift+7 places the corresponding rack tile on the selected board square. The shortcut follows the current rack order; a blank still asks which letter it represents. Enter placement and the 1 to 7 tile-reading shortcuts remain available.",
+        "Scrabble board descriptions now read the letter before its coordinates, followed by its points, for example G, H8, 3 points.",
+        "Updated the Russian translation by Danil (Kostenkov-2021) and corrected translations of River in Categories and Poker.",
+        "Simplified Game Room settings labels, thanks to balteam. Select all games and Deselect all games now consistently do what their names say, including when used repeatedly or from the context menu.",
+        "Axel Pong's local settings are available at its table with Ctrl+P or from the table menu. They are no longer duplicated in Game Room's general Settings window.",
+        "Reduced periodic game and interface stalls caused by statistics collection, including in Axel Pong and Audio Ball.",
+        "Statistics now include all records in the selected date range, even for larger histories. Fixed incomplete counts of started and completed games.",
+        "The game, chat, announcements and sounds now continue while you decide whether to leave the table. Choosing No or pressing Escape returns to the same game without reconnecting.",
+        "When opening Game Room, you can download and install a newer version available in ELTEN. Updating is optional: choosing No keeps the installed version, and an update never interrupts an open game. After updating, Game Room returns to the requested table or invitation.",
+        "The Game Room code has been reorganized to make it easier to develop games and introduce further fixes. Thanks to Dawid Pieper (Pajper) for preparing these changes."
+      ].freeze
     ).freeze
   ].freeze
 

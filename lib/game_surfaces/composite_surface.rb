@@ -1,6 +1,7 @@
+require_relative "specifications"
 module GameSurfaces
-  SurfacePart = Struct.new(:id, :surface, keyword_init: true)
-  CompositeSpec = Struct.new(:parts, keyword_init: true)
+
+
 
   class CompositeSurface
     include ActionEmitter
@@ -137,12 +138,6 @@ module GameSurfaces
       {}
     end
 
-    def state_value(state, key, default)
-      return default if !state.respond_to?(:key?)
-      return state[key] if state.key?(key)
-      return state[key.to_sym] if state.key?(key.to_sym)
 
-      default
-    end
   end
 end

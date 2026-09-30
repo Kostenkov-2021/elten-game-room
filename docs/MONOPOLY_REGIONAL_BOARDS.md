@@ -1,10 +1,4 @@
-# Regionalne plansze Monopoly — stan po odczycie QC
-
-Zmiany po buildzie 206, 11 września 2026, przygotowane do testowego buildu
-1.1.6/207. Paczka 206 nie zawiera tych zmian. Rozgrywki testowe należy
-rozpoczynać od nowa, z tą samą wersją 207 u wszystkich uczestników.
-
-## Co zmieniono
+# Dane regionalnych plansz Monopoly
 
 `content/monopoly_regional_data.rb` zawiera osobne profile osiemnastu edycji
 QC: wszystkie 840 pól, oryginalne nazwy ulic, stacji i przedsiębiorstw,
@@ -17,7 +11,6 @@ wypłacie za Start, czynszach, limitach budowania i kierowaniu do więzienia.
 Kwoty stałych opłat i premii są proporcjonalne do wypłaty za Start; ceny,
 czynsze, aukcje i wyceny nieruchomości respektują skalę waluty. Numery pól,
 odległości i wyniki rzutów nie są skalowane.
-Nie zmieniano transportu, sposobu wysyłania ruchów ani wspólnego interfejsu.
 
 ## Obserwacje z klienta QC
 
@@ -105,21 +98,5 @@ To jawnie wskazane ograniczenia zgodności z platformą odniesienia. Nie
 ukrywać ich przy wydaniu. Do pełnej zgodności potrzeba dalszych odczytów
 wynagrodzeń, kosztów budowania, opłat i talii.
 
-## Testy
-
-`test/monopoly_regional_test.rb` sprawdza 18 profili i własną polską planszę,
-próbki odczytane z QC, ruch przez Start i do więzienia, czynsze do sześciu
-stacji/czterech przedsiębiorstw, limity 48 domów/18 hoteli, przeliczanie kart,
-legalność opłaty więziennej, rezerwę botów i odtwarzanie ich ruchów.
-To test działania przyjętych danych, nie niezależne potwierdzenie wszystkich
-kwot w QC. Runner pięciu gier uwzględnia ten test; pełnego zestawu projektu
-nie uruchamia.
-
-Test obejmuje również wykonanie kart na regionalne pola i ich komunikaty,
-powiązanie podatków z dochodem, naprawy drogich domów/hoteli i wyliczony koszt
-szarej grupy. Nie jest to szerokie badanie balansu rozgrywek z ludźmi.
-
-Weryfikacja 11 września 2026: test regionalny i `tools/run-five-game-tests.rb`
-przeszły w lokalnym Ruby 4.0.6. Runner objął 28 regresji, 36 dodatkowych grup,
-UI, regionalne profile, symulacje pięciu gier i kontrolę polskich tłumaczeń.
-Nie wykonywano instalacji ani testu nowych źródeł w prawdziwym ELTEN-ie.
+Kontrakt danych i ich użycie sprawdza `test/games/monopoly/regional_test.rb`.
+Nie jest to niezależne potwierdzenie wszystkich kwot w QC.

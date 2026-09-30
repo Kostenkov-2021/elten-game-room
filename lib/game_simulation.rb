@@ -1,5 +1,6 @@
 require "json"
 require_relative "game_random"
+require_relative "game_snapshot"
 require_relative "game_bots"
 require_relative "../games/base"
 
@@ -78,7 +79,7 @@ module GameRoomSimulation
     end
 
     def self.deep_copy(value)
-      Marshal.load(Marshal.dump(value))
+      GameRoomSnapshot.copy(value)
     end
 
     def initialize(game:, session:, events:, players:, random_source:, seed: nil)

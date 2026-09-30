@@ -17,37 +17,24 @@ module GameRoomTableWatch
     "indexes" => [["username"]], "limits" => { "max_select_limit" => 1000 }
   }.freeze
 
-  # Read the host's already-received server timestamp, never HTTP from a
-  # presentation callback. Monotonic elapsed time keeps expiration advancing
-  # between status updates and during a connection gap. Use wall time only
-  # until the host has supplied its first timestamp (also useful offline).
+  # The host owns the sample, monotonic anchor and account changes. Keep only
+  # the receiver's callable/readiness interface, never a second clock cache.
   class Clock
-    def initialize(sample: -> {
-      GameRoomClock.now if GameRoomClock.synchronized?
-    }, elapsed: -> { Process.clock_gettime(Process::CLOCK_MONOTONIC) }, fallback: -> { GameRoomClock.now })
-      @sample, @elapsed, @fallback = sample, elapsed, fallback
-      @mutex = Mutex.new
+    def initialize(source: GameRoomClock)
+      @source = source
     end
 
     def call
-      @mutex.synchronize do
-        tick = @elapsed.call.to_f
-        sample = @sample.call.to_f
-        if sample > 0 && sample != @last_sample
-          @anchor = [sample, tick]
-          @last_sample = sample
-        end
-        @anchor ||= [@fallback.call.to_f, tick]
-        @anchor.first + tick - @anchor.last
-      end
+      @source.now
     end
 
     def ready?
-      !GameRoomClock.server_available? || GameRoomClock.synchronized?
+      !@source.server_available? || @source.synchronized?
     end
   end
 
   class Preferences
+    COLUMNS = %w[__id __insertion_user username format games].freeze
     def initialize(table, games:)
       @table, @games = table, games.map(&:to_s)
       @query_snapshot = GameRoomTableQuerySnapshot.new
@@ -56,7 +43,7 @@ module GameRoomTableWatch
     def all
       rows, offset = [], 0
       loop do
-        page = @table.select(order: [["__id", "asc"]], limit: 1000, offset: offset).to_a
+        page = @table.select(columns: COLUMNS, order: [["__id", "asc"]], limit: 1000, offset: offset).to_a
         rows.concat(page)
         break if page.size < 1000
         offset += page.size
@@ -83,7 +70,12 @@ module GameRoomTableWatch
       main = rows.first
       changes = values.reject { |key, value| main[key].to_s == value.to_s }
       @table.update(main["__id"].to_i, changes) unless changes.empty?
-      rows.drop(1).each { |row| @table.delete(row["__id"].to_i) }
+      rows.drop(1).map { |row| row["__id"].to_i }.each_slice(100) do |ids|
+        count = @table.delete_many(ids)
+        # A partial/uncertain delete is not confirmation. A later save reads
+        # the remaining owned duplicates again; never include a foreign row.
+        raise IOError, "Duplicate preference deletion was not confirmed" unless count == ids.length
+      end
       wanted
     ensure
       @query_snapshot.invalidate
@@ -104,7 +96,7 @@ module GameRoomTableWatch
     def own_rows(user)
       # Account spelling is canonical on ELTEN. Never trust the supplied name
       # alone when changing/deleting a row, including duplicate cleanup.
-      rows = @table.select(where: { "username" => user.to_s }, order: [["__id", "asc"]], limit: 1000).to_a
+      rows = @table.select(where: { "username" => user.to_s }, columns: COLUMNS, order: [["__id", "asc"]], limit: 1000).to_a
       rows.select { |row| valid_identity?(row) && row["__insertion_user"].casecmp?(user.to_s) }.sort_by { |row| row["__id"].to_i }
     end
 
@@ -351,6 +343,7 @@ module GameRoomTableWatch
 
     def tick
       return close unless @current_user.call.to_s.casecmp?(@user)
+      return if @clock.respond_to?(:ready?) && !@clock.ready?
       if (result = @worker.take)
         value, error = result
         if error

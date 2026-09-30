@@ -1,13 +1,11 @@
+require_relative "specifications"
 require "json"
 
 require_relative "../game_room_localization"
 
 module GameSurfaces
   using GameRoomLocalization::Translations
-  PacketCardSpec = Struct.new(
-    :id, :header, :cards, :action_name, :allow_packet, :empty_label, :hand_order, :hand_epoch, :packet_tip, :activation_tip,
-    keyword_init: true
-  )
+
 
   # A card hand which can prepare a packet locally with Shift+Enter.  The
   # packet is submitted as one game action, so no intermediate selection is
@@ -326,11 +324,6 @@ module GameSurfaces
       raise ArgumentError, "packet card ids must be unique" if ids.any?(&:empty?) || ids.uniq.length != ids.length
     end
 
-    def state_value(state, key, default)
-      return default if !state.respond_to?(:key?)
-      return state[key] if state.key?(key)
-      return state[key.to_sym] if state.key?(key.to_sym)
-      default
-    end
+
   end
 end

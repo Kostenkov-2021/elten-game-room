@@ -6,8 +6,8 @@ module GameRoomPong
   # from different machines or let an observer invent a penalty.
   module Hurry
     def request_hurry
-      return false unless @side != nil && @engine && !@paused &&
-        @engine.goal == nil && @engine.turn.zero? && @rotation.team(@side) != @rotation.team(@engine.server)
+      return false unless @side != nil && rally_state.engine && !rally_state.paused &&
+        rally_state.engine.goal == nil && rally_state.engine.turn.zero? && rally_state.rotation.team(@side) != rally_state.rotation.team(rally_state.engine.server)
       data = {'action' => 'hurry_request', 'side' => @side, 'turn' => 0}
       host? ? accept_hurry(data) : emit_peer_event(data)
       true
@@ -18,22 +18,22 @@ module GameRoomPong
     def accept_hurry(data)
       side = data['side']
       now = @clock.call
-      return false if @paused || now < @ready_at || @engine.goal || !@engine.turn.zero? ||
-        @rotation.team(side) == @rotation.team(@engine.server)
+      return false if rally_state.paused || now < rally_state.ready_at || rally_state.engine.goal || !rally_state.engine.turn.zero? ||
+        rally_state.rotation.team(side) == rally_state.rotation.team(rally_state.engine.server)
       return false if @hurry_until || now < (@hurry_cooldowns || {}).fetch(side, 0.0)
       @hurry_cooldowns ||= {}
       @hurry_cooldowns[side] = now + 15.0
       @hurry_until = now + 10.0
-      warning = {'action' => 'hurry', 'side' => @engine.server, 'turn' => 0}
+      warning = {'action' => 'hurry', 'side' => rally_state.engine.server, 'turn' => 0}
       announce_hurry(warning)
       emit_peer_event(warning)
       true
     end
 
     def announce_hurry(data)
-      turn = @side == nil && !host? ? @observer_turn.to_i : @engine.turn
-      goal = @side == nil && !host? ? @snapshot && @snapshot['goal'] : @engine.goal
-      return false unless turn.zero? && !goal && data['side'] == @engine.server
+      turn = @side == nil && !host? ? @observer_turn.to_i : rally_state.engine.turn
+      goal = @side == nil && !host? ? rally_state.snapshot && rally_state.snapshot['goal'] : rally_state.engine.goal
+      return false unless turn.zero? && !goal && data['side'] == rally_state.engine.server
       speak(_('%{player}, serve within ten seconds or your opponent receives a point.') % {
         player: GameRoomContent.utf8(GameRoomParticipants.display_name(@players[data['side']])) })
       true
@@ -41,15 +41,15 @@ module GameRoomPong
 
     def hurry_tick(healthy)
       return unless host? && @hurry_until
-      unless healthy && @engine.turn.zero? && !@engine.goal
+      unless healthy && rally_state.engine.turn.zero? && !rally_state.engine.goal
         @hurry_until = nil
         return
       end
       return if @clock.call < @hurry_until
       @hurry_until = nil
-      return unless @engine.serve_timeout
-      @point_reason = 'timeout'
-      emit_peer_event('action' => 'timeout', 'side' => @engine.server, 'turn' => @engine.turn)
+      return unless rally_state.engine.serve_timeout
+      point_state.point_reason = 'timeout'
+      emit_peer_event('action' => 'timeout', 'side' => rally_state.engine.server, 'turn' => rally_state.engine.turn)
     end
   end
 end

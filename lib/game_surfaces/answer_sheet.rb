@@ -1,24 +1,10 @@
+require_relative "specifications"
 require_relative "../game_room_localization"
 
 module GameSurfaces
   using GameRoomLocalization::Translations
-  AnswerField = Struct.new(
-    :id,
-    :label,
-    :value,
-    :required,
-    :max_length,
-    :multiline,
-    keyword_init: true
-  )
-  AnswerSheetSpec = Struct.new(
-    :id,
-    :title,
-    :fields,
-    :submit_label,
-    :read_only,
-    keyword_init: true
-  )
+
+
 
   class AnswerSheet
     include ActionEmitter
@@ -118,12 +104,6 @@ module GameSurfaces
       field.value.to_s
     end
 
-    def state_value(state, key, default)
-      return default if !state.respond_to?(:key?)
-      return state[key] if state.key?(key)
-      return state[key.to_sym] if state.key?(key.to_sym)
 
-      default
-    end
   end
 end

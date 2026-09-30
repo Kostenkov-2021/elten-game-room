@@ -1,6 +1,7 @@
 require_relative "base"
 require_relative "../lib/game_bots"
 require_relative "../lib/farkle_strategy"
+require_relative "../lib/game_snapshot"
 
 require_relative "../lib/game_room_localization"
 
@@ -36,29 +37,7 @@ module GameRoomGames
     end
 
     def rule_sections
-      # Generated from docs/rulebooks/farkle.json; see tools/compile-rulebooks.rb.
-      [
-        rule_section(:risk, GameRoomRules.translate("How far do you dare to roll?"),
-          GameRoomRules.translate("Farkle is a dice game for two to eight players. You collect points during your turn, then decide whether to save them or risk another roll. Saved points are safe. Points from the turn you are still playing can all disappear in one unlucky roll."),
-          GameRoomRules.translate("Start by rolling six dice. Choose a scoring combination from the list and confirm it. Those dice are set aside and their points join your turn total. You can then roll the remaining dice or bank the points if you have reached the required minimum. Banking ends the turn and adds its points to your permanent score."),
-          GameRoomRules.translate("If a roll contains no scoring combination, you have farkled: you lose the entire current turn total and play passes on. Your earlier banked score is unaffected. If you manage to score with all six dice, you may roll all six again and continue building the same turn total. This is called hot dice."),
-          GameRoomRules.translate("Only dice from the same roll can form a combination. For example, a one saved from an earlier roll cannot be added to two new ones to make a triple. You may combine several scoring groups from the current roll, but every selected die must belong to a valid group. The program does not let you attach a useless die just to get rid of it.")),
-        rule_section(:scoring, GameRoomRules.translate("What the dice are worth here"),
-          GameRoomRules.translate("A single one is worth 10 points; a single five is worth 5. Other single dice do not score. Three ones give 75. Three twos, threes, fours, fives or sixes give 20, 30, 40, 50 or 60 respectively."),
-          GameRoomRules.translate("Four equal dice score 100 plus ten times their value: four twos give 120. Five equal dice score 300 plus twenty times their value: five twos give 340. Six equal dice score 600 plus twenty-five times their value: six twos give 650."),
-          GameRoomRules.translate("A run of five consecutive values, 1 to 5 or 2 to 6, gives 100. A run from 1 to 6 gives 200. Three pairs of different values give 150. Two different triples give 250, as do four equal dice together with a pair of another value. That last combination uses six dice; it is not the five-dice full house from Yahtzee."),
-          GameRoomRules.translate("When the same selected dice have more than one scoring interpretation, you receive the highest valid value. These are Game Room's values; changing the winning score or banking minimum does not change this scoring table.")),
-        rule_section(:banking, GameRoomRules.translate("When you can stop, and when the game ends"),
-          GameRoomRules.translate("The first bank has its own minimum, normally 50 points. Until you have a positive saved score, you must collect at least that much in a single turn to bank. Later turns use the ordinary banking minimum, normally 30. Both settings can be changed at the table."),
-          GameRoomRules.translate("The winning score defaults to 1000. Reaching it with unbanked points is not enough: you must bank them. Once someone banks enough, the current circuit continues through the last player in seating order. Players who have already played in that circuit do not receive another turn. The highest score then wins; equal highest scores give a draw. Older saved games may retain the earlier immediate-win rule.")),
-        rule_section(:controls, GameRoomRules.translate("Game keyboard shortcuts"),
-          GameRoomRules.translate("Arrows: browse scoring combinations, Roll and Bank."),
-          GameRoomRules.translate("Enter: perform the selected action."),
-          GameRoomRules.translate("D: read the latest roll."),
-          GameRoomRules.translate("C: read turn points and the required minimum."),
-          GameRoomRules.translate("S: read scores."),
-          GameRoomRules.translate("T: read whose turn it is."))
-      ]
+      generated_rule_sections
     end
 
     def minimum_players
@@ -195,36 +174,22 @@ module GameRoomGames
       state = initial_state(players, options_from_json(session["options"]))
       accepted = []
       history = [starting_history(players)]
+      apply_events!(state, events, repository, session, accepted, history)
+      replay_from_state(state, accepted, history)
+    end
 
-      events.each do |event|
-        break if state[:phase] == :finished
+    def incremental_replay(replay, session, events, repository)
+      return nil if replay == nil || replay.state == nil
+      # Historical seat projection owns both the old authors and decision
+      # events. Let its full replay handle replacements instead of bypassing it.
+      return nil unless session.fetch('__seat_changes', []).empty?
+      return nil unless replay.players == repository.players_for(session) &&
+        replay.state[:options] == options_from_json(session['options'])
 
-        actor = repository.actor_of(event, session)
-        applied = case event["action"].to_s
-        when "roll"
-          apply_roll(state, event, actor, repository, history)
-        when "select"
-          apply_select(state, event, actor)
-        when "keep"
-          apply_keep(state, event, actor, repository, history)
-        when "bank"
-          apply_bank(state, event, actor, repository, history)
-        else
-          false
-        end
-        accepted << event if applied
-      end
-
-      Replay.new(
-        board: nil,
-        players: players,
-        current_player: state[:current_player],
-        winner: state[:winner],
-        draw: state[:draw] == true,
-        accepted_events: accepted,
-        history: history,
-        state: state
-      )
+      state = GameRoomSnapshot.copy(replay.state)
+      accepted, history = replay.accepted_events.dup, replay.history.dup
+      apply_events!(state, events, repository, session, accepted, history)
+      replay_from_state(state, accepted, history)
     end
 
     def active_actors(replay)
@@ -440,6 +405,30 @@ module GameRoomGames
 
     private
 
+    def replay_from_state(state, accepted, history)
+      Replay.new(
+        board: nil, players: state[:players], current_player: state[:current_player],
+        winner: state[:winner], draw: state[:draw] == true,
+        accepted_events: accepted, history: history, state: state
+      )
+    end
+
+    def apply_events!(state, events, repository, session, accepted, history)
+      events.each do |event|
+        break if state[:phase] == :finished
+
+        actor = repository.actor_of(event, session)
+        applied = case event['action'].to_s
+        when 'roll' then apply_roll(state, event, actor, repository, history)
+        when 'select' then apply_select(state, event, actor)
+        when 'keep' then apply_keep(state, event, actor, repository, history)
+        when 'bank' then apply_bank(state, event, actor, repository, history)
+        else false
+        end
+        accepted << event if applied
+      end
+    end
+
     def initial_state(players, options)
       {
         players: players,
@@ -476,7 +465,7 @@ module GameRoomGames
         kind: :roll,
         value: values.join(",")
       )
-      if scoring_selections(values).empty?
+      if !scoring_roll?(values)
         history << HistoryEntry.new(
           key: "farkle:#{event_id}",
           text: _("Farkle. %{player} lost %{points} points from this turn.") % {
@@ -618,14 +607,24 @@ module GameRoomGames
       state[:turn_points].to_i >= minimum
     end
 
+    def each_scoring_selection(dice)
+      (1...(1 << dice.length)).each do |mask|
+        indices = dice.each_index.select { |index| (mask & (1 << index)) != 0 }
+        yield indices if score_for_indices(dice, indices) != nil
+      end
+    end
+
+    # Replay only needs to know whether this roll is a bust. Keep the complete
+    # ordered selection list for UI/bot choices, without building it here.
+    def scoring_roll?(values)
+      each_scoring_selection(values) { return true }
+      false
+    end
+
     def scoring_selections(values)
       dice = values.to_a
       unique = {}
-      (1...(1 << dice.length)).each do |mask|
-        indices = dice.each_index.select { |index| (mask & (1 << index)) != 0 }
-        score = score_for_indices(dice, indices)
-        next if score == nil
-
+      each_scoring_selection(dice) do |indices|
         key = indices.map { |index| dice[index] }.sort.join(",")
         unique[key] ||= indices
       end
@@ -721,3 +720,5 @@ module GameRoomGames
     end
   end
 end
+
+require_relative 'generated/rulebooks/farkle'

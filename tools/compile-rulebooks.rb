@@ -1,49 +1,78 @@
-require "json"
-require "ripper"
+﻿require 'json'
+require 'fileutils'
+require 'optparse'
 
-root = File.expand_path("..", __dir__)
-messages = {}
-Dir[File.join(root, "docs/rulebooks/*.json")].sort.each do |path|
-  book = JSON.parse(File.read(path, encoding: "UTF-8"))
-  source_path = File.join(root, book.fetch("source"))
-  source = File.read(source_path, encoding: "UTF-8")
-  pattern = /^    def rule_sections\r?\n.*?^    end/m
-  original = source[pattern] or raise "Missing rule_sections: #{source_path}"
-  sections = book.fetch("sections").map do |section|
-    strings = [section.fetch("title")] + section.fetch("paragraphs")
-    strings.each do |pair|
-      en = pair.fetch("en")
-      raise "Empty text: #{path}" if en.strip.empty?
-      messages[en] = true
+module GameRoomRulebookCompiler
+  ROOT = File.expand_path('..', __dir__)
+  module_function
+
+  def render(book, entry, input_name)
+    sections = book.fetch('sections').map do |section|
+      id = section.fetch('id')
+      raise "Invalid section ID: #{id}" unless id.match?(/\A[a-z0-9_]+\z/)
+      strings = [section.fetch('title'), *section.fetch('paragraphs')].map { |pair| pair.fetch('en') }
+      raise "Empty rule text in #{input_name}" if strings.any? { |text| text.strip.empty? }
+      "          rule_section(:#{id}, " + strings.map { |text| "GameRoomRules.translate(#{text.dump})" }.join(",\n            ") + ')'
     end
-    "        rule_section(:#{section.fetch('id')}, GameRoomRules.translate(#{strings[0]['en'].dump}),\n" +
-      strings.drop(1).map { |pair| "          GameRoomRules.translate(#{pair['en'].dump})" }.join(",\n") + ")"
-  end
-  # Monopoly's per-board figures are still generated from the actual boards.
-  if book["preserve_board_profiles"]
-    tokens = Ripper.lex(original)
-    token_index = tokens.index { |token| token[1] == :on_ident && token[2] == "rule_section" && original.lines[token[0][0] - 1].include?("rule_section(:board_profiles") }
-    raise "Missing board profiles" unless token_index
-    depth = 0
-    closing = nil
-    tokens.drop(token_index).each do |token|
-      depth += 1 if token[1] == :on_lparen
-      depth -= 1 if token[1] == :on_rparen
-      if token[1] == :on_rparen && depth.zero?
-        closing = token
-        break
+    sections.insert(sections.length - 1, '          board_profile_rules') if book['preserve_board_profiles']
+    <<~RUBY
+      # Generated from tools/data/rulebooks/#{input_name}; run tools/compile-rulebooks.rb.
+      module GameRoomGames
+        #{entry.fetch('kind')} #{entry.fetch('class')}
+          module GeneratedRulebook
+            private
+
+            def generated_rule_sections
+              [
+      #{sections.join(",\n")}
+              ]
+            end
+          end
+          include GeneratedRulebook
+        end
       end
-    end
-    offsets = [0]
-    original.lines.each { |line| offsets << offsets.last + line.bytesize }
-    start_token = tokens[token_index]
-    first = offsets[start_token[0][0] - 1] + start_token[0][1]
-    last = offsets[closing[0][0] - 1] + closing[0][1] + 1
-    profiles = original.byteslice(first...last)
-    sections.insert(sections.length - 1, "        " + profiles)
+    RUBY
   end
-  generated = "    def rule_sections\n      # Generated from docs/rulebooks/#{File.basename(path)}; see tools/compile-rulebooks.rb.\n      [\n#{sections.join(",\n")}\n      ]\n    end"
-  result = source.sub(pattern, generated)
-  File.write(source_path, result, encoding: "UTF-8") unless result == source
+
+  def outputs(root)
+    manifest = JSON.parse(File.read(File.join(root, 'tools/rulebook_sources.json'), encoding: 'UTF-8'))
+    inputs = Dir.glob('*.json', base: File.join(root, 'tools/data/rulebooks')).sort
+    raise 'Rulebook source manifest is incomplete' unless inputs == manifest.keys.sort
+    inputs.each_with_object({}) do |name, generated|
+      entry = manifest.fetch(name)
+      book = JSON.parse(File.read(File.join(root, 'tools/data/rulebooks', name), encoding: 'UTF-8'))
+      raise "Source mismatch: #{name}" unless book.fetch('source') == entry.fetch('source')
+      output = entry.fetch('output')
+      raise "Unsafe rulebook output: #{output}" unless output.match?(%r{\Agames/generated/rulebooks/[a-z0-9_]+\.rb\z})
+      raise ArgumentError, "Rulebooks share an output: #{output}" if generated.key?(output)
+      raise 'Invalid game class' unless entry.fetch('class').match?(/\A[A-Z][A-Za-z0-9]*\z/)
+      raise 'Invalid game container' unless %w[class module].include?(entry.fetch('kind'))
+      generated[output] = render(book, entry, name)
+    end
+  end
+
+  def run(root: ROOT, check: false)
+    changed = []
+    outputs(root).each do |relative, text|
+      path = File.join(root, relative)
+      next if File.file?(path) && File.binread(path) == text.b
+      changed << relative
+      next if check
+      FileUtils.mkdir_p(File.dirname(path))
+      File.binwrite(path, text)
+    end
+    changed
+  end
 end
-puts "Compiled #{messages.length} English rulebook messages. Update and compile translations with tools/translations.rb."
+
+if $PROGRAM_NAME == __FILE__
+  options = {}
+  OptionParser.new do |parser|
+    parser.on('--check') { options[:check] = true }
+    parser.on('--root DIRECTORY') { |value| options[:root] = File.expand_path(value) }
+  end.parse!
+  abort 'Unexpected arguments' unless ARGV.empty?
+  changed = GameRoomRulebookCompiler.run(**options)
+  abort "Stale generated rulebooks: #{changed.join(', ')}" if options[:check] && !changed.empty?
+  puts "Rulebooks: #{changed.length} #{options[:check] ? 'stale' : 'updated'}; maintained models were not modified."
+end

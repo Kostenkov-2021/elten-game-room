@@ -16,7 +16,8 @@ class GameRoomAnalyticsClient
   def api_data(method, path, params = nil)
     data = @client.api_data(method, path, params, **@options)
     rows_query = (method == "GET" && @rows_paths.include?(path)) ||
-      (method == "POST" && @rows_paths.any? { |rows| path == "#{rows}/query" })
+      (method == "POST" && @rows_paths.any? { |rows| path == "#{rows}/query" ||
+        (path == "#{rows}/bulk" && params.is_a?(Hash) && params["operation"] == "insert") })
     if rows_query && !(data.is_a?(Hash) && data["rows"].is_a?(Array))
       raise @error, "Invalid analytics rows response"
     end

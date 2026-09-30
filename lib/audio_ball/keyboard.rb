@@ -1,3 +1,4 @@
+require_relative '../host_bridge'
 require 'weakref'
 
 module GameRoomAudioBall
@@ -71,20 +72,8 @@ module GameRoomAudioBall
     end
 
     def installed_bridge(target)
-      prepended = target.ancestors.take_while { |ancestor| !ancestor.equal?(target) }
-      stored = target.instance_variable_get(:@game_room_audio_ball_keyboard_bridge)
-      return stored if stored.is_a?(Module) && prepended.include?(stored)
-      return unless stored == true
-
-      # Releases with a boolean marker did not retain the module. Identify
-      # only our own wrapper; leave all other host extensions untouched.
-      prepended.find do |candidate|
-        methods = candidate.instance_methods(false)
-        next false unless methods.include?(:update) &&
-          (methods - [:update, :suppress_held_until_release, :reset]).empty?
-        path = candidate.instance_method(:update).source_location&.first.to_s.tr('\\', '/')
-        path.end_with?('/lib/audio_ball/keyboard.rb')
-      end
+      GameRoomHostBridge.locate(target, marker: :@game_room_audio_ball_keyboard_bridge,
+        method_name: :update, source: '/lib/audio_ball/keyboard.rb')
     end
 
     def capture(result, options, previous, modifiers)

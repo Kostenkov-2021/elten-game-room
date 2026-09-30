@@ -1,3 +1,6 @@
+require_relative 'host_controls'
+require_relative 'native_tasks'
+
 def _(text)
   text
 end
@@ -14,21 +17,38 @@ def speech_wait
 end
 
 class FakeControl
+  Registration = Struct.new(:dispose) do
+    def close
+      callback, self.dispose = dispose, nil
+      callback&.call
+    end
+  end
   attr_accessor :header
   def initialize
     @handlers = {}
   end
 
-  def on(event, &handler)
+  def on(event, *arguments, &handler)
+    register_event(event, *arguments, &handler)
+  end
+
+  def register_event(event, *_arguments, &handler)
+    @handlers ||= {}
     (@handlers[event] ||= []) << handler
+    Registration.new(-> { @handlers[event].delete(handler) })
   end
 
   def trigger(event, payload = nil)
     @handlers[event].to_a.each { |handler| handler.call(payload) }
   end
 
-  def bind_context(_header = "", &handler)
+  def bind_context(header = "", &handler)
+    register_context(header, &handler)
+  end
+
+  def register_context(_header = "", &handler)
     (@contexts ||= []) << handler
+    Registration.new(-> { @contexts.delete(handler) })
   end
 
   def context(menu, submenu = true)
@@ -106,6 +126,24 @@ class ListBox < FakeControl
     indices.each { |index| @selected[index] = true if index.between?(0, @selected.length - 1) }
   end
 
+  def options=(values)
+    @item_keys = nil
+    @options = values
+    @selected = Array.new(values.length, false)
+  end
+
+  # The native-control regressions cover the full host implementation. This
+  # model-only fixture keeps its stable identity/selection contract.
+  def update_options(values, keys:, fallback: :nearest)
+    raise ArgumentError, 'Invalid list keys' unless keys.length == values.length && keys.uniq.length == keys.length && !keys.include?(nil)
+    previous = (@item_keys || []).each_with_index.to_h
+    current = @item_keys&.[](@index)
+    @selected = keys.map { |key| previous.key?(key) ? @selected[previous[key]] : false }
+    @index = keys.index(current) || (fallback == :first ? 0 : [[@index.to_i, values.length - 1].min, 0].max)
+    @options, @item_keys = values, keys.dup
+    self
+  end
+
   def require_multiselection_indices(indices)
     @required_multiselection_indices = indices.uniq.select { |index| index >= 0 && index < @options.size }
     select_multiselection_indices(@required_multiselection_indices)
@@ -157,7 +195,7 @@ end
 
 class Form < FakeControl
   attr_accessor :index, :cancel_button, :accept_button, :held_modifiers
-  attr_reader :fields, :hidden_controls, :wait_entry_state
+  attr_reader :fields, :hidden_controls, :wait_entry_state, :wait_announced
 
   def initialize(fields, index: 0, quiet: true)
     super()
@@ -174,12 +212,25 @@ class Form < FakeControl
 
   def wait
     @wait_entry_state = [@updated, @quiet]
-    @fields[@index.to_i]&.focus if @updated == true || @quiet == true
+    @wait_announced = @announce_wait != false && (@updated == true || @quiet == true)
+    @fields[@index.to_i]&.focus if @wait_announced
     @updated = true
   end
 
   def resume
     @wait = false
+  end
+
+  def resume_for_refresh
+    @wait = false
+  end
+
+  def wait_without_announcement
+    previous = @announce_wait
+    @announce_wait = false
+    wait
+  ensure
+    @announce_wait = previous
   end
 
   def show_all
@@ -237,6 +288,10 @@ class EditBox < FakeControl
   def set_text(text, reset = true, **_options)
     @text = text.to_s.delete("\r").sub(/\n+\z/, '')
     @index = reset ? 0 : @index.to_i.clamp(0, @text.length)
+  end
+
+  def text_len(value = @text)
+    value.to_s.length
   end
 
   def context(menu, _submenu = false)

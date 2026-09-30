@@ -120,16 +120,10 @@ module SpadesLearning
   class Arena
     attr_reader :scenarios
 
-    def initialize(game:, score_limit: 100, max_actions: 6_000, scenarios: nil, profile: nil, score_limits: nil)
+    def initialize(game:, scenarios:, max_actions: 6_000)
       @game = game
       @max_actions = max_actions.to_i
-      @scenarios = if scenarios != nil
-        scenarios.to_a
-      elsif profile != nil
-        ScenarioMatrix.for_profile(profile, score_limits: score_limits || [score_limit])
-      else
-        legacy_scenarios(score_limit)
-      end
+      @scenarios = scenarios.to_a
       raise ArgumentError, "Spades arena requires at least one scenario" if @scenarios.empty?
     end
 
@@ -339,13 +333,6 @@ module SpadesLearning
       totals
     end
 
-    def legacy_scenarios(score_limit)
-      [
-        Scenario.new(id: "legacy-team", player_count: 4, team_size: 2, score_limit: score_limit, quicksand: false),
-        Scenario.new(id: "legacy-individual", player_count: 3, team_size: 0, score_limit: score_limit, quicksand: false)
-      ]
-    end
-
     def ratio(numerator, denominator)
       denominator.to_i == 0 ? 0.0 : numerator.to_f / denominator.to_i
     end
@@ -422,16 +409,12 @@ module SpadesLearning
   class SelfPlayTrainer
     attr_reader :policy
 
-    def initialize(game:, policy: Policy.default, seed: 1, score_limit: 100, scenarios: nil, profile: nil, score_limits: nil,
-      max_actions: 6_000)
+    def initialize(game:, scenarios:, policy: Policy.default, seed: 1, max_actions: 6_000)
       @game = game
       @policy = policy
       @random = Random.new(seed.to_i)
       @seed = seed.to_i
-      @arena = Arena.new(
-        game: game, score_limit: score_limit, scenarios: scenarios,
-        profile: profile, score_limits: score_limits, max_actions: max_actions
-      )
+      @arena = Arena.new(game: game, scenarios: scenarios, max_actions: max_actions)
     end
 
     def train(generations:, population: 6, evaluation_seeds: 4, mutation_scale: 0.7, accept_score_ties: true)

@@ -1,4 +1,9 @@
 require_relative "base"
+require_relative "../content/languages"
+require_relative "../content/quiz_general_en"
+require_relative "../content/quiz_general_ru"
+require_relative "../content/quiz_pl_wikidata"
+require_relative "../content/quiz_witcher_pl"
 require_relative "../lib/game_bots"
 require_relative "../lib/hidden_submissions"
 
@@ -75,28 +80,7 @@ module GameRoomGames
     end
 
     def rule_sections
-      # Generated from docs/rulebooks/quiz.json; see tools/compile-rulebooks.rb.
-      [
-        rule_section(:question, GameRoomRules.translate("Everyone answers the same question"),
-          GameRoomRules.translate("Quiz Party is for two to eight participants, with bots available. Each question has four proposed answers and one is marked correct in the question set. Everyone answers independently. Use the arrows to choose an answer and Enter to submit it. Your submission is final for that question and stays hidden until the answering period closes."),
-          GameRoomRules.translate("A correct answer gives one point. A wrong answer or no answer gives zero; there are no negative points. Answering first earns no extra points, provided everyone answers within the time allowed. You can therefore use the available time to think instead of racing to press Enter.")),
-        rule_section(:round, GameRoomRules.translate("One category lasts for three questions"),
-          GameRoomRules.translate("A round consists of three questions. At its start, the game draws three available categories and one participant chooses which will be used for all three questions. The right to choose moves between players in successive rounds. Category choices include their question counts so you can see how much material they contain."),
-          GameRoomRules.translate("After everyone answers or time expires, the game reveals the answers and awards points, then prepares the next question. Preparing a question is not another answer choice: wait for the new question to appear. Once all three have been settled, the round summary is available and the next category selection begins unless the match has ended.")),
-        rule_section(:sets, GameRoomRules.translate("Choose the content, not the interface language"),
-          GameRoomRules.translate("When creating or configuring the table, first choose a question language and then a set offered in that language. The set label gives the number of questions supplied. This choice does not change anyone's interface: a Polish interface can still display questions from an English or Italian set. The language and set are shared by the whole table."),
-          GameRoomRules.translate("The full Witcher set combines its two subject collections. Witcher \u2014 games contains game-related questions; Witcher \u2014 books and adaptations contains books and screen adaptations. Choose the full set for a mixture or the narrower set for that medium. The accepted answer comes from the chosen question data, not a live search or a judge's decision during play.")),
-        rule_section(:time, GameRoomRules.translate("Answer time and the finishing line"),
-          GameRoomRules.translate("Time for one answer defaults to 20 seconds. The offered choices are 5\u201310 seconds one second apart, then 15\u201360 in steps of five. This limit applies separately to each question. The target defaults to 15 points; the list also offers 20, 25, 30, 40 and 50."),
-          GameRoomRules.translate("Reaching the target does not cut short a round. Finish all three questions, then the highest score wins. If the highest scores are equal, play another complete round and check again, continuing until one player leads. Bots sometimes know an answer and otherwise guess; adding one does not make every answer perfect. Saving a partly played Quiz Party match is not supported.")),
-        rule_section(:controls, GameRoomRules.translate("Game keyboard shortcuts"),
-          GameRoomRules.translate("Arrows: choose a category or answer."),
-          GameRoomRules.translate("Enter: submit the highlighted choice."),
-          GameRoomRules.translate("T: read the question."),
-          GameRoomRules.translate("Ctrl+T: read the remaining answer time."),
-          GameRoomRules.translate("V: read the round summary."),
-          GameRoomRules.translate("S: read scores."))
-      ]
+      generated_rule_sections
     end
 
     def option_definitions
@@ -164,148 +148,16 @@ module GameRoomGames
       state = initial_state(players, options)
       accepted = []
       history = [starting_history(players)]
-      winner = nil
-      draw = false
-
+      frame = GameRoomReduction::Frame.new(state: state, players: players, options: options, history: history, draw: false)
       events.each do |event|
-        action = event["action"].to_s
-        actor = repository.actor_of(event, session)
-        next if actor.to_s.empty?
-        event_id = repository.event_id(event)
-        value = event["value"].to_s
+        input = GameRoomReduction.decode(event, session, repository)
+        next unless input
         timestamp = event_timestamp(event)
-        timestamp = GameRoomSessionClock.from_server(session, timestamp) if timestamp != nil
-        accepted_event = false
-
-        case action
-        when "round_draw"
-          parsed = parse_round_draw(value)
-          drawn = parsed == nil ? nil : categories_by_codes(state, parsed[:categories])
-          if state[:phase] == :drawing && owner?(players, actor) && parsed != nil &&
-              drawn != nil && drawn.length == round_choice_count(state) &&
-              parsed[:round] == state[:completed_rounds] + 1
-            state[:choices] = drawn
-            state[:phase] = :choosing
-            state[:resume_at] = 0
-            accepted_event = true
-            history << history_entry(
-              event_id,
-              _("Round %{round}. The drawn categories are: %{categories}.") % {
-                round: state[:completed_rounds] + 1,
-                categories: drawn.map { |category| category_choice_label(state, category) }.join("; ")
-              },
-              actor,
-              :round_draw
-            )
-          end
-        when "round_category"
-          parsed = parse_round_category(value)
-          expected_round = state[:completed_rounds] + 1
-          expected_chooser = chooser_index(players, expected_round)
-          category = parsed == nil ? nil : category_by_code(state, parsed[:category])
-          if state[:phase] == :choosing && parsed != nil && category != nil &&
-              state[:choices].include?(category) &&
-              parsed[:round] == expected_round && parsed[:attempt] == state[:attempt] + 1 &&
-              parsed[:chooser] == expected_chooser && same_user?(players[expected_chooser], actor)
-            state[:attempt] = parsed[:attempt]
-            state[:round] = parsed[:round]
-            state[:category] = category
-            state[:position] = 0
-            state[:phase] = :starting
-            accepted_event = true
-            history << history_entry(
-              event_id,
-              _("Round %{round}. %{player} chose the category %{category}.") % {
-                round: state[:round],
-                player: participant_name(actor),
-                category: category_label(category)
-              },
-              actor,
-              :round_start
-            )
-          end
-        when "question"
-          parsed = parse_question(value)
-          question = parsed == nil ? nil : question_by_id(state, parsed[:question_id])
-          if state[:phase] == :starting && owner?(players, actor) && parsed != nil &&
-              question != nil && question["category"].to_s == state[:category].to_s &&
-              parsed[:round] == state[:round] && parsed[:position] == state[:position] + 1 &&
-              drawable_question?(state, parsed[:question_id]) && timestamp != nil
-            # The owner enforces the presentation pause before creating this
-            # transition. Rechecking it while replaying would be unsafe: the
-            # sender's optimistic record and the native LiveSessions record can
-            # legitimately receive different wall-clock timestamps. Phase,
-            # position and authenticated ownership make the transition valid.
-            reset_used_questions(state) if fresh_questions(state).empty?
-            state[:position] = parsed[:position]
-            state[:question_id] = parsed[:question_id]
-            state[:deadline] = timestamp + state[:options]["answer_time"].to_i
-            state[:resume_at] = 0
-            state[:used_questions] << parsed[:question_id]
-            state[:commitments] = {}
-            state[:reveals] = {}
-            state[:reveal_parts] = {}
-            state[:phase] = :answering
-            accepted_event = true
-            history << history_entry(
-              event_id,
-              question["prompt"].to_s,
-              actor,
-              :question
-            )
-          end
-        when "answer_commit"
-          commitment = decode_answer_value(state, value, digest: true)
-          if state[:phase] == :answering && includes_player?(players, actor) &&
-              !player_hash_key?(state[:commitments], actor) && commitment != nil &&
-              timestamp != nil && !closing_deadline_reached?(state, timestamp)
-            state[:commitments][canonical_player(players, actor)] = commitment
-            accepted_event = true
-          end
-        when "answers_closed"
-          if state[:phase] == :answering && owner?(players, actor) && value == question_key(state) &&
-              answers_may_close?(state, timestamp)
-            state[:phase] = :revealing
-            accepted_event = true
-          end
-        when "answer_nonce"
-          accepted_event = accept_reveal_part(state, players, actor, :nonce, value)
-        when "answer_pick"
-          accepted_event = accept_reveal_part(state, players, actor, :answer, value)
-        when "question_finished"
-          parsed = parse_question_result(value)
-          if state[:phase] == :revealing && owner?(players, actor) && parsed != nil &&
-              parsed[:round] == state[:round] && parsed[:position] == state[:position] &&
-              parsed[:mask] == expected_score_mask(state) && question_may_finish?(state, timestamp)
-            accepted_event = true
-            history.concat(question_result_history(state, event_id, actor))
-            apply_question_scores(state, parsed[:mask])
-            if state[:position] >= QUESTIONS_PER_ROUND
-              state[:completed_rounds] += 1
-              state[:phase] = :drawing
-              state[:choices] = []
-              history << history_entry(
-                event_id,
-                _("Round %{round} ended. %{scores}") % {
-                  round: state[:completed_rounds],
-                  scores: scores_text(state)
-                },
-                actor,
-                :round_end
-              )
-              winner, draw = update_match_ending(state, history, event_id)
-              state[:phase] = :finished if winner != nil || draw
-              state[:resume_at] = timestamp.to_i + NEXT_QUESTION_PAUSE if state[:phase] == :drawing
-            else
-              state[:phase] = :starting
-              state[:resume_at] = timestamp.to_i + NEXT_QUESTION_PAUSE
-            end
-          end
-        end
-
-        accepted << event if accepted_event
+        input.timestamp = GameRoomSessionClock.from_server(session, timestamp) if timestamp != nil
+        accepted << event if apply_replay_event(frame, input)
       end
 
+      winner, draw = frame.winner, frame.draw
       state[:winner] = winner
       state[:draw] = draw
       GameRoomSessionClock.attach(state, session)
@@ -1358,3 +1210,7 @@ module GameRoomGames
     end
   end
 end
+
+require_relative 'quiz_party/reduction'
+
+require_relative 'generated/rulebooks/quiz'

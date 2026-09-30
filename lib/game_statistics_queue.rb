@@ -16,8 +16,9 @@ module GameRoomStatistics
     MAX_PENDING = 4096
     MAX_ACKNOWLEDGED = 2048
 
-    def initialize(storage:, user:)
+    def initialize(storage:, user:, before_write: nil)
       @storage, @user = storage, copy_user(user).freeze
+      @before_write = before_write
     end
 
     def push(key, payload)
@@ -63,6 +64,7 @@ module GameRoomStatistics
         [copy_key(entry[0]), copy_payload(entry[1])]
       end
       removed = 0
+      pending = 0
       update_state do |state|
         account = state["accounts"][@user]
         next unless account
@@ -73,7 +75,10 @@ module GameRoomStatistics
           account["acknowledged"].shift while account["acknowledged"].size > MAX_ACKNOWLEDGED
           removed += 1
         end
+        pending = account["pending"].length
       end
+      # The count belongs to the confirmed atomic write, not another full read.
+      yield pending if block_given?
       removed
     end
 
@@ -89,7 +94,7 @@ module GameRoomStatistics
     end
 
     def pending?
-      size > 0
+      !batch(limit: 1).empty?
     end
 
     def size
@@ -100,8 +105,10 @@ module GameRoomStatistics
 
     def update_state
       result = @storage.update_json(PATH, default: {"version" => 1, "accounts" => {}}) do |state|
+        @before_write&.call
         validate_state(state)
         yield state
+        @before_write&.call
       end
       raise IOError, "Statistics queue storage did not confirm the write" unless result.instance_of?(Hash)
     end

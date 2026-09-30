@@ -5,6 +5,7 @@ require_relative "game_room_analytics_client"
 
 module GameRoomStatistics
   class Unavailable < StandardError; end
+  class UnsafeReport < Unavailable; end
 
   module Schema
     ACCOUNTS = "statistics_accounts".freeze
@@ -33,40 +34,87 @@ module GameRoomStatistics
     KINDS = %w[visit player started completed].freeze
     MODES = %w[humans bots solo].freeze
     PAYLOAD_FIELDS = %w[kind game day_key mode match].freeze
+    UPLOAD_CHUNK = 25
+    UPLOAD_SECONDS = 1.0
+    READ_SNAPSHOT_SECONDS = 15.0
+    CANONICAL_CACHE_LIMIT = 4096
 
-    def initialize(app_uuid:, user:, client: nil, api: nil, current_user: nil)
+    def initialize(app_uuid:, user:, client: nil, api: nil, current_user: nil,
+      monotonic: -> { Process.clock_gettime(Process::CLOCK_MONOTONIC) })
       @app_uuid, @user = app_uuid.to_s, user.to_s
       @client = client || EltenLink::Client.new
       @api = api || EltenLink::Apps
       @current_user = current_user || -> { Session.name }
+      @monotonic = monotonic
       @mutex = Mutex.new
     end
 
     def write_batch(payloads, cancellation_token: nil)
       @mutex.synchronize do
+        # Even an uncertain write invalidates the dialog's short read snapshot.
+        @read_snapshot = nil
         check_context!(cancellation_token)
+        raise ArgumentError, "Statistics batch must be an array" unless payloads.is_a?(Array)
+        return 0 if payloads.empty?
+        deadline = @monotonic.call + UPLOAD_SECONDS
         client = operation_client(cancellation_token)
         verify_schema_with_client!(client)
         table = @api.table(client, @app_uuid, Schema::EVENTS)
-        payloads.each do |payload|
+        confirmed = 0
+        payloads.each_slice([UPLOAD_CHUNK, @page_limit].min) do |payload_chunk|
           check_context!(cancellation_token)
-          values = write_values(payload, cancellation_token, client)
-          check_context!(cancellation_token)
-          existing = table.select(where: {"event_key" => values["event_key"]}, columns: Schema::FIELDS,
-            order: [["__id", "asc"]], limit: 1).first
-          check_context!(cancellation_token)
-          if existing
-            fields = %w[started completed].include?(values["kind"]) ? Schema::FIELDS - ["day_key"] : Schema::FIELDS
-            raise Unavailable, "A statistics record conflicts with its original report" unless valid_record?(existing) && fields.all? { |key| existing[key] == values[key] }
-          else
-            row = table.insert(values)
-            check_context!(cancellation_token)
-            raise Unavailable, "A statistics write was not confirmed" unless row.is_a?(Hash) && row["__id"].is_a?(Integer) && row["__id"] > 0 && values.all? { |key, value| row[key] == value }
+          values = payload_chunk.map { |payload| write_values(payload, cancellation_token, client) }
+          unique = {}
+          values.each do |value|
+            assert_equivalent!(unique[value["event_key"]], value) if unique.key?(value["event_key"])
+            unique[value["event_key"]] ||= value
           end
+          existing = existing_records(table, unique.keys, cancellation_token)
+          check_context!(cancellation_token)
+          missing = unique.values.reject do |value|
+            row = existing[value["event_key"]]
+            assert_equivalent!(row, value) if row
+            row != nil
+          end
+          unless missing.empty?
+            rows = table.insert_many(missing)
+            check_context!(cancellation_token)
+            expected = missing.to_h { |value| [value["event_key"], value] }
+            unless rows.is_a?(Array) && rows.length == missing.length && rows.all? { |row|
+                row.is_a?(Hash) && row["__id"].is_a?(Integer) && row["__id"] > 0 &&
+                  expected.key?(row["event_key"]) && expected[row["event_key"]].all? { |key, value| row[key] == value }
+              } && rows.map { |row| row["event_key"] }.uniq.length == rows.length &&
+                rows.map { |row| row["__id"] }.uniq.length == rows.length
+              raise Unavailable, "Statistics bulk write was not confirmed"
+            end
+          end
+          confirmed += payload_chunk.length
+          # Yield between confirmed chunks, never half-acknowledge an HTTP
+          # operation. A single slow chunk still makes progress on the retry.
+          break if @monotonic.call >= deadline
         end
         check_context!(cancellation_token)
-        true
+        confirmed
       end
+    end
+
+    private def assert_equivalent!(row, values)
+      fields = %w[started completed].include?(values["kind"]) ? Schema::FIELDS - ["day_key"] : Schema::FIELDS
+      unless valid_record?(row) && fields.all? { |key| row[key] == values[key] }
+        raise UnsafeReport, "A statistics record conflicts with its original report"
+      end
+    end
+
+    private def existing_records(table, keys, token)
+      if keys.length == 1
+        rows = table.select(where: {"event_key" => keys.first}, columns: Schema::FIELDS,
+          order: [["__id", "asc"]], limit: 1)
+        check_context!(token)
+        raise Unavailable, "Invalid statistics lookup" unless rows.is_a?(Array) && rows.length <= 1 &&
+          rows.all? { |row| valid_record?(row) && row["event_key"] == keys.first }
+        return rows.empty? ? {} : {keys.first => rows.first}
+      end
+      first_records(table, keys, token: token, require_all: false)
     end
 
     def verify_schema!
@@ -87,21 +135,20 @@ module GameRoomStatistics
         events["columns"].to_h.keys.sort == Schema::FIELDS.sort &&
         %w[select insert].all? { |key| event_permissions[key] == true } &&
         %w[update delete].none? { |key| event_permissions[key] == true }
-      raise Unavailable, "Statistics have not been configured with the required privacy protections" unless safe
-      @page_limit = [[events.dig("limits", "max_select_limit").to_i, 1].max, 2000].min
+      raise UnsafeReport, "Statistics have not been configured with the required privacy protections" unless safe
+      @page_limit = [[events.dig("limits", "max_select_limit").to_i, 1].max, 1000].min
       true
     end
 
-    def report(period, cancellation_token: nil)
+    def report(period, cancellation_token: nil, reuse_snapshot: false)
       @mutex.synchronize do
         check_context!(cancellation_token)
         client = operation_client(cancellation_token)
         verify_schema_with_client!(client)
         table = @api.table(client, @app_uuid, Schema::EVENTS)
         check_context!(cancellation_token)
-        snapshot = snapshot_id(table)
-        check_context!(cancellation_token)
-        first_day = collection_start(table, snapshot)
+        metadata = read_metadata(table, cancellation_token, reuse: reuse_snapshot)
+        snapshot, first_day = metadata.values_at(:id, :first_day)
         people, visitors, game_people, games, seen = {}, {}, {}, {}, {}
         totals = {"started" => 0, "completed" => 0}
         each_record(table, period, snapshot, cancellation_token) do |row|
@@ -139,9 +186,8 @@ module GameRoomStatistics
         verify_schema_with_client!(client)
         table = @api.table(client, @app_uuid, Schema::EVENTS)
         check_context!(cancellation_token)
-        snapshot = snapshot_id(table)
-        check_context!(cancellation_token)
-        first_day = collection_start(table, snapshot)
+        # Explicit Refresh calls years first and always replaces this snapshot.
+        first_day = read_metadata(table, cancellation_token, reuse: false)[:first_day]
         first_year = first_day ? first_day / 10000 : today.year
         check_context!(cancellation_token)
         first_year <= today.year ? (first_year..today.year).to_a.reverse : [today.year]
@@ -153,6 +199,18 @@ module GameRoomStatistics
     def check_context!(token)
       token.raise_if_cancelled! if token
       ensure_user!
+    end
+
+    def read_metadata(table, token, reuse:)
+      if reuse && @read_snapshot && @monotonic.call < @read_snapshot[:at] + READ_SNAPSHOT_SECONDS
+        return @read_snapshot
+      end
+      @read_snapshot = nil
+      id = snapshot_id(table)
+      check_context!(token)
+      first_day = collection_start(table, id)
+      check_context!(token)
+      @read_snapshot = {id: id, first_day: first_day, at: @monotonic.call, canonical: {}}
     end
 
     def snapshot_id(table)
@@ -180,9 +238,11 @@ module GameRoomStatistics
       loop do
         check_context!(token)
         rows = table.select(where: where, columns: Schema::FIELDS, distinct: true,
-          order: [["event_key", "asc"], ["day_key", "asc"]], limit: @page_limit, offset: offset).to_a
-        raise Unavailable, "Statistics pagination did not advance" if !rows.empty? && rows == previous
+          order: [["event_key", "asc"], ["day_key", "asc"]], limit: @page_limit, offset: offset)
         check_context!(token)
+        raise Unavailable, "Invalid statistics page" unless rows.is_a?(Array) && rows.length <= @page_limit
+        break if rows.empty?
+        raise Unavailable, "Statistics pagination did not advance" if rows == previous
         rows.each { |row| raise Unavailable, "Invalid statistics record" unless valid_record?(row) }
         keys = rows.select { |row| %w[started completed].include?(row["kind"]) }.map { |row| row["event_key"] }.uniq
         canonical = canonical_records(table, keys, snapshot, token)
@@ -190,36 +250,50 @@ module GameRoomStatistics
           row = canonical.fetch(row["event_key"], row)
           yield row if row["day_key"] <= period.to_day && (!period.from_day || row["day_key"] >= period.from_day)
         end
-        break if rows.length < @page_limit
+        # The endpoint may shorten a nonempty page below the schema/request
+        # limit. Only an empty response proves that this snapshot is exhausted.
         offset += rows.length
         previous = rows
       end
     end
 
     def canonical_records(table, keys, snapshot, token)
-      records = {}
-      keys.each_slice([@page_limit, 100].min) do |chunk|
-        check_context!(token)
-        first = table.select(where: {"event_key" => {"in" => chunk}, "__id" => {"lte" => snapshot}},
-          columns: ["event_key"], group_by: ["event_key"],
-          aggregates: {"first_id" => {"function" => "min", "column" => "__id"}}, limit: chunk.length)
-        check_context!(token)
-        unless first.is_a?(Array) && first.length == chunk.length && first.all? { |row|
-            row.is_a?(Hash) && chunk.include?(row["event_key"]) && row["first_id"].is_a?(Integer) && row["first_id"].between?(1, snapshot)
-          } && first.map { |row| row["event_key"] }.sort == chunk.sort
-          raise Unavailable, "Invalid canonical statistics identities"
-        end
-        expected = first.to_h { |row| [row["event_key"], row["first_id"]] }
-        rows = table.select(where: {"__id" => {"in" => expected.values}}, columns: Schema::FIELDS + ["__id"], limit: chunk.length)
-        check_context!(token)
-        unless rows.is_a?(Array) && rows.length == chunk.length && rows.all? { |row|
-            valid_record?(row) && %w[started completed].include?(row["kind"]) && expected[row["event_key"]] == row["__id"]
-          } && rows.map { |row| row["event_key"] }.sort == chunk.sort
-          raise Unavailable, "Invalid canonical statistics records"
-        end
-        rows.each { |row| records[row["event_key"]] = row }
+      cache = @read_snapshot && @read_snapshot[:id] == snapshot ? @read_snapshot[:canonical] : {}
+      records = keys.each_with_object({}) { |key, found| found[key] = cache[key] if cache.key?(key) }
+      (keys - records.keys).each_slice([@page_limit, 100].min) do |chunk|
+        found = first_records(table, chunk, token: token, snapshot: snapshot, require_all: true)
+        raise Unavailable, "Invalid canonical match kind" unless found.values.all? { |row| %w[started completed].include?(row["kind"]) }
+        records.merge!(found)
+        found.each { |key, row| cache[key] = row.freeze }
+        cache.shift while cache.length > CANONICAL_CACHE_LIMIT
       end
       records
+    end
+
+    def first_records(table, keys, token:, require_all:, snapshot: nil)
+      check_context!(token)
+      scope = {"event_key" => {"in" => keys}}
+      scope["__id"] = {"lte" => snapshot} if snapshot
+      first = table.select(where: scope,
+        columns: ["event_key"], group_by: ["event_key"],
+        aggregates: {"first_id" => {"function" => "min", "column" => "__id"}}, limit: keys.length)
+      check_context!(token)
+      unless first.is_a?(Array) && (require_all ? first.length == keys.length : first.length <= keys.length) && first.all? { |row|
+          row.is_a?(Hash) && keys.include?(row["event_key"]) && row["first_id"].is_a?(Integer) && row["first_id"] > 0 &&
+            (!snapshot || row["first_id"] <= snapshot)
+        } && first.map { |row| row["event_key"] }.uniq.length == first.length
+        raise Unavailable, "Invalid canonical statistics identities"
+      end
+      expected = first.to_h { |row| [row["event_key"], row["first_id"]] }
+      return {} if expected.empty?
+      rows = table.select(where: {"__id" => {"in" => expected.values}}, columns: Schema::FIELDS + ["__id"], limit: expected.length)
+      check_context!(token)
+      unless rows.is_a?(Array) && rows.length == expected.length && rows.all? { |row|
+          valid_record?(row) && expected[row["event_key"]] == row["__id"]
+        } && rows.map { |row| row["event_key"] }.sort == expected.keys.sort
+        raise Unavailable, "Invalid canonical statistics records"
+      end
+      rows.to_h { |row| [row["event_key"], row] }
     end
 
     def period_scope(period)

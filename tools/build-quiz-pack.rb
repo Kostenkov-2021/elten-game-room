@@ -1,8 +1,8 @@
 require "digest"
 require "json"
 require "optparse"
-require_relative "quiz-data-cleanup"
-require_relative "quiz-pack-writer"
+require_relative "support/quiz_input"
+require_relative "support/quiz_pack_writer"
 
 options = {
   language: "pl-PL",
@@ -46,12 +46,12 @@ end
 seen_ids = {}
 problems = []
 prepared = questions.each_with_index.map do |question, index|
-  category = QuizDataCleanup.text(question["category"])
+  category = QuizInput.text(question["category"])
   level = question["level"].to_s.strip
-  prompt = QuizDataCleanup.text(question["prompt"])
-  correct = QuizDataCleanup.text(question["correct"])
-  wrong = Array(question["wrong"]).map { |value| QuizDataCleanup.text(value) }.reject(&:empty?)
-  issue = QuizDataCleanup.problem({ "prompt" => prompt, "correct" => correct, "wrong" => wrong })
+  prompt = QuizInput.text(question["prompt"])
+  correct = QuizInput.text(question["correct"])
+  wrong = Array(question["wrong"]).map { |value| QuizInput.text(value) }.reject(&:empty?)
+  issue = QuizInput.problem({ "prompt" => prompt, "correct" => correct, "wrong" => wrong })
   problems << "question #{index + 1}: #{issue}" if issue
 
   problems << "question #{index + 1} has no category" if category.empty?

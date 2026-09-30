@@ -1,0 +1,22 @@
+{
+  "audio_ball_prepare.opus": {
+    "source": "auto real older car door close rattly.wav",
+    "sha256": "44ebfba733bad10c6e6f785cf1f868fa5f59764ee2105453a0d45f20bcb498f7"
+  },
+  "audio_ball_up.opus": {
+    "source": "ball-high.ogg",
+    "sha256": "bdad68ff36b7349d7c840357cc3ed66940c44f9c441a21e4dedcafbaf6fa8dfc"
+  },
+  "audio_ball_left.opus": {
+    "source": "ball-middle.mp3",
+    "sha256": "5441c530bbba9d7c976695e07b620df0e7e8ca0c5baa9e48f7052ac08c76c794"
+  },
+  "audio_ball_down.opus": {
+    "source": "ball-down.ogg",
+    "sha256": "dd061ac452a4bb7b008182ba88753a1fcdd76bba81022f19dd9c3b7b1a3691de"
+  },
+  "audio_ball_stopped.opus": {
+    "source": "ball-stopped.ogg",
+    "sha256": "1399149ffa3c70d327a2a1ae941f7171f4f104984e6c93a5a4469c09b1ced27d"
+  }
+}

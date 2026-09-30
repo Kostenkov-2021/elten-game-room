@@ -1,3 +1,4 @@
+require_relative "specifications"
 # encoding: UTF-8
 require_relative "../scrabble_rules"
 require_relative "../game_session_clock"
@@ -6,24 +7,38 @@ require_relative "../game_room_localization"
 
 module GameSurfaces
   using GameRoomLocalization::Translations
-  WordBoardSpec = Struct.new(:board, :rack, :tiles, :alphabet, :epoch, :editable, :exchange,
-    :deadline, :clock_offset, :frozen_at, :clock_epoch_offset, :preview, :error_message, keyword_init: true)
+
+
+  class WordBoardGrid < OrientedGridBox
+    # Scrabble labels include the coordinate between the letter and its value.
+    # Keep normal grid navigation, header, markers and braille without adding
+    # another coordinate before or after the complete label.
+    def cell_announcement(label); label; end
+  end
 
   class WordBoardSurface
     include ActionEmitter
-    attr_accessor :program
+    attr_accessor :program, :on_draft_changed
     def initialize(spec, state: {})
       @spec = spec
       @sort = state.fetch("sort", 0).to_i
       @order = state.fetch("order", []).select { |id| spec.rack.include?(id) }
       @order.concat(spec.rack - @order)
       @draft = state["epoch"] == spec.epoch ? state.fetch("draft", []).map(&:dup) : []
-      @control = OrientedGridBox.new(15, 15, row_origin: :top, coordinate_first: true,
+      @control = WordBoardGrid.new(15, 15, row_origin: :top, coordinate_first: true,
         header: _("Word board"), x: state.fetch("x",7), y: state.fetch("y",7), quiet: true)
       @control.on(:select) { choose_tile }
       refresh
     end
     def fields; [@control]; end
+    def public_draft
+      @draft.map { |tile, pos, letter| [pos, letter, @spec.tiles.fetch(tile)[:letter].empty?] }
+    end
+    def remote_draft=(tiles)
+      return if @remote_draft == tiles
+      @remote_draft = tiles
+      refresh
+    end
     def state
       { "x" => @control.x, "y" => @control.y, "sort" => @sort,
         "order" => @order.dup, "draft" => @draft.map(&:dup), "epoch" => @spec.epoch }
@@ -56,6 +71,10 @@ module GameSurfaces
         speak(labels.empty? ? _("Your rack is empty.") : labels.join(", "))
       when "read"
         speak(rack_label(@order[payload["slot"].to_i]))
+      when "place"
+        slot = payload["slot"]
+        return unavailable unless slot.is_a?(Integer) && slot.between?(0, 6)
+        place(@order[slot])
       when "remove", "cancel"
         if command == "word_remove"
           removed = @draft.any? { |p| p[1] == position }
@@ -155,24 +174,31 @@ module GameSurfaces
       else
         @order.sort_by! do |tile|
           letter = @spec.tiles[tile][:letter]
-          [(@sort == 2 && !"aąeęioóuy".include?(letter) ? 1 : 0), @spec.alphabet.index(letter) || -1, tile]
+          [(@sort == 2 && !GameRoomContent.utf8("aąeęioóuy").include?(letter) ? 1 : 0), @spec.alphabet.index(letter) || -1, tile]
         end
       end
     end
     def refresh
+      public_tiles = public_draft
+      if @published_draft != public_tiles
+        @published_draft = public_tiles
+        @on_draft_changed&.call(public_tiles)
+      end
       draft = @draft.to_h { |tile,pos,letter| [pos, { letter: letter, points: @spec.tiles[tile][:points], blank: @spec.tiles[tile][:letter].empty? }] }
+      draft = @remote_draft.to_a.to_h { |tile| [tile.fetch(:position), tile] } if !@spec.editable
       bonuses = { "2" => _("double letter"), "3" => _("triple letter"), "D" => _("double word"), "T" => _("triple word") }
       @control.set_cells(Array.new(15) do |y|
         Array.new(15) do |x|
           pos = y*15+x
           tile = draft[pos] || @spec.board[pos]
           if tile
-            text = _("%{letter}, %{points} points") % { letter: tile[:letter].upcase, points: tile[:points] }
+            text = _("%{letter}, %{field}, %{points} points") % {
+              letter: tile[:letter].upcase, field: GameRoomScrabbleRules.field(pos), points: tile[:points] }
             text += ", " + _("blank") if tile[:blank]
             text += ", " + _("draft") if draft[pos]
             text
           else
-            [_("empty"), bonuses[GameRoomScrabbleRules.premium(pos)]].compact.join(", ")
+            [GameRoomScrabbleRules.field(pos), _("empty"), bonuses[GameRoomScrabbleRules.premium(pos)]].compact.join(", ")
           end
         end
       end)

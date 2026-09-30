@@ -60,6 +60,7 @@ class GameRoomUserRegistry
     result = []
     loop do
       rows = users_table.select(
+        columns: ["username", "__insertion_user"],
         order: [["registered_at", "asc"]],
         limit: PAGE_LIMIT,
         offset: offset

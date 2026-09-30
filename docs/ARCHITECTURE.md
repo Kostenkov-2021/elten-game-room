@@ -23,12 +23,31 @@ interpretuje ruchów.
 
 ## Warstwy
 
+`lib/use_cases/` wykonuje przyjęcie zaproszenia i zapis partii, a aplikacja
+zapewnia ich UI. `game_screen/input.rb` przechowuje aktualny replay i rewizję
+jednego formularza. `GameRoomEventPresenter` współdzieli prezentację gry
+widocznej i przykrytej, bez dostępu do kontrolek. Nie jest wykonawcą modelu.
+
+`RoomState` należy do blokady magazynu LiveSessions. Retencja usuwa go jako
+całość; indeks natywnych połączeń i kolejka discovery pozostają w magazynie.
+Projekcje, zapisy, zaproszenia i archiwum mają osobne moduły. Walidator historii
+nadal pracuje poza blokadą i sprawdza tożsamość źródła przed publikacją cache.
+Nazwane kontrakty są w `game_session_contracts.rb`; adaptery zachowują
+dotychczasowe wiersze, pary rewizji i format sieciowy.
+
+Specyfikacje powierzchni są czystymi danymi w
+`game_surfaces/specifications.rb`, niezależnymi od kontrolek hosta.
+Zasady generuje kompilator opisany w [BUILDING.md](BUILDING.md).
+Lokalne preferencje planszy deklaruje gra, a kontrola zapisuje wyłącznie
+dozwolone wartości. Dane kursora, szkice i stan modelu nie są preferencjami.
+
 ### Manifest i składanie programu
 
-`__app.rb` zawiera metadane ELTEN-a, deklaracje tabel pomocniczych,
-rejestr gier i główną klasę programu. Bieżące tabele służą rejestracji
+`__app.rb` zawiera metadane ELTEN-a, deklaracje tabel pomocniczych
+i główną klasę programu. Rejestr modeli jest w `games/catalog.rb`.
+Bieżące tabele służą rejestracji
 użytkowników, ogłoszeniom globalnego lobby, subskrypcjom stołów oraz funkcjom
-Krowy. Dawne tabele stołów, członkostwa, zaproszeń i ruchów nie są drugim
+Krowy oraz [statystykom](STATISTICS.md). Dawne tabele stołów, członkostwa, zaproszeń i ruchów nie są drugim
 backendem gry. Archiwa konta przechowuje usługa prywatnych plików, nie tabela.
 
 ### Dostęp do tabel pomocniczych
@@ -152,6 +171,10 @@ chronologicznym strumieniem i nie rozdziela ponownie danych na osobne magazyny.
 `GameRoomSync::Controller` zbiera powiadomienia i uruchamia kontrolowane
 odzyskanie stanu po błędzie lub luce. Nie należy zastępować tego częstym,
 okresowym odpytywaniem serwera.
+Niepewny zapis zachowuje tożsamość ruchu i wynik losowania do uzgodnienia;
+powtórzona dostawa nie stosuje go drugi raz. Powiadomienie nie skraca
+backoffu po 429. Podczas odzyskiwania UI zachowuje ostatni poprawny stan
+i szkic czatu. Błąd programu wymaga diagnostyki i zatrzymania wadliwej akcji.
 
 Axel Pong i Audio Ball mają wspólną, domyślnie wyłączoną opcję pełnego P2P.
 Po jej zaznaczeniu formularz pokazuje następne pole: limit uczestników,
@@ -198,15 +221,16 @@ przechodzi przez tę samą walidację gry i repozytorium co akcja człowieka.
 Specjalizowane strategie znajdują się w plikach `*_strategy.rb`; wspólny
 przeszukiwacz drzewa w `game_tree_search.rb`.
 
-Trening, arena, kampanie, eksperymentalne MCTS i narzędziowe modele punktacji
-znajdują się w `tools/training/`. Nie są ładowane przez aplikację. Produkcyjne
+Trening, arena, kampanie i porównywanie strategii znajdują się w
+`tools/training/`. Nie są ładowane przez aplikację. Produkcyjne
 polityki, wytrenowane profile i środowisko symulacji pozostają w `lib/`.
 
 ### Treści i języki
 
 `game_content.rb` oraz `content/languages.rb` obsługują wersjonowane pakiety
 treści i warianty językowe. Komunikaty interfejsu korzystają z funkcji `_()` i
-są dostarczane w `locale/PL.mo`.
+są dostarczane w `locale/<LANG>.mo`. Angielski pochodzi ze źródeł; zasady
+wyboru katalogów opisuje [INTERFACE_LANGUAGES.md](INTERFACE_LANGUAGES.md).
 
 ## Niezmienniki, których trzeba pilnować
 
@@ -217,3 +241,12 @@ są dostarczane w `locale/PL.mo`.
 - bot nie omija reguł ani ścieżki zapisu człowieka;
 - zmiana wspólnego szkieletu wymaga testu co najmniej jednej gry z każdej
   dotkniętej rodziny.
+
+## Kontrakty szczegółowe
+
+- [HOST_API.md](HOST_API.md): adaptery finalnego ELTEN-a 3.0.4.
+- [UI.md](UI.md) i [CARD_HAND.md](CARD_HAND.md): formularze, pomoc i ręka kart.
+- [BACKGROUND_GAME_EXECUTION.md](BACKGROUND_GAME_EXECUTION.md): wykonawca i prezentacja w tle.
+- [REALTIME.md](REALTIME.md): autoryzacja, dostawa i opóźnienia Communications.
+- [PRIVATE_STATE.md](PRIVATE_STATE.md): zobowiązania odpowiedzi i archiwum konta.
+- [SNAPSHOT_OWNERSHIP.md](SNAPSHOT_OWNERSHIP.md): własność modeli i kopii danych.

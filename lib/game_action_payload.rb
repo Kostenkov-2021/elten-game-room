@@ -2,13 +2,15 @@ require "json"
 require "zlib"
 require "base64"
 require "digest"
+require_relative "game_event_protocol"
+require_relative "../games/contracts"
 
 # Large local selections still use the ordinary, atomic ActionPlan transport.
 # A logical move is applied only after every consecutive fragment is verified.
 # No partial meld becomes public game state and no fragment is a separate write.
 module GameRoomActionPayload
   CHUNK = 46
-  MAX_PARTS = 50
+  MAX_PARTS = GameRoomEventProtocol::MAX_EVENTS
   MAX_JSON = 12_000
   module_function
 

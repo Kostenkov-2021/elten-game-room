@@ -22,8 +22,7 @@ Gry autorstwa **Dawida Piepera** włączone z jego propozycji dla tego projektu:
 
 Lokalna integracja obejmuje uzgodnione poprawki, polskie tłumaczenia i nowe
 instrukcje. Wariant Ayoayo zachowuje reguły autora. Nie jest to deklaracja
-scalenia PR-ów na GitHubie. Źródła pomocnicze i zakres zmian opisuje
-`docs/BATTLESHIP_MANCALA_229.md`.
+scalenia PR-ów na GitHubie.
 
 ## Dźwięki
 
@@ -58,8 +57,7 @@ https://creativecommons.org/licenses/by/4.0/.
 Zmienione nazwy plików nie wskazują jednak jednoznacznie tych źródeł;
 powiązanie nagrań z autorami/licencjami wymaga potwierdzenia przed publiczną
 redystrybucją. Nie przypisujemy im automatycznie licencji poprzednich plików.
-Autorzy nie wyrażają tym poparcia dla gry. Poprzednie trzy nagrania opisane
-w `docs/AUDIO_BALL_SOUND_LICENSES.md` zostały zastąpione i nie są tu używane.
+Autorzy nie wyrażają tym poparcia dla gry.
 
 ### Audio Ball — pakiet Audiodisc i zatrzymanie piłki
 
@@ -81,7 +79,7 @@ Do tych siedmiu plików nie dostarczono identyfikatorów źródeł ani
 informacji o autorach/licencjach. Pochodzenie folderu nie potwierdza
 licencji CC0 ani prawa do publicznej redystrybucji. Nie obejmujemy ich
 licencją kodu aplikacji; uprawnienia trzeba potwierdzić przed publikacją.
-Mapowanie i zakres zmiany opisuje `docs/AUDIO_BALL_SOUND_PACKS.md`.
+Mapowanie zasobów opisuje [AUDIO_BALL.md](docs/AUDIO_BALL.md).
 
 ### Wcześniejsze zasoby
 

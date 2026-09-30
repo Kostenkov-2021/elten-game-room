@@ -13,25 +13,84 @@ Zalecana jest wersja Ruby 4.0, zgodna ze środowiskiem bieżącego ELTEN-a.
 Testy kontraktów hosta wymagają także jego zgodnych źródeł (obecnie ELTEN
 3.0.4). Ustaw `ELTEN_HOST_SOURCE` na katalog zawierający `src/` i `locale/`.
 W CI źródła hosta są przypięte do konkretnego commita w workflow testów.
+Aktualny pin to `3418d67dea40ee116f4a8ba545b1c409fd04706f` (wydanie 3.0.4).
+Wcześniejsze RC1 nie dostarcza wymaganego kontraktu równoległych scen.
 
 ```console
-ruby tools/run-tests.rb --report test-results.json
+ruby test/run.rb --report tmp/test-results.json
 ```
 
 Runner uruchamia skrypty w osobnych procesach i po błędzie kontynuuje,
 zapisując wynik każdego z nich. Domyślny limit to 180 sekund na skrypt;
 można go zmienić przez `--timeout`. Błąd, timeout i niezatwierdzone pominięcie
 zwracają niezerowy kod. Brak wymaganej zależności nie jest sukcesem.
-Nazwy lub wzorce plików podane na końcu polecenia ograniczają zakres do
-wybranych prób, np. `test/game_sync_test.rb test/transport_test.rb`.
+Katalogi, nazwy lub wzorce plików podane na końcu polecenia ograniczają
+zakres do wybranych prób, np. `test/games/spades` albo
+`test/transport/game_sync_test.rb test/transport/transport_test.rb`.
+Katalogi są przeszukiwane rekurencyjnie, z pominięciem pomocników i fixture.
+Układ gier i wspólnych warstw opisuje [docs/TESTING.md](TESTING.md).
+`--suite models|transport|ui|native|tooling|integration` wybiera jedną warstwę;
+`--list` pokazuje zakres. Nie łącz `--suite` z ręczną listą plików. CI zachowuje
+raport również po błędzie. Podczas bieżących porządków obowiązuje zapisane
+w `AGENTS.md` ograniczenie do testów dotkniętych zmianą.
+
+## Generatory kodu wykonawczego
+
+```console
+ruby tools/compile-rulebooks.rb --check
+ruby tools/generate-krowa-nouns.rb --check
+ruby test/code_quality_test.rb
+```
+
+Zasady pochodzą z `tools/data/rulebooks/*.json`, a lista właścicieli i wyjść z
+`tools/rulebook_sources.json`. Kompilator zapisuje tylko
+`games/generated/rulebooks/`; nie podmienia metod w utrzymywanym kodzie gry.
+Profile plansz Monopoly nadal powstają z bieżących definicji plansz.
+Gettext obejmuje generowane reguły. Po zmianie tekstów zaktualizuj katalogi
+zgodnie z instrukcją tłumaczeń poniżej.
+
+Kontrola `--check` obu generatorów kończy się błędem przy niezgodności,
+bez naprawiania plików.
+
+### Źródło rzeczowników Krowy
+
+Pierwsze 98 178 wierszy `tools/data/krowa_nouns.txt` zachowują dokładny tekst
+`GameRoomKrowa::NounData::WORDS` z commita `0c86d03`,
+bez sortowania, deduplikacji ani zmiany wyrazów. SHA-256 tekstu UTF-8 z LF:
+`5e9e97a7681e662e97527a794846f965a0b789e1f47b3c06c5fc8404490d0389`.
+Nie udało się ustalić wejść dawnego `generate_noun_data.ps1`, wskazanego
+w nagłówku oryginału. To zachowany stan repozytorium umożliwiający odtworzenie
+Ruby, bez rekonstrukcji dawnej selekcji słownika lub zmiany autorstwa i licencji.
+TXT i generator pozostają poza instalatorem; runtime używa wygenerowanego Ruby.
+Na końcu listy dopisano dziewięć haseł zatwierdzonych przez autora projektu:
+łam, zacios, zaciosy, prosię, silnia, silnie, afro, szmat i ksero.
 
 ## Tłumaczenia interfejsu
 
 Edytuj jeden plik PO na język, np. `locale/PL.po`. Po edycji uruchom
 `ruby tools/translations.rb compile PL`, następnie
-`ruby tools/translations.rb check PL`. MO i dawne widoki JSON są generowane
-z PO, nigdy odwrotnie. Słowniki wyrazów, pytania i karty gier nie należą do
-tej migracji. Pełna instrukcja: `locale/README.md`.
+`ruby tools/translations.rb check PL`. MO i polskie pola dokumentów zasad
+powstają z PO. Wpisy historii zmian edytuj w `lib/game_room_changelog.rb`,
+a ich tłumaczenia w PO; są wyświetlane bezpośrednio przez aplikację.
+Słowniki wyrazów, pytania i karty gier pozostają odrębnymi zasobami.
+Pełna instrukcja: `docs/TRANSLATIONS.md`.
+
+Zachowaj płaskie `locale/<LANG>.mo`: natywne buildery zapisują katalogi
+jako rekordy języka z dwuliterowym kodem, a runtime w trybie źródłowym
+szuka właśnie tej ścieżki. PO/POT nie trafiają do stagingu.
+`test/tooling/locale_build_contract_test.rb` sprawdza oba manifesty,
+staging oraz faktyczne `build-eltenapp.rb` i `build-eltsetup.rb` z
+`ELTEN_HOST_SOURCE`, używając tymczasowej aplikacji z katalogami Game Roomu.
+Sprawdza pakiety natywnym czytnikiem i porównuje bajty wszystkich MO.
+Nie tworzy wydania gry ani nie używa kluczy podpisujących.
+Ten test wymaga również `rubyzip` i `zstd-ruby`, zgodnie z Gemfile hosta;
+CI instaluje wersje 3.2.2 i 2.0.6 w zestawie `native`.
+
+Manifest w `__app.rb` musi zachować LF, zgodnie z `.gitattributes`:
+parser ELTEN-a 3.0.4 nie akceptuje CRLF przy końcowym `=end Elten3AppInfo`.
+Na Windows ograniczony token może dodatkowo zwrócić pusty wynik absolutnego
+globu używanego przez builder. Taki wynik oznacza błąd testu, nie poprawny
+pakiet; samego istnienia pliku ani sygnatury nie traktujemy jako weryfikacji.
 
 ## Uruchomienie ze źródeł
 
@@ -75,7 +134,7 @@ mu całego katalogu projektu. Najpierw przygotuj nowy, nieistniejący katalog
 wydania poza repozytorium. Przykład:
 
 ```console
-ruby C:/src/elten-game-room/tools/release_files.rb C:/src/elten-game-room C:/build/game-room-runtime
+ruby C:/src/elten-game-room/tools/stage-release.rb --source C:/src/elten-game-room --destination C:/build/game-room-runtime
 ruby C:/src/elten3/tools/build-eltsetup.rb --unsigned C:/build/game-room-runtime C:/build/ELTEN-Game-Room.eltsetup
 ```
 
@@ -94,21 +153,38 @@ ruby C:/src/elten3/tools/build-eltsetup.rb --cert C:/private/author.crt.pem --ke
 Certyfikat i klucz muszą pozostać poza repozytorium. Pliki `.eltsetup` również
 nie są śledzone — dystrybucja odbywa się przez katalog programów ELTEN-a.
 
-`tools/release_files.rb` jest wspólną listą zawartości wydania. Zachowuje kod,
+`tools/support/release_files.rb` jest wspólną listą zawartości wydania. Zachowuje kod,
 dane, audio, gotowe tłumaczenia, manifesty, licencje i informacje o źródłach.
 Pomija testy, narzędzia, dokumentację roboczą, raporty importu, materiały
 redakcyjne i źródłowe katalogi tłumaczeń. Te pliki pozostają w repozytorium.
 Skrypt sprawdza zależności Ruby, obecność wymaganych zasobów i zgodność kopii.
-W tym workspace `../tools/build-game-room.ps1` wykonuje staging automatycznie
-i nadaje mu krótką ścieżkę na Windows. Zbyt długa ścieżka może spowodować
+Repozytoryjne `tools/stage-release.rb` przygotowuje staging i opcjonalny,
+deterministyczny wykaz hashy jako plik obok stagingu:
+
+```console
+ruby tools/stage-release.rb --destination C:/build/gr --manifest C:/build/gr-inventory.json
+ruby tools/stage-release.rb --source C:/build/gr --manifest C:/build/gr-inventory.json --check
+```
+
+Bez `--destination` narzędzie tylko sprawdza źródła i tworzy wskazany wykaz.
+Katalog nadrzędny wykazu musi już istnieć. Wykaz musi leżeć poza stagingiem;
+kontrola uwzględnia również aliasy wielkości liter na Windows i rozwiązane
+ścieżki istniejących katalogów. Niepoprawne granice są odrzucane przed zapisem.
+Nie podpisuje, nie instaluje i nie publikuje paczki. Dawny skrypt workspace
+`../tools/build-game-room.ps1` jest zewnętrznym udogodnieniem, nie zależnością
+odtworzenia stagingu. Na Windows nowy wrapper ogranicza ścieżkę stagingu do
+80 znaków. Zbyt długa ścieżka może spowodować
 puste wyniki globu narzędzia ELTEN-a; sama poprawna sygnatura nie dowodzi
 obecności kodu w paczce.
+Podawaj krótki podkatalog, nie sam korzeń dysku (np. `Z:/`): natywny builder
+może wtedy zapisać bezwzględne ścieżki zamiast nazw względnych i nie rozpoznać
+katalogów tłumaczeń ani dźwięków. Końcowa kontrola zawartości odrzuca taką paczkę.
 
 ## Przygotowanie wydania
 
 1. Wykonaj kontrole zgodnie z zatwierdzonym zakresem. Przy zmianie samego
-   pakowania sprawdź `test/release_files_test.rb` oraz celowane testy binarne,
-   w tym `test/release_binary_loading_test.rb GOTOWA_PACZKA`. Testy i ich
+   pakowania sprawdź `test/tooling/release_files_test.rb` oraz celowane testy binarne,
+   w tym `test/tooling/release_binary_loading_test.rb GOTOWA_PACZKA`. Testy i ich
    pomocniki pochodzą z repo; kod produkcyjny musi pochodzić z instalatora.
 2. Numer wersji, build i changelog zmieniaj tylko zgodnie z poleceniem autora.
    Ponowne wydanie tego samego buildu nie wymaga nowego wpisu changelogu.

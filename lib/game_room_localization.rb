@@ -32,7 +32,8 @@ module GameRoomLocalization
         codes.reject { |code| code == "en" }.each { |code| add_catalog(code) { runtime.language_data(code) } }
         settings = runtime.read_json("settings.json", default: {}) if settings.nil?
       else
-        Dir.glob(File.join(directory, "*.mo")).sort.each do |path|
+        Dir.glob("*.mo", base: directory).sort.each do |filename|
+          path = File.join(directory, filename)
           code = language_code(File.basename(path, ".mo"))
           add_catalog(code) { File.binread(path) } if code && code != "en"
         end
@@ -61,6 +62,13 @@ module GameRoomLocalization
     def primary_language
       boot unless @translator
       @translator.primary
+    end
+
+    # Opaque identity of the current catalogs and fallback-language settings.
+    # Keep the object, not its object_id: a later boot may reuse an integer ID.
+    def cache_token
+      boot unless @translator
+      @translator
     end
 
     def translate(source, **options)

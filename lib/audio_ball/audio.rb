@@ -2,6 +2,7 @@ require_relative "../game_content"
 require_relative "preferences"
 require_relative "sound_pack"
 require_relative "point_audio"
+require_relative "../game_background_policy"
 
 require_relative "../game_room_localization"
 
@@ -13,11 +14,16 @@ module GameRoomAudioBall
     ASSETS = SoundPack::DEFAULT.values.compact.freeze
 
     attr_reader :presents_point
+    attr_accessor :background_provider
 
     def initialize(program, clock: -> { Process.clock_gettime(Process::CLOCK_MONOTONIC) }, rng: Random.new,
       speaker: nil, speech_active: nil)
       @program = program
-      @speaker = speaker || ->(text) { speak(text, stop: false, break_sequence: false) }
+      @speaker = speaker || ->(text) {
+        next false unless GameRoomBackgroundPolicy.speech?(@program, covered: @background_provider&.call)
+        speak(text, stop: false, break_sequence: false)
+        true
+      }
       @point_audio = PointAudio.new(program, clock: clock, rng: rng, speaker: @speaker, speech_active: speech_active)
       @sounds = {}
       @presents_point = false

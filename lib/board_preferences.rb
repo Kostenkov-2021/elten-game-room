@@ -1,14 +1,11 @@
 # Only presentation choices belong here, never a cursor, selection or player ID.
 class GameRoomBoardPreferences
   PATH = "board-presentation.json".freeze
-  FIELDS = {"chess" => {"orientation_flipped" => [true, false]},
-    "checkers" => {"orientation_flipped" => [true, false], "coordinate_label_set" => %w[numeric algebraic]},
-    "ludo" => {"player_labels" => %w[names colours]}}.freeze
-
-  def initialize(storage, game_id)
-    @storage, @game_id = storage, game_id
+  def initialize(storage, game)
+    @storage, @game_id = storage, game.id
+    @definitions = game.board_preference_definitions
     @values = {}
-    @values = clean(@storage.read_json(PATH, default: {}).to_h[@game_id]) if FIELDS.key?(@game_id) && @storage.respond_to?(:read_json)
+    @values = clean(@storage.read_json(PATH, default: {}).to_h[@game_id]) if !@definitions.empty? && @storage.respond_to?(:read_json)
   rescue StandardError
     @values = {}
   end
@@ -19,26 +16,15 @@ class GameRoomBoardPreferences
 
   def restore(spec, state)
     result = state.dup
-    if FIELDS.fetch(@game_id, {}).key?("orientation_flipped") && spec.respond_to?(:default_orientation)
-      normal = spec.default_orientation || "normal"
-      result["orientation"] = @values["orientation_flipped"] ? (normal == "rotated" ? "normal" : "rotated") : normal
-    end
-    %w[coordinate_label_set player_labels].each { |key| result[key] = @values[key] if @values.key?(key) }
+    @definitions.each { |definition| definition.restore(spec, @values[definition.key], result) }
     result
   end
 
   def remember(command, spec, state)
     next_values = @values.dup
-    case command.to_s
-    when "toggle_orientation"
-      next_values["orientation_flipped"] = state["orientation"] != (spec.default_orientation || "normal")
-    when "toggle_coordinate_labels"
-      next_values["coordinate_label_set"] = state["coordinate_label_set"]
-    when "toggle_player_labels"
-      next_values["player_labels"] = state["player_labels"]
-    else
-      return false
-    end
+    definition = @definitions.find { |item| item.command == command.to_s }
+    return false unless definition
+    next_values[definition.key] = definition.read(spec, state)
     next_values = clean(next_values)
     return false if next_values == @values
     @values = next_values
@@ -62,8 +48,9 @@ class GameRoomBoardPreferences
 
   def clean(values)
     return {} unless values.is_a?(Hash)
-    FIELDS.fetch(@game_id, {}).each_with_object({}) do |(key, allowed), result|
-      result[key] = values[key] if allowed.include?(values[key])
+    @definitions.each_with_object({}) do |definition, result|
+      key = definition.key
+      result[key] = values[key] if definition.values.include?(values[key])
     end
   end
 end

@@ -1,0 +1,194 @@
+{
+  "audio_ball.json": {
+    "class": "AudioBall",
+    "kind": "class",
+    "source": "games/audio_ball.rb",
+    "output": "games/generated/rulebooks/audio_ball.rb"
+  },
+  "axel_pong.json": {
+    "class": "AxelPong",
+    "kind": "class",
+    "source": "games/axel_pong.rb",
+    "output": "games/generated/rulebooks/axel_pong.rb"
+  },
+  "battleship.json": {
+    "class": "Battleship",
+    "kind": "class",
+    "source": "games/battleship.rb",
+    "output": "games/generated/rulebooks/battleship.rb"
+  },
+  "biblios.json": {
+    "class": "Biblios",
+    "kind": "class",
+    "source": "games/biblios.rb",
+    "output": "games/generated/rulebooks/biblios.rb"
+  },
+  "cat_head_tail.json": {
+    "class": "CatHeadTail",
+    "kind": "class",
+    "source": "games/cat_head_tail.rb",
+    "output": "games/generated/rulebooks/cat_head_tail.rb"
+  },
+  "categories.json": {
+    "class": "Categories",
+    "kind": "class",
+    "source": "games/categories.rb",
+    "output": "games/generated/rulebooks/categories.rb"
+  },
+  "checkers.json": {
+    "class": "Checkers",
+    "kind": "class",
+    "source": "games/checkers.rb",
+    "output": "games/generated/rulebooks/checkers.rb"
+  },
+  "chess.json": {
+    "class": "Chess",
+    "kind": "class",
+    "source": "games/chess.rb",
+    "output": "games/generated/rulebooks/chess.rb"
+  },
+  "domino.json": {
+    "class": "Domino",
+    "kind": "class",
+    "source": "games/domino.rb",
+    "output": "games/generated/rulebooks/domino.rb"
+  },
+  "farkle.json": {
+    "class": "Farkle",
+    "kind": "class",
+    "source": "games/farkle.rb",
+    "output": "games/generated/rulebooks/farkle.rb"
+  },
+  "four_in_a_row.json": {
+    "class": "FourInARow",
+    "kind": "class",
+    "source": "games/four_in_a_row.rb",
+    "output": "games/generated/rulebooks/four_in_a_row.rb"
+  },
+  "krowa.json": {
+    "class": "KrowaPresentation",
+    "kind": "module",
+    "source": "games/krowa_support/presentation.rb",
+    "output": "games/generated/rulebooks/krowa.rb"
+  },
+  "ludo.json": {
+    "class": "Ludo",
+    "kind": "class",
+    "source": "games/ludo.rb",
+    "output": "games/generated/rulebooks/ludo.rb"
+  },
+  "makao.json": {
+    "class": "Makao",
+    "kind": "class",
+    "source": "games/makao.rb",
+    "output": "games/generated/rulebooks/makao.rb"
+  },
+  "mancala.json": {
+    "class": "Mancala",
+    "kind": "class",
+    "source": "games/mancala.rb",
+    "output": "games/generated/rulebooks/mancala.rb"
+  },
+  "mexican_train.json": {
+    "class": "MexicanTrain",
+    "kind": "class",
+    "source": "games/mexican_train.rb",
+    "output": "games/generated/rulebooks/mexican_train.rb"
+  },
+  "monopoly.json": {
+    "class": "Monopoly",
+    "kind": "class",
+    "source": "games/monopoly.rb",
+    "output": "games/generated/rulebooks/monopoly.rb"
+  },
+  "ninety_nine.json": {
+    "class": "NinetyNine",
+    "kind": "class",
+    "source": "games/ninety_nine.rb",
+    "output": "games/generated/rulebooks/ninety_nine.rb"
+  },
+  "poker.json": {
+    "class": "Poker",
+    "kind": "class",
+    "source": "games/poker.rb",
+    "output": "games/generated/rulebooks/poker.rb"
+  },
+  "quiz.json": {
+    "class": "QuizParty",
+    "kind": "class",
+    "source": "games/quiz_party.rb",
+    "output": "games/generated/rulebooks/quiz.rb"
+  },
+  "reversi.json": {
+    "class": "Reversi",
+    "kind": "class",
+    "source": "games/reversi.rb",
+    "output": "games/generated/rulebooks/reversi.rb"
+  },
+  "rummy.json": {
+    "class": "Rummy",
+    "kind": "class",
+    "source": "games/rummy_ui.rb",
+    "output": "games/generated/rulebooks/rummy.rb"
+  },
+  "scientific_war.json": {
+    "class": "ScientificWar",
+    "kind": "class",
+    "source": "games/scientific_war.rb",
+    "output": "games/generated/rulebooks/scientific_war.rb"
+  },
+  "scrabble.json": {
+    "class": "Scrabble",
+    "kind": "class",
+    "source": "games/scrabble_ui.rb",
+    "output": "games/generated/rulebooks/scrabble.rb"
+  },
+  "spades.json": {
+    "class": "Spades",
+    "kind": "class",
+    "source": "games/spades.rb",
+    "output": "games/generated/rulebooks/spades.rb"
+  },
+  "taboo.json": {
+    "class": "Taboo",
+    "kind": "class",
+    "source": "games/taboo_ui.rb",
+    "output": "games/generated/rulebooks/taboo.rb"
+  },
+  "three_five_eight.json": {
+    "class": "ThreeFiveEight",
+    "kind": "class",
+    "source": "games/three_five_eight.rb",
+    "output": "games/generated/rulebooks/three_five_eight.rb"
+  },
+  "tic_tac_toe.json": {
+    "class": "TicTacToe",
+    "kind": "class",
+    "source": "games/tic_tac_toe.rb",
+    "output": "games/generated/rulebooks/tic_tac_toe.rb"
+  },
+  "tysiac.json": {
+    "class": "Tysiac",
+    "kind": "class",
+    "source": "games/tysiac.rb",
+    "output": "games/generated/rulebooks/tysiac.rb"
+  },
+  "uno.json": {
+    "class": "Uno",
+    "kind": "class",
+    "source": "games/uno.rb",
+    "output": "games/generated/rulebooks/uno.rb"
+  },
+  "war.json": {
+    "class": "War",
+    "kind": "class",
+    "source": "games/war.rb",
+    "output": "games/generated/rulebooks/war.rb"
+  },
+  "yahtzee.json": {
+    "class": "Yahtzee",
+    "kind": "class",
+    "source": "games/yahtzee.rb",
+    "output": "games/generated/rulebooks/yahtzee.rb"
+  }
+}

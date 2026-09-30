@@ -1,9 +1,12 @@
 require "monitor"
+require_relative "game_snapshot"
+require_relative "game_session_contracts"
 require_relative "game_sync"
 require_relative "game_bots"
 require_relative "game_simulation"
 require_relative "game_session_clock"
 require_relative "game_execution_policy"
+require_relative "game_background_policy"
 
 # One executor for turn-based automatic actions, in foreground AND background.
 # The screen owns presentation and input; this object never calls a control,
@@ -87,7 +90,7 @@ class GameRoomSessionRunner
     @closed = false
     @view = nil
     @ui_thread = Thread.current
-    @covered = covered || -> { defined?($currentthread) && $currentthread && $currentthread != @ui_thread }
+    @covered = covered || -> { GameRoomBackgroundPolicy.covered?(@ui_thread, program: @program) }
     @feed = transport.subscribe_game_session(@table_id)
     @sync = GameRoomSync::Controller.new(transport: @feed, table_id: @table_id,
       session_id: repository.session_id(session))
@@ -131,7 +134,12 @@ class GameRoomSessionRunner
   # A visible screen acknowledges presentation before another automatic move;
   # a covered screen need not acknowledge every intermediate position.
   def publish_view(session:, replay:, busy:, context:, surface: nil)
-    value = {session_id: @repository.session_id(session), revision: revision(replay),
+    captured = @view_revision
+    unless captured && captured.matches?(session, replay)
+      captured = GameRoomSessionContracts::ViewRevision.new(session: session, replay: replay, repository: @repository)
+      @view_revision = captured
+    end
+    value = {session_id: @repository.session_id(session), revision: captured.revision,
       busy: busy, local_data: copy(context.local_data), surface: nil}
     identity = @game.automatic_surface_identity(replay)
     if identity && surface&.respond_to?(:submission_action)
@@ -154,9 +162,8 @@ class GameRoomSessionRunner
       raise StaleView if closed? || !activate_executor || @sync.waiting?
       refresh(force: @sync.recovery_pending?)
       raise StaleView unless @snapshot && !@session["__frozen"] && !@session["__aborted"] &&
-        session["__control_epoch"] == @session["__control_epoch"] && @session["__control_ready"] != false &&
+        GameRoomSessionContracts::SessionIdentity.from_row(session) == GameRoomSessionContracts::SessionIdentity.from_row(@session) && @session["__control_ready"] != false &&
         GameRoomParticipants.includes?(@replay.players, actor) &&
-        @repository.session_id(session) == @repository.session_id(@session) &&
         (revision(replay) == revision(@replay) || @game.concurrent_session_input?(replay, @replay, selection))
       commit(selection, actor, controller: controller)
     end
@@ -309,8 +316,8 @@ class GameRoomSessionRunner
       @statistics_observer&.call(@session, @replay)
       @turn.observe(session_id: @repository.session_id(@session), events: snapshot.events,
         confirmed_event_ids: @repository.confirmed_event_ids(@session), verified: force)
-      presentation = copy({session: @session, table: @table, replay: @replay, members: room.members,
-        activity: @activity_repository ? @activity_repository.entries_for(@table, viewer: @viewer) : []})
+      presentation = copy(GameRoomSessionContracts::PresentationSnapshot.new(session: @session, table: @table, replay: @replay, members: room.members,
+        activity: @activity_repository ? @activity_repository.entries_for(@table, viewer: @viewer) : []))
       @state_lock.synchronize { @presentation_snapshot = presentation }
       @dirty = false
     end
@@ -492,10 +499,10 @@ class GameRoomSessionRunner
   end
 
   def revision(replay)
-    @repository.events_revision(replay.accepted_events)
+    GameRoomSessionContracts::EventRevision.from_legacy(@repository.events_revision(replay.accepted_events))
   end
 
   def copy(value)
-    Marshal.load(Marshal.dump(value))
+    GameRoomSnapshot.copy(value)
   end
 end

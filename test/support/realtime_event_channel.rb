@@ -6,7 +6,7 @@ class ChannelSession
   attr_accessor :reliable_error
   def on_reliable(&block); @event_receiver = block; end
   def send_reliable(data, to:)
-    raise 'send failed' if @reliable_error
+    raise EltenAPI::Communication::ConnectionError, 'send failed' if @reliable_error
     (@reliable_sent ||= []) << [data, to.map(&:user)]
     Struct.new(:results).new(to.to_h { |target| [target, :delivered] })
   end

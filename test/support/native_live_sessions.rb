@@ -1,5 +1,8 @@
 require "securerandom"
 require "thread"
+require_relative "native_tasks"
+require_relative "assertions"
+Object.include(GameRoomTest::Assertions)
 
 module EltenAPI
   module LiveSessions
@@ -14,10 +17,6 @@ end
 
 def _(text)
   text
-end
-
-def assert(value, message)
-  raise message unless value
 end
 
 module Session

@@ -1,9 +1,11 @@
+require_relative 'client_state'
 require_relative 'engine'
 require_relative 'bot'
 require_relative 'audio'
 require_relative 'mouse'
 require_relative '../realtime/event_channel'
 require_relative '../realtime/timer'
+require_relative '../realtime/progress'
 require_relative '../realtime/task_ui'
 require_relative '../game_room_ping'
 require_relative 'peer_play'
@@ -16,12 +18,13 @@ module GameRoomPong
   class Client
     include PeerPlay
     include GameRoomRealtime::TableControl
+    include GameRoomRealtime::ProgressClient
     SEND_INTERVAL = 0.04
     MAX_PHYSICS_STEPS = 4
     HANDSHAKE_TIMEOUT = 10.0
     STREAM_TIMEOUT = 4.0
     SINGLE_SERVE_DELAY = 2.7
-    attr_reader :engine, :snapshot, :paused
+
     def _(source); GameRoomContent.utf8(super(source)); end
 
     def initialize(program, game, clock: -> { Process.clock_gettime(Process::CLOCK_MONOTONIC) }, channel_factory: nil, audio: nil, mouse: nil, transport: nil)
@@ -30,18 +33,18 @@ module GameRoomPong
       @channel_factory = channel_factory || ->(**args) { GameRoomRealtime::EventChannel.new(**args) }
       @audio = audio || Audio.new(program, clock: clock)
       @mouse = mouse || MouseControl.new
-      @peers = {}
-      @sequence = 0
-      @next_send = 0.0
-      @last_reconnect = -30.0
-      @paused = true
+      connection_state.peers = {}
+      connection_state.sequence = 0
+      connection_state.next_send = 0.0
+      connection_state.last_reconnect = -30.0
+      rally_state.paused = true
       @closed = false
     end
 
     def bind_screen(session_id:, table_id:, owner:, viewer:, members:)
       @activity_table, @activity_session = table_id, session_id
       @owner, @viewer = owner.to_s, viewer.to_s
-      @connection_started_at = @clock.call
+      connection_state.connection_started_at = @clock.call
       @match = Digest::SHA256.hexdigest("GameRoom:axel_pong:#{table_id}:#{session_id}")[0, 24]
       @base_match, @members_provider = @match, members
       @channel = @channel_factory.call(program: @program, match: @match, owner: @owner,
@@ -58,12 +61,13 @@ module GameRoomPong
       register_ping_channel
       @channel.tick
       @audio.load
+      start_progress
       true
     end
 
     def host?; @owner.casecmp?(@viewer); end
     def refresh_due?; false; end
-    def context_data; { 'pong_point' => @pending_point }; end
+    def context_data; { 'pong_point' => point_state.pending_point }; end
     def action(_selection, _replay, _viewer); false; end
     def error(_status); end
     def automatic_error(_status); end
@@ -71,8 +75,8 @@ module GameRoomPong
       return unless event['action'] == 'pong_point' && before && after
       rally = after.state[:rally]
       return unless rally == before.state[:rally] + 1
-      return if rally <= @announced_rally.to_i
-      @announced_rally = rally
+      return if rally <= presentation_state.announced_rally.to_i
+      presentation_state.announced_rally = rally
       # Catch-up can contain many old points. Present the current score only.
       return if @replay && rally < @replay.state[:rally]
       side = after.players.index { |player| player.to_s.casecmp?(viewer.to_s) }
@@ -80,7 +84,7 @@ module GameRoomPong
       perspective = side || observer_side(after.players)
       team = assignment ? assignment.seats[perspective] : perspective
       winner = [0, 1].find { |i| after.state[:scores][i] > before.state[:scores][i] }
-      preview = @goal_preview if @goal_preview && @goal_preview[:rally] == before.state[:rally] && @goal_preview[:winner] == winner
+      preview = point_state.goal_preview if point_state.goal_preview && point_state.goal_preview[:rally] == before.state[:rally] && point_state.goal_preview[:winner] == winner
       labels = @game.score_labels(after.state[:options], after.players)
       order = team == 1 ? [1, 0] : [0, 1]
       score_text = order.map { |i| "#{labels[i]}: #{after.state[:scores][i]}" }.join('; ') + '.'
@@ -88,18 +92,18 @@ module GameRoomPong
         goal_at: preview && preview[:at], score_text: score_text, result_text: @game.result_text(after))
       if preview
         score_at = [@clock.call, preview[:at] + 3.0].max
-        @ready_at, @serve_announce_at = score_at + SINGLE_SERVE_DELAY, score_at + 2.0
+        rally_state.ready_at, rally_state.serve_announce_at = score_at + SINGLE_SERVE_DELAY, score_at + 2.0
         if defined?(Log) && Log.respond_to?(:debug)
           Log.debug("Game Room Pong point_confirmed rally=#{before.state[:rally]} durable_confirmation_ms=#{((@clock.call - preview[:at]) * 1000).round}")
         end
       end
-      @goal_preview = nil
+      point_state.goal_preview = nil
     end
     def presents_game_event?(event)
       event['action'] == 'pong_point' && @audio.respond_to?(:presents_point) && @audio.presents_point
     end
     def presents_game_result?(replay)
-      replay.state[:rally] == @announced_rally && @audio.respond_to?(:presents_point) && @audio.presents_point
+      replay.state[:rally] == presentation_state.announced_rally && @audio.respond_to?(:presents_point) && @audio.presents_point
     end
     def after_events(replay, viewer, context:); before_wait(replay, viewer); end
 
@@ -114,14 +118,14 @@ module GameRoomPong
       @side = nil if bot_seat?(viewer)
       assignment = @game.team_assignment(replay.state[:options], players: @players)
       @teams = assignment ? assignment.seats : [0, 1]
-      @rotation = Rotation.new(teams: @teams, rally: replay.state[:rally], first_server: first_server)
+      rally_state.rotation = Rotation.new(teams: @teams, rally: replay.state[:rally], first_server: first_server)
       observer_side(@players) if @side == nil
       @required = @players.reject { |p| bot_seat?(p) || p.to_s.casecmp?(@viewer) }
       @channel.required_members = (@required + [@owner]).uniq if @channel.respond_to?(:required_members=)
       # The engine path is shared. A distinct mixed-match dialect rejects old
       # clients which would still send remote key presses instead of actions.
       mixed = @players.any? { |p| bot_seat?(p) }
-      dialect = @rotation.doubles? ? 'pong-doubles-' : 'pong-'
+      dialect = rally_state.rotation.doubles? ? 'pong-doubles-' : 'pong-'
       dialect += mixed ? 'mixed-peer-1' : 'peer-2'
       # Older clients normalize either new choice to 11 and would disconnect
       # mid-match. Keep them out of these modes at the existing handshake.
@@ -143,14 +147,13 @@ module GameRoomPong
       @form, @surface = form, surface
       @surface.on_pong_command = method(:local_command) if @surface.respond_to?(:on_pong_command=)
       @surface.on_input_reset = -> { @mouse.suspend } if @surface.respond_to?(:on_input_reset=)
-      @timer = GameRoomRealtime::Timer.new(clock: @clock) { frame }
-      @form.add_timer(@timer)
-      @form.retain_binding_timer(@timer) if @form.respond_to?(:retain_binding_timer)
+      @progress.attach(@form)
+      @timer = @progress.timer
       present
     end
 
     def detach_view
-      @timer&.stop
+      @progress&.detach
       @mouse.suspend
       @surface.on_pong_command = nil if @surface.respond_to?(:on_pong_command=)
       @surface.on_input_reset = nil if @surface.respond_to?(:on_input_reset=)
@@ -178,7 +181,7 @@ module GameRoomPong
         else
           begin
             @network_wait = true
-            frame
+            progress_frame
           ensure
             @network_wait = false
           end
@@ -190,6 +193,7 @@ module GameRoomPong
       return if @closed
       @closed = true
       unregister_ping_channel
+      @progress&.close
       detach_view
       @channel&.close
       @audio.close
@@ -200,7 +204,7 @@ module GameRoomPong
       opened_here = true
       @settings_open = true
       @mouse.suspend
-      @program.send(:show_pong_settings, tick: -> { frame }, clock: @clock)
+      @program.send(:show_pong_settings, tick: -> { progress_frame }, clock: @clock)
     ensure
       if opened_here
         @mouse.suspend
@@ -214,12 +218,12 @@ module GameRoomPong
     # following replay rebuilds Pong's rally with its existing physics profile.
     def reset_table_control
       @service_match ||= @match
-      @connection_started_at = @clock.call
-      @epoch = nil
-      @peers, @connection_peers, @deferred_events = {}, {}, []
-      @sequence = @event_sequence = 0
-      @pending_point = @goal_preview = @replay = nil
-      @paused = true
+      connection_state.connection_started_at = @clock.call
+      connection_state.epoch = nil
+      connection_state.peers, @connection_peers, rally_state.deferred_events = {}, {}, []
+      connection_state.sequence = connection_state.event_sequence = 0
+      point_state.pending_point = point_state.goal_preview = @replay = nil
+      rally_state.paused = true
       @surface.clear_input if @surface&.respond_to?(:clear_input)
     end
 
@@ -234,17 +238,17 @@ module GameRoomPong
     end
 
     def handshake_deadline
-      [@epoch_since, @connection_started_at].compact.max + HANDSHAKE_TIMEOUT
+      [@epoch_since, connection_state.connection_started_at].compact.max + HANDSHAKE_TIMEOUT
     end
 
     def awaiting_point?
-      @pending_point || (@goal_preview && @goal_preview[:rally] == @replay.state[:rally])
+      point_state.pending_point || (point_state.goal_preview && point_state.goal_preview[:rally] == @replay.state[:rally])
     end
 
     def preview_goal(winner)
-      return if @goal_preview && @goal_preview[:rally] == @replay.state[:rally]
-      @goal_preview = { rally: @replay.state[:rally], winner: winner, at: @clock.call }
-      @audio.goal(viewer: @rotation ? @rotation.team(audio_side) : audio_side, winner: winner)
+      return if point_state.goal_preview && point_state.goal_preview[:rally] == @replay.state[:rally]
+      point_state.goal_preview = { rally: @replay.state[:rally], winner: winner, at: @clock.call }
+      @audio.goal(viewer: rally_state.rotation ? rally_state.rotation.team(audio_side) : audio_side, winner: winner)
     end
 
     def local_command(command)
@@ -275,14 +279,16 @@ module GameRoomPong
 
     def sample_pointer_input(raw, healthy)
       now = @clock.call
-      # A modal dialog may suspend this form's timer completely. Never treat
-      # motion during that gap as a new game movement on resuming the form.
+      active = healthy && !@background_input && !@settings_open && !@network_wait && @side != nil && @surface && @form &&
+        @surface.respond_to?(:input_active?) && @surface.input_active?(@form)
+      # Discard accumulated pointer motion after a late frame. A continuous
+      # active keyboard hold keeps its repeat phase, not the missed steps.
+      # Real focus/health/rally changes still reset it through suspend/sync.
       if @mouse_sample_at && (now < @mouse_sample_at || now - @mouse_sample_at > Engine::STEP * MAX_PHYSICS_STEPS + 0.000001)
-        @mouse.suspend
+        continuous = active && @mouse.active? && now >= @mouse_sample_at
+        @mouse.suspend(reset_keyboard: !continuous)
       end
       @mouse_sample_at = now
-      active = healthy && !@settings_open && !@network_wait && @side != nil && @surface && @form &&
-        @surface.respond_to?(:input_active?) && @surface.input_active?(@form)
       @mouse.sample(active: active)
       # Keep independent counters: a recreated keyboard field may restart at
       # zero, while mouse clicks must neither vanish nor become extra presses.
@@ -305,26 +311,26 @@ module GameRoomPong
     end
 
     def pointer_input(input, at)
-      return input unless @side != nil && @snapshot
-      position = @engine ? @engine.paddles[@side] : @snapshot['p'][@side]
+      return input unless @side != nil && rally_state.snapshot
+      position = rally_state.engine ? rally_state.engine.paddles[@side] : rally_state.snapshot['p'][@side]
       @mouse.step(input, position: position, now_ms: (at * 1000).to_i)
     end
 
     def each_physics_frame(now)
-      elapsed = @physics_updated_at && now - @physics_updated_at
+      elapsed = rally_state.physics_updated_at && now - rally_state.physics_updated_at
       # ELTEN's callbacks do not fall exactly on the original 16 ms grid.
       # Keep the fractional remainder instead of scheduling "now + 16 ms",
       # which turned normal 10/20 ms UI callbacks into 20% slower gameplay.
       # A real suspension is different: discard that time, never replay a
       # whole missed rally or carry a catch-up debt into later callbacks.
-      if !@physics_at || (elapsed && (elapsed < 0 || elapsed > Engine::STEP * MAX_PHYSICS_STEPS + 0.000001))
-        @physics_at = now
+      if !rally_state.physics_at || (elapsed && (elapsed < 0 || elapsed > Engine::STEP * MAX_PHYSICS_STEPS + 0.000001))
+        rally_state.physics_at = now
       end
-      @physics_updated_at = now
+      rally_state.physics_updated_at = now
       MAX_PHYSICS_STEPS.times do
-        break if now + 0.000001 < @physics_at
-        frame_at = @physics_at
-        @physics_at += Engine::STEP
+        break if now + 0.000001 < rally_state.physics_at
+        frame_at = rally_state.physics_at
+        rally_state.physics_at += Engine::STEP
         yield frame_at
       end
     end
@@ -341,7 +347,7 @@ module GameRoomPong
     def playable_input(raw, active:, moving: active)
       focused = @surface && @form &&
         (!@surface.respond_to?(:input_active?) || @surface.input_active?(@form))
-      active = active == true && !@settings_open && !@network_wait && focused
+      active = active == true && !@background_input && !@settings_open && !@network_wait && focused
       held = raw['hit'] == true
       increment = if raw.key?('press')
         value = raw['press'] >= @raw_press.to_i ? raw['press'] - @raw_press.to_i : raw['press']
@@ -362,7 +368,7 @@ module GameRoomPong
       input['aim'] = moving ? raw['aim'] : 0 if raw.key?('aim')
       @raw_directions ||= {}
       @direction_totals ||= {}
-      movement_active = moving && !@settings_open && (!@surface || !@surface.respond_to?(:input_active?) || @surface.input_active?(@form))
+      movement_active = moving && !@background_input && !@settings_open && (!@surface || !@surface.respond_to?(:input_active?) || @surface.input_active?(@form))
       KeyboardMovement::COUNTERS.each do |key|
         next unless raw.key?(key)
         count, previous = raw[key], @raw_directions[key].to_i
@@ -376,24 +382,24 @@ module GameRoomPong
 
     def reset_rally_feedback
       @mouse.reset_rally
-      @pending_point = nil
+      point_state.pending_point = nil
       @press_base = @total_press.to_i
       @direction_base = (@direction_totals || {}).dup
       @audio.reset
-      @physics_at = @physics_updated_at = nil
-      @next_send = 0.0
+      rally_state.physics_at = rally_state.physics_updated_at = nil
+      connection_state.next_send = 0.0
       initial = @replay.state[:rally].zero?
       @initial_rally = initial
       @initial_ready_since = nil
       @host_ready_at = 0.0
-      @ready_at = initial ? Float::INFINITY : @clock.call + (3.0 + SINGLE_SERVE_DELAY)
-      @serve_announce_at = initial ? Float::INFINITY : @clock.call + 5.0
-      if @goal_preview && @goal_preview[:rally] == @replay.state[:rally] - 1
-        score_at = [@clock.call, @goal_preview[:at] + 3.0].max
-        @ready_at, @serve_announce_at = score_at + SINGLE_SERVE_DELAY, score_at + 2.0
+      rally_state.ready_at = initial ? Float::INFINITY : @clock.call + (3.0 + SINGLE_SERVE_DELAY)
+      rally_state.serve_announce_at = initial ? Float::INFINITY : @clock.call + 5.0
+      if point_state.goal_preview && point_state.goal_preview[:rally] == @replay.state[:rally] - 1
+        score_at = [@clock.call, point_state.goal_preview[:at] + 3.0].max
+        rally_state.ready_at, rally_state.serve_announce_at = score_at + SINGLE_SERVE_DELAY, score_at + 2.0
       end
       @server_announced = false
-      @paused = true
+      rally_state.paused = true
     end
 
     def valid_state?(body)
@@ -404,7 +410,7 @@ module GameRoomPong
       return false if body.key?('serve_wait') && ![true, false].include?(body['serve_wait'])
       return false unless data['tick'].is_a?(Integer) && data['tick'].between?(0, 2**40)
       return false unless @players.each_index.include?(data['server']) && [nil, 0, 1].include?(data['goal'])
-      if @rotation.doubles?
+      if rally_state.rotation.doubles?
         return false unless data['teams'] == @teams && @players.each_index.include?(data['receiver'])
         rotation = Rotation.new(teams: @teams, rally: body['r'], first_server: first_server)
         return false unless data['server'] == rotation.server && data['receiver'] == rotation.receiver
@@ -435,63 +441,63 @@ module GameRoomPong
 
     def set_paused(value, waiting: false)
       @waiting_for_serve = waiting
-      value = true unless @snapshot
-      if @paused != value
-        @paused = value
+      value = true unless rally_state.snapshot
+      if rally_state.paused != value
+        rally_state.paused = value
         if value && !waiting
-          speak(_('Match paused. Waiting for synchronization.'))
-        elsif !value && @snapshot['b']['dy'] != 0
-          speak(_('Match resumed.'))
+          announce_progress(_('Match paused. Waiting for synchronization.'))
+        elsif !value && rally_state.snapshot['b']['dy'] != 0
+          announce_progress(_('Match resumed.'))
         end
       end
     end
 
     def announce_ready(now)
-      return if @server_announced || now < @serve_announce_at || !@snapshot
+      return if @server_announced || now < rally_state.serve_announce_at || !rally_state.snapshot
       if @initial_rally && @players.none? { |p| GameRoomParticipants.bot?(p) } && !@initial_settings_announced
         @initial_settings_announced = true
         options = @replay.state[:options]
         difficulty = @game.option_definitions.find { |item| item.key == 'difficulty' }.choices[options['difficulty'] - 1].label
         target = @game.points_to_win(options)
         announcement = target ? _('%{variant}. %{difficulty}. %{points} points to win.') : _('%{variant}. %{difficulty}. Unlimited match.')
-        speak(announcement % {
+        announce_progress(announcement % {
           variant: options['arcade'] ? _('Arcade') : _('Classic'), difficulty: GameRoomContent.utf8(difficulty), points: target })
-        @serve_announce_at = now + 0.12
-        @ready_at = [@ready_at, @serve_announce_at].max
+        rally_state.serve_announce_at = now + 0.12
+        rally_state.ready_at = [rally_state.ready_at, rally_state.serve_announce_at].max
         return
       end
       @server_announced = true
-      if @rotation&.doubles?
+      if rally_state.rotation&.doubles?
         rally = @replay.state[:rally]
         return if rally.odd? || @serve_announced_block == rally / 2
         @serve_announced_block = rally / 2
         # Presentation only, just like Single. A synthesizer may never return
         # its final speech index; it must not gate the match or extend the
         # ordinary score + SINGLE_SERVE_DELAY deadline for any participant.
-        speak(_('%{server} will serve against %{receiver}.') % {
-          server: GameRoomContent.utf8(GameRoomParticipants.display_name(@players[@rotation.server])),
-          receiver: GameRoomContent.utf8(GameRoomParticipants.display_name(@players[@rotation.receiver])) })
+        announce_progress(_('%{server} will serve against %{receiver}.') % {
+          server: GameRoomContent.utf8(GameRoomParticipants.display_name(@players[rally_state.rotation.server])),
+          receiver: GameRoomContent.utf8(GameRoomParticipants.display_name(@players[rally_state.rotation.receiver])) })
       else
-        speak(_('%{player} serves.') % { player: GameRoomContent.utf8(GameRoomParticipants.display_name(@players[@snapshot['server']])) })
+        announce_progress(_('%{player} serves.') % { player: GameRoomContent.utf8(GameRoomParticipants.display_name(@players[rally_state.snapshot['server']])) })
       end
       @audio.start_match
     end
 
     def peer_service_waiting?
-      @rotation.doubles? && @engine.turn.zero? &&
-        @required.any? { |user| @peers[user.downcase]&.body&.[]('serve_wait') == true }
+      rally_state.rotation.doubles? && rally_state.engine.turn.zero? &&
+        @required.any? { |user| connection_state.peers[user.downcase]&.body&.[]('serve_wait') == true }
     end
 
     def prepare_first_serve(now, healthy)
       return unless @initial_rally && !@server_announced
       unless healthy
         @initial_ready_since = nil
-        @ready_at = @serve_announce_at = Float::INFINITY
+        rally_state.ready_at = rally_state.serve_announce_at = Float::INFINITY
         return
       end
       return if @initial_ready_since
       @initial_ready_since = now
-      @ready_at = @serve_announce_at = now
+      rally_state.ready_at = rally_state.serve_announce_at = now
     end
 
     def local_automatic
@@ -500,13 +506,13 @@ module GameRoomPong
 
     def surface_input
       raw = @surface && @form && !@network_wait ? @surface.input(@form) : { 'move' => 0, 'hit' => false }
-      @settings_open ? raw.merge('move' => 0, 'aim' => 0, 'hit' => false) : raw
+      @settings_open || @background_input ? raw.merge('move' => 0, 'aim' => 0, 'hit' => false) : raw
     end
 
     def present
       status = if @waiting_for_serve
         _('Waiting for the next serve.')
-      elsif @paused
+      elsif rally_state.paused
         _('Match paused. Waiting for synchronization.')
       else
         _('Match in progress.')
@@ -514,8 +520,8 @@ module GameRoomPong
       # Listening perspective is read-only. The spec's viewer still controls
       # whether this surface may supply paddle input.
       @surface.listening_seat = audio_side if @surface.respond_to?(:listening_seat=)
-      @surface&.present(@snapshot, status)
-      @audio.update(@snapshot, viewer: audio_side, paused: @paused)
+      @surface&.present(rally_state.snapshot, status)
+      @audio.update(rally_state.snapshot, viewer: audio_side, paused: rally_state.paused)
     end
   end
 end

@@ -11,13 +11,17 @@ permissions:
 jobs:
   test:
     runs-on: windows-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        suite: [models, transport, ui, native, tooling, integration]
     steps:
       - uses: actions/checkout@v7
       - name: Checkout pinned Elten test host
         uses: actions/checkout@v7
         with:
           repository: dawidpieper/elten3
-          ref: 5142182f40c901284c5d460b649b5c2e3813ccaf
+          ref: 3418d67dea40ee116f4a8ba545b1c409fd04706f
           path: .ci/elten3
           persist-credentials: false
       - uses: ruby/setup-ruby@v1
@@ -25,9 +29,26 @@ jobs:
           ruby-version: "4.0"
       - name: Install translation authoring tools
         run: bundle install --gemfile tools/Gemfile.i18n
-      - name: Check compiled translations and generated views
+      - name: Install native package test dependencies
+        if: matrix.suite == 'native'
+        run: |
+          gem install rubyzip --version 3.2.2 --no-document
+          gem install zstd-ruby --version 2.0.6 --no-document
+      - name: Check compiled translations and translated documents
         run: ruby tools/translations.rb check
+      - name: Check generated runtime sources
+        run: |
+          ruby tools/compile-rulebooks.rb --check
+          ruby tools/generate-krowa-nouns.rb --check
       - name: Run tests
         env:
           ELTEN_HOST_SOURCE: ${{ github.workspace }}/.ci/elten3
-        run: ruby tools/run-tests.rb --report test-results.json
+        run: ruby test/run.rb --suite ${{ matrix.suite }} --report test-results.json
+      - name: Preserve scenario results
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: test-results-${{ matrix.suite }}
+          path: test-results.json
+          if-no-files-found: error
+          retention-days: 14

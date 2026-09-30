@@ -270,13 +270,12 @@ module GameRoomWidget
       end
       @retry_at = 0.0
       @refresh_at = @clock.call + 5.0
-      # Capture at delivery time: the user may have moved during the request.
-      selected_id = selected_snapshot == nil ? nil : @id_for.call(selected_snapshot)
       @snapshots = loaded.to_a
-      self.options = @snapshots.map { |snapshot| @labeler.call(snapshot) }
+      # Native keys preserve the selection at delivery time, including moves
+      # made while the request was pending.
+      update_options(@snapshots.map { |snapshot| @labeler.call(snapshot) },
+        keys: @snapshots.map { |snapshot| @id_for.call(snapshot).to_s })
       self.empty_label = _("No matching Game Room tables")
-      restored = @snapshots.index { |snapshot| @id_for.call(snapshot).to_s == selected_id.to_s } if selected_id != nil
-      self.index = restored || [[index.to_i, options.length - 1].min, 0].max
       # Native sayoption only reads actual rows and is silent for empty lists.
       if announce && @announce_refresh
         @snapshots.empty? ? speak(empty_label) : sayoption

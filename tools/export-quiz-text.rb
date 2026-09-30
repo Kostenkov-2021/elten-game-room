@@ -61,7 +61,7 @@ module QuizTextExport
       path = File.join(directory, name)
       !File.file?(path) || File.binread(path) != content.fetch(name).b
     end
-    extra = Dir[File.join(directory, '*.txt')].map { |path| File.basename(path) } - content.keys
+    extra = Dir.glob('*.txt', base: directory) - content.keys
     raise "Unexpected old export files: #{extra.join(', ')}" unless extra.empty?
     if check
       raise "Out-of-date quiz lists: #{stale.join(', ')}; run ruby tools/export-quiz-text.rb" unless stale.empty?

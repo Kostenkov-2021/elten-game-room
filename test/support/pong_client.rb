@@ -11,6 +11,20 @@ require_relative '../../__app'
 require_relative '../../lib/axel_pong/client'
 
 def assert(value, message); raise message unless value; end
+
+# Remote spectators present authenticated full snapshots. Their local engine
+# deliberately does not reconstruct a history of returns it never received.
+def pong_remote_observer?(client)
+  !client.host? && client.instance_variable_get(:@side).nil?
+end
+
+def pong_presented_turn(client)
+  pong_remote_observer?(client) ? client.instance_variable_get(:@observer_turn) : client.engine.turn
+end
+
+def pong_presented_goal(client)
+  pong_remote_observer?(client) ? client.snapshot.fetch('goal') : client.engine.goal
+end
 class PongTestAudio
   attr_reader :updates
   def initialize; @updates = []; end

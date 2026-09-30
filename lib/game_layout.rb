@@ -1,42 +1,10 @@
+require_relative "game_layout_spec"
 require_relative "context_help"
 
 require_relative "game_room_localization"
 
 module GameRoomLayout
   using GameRoomLocalization::Translations
-  STANDARD_SECTIONS = [:status, :game, :chat, :history, :users].freeze
-
-  class ViewSpec
-    attr_reader :surface, :sections, :history_header, :history_empty_label,
-      :trailing_parts, :restartable, :finished_text, :status_commands
-
-    def initialize(surface: nil, history_header: nil, history_empty_label: nil,
-      trailing_parts: [], restartable: true, finished_text: nil, status_commands: [])
-      @trailing_parts = trailing_parts.map(&:to_s).freeze
-      @sections = @trailing_parts.empty? ? STANDARD_SECTIONS : (STANDARD_SECTIONS + [:game_actions]).freeze
-      @restartable = restartable
-      @finished_text = finished_text
-      @status_commands = status_commands.to_a.freeze
-      @surface = surface
-      @history_header = history_header == nil ? nil : history_header.to_s
-      @history_empty_label = history_empty_label == nil ? nil : history_empty_label.to_s
-    end
-  end
-
-  Snapshot = Struct.new(
-    :surface_state,
-    :history_index,
-    :users_index,
-    :form_index,
-    :focus_location,
-    :surface_identity,
-    :history_follows_tail,
-    :chat_text,
-    :chat_index,
-    :chat_check,
-    keyword_init: true
-  )
-
   module ShortcutFormBehavior
     def game_shortcut_keys=(keys)
       @game_shortcut_keys = keys.to_a.map do |key|
@@ -97,34 +65,21 @@ module GameRoomLayout
     end
   end
 
-  # These controls survive game updates. Install each native handler once,
-  # then replace only our callbacks; leave the control's own handlers intact.
+  # These controls survive game updates. Native registrations scope screen
+  # commands separately from the control's own handlers and realtime timers.
   module Bindings
     def reset_bindings!
-      @screen_events = {}
-      @screen_contexts = []
+      @screen_bindings&.clear
       @screen_timers.to_a.each { |timer| delete_timer(timer) }
       @screen_timers = []
     end
 
     def on(event, *arguments, &handler)
-      @screen_events ||= {}
-      @screen_event_proxies ||= {}
-      unless @screen_event_proxies[event]
-        super(event, *arguments) do |*params|
-          @screen_events.fetch(event, []).dup.each { |callback| callback.call(*params) }
-        end
-        @screen_event_proxies[event] = true
-      end
-      (@screen_events[event] ||= []) << handler
+      screen_bindings.on(self, event, *arguments, &handler)
     end
 
     def bind_context(header = "", &handler)
-      unless @screen_context_proxy
-        super(header) { |menu| @screen_contexts.to_a.each { |callback| callback.call(menu) } }
-        @screen_context_proxy = true
-      end
-      (@screen_contexts ||= []) << handler
+      screen_bindings.context(self, header, &handler)
     end
 
     def add_timer(timer, *arguments)
@@ -144,6 +99,12 @@ module GameRoomLayout
 
       @screen_tips << tip
       super
+    end
+
+    private
+
+    def screen_bindings
+      @screen_bindings ||= EltenAPI::Controls::FormBindings.new
     end
   end
 
@@ -210,16 +171,16 @@ module GameRoomLayout
     end
 
     def update_users(items, header: @users.header)
-      selected = selected_participant
-      previous_index = @users.index.to_i
       @user_items = items.to_a
       labels = @user_items.map(&:to_s)
-      @users.options = labels if @users.options != labels
-      selected_index = @user_items.index do |item|
+      keys = @user_items.map do |item|
         id = item.respond_to?(:participant) ? item.participant : item.to_s
-        selected != nil && id.to_s.casecmp(selected.to_s) == 0
+        id.to_s.downcase
       end
-      @users.index = selected_index || bounded_index(previous_index, labels)
+      if @users.options != labels || @user_keys != keys
+        @users.update_options(labels, keys: keys)
+        @user_keys = keys
+      end
       @users.header = header
     end
 

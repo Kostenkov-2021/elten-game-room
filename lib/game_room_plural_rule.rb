@@ -85,8 +85,8 @@ module GameRoomLocalization
         when "+" then a + b
         when "-" then a - b
         when "*" then a * b
-        when "/" then a.div(b)
-        when "%" then a % b
+        when "/" then quotient(a, b)
+        when "%" then a - quotient(a, b) * b
         when "==" then a == b ? 1 : 0
         when "!=" then a != b ? 1 : 0
         when "<" then a < b ? 1 : 0
@@ -95,6 +95,13 @@ module GameRoomLocalization
         when ">=" then a >= b ? 1 : 0
         end
       end
+    end
+
+    # Gettext expressions use C integer arithmetic (truncate toward zero),
+    # including negative intermediate values in otherwise positive counts.
+    def quotient(a, b)
+      value = a.abs.div(b.abs)
+      (a < 0) != (b < 0) ? -value : value
     end
   end
 end

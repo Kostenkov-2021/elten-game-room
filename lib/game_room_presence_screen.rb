@@ -39,7 +39,7 @@ class GameRoomPresenceScreen
       [GameRoomContent.utf8(_("Room activity is unavailable. Try Refresh."))]
     end
     (lines + [
-      GameRoomContent.utf8(_("These counts come from recent reports by updated clients. Reports expire after about two minutes; rooms without an updated client reporting them may be missing.")),
+      GameRoomContent.utf8(_("These counts come from recent reports by updated clients. Reports expire after about five to six minutes; rooms without an updated client reporting them may be missing.")),
       GameRoomContent.utf8(_("The people count is the sum of room membership counts: it includes observers and excludes bots. A person in more than one room may be counted more than once. This is not a global online count."))
     ]).join("\n")
   end

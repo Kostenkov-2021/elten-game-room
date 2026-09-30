@@ -1,3 +1,4 @@
+require_relative 'host_bridge'
 # Presentation belongs to the ACTIVE UI thread, even if it is displaying a
 # native Messages/forum scene above Game Room. The model worker only publishes
 # copied data. This bridge never ticks extensions, the network or a game form.
@@ -21,13 +22,9 @@ class GameRoomBackgroundPresentation
     # Host-owned state survives removal of the app namespace on an update.
     # The bridge itself captures NO app classes or callbacks. Only registered,
     # managed, live screens are retained, and close removes their references.
-    unless target.instance_variable_defined?(:@game_room_presentation_bridge)
-      target.instance_variable_set(:@game_room_presenters, [])
-      target.instance_variable_set(:@game_room_presenters_lock, Mutex.new)
-      bridge = Module.new
-      target.prepend(bridge)
-      target.instance_variable_set(:@game_room_presentation_bridge, bridge)
-    end
+    GameRoomHostBridge.registry(target, key: :@game_room_presenters,
+      lock: :@game_room_presenters_lock, initial: []) { |_| }
+    GameRoomHostBridge.prepare(target, marker: :@game_room_presentation_bridge)
     # Compile outside the app's lexical scope. A block in #register retains
     # its old namespace through Ruby's constant-resolution context on reload.
     if target.instance_variable_get(:@game_room_presentation_bridge_version) != 1
@@ -59,9 +56,8 @@ class GameRoomBackgroundPresentation
       target.instance_variable_set(:@game_room_presentation_bridge_version, 1)
     end
     @host = target
-    @host.instance_variable_get(:@game_room_presenters_lock).synchronize do
-      @host.instance_variable_get(:@game_room_presenters) << self
-    end
+    GameRoomHostBridge.registry(@host, key: :@game_room_presenters,
+      lock: :@game_room_presenters_lock, initial: []) { |items| items << self }
     @program.class.manage(self) if @program.class.respond_to?(:manage)
     self
   end
@@ -70,10 +66,17 @@ class GameRoomBackgroundPresentation
   def covered?; @runner.covered?; end
 
   def tick
-    return if closed? || !covered? || @runner.closed?
+    return if closed? || !covered?
     return unless defined?($currentthread) && Thread.current.equal?($currentthread)
 
-    work = -> { @screen.send(:present_background_session, @runner) }
+    work = -> {
+      if @runner.closed?
+        @screen.send(:background_session_closed) if @screen.respond_to?(:background_session_closed, true)
+        close
+      else
+        @screen.send(:present_background_session, @runner)
+      end
+    }
     if @runtime && defined?(Programs) && Programs.respond_to?(:with_runtime)
       Programs.with_runtime(@runtime, &work)
     else
@@ -94,9 +97,8 @@ class GameRoomBackgroundPresentation
     return if @closed
     @closed = true
     if @host
-      @host.instance_variable_get(:@game_room_presenters_lock).synchronize do
-        @host.instance_variable_get(:@game_room_presenters).delete(self)
-      end
+      GameRoomHostBridge.registry(@host, key: :@game_room_presenters,
+        lock: :@game_room_presenters_lock, initial: []) { |items| items.delete(self) }
     end
     @program.class.release(self) if @program.class.respond_to?(:release)
     @screen = @runtime = nil

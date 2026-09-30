@@ -1,10 +1,11 @@
+require_relative "specifications"
 require_relative '../audio_ball/keyboard'
 
 require_relative "../game_room_localization"
 
 module GameSurfaces
   using GameRoomLocalization::Translations
-  AudioBallSpec = Struct.new(:game_id, :header, :players, :viewer, :scores, :sets, :set_number, :finished, keyword_init: true)
+
 
   class AudioBallField < Button
     KEYS = GameRoomAudioBall::Keyboard::KEYS

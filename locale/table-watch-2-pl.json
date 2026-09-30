@@ -1,9 +1,0 @@
-{
-  "New table": "Nowy stół",
-  "New table: %{game}, %{owner}": "Nowy stół: %{game}, %{owner}",
-  "Notify me about new public tables (preferences are visible to table creators)": "Powiadamiaj o nowych publicznych stołach (wybrane gry są widoczne dla twórców stołów)",
-  "Loading notification settings": "Wczytywanie ustawień powiadomień",
-  "Saving notification settings": "Zapisywanie ustawień powiadomień",
-  "Checking table": "Sprawdzanie stołu",
-  "This table announcement has expired or is no longer available.": "To powiadomienie o stole wygasło lub nie jest już dostępne."
-}

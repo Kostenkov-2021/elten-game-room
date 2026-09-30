@@ -2,6 +2,7 @@ require_relative "native_live_sessions"
 require_relative "../../lib/game_sync"
 require_relative "../../lib/game_random"
 require_relative "../../lib/hidden_submissions"
+require_relative "replay_snapshot"
 
 def n_(singular, plural, count); count == 1 ? singular : plural; end
 
@@ -93,8 +94,11 @@ class NativeRoomHarness
     assert(ids == ids.sort && ids == ids.uniq, "#{stage}: unordered or duplicated events")
     assert(ids.length == expected_count, "#{stage}: #{ids.length} events instead of #{expected_count}") if expected_count
     if game
-      states = users.map { |user| Marshal.dump(replay(user).state) }
-      assert(states.uniq.length == 1, "#{stage}: game states diverged")
+      snapshots = users.map { |user| GameRoomTest::ReplaySnapshot.capture(replay(user)) }
+      differences = GameRoomTest::ReplaySnapshot::FIELDS.select do |field|
+        snapshots.map { |snapshot| snapshot[field] }.uniq.length != 1
+      end
+      assert(differences.empty?, "#{stage}: game replays diverged: #{differences.join(', ')}")
     end
   end
 end

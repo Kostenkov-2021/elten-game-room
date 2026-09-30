@@ -1,4 +1,0 @@
-{
-  "to %{limit} points": "do %{limit} punktów",
-  "%{player}, %{dice}, %{points} points.": "%{player}, %{dice}, %{points} punktów."
-}

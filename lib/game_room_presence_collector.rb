@@ -1,20 +1,28 @@
 require "securerandom"
+require "json"
 require "digest"
 require "thread"
 require_relative "game_participants"
 require_relative "game_room_clock"
 require_relative "game_room_presence_identity"
+require_relative "game_room_analytics_job"
+require_relative "network_errors"
 
 module GameRoomPresence
+  class InvalidClientState < StandardError; end
+
   class Collector
-    def self.reporter_key(storage:, user:)
+    HEARTBEAT_SECONDS = 120
+    def self.reporter_key(storage:, user:, valid: -> { true })
       name = user.to_s.downcase
       raise ArgumentError, "Missing room presence account" if name.empty?
       result = storage.update_json("room-presence-client.json", default: {"version" => 1, "accounts" => {}}) do |data|
-        raise IOError, "Invalid room presence client state" unless data.is_a?(Hash) && data["version"] == 1 && data["accounts"].is_a?(Hash)
+        raise GameRoomAnalyticsJob::Cancelled, "Room presence context ended" unless valid.call
+        raise InvalidClientState, "Invalid room presence client state" unless data.is_a?(Hash) && data["version"] == 1 && data["accounts"].is_a?(Hash)
         data["accounts"][name] ||= SecureRandom.hex(32)
         key = data["accounts"][name]
-        raise IOError, "Invalid room presence reporter key" unless key.is_a?(String) && /\A[0-9a-f]{64}\z/.match?(key)
+        raise InvalidClientState, "Invalid room presence reporter key" unless key.is_a?(String) && /\A[0-9a-f]{64}\z/.match?(key)
+        raise GameRoomAnalyticsJob::Cancelled, "Room presence context ended" unless valid.call
       end
       raise IOError, "Room presence identity was not persisted" unless result.is_a?(Hash)
       result.fetch("accounts").fetch(name).dup.freeze
@@ -28,13 +36,19 @@ module GameRoomPresence
       def close
         @collector.unregister(self)
       end
+
+      def changed
+        @collector.changed(self)
+      end
     end
 
-    attr_reader :last_error
+    attr_reader :last_error, :work_status
 
-    def initialize(user:, store: nil, store_factory: nil, enabled: -> { true }, current_user: -> { Session.name }, synchronize_clock: -> { GameRoomClock.synchronize })
+    def initialize(user:, store: nil, store_factory: nil, enabled: -> { true }, current_user: -> { Session.name }, synchronize_clock: -> { GameRoomClock.synchronize },
+      trigger: nil, clock: -> { Process.clock_gettime(Process::CLOCK_MONOTONIC) })
       @user, @store, @store_factory = user.to_s.dup.freeze, store, store_factory
       @enabled = enabled
+      @trigger, @clock, @closed = trigger, clock, false
       @current_user, @synchronize_clock = current_user, synchronize_clock
       @sources, @sources_lock, @upload_lock, @store_lock = {}, Mutex.new, Mutex.new, Mutex.new
       @published = false
@@ -48,12 +62,23 @@ module GameRoomPresence
       raise ArgumentError, "A room presence source is required" unless provider
       registration = Registration.new(self)
       @sources_lock.synchronize { @sources[registration] = provider }
+      @trigger&.call
       registration
     end
 
     def unregister(registration)
-      @sources_lock.synchronize { @sources.delete(registration) }
+      removed = @sources_lock.synchronize { @sources.delete(registration) }
+      @trigger&.call if removed
       nil
+    end
+
+    def changed(registration)
+      @trigger&.call if @sources_lock.synchronize { @sources.key?(registration) }
+    end
+
+    def close
+      @closed = true
+      @sources_lock.synchronize { @sources.clear }
     end
 
     def heartbeat(token = nil)
@@ -70,8 +95,17 @@ module GameRoomPresence
           @sources_lock.synchronize { @sources.key?(registration) } ? value : []
         end
         check_context!(token)
-        rooms = snapshots.filter_map { |snapshot| room_values(snapshot) }
-        return true if rooms.empty? && !@published
+        rooms = snapshots.filter_map { |snapshot| room_values(snapshot) }.uniq.sort_by { |room| room["room_key"] }
+        if rooms.empty? && !@published && !@needs_clear
+          @work_status = :idle
+          @last_error = nil
+          return true
+        end
+        if !@needs_clear && rooms == @last_rooms && @last_publish_at && @clock.call < @last_publish_at + HEARTBEAT_SECONDS
+          @work_status = :unchanged
+          @last_error = nil
+          return true
+        end
         return true unless @enabled.call
         check_context!(token)
         @synchronize_clock.call
@@ -79,15 +113,30 @@ module GameRoomPresence
         return true unless @enabled.call
         target = store
         return true unless @enabled.call
+        @needs_clear = true
         confirmed = target.publish(rooms, cancellation_token: token)
         raise IOError, "Room presence upload was not confirmed" unless confirmed == true
         check_context!(token)
         @published = !rooms.empty?
+        @needs_clear = false
+        @last_rooms, @last_publish_at = rooms, @clock.call
+        @work_status = @published ? :active : :idle
         @last_error = nil
         true
       end
     rescue StandardError => error
+      if error.is_a?(GameRoomAnalyticsJob::Cancelled)
+        @work_status = :waiting
+        return false
+      end
       @last_error = error
+      @work_status = if error.is_a?(InvalidClientState) || error.is_a?(JSON::ParserError) || (defined?(UnsafeReport) && error.is_a?(UnsafeReport))
+        :blocked
+      elsif error.is_a?(IOError) || error.is_a?(SystemCallError) || (defined?(Unavailable) && error.is_a?(Unavailable)) || GameRoomNetworkErrors.transient?(error)
+        :retry
+      else
+        :blocked
+      end
       begin
         Log.warning("Game Room presence update failed: #{error.class}") if defined?(Log)
       rescue StandardError
@@ -99,6 +148,7 @@ module GameRoomPresence
     private
 
     def check_context!(token)
+      raise GameRoomAnalyticsJob::Cancelled, "Room presence closed or disabled" if @closed || !@enabled.call
       token&.raise_if_cancelled!
       raise IOError, "Room presence account changed" unless !@user.empty? && GameRoomParticipants.same?(@current_user.call, @user)
     end

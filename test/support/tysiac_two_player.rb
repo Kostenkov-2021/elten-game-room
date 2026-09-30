@@ -1,11 +1,12 @@
+require_relative "../../lib/game_surfaces/specifications"
 require_relative "new_games_fixture"
 require_relative "elten_array_shuffle"
 require_relative "../../games/tysiac"
 
 module GameSurfaces
   unless const_defined?(:QuestionSpec)
-    QuestionOption = Struct.new(:id, :label, :value, keyword_init: true)
-    QuestionSpec = Struct.new(:id, :prompt, :mode, :options, :value, :required, :submit_on_select, keyword_init: true)
+
+
   end
 end
 

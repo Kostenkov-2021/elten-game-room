@@ -1,28 +1,11 @@
+require_relative "specifications"
 require_relative "../game_room_localization"
 
 module GameSurfaces
   using GameRoomLocalization::Translations
-  ReviewItem = Struct.new(
-    :id,
-    :author,
-    :category,
-    :answer,
-    :status,
-    :decision,
-    :decision_ids,
-    keyword_init: true
-  )
-  ReviewDecision = Struct.new(:id, :label, keyword_init: true)
-  ReviewSpec = Struct.new(
-    :id,
-    :header,
-    :items,
-    :decisions,
-    :empty_label,
-    :submit_label,
-    :read_only,
-    keyword_init: true
-  )
+
+
+
 
   class ReviewSurface
     include ActionEmitter
@@ -224,13 +207,7 @@ module GameSurfaces
       [[index.to_i, 0].max, @items.length - 1].min
     end
 
-    def state_value(state, key, default)
-      return default if !state.respond_to?(:key?)
-      return state[key] if state.key?(key)
-      return state[key.to_sym] if state.key?(key.to_sym)
 
-      default
-    end
 
     def remembered_value(remembered, id)
       return nil if !remembered.respond_to?(:key?)

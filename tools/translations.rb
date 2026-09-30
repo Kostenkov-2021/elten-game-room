@@ -10,9 +10,9 @@ rescue LoadError, StandardError => error
   exit 1
 end
 
-require_relative "translation_catalog"
-require_relative "translation_extractor"
-require_relative "translation_compatibility"
+require_relative "support/translation_catalog"
+require_relative "support/translation_extractor"
+require_relative "support/translation_documents"
 
 module GameRoomTranslationCLI
   module_function
@@ -22,6 +22,10 @@ module GameRoomTranslationCLI
     raise ArgumentError, "Use a two-letter language code, such as PL or CS" unless code.match?(/\A[a-z]{2}\z/i)
     raise ArgumentError, "English is the source language; edit English source text, not EN.po" if code.casecmp?("en")
     code.upcase
+  end
+
+  def catalog_codes(directory, extension)
+    Dir.glob("*.#{extension}", base: directory).sort.map { |name| File.basename(name, ".#{extension}") }
   end
 
   def run(arguments)
@@ -43,7 +47,7 @@ module GameRoomTranslationCLI
     raise ArgumentError, "Missing locale directory: #{directory}" unless File.directory?(directory)
     case command
     when "import-mo"
-      codes = arguments.empty? ? Dir.glob(File.join(directory, "*.mo")).map { |path| File.basename(path, ".mo") } : arguments
+      codes = arguments.empty? ? catalog_codes(directory, "mo") : arguments
       raise ArgumentError, "No MO catalogs to import" if codes.empty?
       codes.map { |code| language_code(code) }.each do |code|
         target = File.join(directory, "#{code}.po")
@@ -54,7 +58,7 @@ module GameRoomTranslationCLI
       end
     when "update"
       raise ArgumentError, "update does not accept language arguments" unless arguments.empty?
-      paths = Dir.glob(File.join(directory, "*.po")).sort
+      paths = catalog_codes(directory, "po").map { |code| File.join(directory, "#{code}.po") }
       raise ArgumentError, "Import the existing MO catalog first" if paths.empty?
       messages = GameRoomTranslationExtractor.extract(root)
       catalogs = paths.map { |path| [path, GameRoomTranslationCatalog.read_po(path)] }
@@ -77,7 +81,7 @@ module GameRoomTranslationCLI
       puts "Created #{code}.po; no MO was built or installed"
     when "compile", "check"
       check = command == "check" || options[:check]
-      codes = arguments.empty? ? Dir.glob(File.join(directory, "*.po")).map { |path| File.basename(path, ".po") } : arguments
+      codes = arguments.empty? ? catalog_codes(directory, "po") : arguments
       raise ArgumentError, "No PO catalogs to compile" if codes.empty?
       codes = codes.map { |code| language_code(code) }.uniq
       codes.each do |code|
@@ -88,8 +92,8 @@ module GameRoomTranslationCLI
       if codes.include?("PL")
         catalog = GameRoomTranslationCatalog.read_po(File.join(directory, "PL.po"))
         messages = GameRoomTranslationCatalog.message_map(catalog)
-        views = GameRoomTranslationCompatibility.sync(root, messages, check: check)
-        puts "#{check ? 'Verified' : 'Refreshed'} generated Polish compatibility views (#{views.length} changed)"
+        documents = GameRoomTranslationDocuments.sync(root, messages, check: check)
+        puts "#{check ? 'Verified' : 'Refreshed'} Polish rulebooks (#{documents.length} changed)"
       end
     else
       raise ArgumentError, parser.to_s

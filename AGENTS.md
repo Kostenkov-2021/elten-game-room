@@ -1,13 +1,12 @@
 # Instrukcje dla agentów pracujących nad ELTEN Game Room
 
-## Bieżący kontrakt — czytaj przed historycznymi wpisami
+## Bieżący kontrakt
 
-- Źródła wymagają ELTEN 3.0.4; stan integracji opisuje
-  [ELTEN_3_0_4_TABLES_PLAN.md](docs/ELTEN_3_0_4_TABLES_PLAN.md).
-- Zasady utrzymania: [ARCHITECTURE.md](docs/ARCHITECTURE.md), bieżące porządki
-  [MAINTAINABILITY_CLEANUP.md](docs/MAINTAINABILITY_CLEANUP.md) oraz dalsze
-  czternaście punktów [MAINTAINABILITY_FOLLOWUP.md](docs/MAINTAINABILITY_FOLLOWUP.md).
-  Historia i uzasadnienia są w [WORK_HISTORY.md](docs/WORK_HISTORY.md), nie są poleceniem cofania kodu.
+- Źródła wymagają finalnego ELTEN-a 3.0.4; kontrakt integracji opisuje
+  [HOST_API.md](docs/HOST_API.md).
+- Zasady utrzymania: [ARCHITECTURE.md](docs/ARCHITECTURE.md); indeks
+  aktualnych kontraktów i instrukcji: [INDEX.md](docs/INDEX.md).
+  Historia zmian jest w Git; nie jest poleceniem cofania obecnego kodu.
 - LiveSessions jest jedynym backendem stołów/ruchów. Nie przywracać dawnych
   tabel ani Signals. Tabele Krowy/lobby/rejestru/subskrypcji nadal są potrzebne.
 - Zachować oba zabezpieczenia starego zamknięcia, epoki obsady, niezmienność
@@ -37,8 +36,8 @@
   Nie powtarzać teraz całego runnera. Dla dalszych czternastu punktów użytkownik
   zatwierdził próby żywych klientów i wczytanie kodu do pamięci, nie instalację,
   nową paczkę lub publikację. Nie rozszerzać tej zgody na inne operacje.
-- Historyczne aplikatory quizu domyślnie nie zapisują. Wymagają zatwierdzonego
-  manifestu wejść/celów i nie mogą cofać wersji. Nie powtarzać odsiewania
+- Historyczne aplikatory quizu usunięto wraz z jednorazowymi audytami.
+  Nie przywracać ich jako wrapperów zgodności. Nie powtarzać odsiewania
   pytań ani zmieniać audio/baz w ramach porządkowania kodu.
 
 ## Granice po dalszym audycie utrzymywalności
@@ -72,7 +71,7 @@
 - Wieloetapowy formularz, który najpierw zapisuje akcję pomocniczą, musi
   przekazać nowy replay i rewizję do dalszej obsługi tego samego formularza.
   Nie usuwać kontroli `StaleView` ani dopuszczać zapisu ze starego widoku.
-  Regresja: `monopoly_staged_trade_screen_test.rb` (także anulowanie,
+  Regresja: `test/games/monopoly/staged_trade_screen_test.rb` (także anulowanie,
   ponowne otwarcie, człowiek/bot i dalsza tura). Zwykłe modalne wybory,
   które nie zapisują pośredniego zdarzenia, nie wymagają takiego obejścia.
 - Po zastąpieniu uczestnika bot analizuje projekcję historii według obecnych
@@ -103,7 +102,7 @@ GameRoomHistory.bind; index/check to pozycje znaków, entry_index to wpis.
 Nie dubluj tych klawiszy w klasach gier, nie zmieniaj źródeł ani zapisanych
 QuickActions ELTEN-a. Dynamiczną pomoc gry i pokoju aktualizuj przez te same
 definicje co rzeczywiste skróty (`GameRoomContextHelp`), nie dopisuj na stałe
-tipsów zależnych od fazy. Szczegóły: `docs/VOLUME_AND_HELP_224.md`.
+tipsów zależnych od fazy. Szczegóły: `docs/UI.md`.
 
 - Najpierw odtwórz problem i wskaż warstwę, która jest jego właścicielem.
 - Działający model za Wiadomościami/forum NIE dowodzi bieżącej mowy/audio.
@@ -128,17 +127,28 @@ tipsów zależnych od fazy. Szczegóły: `docs/VOLUME_AND_HELP_224.md`.
   build_session_game, szkic oznacz automatic_surface_identity, a wyjątki
   równoległego wejścia zawęź przez concurrent_session_input? do jednej
   rundy/fazy/operacji. Reguły nadal sprawdza action_for. Nie przenoś
-  całego GameScreen lub game_client do Thread.new. Realtime ma własny
-  lifecycle i session_runner? false. Przy zmianach testuj wiele instancji,
+  całego GameScreen lub game_client do Thread.new. Realtime ma własną fizykę
+  i boty w jednym zegarowym timerze na aktywnym UI, również za innym oknem.
+  SessionRunner zapisuje jedynie uzgodnione punkty przez standardowe reguły;
+  nie wykonuje fizyki ani wejścia. Menu i przykrycie neutralizują klawisze,
+  ale nie zatrzymują synchronizacji. Przy zmianach testuj wiele instancji,
   backoff/niepewny zapis, powrót, deadline, freeze/rewanż i zakończenie.
   Testy: game_session_runner*_test.rb i game_session_screen_test.rb.
+- Pytanie o opuszczenie stołu otwieraj przed zakończeniem `GameScreen#run`.
+  Do skutecznego wyjścia zachowaj wykonawcę, klienta realtime i prezentację;
+  „Nie”, Escape lub nieudana operacja nie mogą ich odtwarzać od nowa.
+  Nadal używaj wspólnej kontroli wyjścia i jej ponownej walidacji po dialogu.
+  Potwierdzone wyjście zwraca `:left_table`, bez drugiego pytania w lobby;
+  zamknięcie przez serwer nie pyta. Regresja: `game_leave_confirmation_test.rb`.
 - Uruchomienie nad Konferencją może umieścić Game Room na równoległym wątku
-  UI. Nie zakładaj, że działający protokół LiveSessions oznacza dostarczenie
-  callbacków aplikacji. Własne okna muszą używać wspólnego Form z `program:`;
-  nie zastępuj lokalnego, ograniczonego dispatchu globalnym tickiem, pętlą
-  sieciową lub odpytywaniem serwera. Sprawdzaj uruchomienie główne i równoległe,
+  UI. Finalny ELTEN 3.0.4 dostarcza callbacki aktywnej sceny w swojej pętli;
+  nie dodawaj drugiego dispatchu w formularzu. Własne okna nadal używają
+  wspólnego Form z `program:` do porządkowania discovery/retencji i uruchomień.
+  Zachowaj osobny drain wykonawcy przykrytej gry i przed zapisem. Nie zastępuj
+  tych granic globalnym tickiem ani odpytywaniem serwera.
+  Sprawdzaj uruchomienie główne i równoległe,
   powrót z innego okna, boty, rewanż oraz niezmienność szkicu/fokusu czatu.
-  Regresje: test/parallel_scene_events_test.rb i parallel_scene_native_test.rb;
+  Regresje: test/host/parallel_scene_events_test.rb i parallel_scene_native_test.rb;
   `ELTEN_HOST_SOURCE` ma wskazywać źródła pasujące do badanego hosta.
 - Rozszerzenie przypięte do globalnego obiektu hosta przeżywa aktualizację
   aplikacji bez restartu ELTEN-a. Znacznik „już zainstalowano” nie może
@@ -146,12 +156,12 @@ tipsów zależnych od fazy. Szczegóły: `docs/VOLUME_AND_HELP_224.md`.
   Przy takich zmianach testuj starą paczkę -> nową w jednym procesie,
   również powtórne przeładowanie, brak narastania wrapperów i odtwarzania
   starego wejścia. Czysty start i samo binarne wczytanie tego nie sprawdzają.
-  Regresja Audio Balla: `test/audio_ball_keyboard_reload_test.rb`.
+  Regresja Audio Balla: `test/games/audio_ball/keyboard_reload_test.rb`.
 - `Replay#state` jest opcjonalne: Kółko i krzyżyk oraz Czwórki przechowują
   pozycję w polach `board`/`players` i zwracają `state: nil`. Wspólne hooki
   nie mogą wymagać Hasha stanu; opcje partii pochodzą również z ActionContext.
   Przy ich zmianach testuj prawdziwy replay klas gier, nie tylko sztucznie
-  zbudowany Hash. Regresja opóźnienia botów: `test/bot_delay_replay_test.rb`.
+  zbudowany Hash. Regresja opóźnienia botów: `test/models/bot_delay_replay_test.rb`.
 - Kodowanie tekstów UI sprawdzaj również w paczce: ELTEN może wczytać źródła
   jako ASCII-8BIT, a brak tłumaczenia w `_()` pozostawia taki tekst bez zmiany.
   Nawet angielska etykieta z myślnikiem „—”, znakiem „×” lub innym znakiem
@@ -166,7 +176,7 @@ tipsów zależnych od fazy. Szczegóły: `docs/VOLUME_AND_HELP_224.md`.
   tworzenie formularza i odczyt fokusu/stanu, także brakujące tłumaczenie
   Game Roomu obok tłumaczenia hosta. Nie wymuszaj UTF-8 w atrapach `_()` lub
   kontrolek, jeśli host tego nie robi — ukrywa to regresje. Używaj
-  `test/game_option_encoding_test.rb` (źródła binarne; EN, PL oraz angielski
+  `test/localization/game_option_encoding_test.rb` (źródła binarne; EN, PL oraz angielski
   tekst z rosyjskim hostem), a przy kolejnym pakowaniu także argumentu
   ze ścieżką gotowej paczki. Sam zwykły `require` albo test wyłącznie PL
   nie wystarcza do potwierdzenia zgodności.
@@ -193,7 +203,7 @@ tipsów zależnych od fazy. Szczegóły: `docs/VOLUME_AND_HELP_224.md`.
 - Nowe karcianki mają korzystać ze wspólnej obsługi ręki, nie kopiować kursora:
   stabilne, unikalne ID kart, `hand_order` w faktycznej kolejności dobierania
   oraz `hand_epoch` identyfikujące właściciela i rozdanie. Szczegóły są w
-  `docs/CARD_HAND_CURSOR_213.md`. Innych list, plansz i kości nie oznaczać jako
+  `docs/CARD_HAND.md`. Innych list, plansz i kości nie oznaczać jako
   ręki; ich zachowanie i odczyty nie mogą być zmieniane przez ten mechanizm.
 - Nowa gra z rzeczywistą ręką kart implementuje `playable_card_navigation` i
   grupuje wszystkie legalne akcje według stabilnego ID fizycznej karty. `Z` i
@@ -231,7 +241,7 @@ tipsów zależnych od fazy. Szczegóły: `docs/VOLUME_AND_HELP_224.md`.
   ani nie dodawaj po nim kolejnej pauzy: obowiązuje zwykły termin jak w singlu.
   Test z atrapą, która sama podaje końcowy indeks, nie sprawdza niezawodności
   rzeczywistego syntezatora. Uwzględniaj także całkowity brak tego indeksu,
-  przerwanie mowy i różne wyjścia syntezy. Patrz `docs/PONG_SERVE_PAUSE_235.md`.
+  przerwanie mowy i różne wyjścia syntezy. Patrz `docs/REALTIME.md`.
 - Korzystaj ze wspólnego `Channel`/`EventChannel`. Przed implementacją
   rozpisz całą drogę akcji: wejście, kolejka, relay, odbiór, zastosowanie
   i prezentacja. Ustal, kto ma prawo rozstrzygać każde zdarzenie.
@@ -246,7 +256,7 @@ tipsów zależnych od fazy. Szczegóły: `docs/VOLUME_AND_HELP_224.md`.
   `Session#p2p_status`, nie z opcji stołu; po wygaśnięciu P2P nie odczytuj
   starego RTT jako bieżącego. Mieszane połączenia opisuj osobno. Odczyt
   nie wysyła dodatkowych sond ani nie uruchamia połączeń lub callbacków.
-  Regresje: `ping_p2p_test.rb`, `ping_p2p_dictionary_test.rb`.
+  Regresje: `test/realtime/ping_p2p_test.rb`, `test/localization/ping_p2p_dictionary_test.rb`.
 - Koordynowanie meczu przez gospodarza, także będącego obserwatorem, nie
   oznacza przekazywania przez niego każdej wiadomości. Dla akcji rozstrzyganych przez uprawnionego
   nadawcę wybieraj rozsyłanie przez relay bez dodatkowego skoku przez hosta.
@@ -270,12 +280,23 @@ tipsów zależnych od fazy. Szczegóły: `docs/VOLUME_AND_HELP_224.md`.
   Cztery kopie jednego komputera nie zastępują różnych łączy. Nie maskuj
   transportu zmianą fizyki ani nie uznawaj niewyjaśnionych zacięć za naprawione.
 
-Uzasadnienie i pomiary: `docs/PONG_RELAY_DELIVERY_233.md`,
-`docs/PONG_IMMEDIATE_DISPATCH_233.md`, `docs/PONG_RECEIVE_INVITATION_233.md`.
+Kontrakt dostawy i zasady pomiarów: `docs/REALTIME.md`.
 
 ## Weryfikacja
 
-Nowe wspólne funkcje stołu opisuje `docs/IMPLEMENTATION_AFTER_225.md`:
+- Dobrowolna aktualizacja przy starcie: tylko przy zimnym wejściu po objęciu
+  blokady jednej instancji, przed dołączeniem do stołu. Porównuj numery buildów
+  (nie samą różnicę wersji); nie obniżaj testowego buildu. Odmowa, błąd i limit
+  czasu katalogu nie blokują uruchomienia. Natywny instalator ELTEN-a musi
+  wykonać się dopiero po finalizacji starego Program, poza jego runtime.
+  Zachowuj cel wejścia i blokadę kolejnych uruchomień podczas pobierania;
+  po przeładowaniu rozwiązuj klasę po UUID, nigdy przez stary obiekt klasy.
+  Testuj wszystkie ścieżki wejścia, odmowę/anulowanie/awarię i powrót po
+  instalacji. Nie aktualizuj aktywnej partii ani publicznego katalogu w testach.
+
+
+Wspólne funkcje stołu opisują `docs/ARCHITECTURE.md`, `docs/UI.md`
+i `docs/PRIVATE_STATE.md`:
 
 - Wariant/ustawienia Ctrl+R pochodzą z `table_options_announcement` i tych
   samych definicji co dokument ustawień. Nie utrzymuj drugiej listy reguł.
@@ -292,9 +313,9 @@ Nowe wspólne funkcje stołu opisuje `docs/IMPLEMENTATION_AFTER_225.md`:
   Nie zastępuj graczy ani nie zamykaj stołu przed potwierdzonym zapisem archiwum na koncie.
 
 - Uruchom celowane testy podczas pracy.
-- Przed pull requestem uruchom `ruby tools/run-tests.rb`.
-- Zmiana transportu wymaga testów `live_sessions_*`, `transport_test.rb`,
-  `game_sync_test.rb` i scenariusza wielu klientów.
+- Przed pull requestem uruchom `ruby test/run.rb`.
+- Zmiana transportu wymaga testów `live_sessions_*`, `test/transport/transport_test.rb`,
+  `test/transport/game_sync_test.rb` i scenariusza wielu klientów.
 - Zmiana wspólnej powierzchni wymaga testu samej powierzchni oraz co najmniej
   jednej dotkniętej gry.
 - Nie zmieniaj numeru wydania ani nie podpisuj paczki bez wyraźnego polecenia
@@ -304,6 +325,11 @@ Nowe wspólne funkcje stołu opisuje `docs/IMPLEMENTATION_AFTER_225.md`:
 
 Nie zapisuj tokenów MCP, kluczy, certyfikatów, profili ELTEN-a, logów z danymi
 prywatnymi, poświadczeń serwera ani podpisanych paczek `.eltsetup`.
+
+Raporty, audyty, wyniki testów i podsumowania lokalnych zmian przechowuj
+lokalnie w ignorowanym przez Git katalogu `tmp/`. Nie dodawaj ich do
+śledzonych plików repozytorium, chyba że są konieczne do jego utrzymania
+lub użytkownik wyraźnie o to poprosi.
 
 ## Zasoby dźwiękowe
 
@@ -327,12 +353,12 @@ Szczegóły procedury: `docs/BUILDING.md`. Licencje i autorstwo zachowaj.
   liście Okna. Usuwaj wyłącznie własne oznaczone i już zakończone wątki,
   na aktywnym UI po przełączeniu, także w formularzu modalnym. Nie zabijaj
   wątków i nie porządkuj cudzych okien. Sprawdzaj natywny cykl uruchomienia,
-  nie tylko wartość zwróconą przez blokadę (`single_instance_native_test.rb`).
+  nie tylko wartość zwróconą przez blokadę (`test/host/single_instance_native_test.rb`).
   Zimne wejście z widgetu (stół, tworzenie, preset, Ctrl+J) planuje nową
   scenę programu przez natywne `insert_scene`; nie otwieraj długotrwałego
   formularza wewnątrz callbacku Scene_Main ani na współdzielonym obiekcie
   widgetu. Core ma ustawić kontekst sceny i zakończyć jej cykl życia.
-  Regresja: `widget_scene_navigation_test.rb` — także inne okno i powrót.
+  Regresja: `test/room/widget_scene_navigation_test.rb` — także inne okno i powrót.
 - `DiscoveredSession` jest związany z połączeniem, które odkryło stół.
   Wiersz przekazany przez widget lub powiadomienie nie może pożyczać tego
   połączenia nowemu oknu gry: dołączenie rozwiązuje identyfikator we własnym
@@ -340,12 +366,42 @@ Szczegóły procedury: `docs/BUILDING.md`. Licencje i autorstwo zachowaj.
   Po zmianie endpointu unieważniaj odkryte obiekty. Sprawdzaj publiczny
   i prywatny stół oraz ruch za innym oknem po zimnym wejściu z widgetu,
   nie tylko osobno nawigację i synchronizację. Regresja:
-  `live_sessions_discovery_owner_test.rb`.
+  `test/transport/live_sessions_discovery_owner_test.rb`.
 - Statystyki: callbacki UI/replay tylko odkładają kopie danych do ograniczonej
   pamięci; atomowy zapis i sieć należą do workera. Błąd telemetrii nie może
   przerwać gry. Nie ignorować konfliktów innych niż sama data powtórnego
   rozstrzygnięcia tej samej partii. Retencja usuwa tylko własne wygasłe
   raporty obecności, nigdy historyczne statystyki.
+- Statystyki budzą zarządzany worker zdarzeniami, nie pustym pollingiem co
+  30 sekund. `GameRoomAnalyticsStorage` rozwiązuje natywne `data_path` raz
+  na runtime, w tle; nie wracaj do powtarzanego parsowania paczki przez
+  hostowe read_json/update_json. Zachowaj atomowy zapis, blokadę pliku,
+  izolację konta i odrzucanie uszkodzonego JSON. Retry tylko zaległości:
+  30/60/120/300 s, bez omijania backoffu przez nowe wpisy. Obecność:
+  zmiany obsady/stanu + heartbeat 120 s po sukcesie, nie ruchy/czat/punkty.
+  Czytniki obejmują bieżącą i pięć poprzednich minut; sprzątanie własnych
+  starszych wierszy maksymalnie 64/15 min przy publikacji. Tryb dev nadal
+  wyłącza statystyki. Test płynności musi jawnie uruchomić izolowane
+  statystyki, inaczej nie sprawdza tej ścieżki. Szczegóły: docs/STATISTICS.md.
+- Statystyki wysyłają zbiorczo maksymalnie 25 wpisów na porcję i oddają worker
+  po przekroczeniu miękkiego budżetu między porcjami. Potwierdzać tylko
+  zwrócony, sprawdzony prefiks; utrata odpowiedzi nie znosi deduplikacji ani
+  kontroli konta/anulowania. Respektować większy termin `retry_after` serwera.
+  Zimną wizytę datować dopiero według potwierdzonego czasu, zachowując moment
+  wejścia. Nie pomijać korekty obecności po niepewnym zapisie, nawet gdy stan
+  wrócił do poprzedniego. Cache raportu: 15 s/4096, świeży schemat przy każdym
+  odczycie, jawne Odśwież i próba zapisu unieważniają snapshot. Regresje:
+  `statistics_audit_regressions_test.rb`, `game_room_analytics_client_test.rb`.
+- Odczyt statystyk i obecności nie kończy się po niepełnej stronie. Serwer
+  może zwrócić 1000 rekordów mimo limitu 2000 w schemacie, a także mniej.
+  Żądaj najwyżej 1000 (lub mniejszego limitu tabeli), przesuwaj offset/ID
+  o faktycznie odebrane rekordy i kończ dopiero na pustej odpowiedzi albo
+  potwierdzonej granicy snapshotu. Zachowaj deduplikację, daty kanoniczne,
+  kontrolę postępu i anulowania; błąd dalszej strony nie jest częściowym
+  sukcesem. Testowe serwery muszą umieć skracać strony niezależnie od schematu.
+  Regresje: `statistics_pagination_test.rb`, `room_presence_store_test.rb`
+  i `game_room_analytics_client_test.rb`. Nie „naprawiaj” liczb dopisywaniem
+  startów lub ograniczaniem liczby ukończeń do liczby startów.
 - Prezentacja planszy jest lokalna. Zapisuj wyłącznie jawnie dopuszczone
   flagi, a orientację względem miejsca gracza; nie zapisuj kursora i szkiców.
   Nowe stoły Chińczyka mają `enter_on_one: true`, stare zdarzenia bez tej
@@ -362,14 +418,33 @@ Szczegóły procedury: `docs/BUILDING.md`. Licencje i autorstwo zachowaj.
   (od 1 w każdym zestawie), treść, odpowiedzi A–D i wskazanie poprawnej
   odpowiedzi, **bez technicznych identyfikatorów pytań**. Nie edytuj ich ręcznie: źródłem
   prawdy są zestawy w `content/`. Pełny Wiedźmin i oba podzestawy muszą być zgodne.
-- `ruby tools/export-quiz-text.rb --check` oraz `test/quiz_text_export_test.rb`
+- `ruby tools/export-quiz-text.rb --check` oraz `test/games/quiz/text_export_test.rb`
   wykrywają nieaktualne kopie. Przy nowym zestawie sprawdź także jego obecność
   w eksporcie. Nie dołączaj TXT ani narzędzia eksportu do instalatora gry.
 
 ## Pakowanie zawartości wykonawczej
 
+- Postęp realtime pod menu i za inną sceną korzysta z jednego zegara
+  `GameRoomRealtime::Progress`; nie dokładaj drugiej fizyki w workerze.
+  Ukryte pole ma neutralne wejście, nie celową pauzę. Zwykły wykonawca
+  zapisuje uzgodnione punkty. Propozycja punktu Ponga musi odpowiadać
+  bieżącej wymianie również przed wywołaniem walidatora.
+- Klient podglądu Scrabble realizuje cały kontrakt klienta GameScreen,
+  nie tylko odbiór wiadomości. Testuj jego rzeczywisty start/pętlę/zamknięcie.
+  Szkic zawiera tylko położone płytki, nie resztę stojaka ani prywatny wybór.
+
+Tłumaczenia mają jeden `locale/<LANG>.po` i wynikowy `locale/<LANG>.mo`
+na język oraz wspólny POT. Nie odtwarzać dawnych fragmentów JSON ani manifestu
+ich eksportu. PO jest źródłem tłumaczeń także dla polskich zasad i historii
+zmian aplikacji. Wpisy historii zmian są w `lib/game_room_changelog.rb`;
+nie utrzymywać osobnych kopii Markdown. Zachować płaskie ścieżki MO wymagane
+przez runtime ELTEN-a.
+Kontrakt obu manifestów, stagingu i natywnych builderów sprawdza
+`test/tooling/locale_build_contract_test.rb`; używa niepodpisanych fixture,
+nie wydania gry. Manifest źródłowy w `__app.rb` zachowuje LF.
+
 Nigdy nie przekazuj całego repozytorium do rekursywnego pakowania ELTEN-a.
-Najpierw przygotuj oddzielny katalog przez `tools/release_files.rb`.
+Najpierw przygotuj oddzielny katalog przez `tools/stage-release.rb`.
 Wspólna lista dopuszcza kod produkcyjny, dane gier, nagrania, gotowe MO,
 manifesty oraz licencje i informacje o źródłach. Testy, narzędzia, docs,
 AGENTS/README/CONTRIBUTING/CHANGELOG.md, źródłowe katalogi tłumaczeń,

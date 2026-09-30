@@ -63,7 +63,8 @@ module GameRoomTableWatchRuntime
     @table_watch_load_state = :loading
     user = receiver.user
     @table_watch_loader.start do
-      GameRoomClock.synchronize
+      # Preferences need no timestamp. The receiver defers notifications until
+      # the native clock is ready; a cold clock must not fail this one-off load.
       table_watch_repository.load(user)
     end
   end

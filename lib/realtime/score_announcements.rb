@@ -1,6 +1,8 @@
 # Shared recorded score sequencing only. Each game owns its sound handles,
 # gain policy, effects and lifecycle; this module never reads Pong preferences
 # or a paddle/flight snapshot.
+require_relative '../game_background_policy'
+
 module GameRoomRealtime
   module ScoreAnnouncements
     GOALS = (1..8).map { |n| "pong_goal#{n}" }.freeze
@@ -10,6 +12,7 @@ module GameRoomRealtime
     ANNOUNCER_LEVEL = 0.5
 
     attr_reader :presents_point
+    attr_accessor :background_provider
 
     def start_match
       return if @started
@@ -44,7 +47,11 @@ module GameRoomRealtime
     private
 
     def initialize_score_announcements(speaker:, speech_active:)
-      @speaker = speaker || ->(text) { speak(text, stop: false, break_sequence: false) }
+      @speaker = speaker || ->(text) {
+        next false unless GameRoomBackgroundPolicy.speech?(@program, covered: @background_provider&.call)
+        speak(text, stop: false, break_sequence: false)
+        true
+      }
       @speech_active = speech_active || -> { respond_to?(:speech_actived, true) && speech_actived }
       @announcing, @score_queue = {}, []
     end
@@ -71,8 +78,7 @@ module GameRoomRealtime
       if !voice_busy && !speech_busy && @score_queue.first && now >= @score_queue.first[0]
         scheduled, item = @score_queue.shift
         if item.is_a?(Hash) && personal_gain('pong_scores') > 0
-          @speaker.call(item[:speech])
-          @speech_pending = true
+          @speech_pending = @speaker.call(item[:speech]) != false
           @speech_deadline = now + 30.0
         elsif !item.is_a?(Hash)
           play_voice(item)

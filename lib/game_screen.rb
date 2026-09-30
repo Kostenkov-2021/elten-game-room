@@ -1,3 +1,5 @@
+require_relative 'game_event_presenter'
+require_relative "network_task"
 require_relative "game_bots"
 require_relative "game_participants"
 require_relative "game_repository"
@@ -50,6 +52,7 @@ class GameScreen
     save_game: nil,
     edit_options: nil,
     abort_game: nil,
+    leave_table: nil,
     game_services: {}
   )
     @layout = layout
@@ -59,6 +62,7 @@ class GameScreen
     @save_game = save_game
     @edit_options = edit_options
     @abort_game = abort_game
+    @leave_table = leave_table
     @program = program
     @presentation_ui_thread = Thread.current
     @layout.form.game_room_program = program if @layout != nil
@@ -80,7 +84,7 @@ class GameScreen
     @send_chat = send_chat
     @room_snapshot = nil
     @surface_state = {}
-    @board_preferences = GameRoomBoardPreferences.new(program, game.id)
+    @board_preferences = GameRoomBoardPreferences.new(program, game)
     @game.board_presentation_preferences = @board_preferences.values
     @selected_surface_action = nil
     @history_index = 0
@@ -88,8 +92,6 @@ class GameScreen
     @form_index = 0
     @focus_location = [:game, 0]
     @surface_identity = nil
-    @last_seen_event_id = nil
-    @turn_history_entries = {}
     @pending_event_ids = []
     @history_follows_tail = true
     @new_session_id = nil
@@ -99,9 +101,7 @@ class GameScreen
     @suppress_surface_focus = false
     @latest_wait_replay = nil
     @rules_shortcut_snapshot = nil
-    @spoken_timer_announcements = {}
     @activity_entries = nil
-    @last_seen_activity_id = nil
     @last_game_payload = nil
     @chat_text = ""
     @chat_index = 0
@@ -123,8 +123,8 @@ class GameScreen
       layout.form.game_room_program = @program
       # The waiting-room refresh may have announced a last activity between
       # uncovering the window and adopting this prestarted game screen.
-      if @last_seen_activity_id != nil
-        @last_seen_activity_id = [@last_seen_activity_id.to_i, layout.activity_cursor.to_i].max
+      if event_presenter.last_seen_activity_id != nil
+        event_presenter.last_seen_activity_id = [event_presenter.last_seen_activity_id.to_i, layout.activity_cursor.to_i].max
       end
       initial_view = layout.snapshot
       @focus_location = initial_view.focus_location
@@ -146,18 +146,20 @@ class GameScreen
   def start_covered_session(covered:, activity_cursor:)
     @runner_covered = covered
     # Restoring a saved match must not announce its archived moves again.
-    @last_seen_event_id = @session["__event_id_base"].to_i
-    @last_seen_activity_id = activity_cursor
+    event_presenter.last_seen_event_id = @session["__event_id_base"].to_i
+    event_presenter.last_seen_activity_id = activity_cursor
+    start_game_client if @game.background_client?
     start_session_runner
     self
   end
 
   def close_covered_session
     stop_session_runner
-    @event_presentation&.close
+    event_presenter.event_presentation&.close
+    @game_client&.close
   end
 
-  def table_activity_cursor; @last_seen_activity_id; end
+  def table_activity_cursor; event_presenter.last_seen_activity_id; end
 
   def run
     return :back unless start_game_client
@@ -170,25 +172,7 @@ class GameScreen
       presentation_only = @presentation_refresh_requested && @last_game_payload != nil
       @presentation_refresh_requested = false
       payload = presentation_only ? @last_game_payload : nil
-      payload = network_task(
-        _("Updating game"),
-        ui: refresh_input_ui,
-        silent: @automatic_recovery_pending || @new_session_id != nil
-      ) do
-        @synchronizer.synchronize(complete: @new_session_id == nil) do
-          room_snapshot = @room_snapshot || @room_snapshot_provider.call
-          [
-            @repository.snapshot_for(
-              @session,
-              # Native notifications already carry persisted events. Only a
-              # failed/uncertain operation needs to bypass local stack metadata.
-              force_events: @automatic_recovery_pending && !@synchronizer.reconciled?
-            ),
-            room_snapshot,
-            @activity_entries || activity_entries_for(room_snapshot)
-          ]
-        end
-      end unless presentation_only || @synchronizer.waiting?
+      payload = fetch_game_payload unless presentation_only || @synchronizer.waiting?
       log_signal_timing(
         "snapshot_finished",
         signal_received_at,
@@ -228,19 +212,7 @@ class GameScreen
       replay_started_at = monotonic_time
       replay = @game.replay(@session, snapshot.events, @repository)
       departed_players = using_cached_payload ? [] : departed_players_for_replacement(replay, next_room_snapshot)
-      unless departed_players.empty?
-        changed = network_task(_("Updating table"), ui: :none) do
-          replaced = false
-          departed_players.each do |seat|
-            current = @repository.snapshot_for(@session).session
-            guard = @repository.control_change_guard(table: @table, game: @game, session: current, player: seat)
-            replaced = @game_services[:transport].set_seat_controller(@table, session_id: @repository.session_id(@session), seat: seat, bot: true,
-              control_guard: guard) || replaced
-          end
-          replaced
-        end
-        next if changed
-      end
+      next if !departed_players.empty? && replace_departed_players(departed_players)
       @statistics_observer&.call(@session, replay) unless using_cached_payload
       @game_client.update_table_control(@session) if @game_client&.respond_to?(:update_table_control)
       @game_client&.before_wait(replay, Session.name)
@@ -324,7 +296,20 @@ class GameScreen
       when :chat
         submit_chat
         @suppress_surface_focus = true
-      when :back, :room_closed
+      when :back
+        # The confirmation is a covered view, not a departure. Keep the
+        # runner, realtime client and presentation alive until leaving succeeds.
+        if @leave_table
+          unless @leave_table.call(@table)
+            @suppress_surface_focus = true
+            next
+          end
+          stop_pending_speech
+          return :left_table
+        end
+        stop_pending_speech
+        return :back
+      when :room_closed
         stop_pending_speech
         return action
       when :refresh
@@ -342,7 +327,7 @@ class GameScreen
     stop_session_runner
     @layout&.form&.clear_game_room_background_help
     @layout.form.game_room_background_help_enabled = false if @layout
-    @event_presentation&.close
+    event_presenter.event_presentation&.close
     @game_client&.close
     @layout&.begin_bindings
     @layout.game_client = nil if @layout
@@ -377,7 +362,9 @@ class GameScreen
       repository: @repository, game: @game, session: @session, table: @table,
       owner: @table_owner, viewer: Session.name, room_snapshot_provider: @room_snapshot_provider,
       context: action_context, game_status_changed: @game_status_changed, statistics_observer: @statistics_observer,
-      activity_repository: @activity_repository, covered: @runner_covered).start
+      activity_repository: @activity_repository, covered: @runner_covered || -> {
+        GameRoomBackgroundPolicy.covered?(@presentation_ui_thread, program: @program, form: -> { @layout&.form })
+      }).start
     @background_presentation = GameRoomBackgroundPresentation.attach(self,
       program: @program, runner: @session_runner, key: [@program.class, table_id, Session.name.to_s.downcase])
   end
@@ -394,29 +381,45 @@ class GameScreen
   end
 
   # Invoked by the active native UI loop, NOT by the model worker. Do not
-  # refresh controls, focus, input, local dialogs or the suspended game client.
+  # refresh controls, focus, input or local dialogs. A realtime client receives
+  # copied durable state; its independent active-UI timer advances the engine.
   # The same event/activity cursors and sound queue are used before/after cover.
   def present_background_session(runner)
-    return if @last_seen_event_id == nil
+    return if event_presenter.last_seen_event_id == nil
     packet = runner.presentation_snapshot
     if packet && !packet.equal?(@background_presented_snapshot)
       @background_presented_snapshot = packet
       data = Marshal.load(Marshal.dump(packet))
       @background_timer_data = nil
       present_session_membership(data[:members])
+      if @game.background_client? && !data[:session]["__aborted"]
+        start_game_client(session: data[:session], owner: data[:session]["__table_owner"] || @table_owner)
+        @game_client.update_table_control(data[:session]) if @game_client&.respond_to?(:update_table_control)
+        @game_client&.before_wait(data[:replay], Session.name)
+      end
       process_new_table_activity(data[:replay], entries: data[:activity], background: true)
       if !data[:session]["__aborted"] && prepare_presentation_session(data[:session], background: true)
         @background_timer_data = data
         process_new_events(data[:replay], session: data[:session], background: true)
+      elsif data[:session]["__aborted"] && @game.background_client?
+        @game_client&.close
       end
     end
-    @event_presentation&.advance
+    event_presenter.event_presentation&.advance
     if @background_timer_data
       data = @background_timer_data
       clock = @action_clock ||= GameRoomSessionClock.new
       now = clock.public_send(@game.precise_action_clock? ? :now_f : :now, data[:session])
       announce_due_timers(data[:replay], now: now)
+      if @game.background_client?
+        runner.publish_view(session: data[:session], replay: data[:replay], busy: event_presentation_busy?,
+          context: action_context(session: data[:session], table_owner: data[:session]["__table_owner"] || @table_owner))
+      end
     end
+  end
+
+  def background_session_closed
+    @game_client&.close if @game.background_client?
   end
 
   def present_session_membership(members)
@@ -443,433 +446,7 @@ class GameScreen
     end
   end
 
-  def wait_for_action(replay, revision)
-    replay = @event_presentation.visible_replay if event_presentation_busy? && @event_presentation.visible_replay != nil
-    action = nil
-    user_items = room_user_items(replay)
-    @game.board_presentation_preferences = @board_preferences.values
-    @game.prepare_view(replay, Session.name, context: action_context)
-    view_spec = @game.game_view_spec(replay, Session.name)
-    @board_view_spec = view_spec.surface
-    @surface_state = @board_preferences.restore(@board_view_spec, @surface_state)
-    history_items = combined_history_items(replay)
-    phase = replay.finished? ? :finished : :active
-    @finished_at = phase == :finished ? (@layout&.phase == :active ? monotonic_time : @finished_at) : nil
-    phase_changed = @layout != nil && (@layout.phase != phase || @focus_new_game == true)
-    if @layout == nil
-      @layout = GameRoomLayout::Screen.new(
-        view_spec: view_spec, surface_state: @surface_state, history_items: history_items, user_items: user_items,
-        users_header: users_header, chat_control: @chat_control,
-        phase: phase,
-        own_table: same_user?(@table_owner, Session.name)
-      )
-      @layout.form.game_room_program = @program
-    else
-      @layout.update(
-        view_spec: view_spec, history_items: history_items, user_items: user_items,
-        users_header: users_header, phase: phase,
-        own_table: same_user?(@table_owner, Session.name),
-        surface_state: @surface_state, reset_surface: @surface_identity == nil,
-        new_game: @focus_new_game == true
-      )
-    end
-    @focus_new_game = false
-    @layout.session_id = @repository.session_id(@session)
-    @layout.game_client = @game_client
-    layout = @layout
-    layout.begin_bindings
-    layout.back_button.label = _("Leave")
-    layout.activity_cursor = @last_seen_activity_id
-    @chat_control = layout.chat
-    # Moving to Restart/Waiting after the final event must preserve the result
-    # announcements, but the newly focused status should still be spoken after
-    # them. speech_wait below queues that focus instead of letting it interrupt.
-    room_focus_retained = phase_changed && [:chat, :history, :users].include?(layout.focus_location.to_a.first)
-    announce_finished_focus = phase_changed && phase == :finished && !room_focus_retained
-    silent_entry = room_focus_retained || (@suppress_surface_focus && !announce_finished_focus)
-    @suppress_surface_focus = false
-    cursor_message = layout.take_cursor_announcement
-    if !cursor_message.to_s.empty?
-      speak(cursor_message, stop: false, break_sequence: false)
-      silent_entry = true
-    end
-    surface = layout.surface
-    surface.program = @program if surface.respond_to?(:program=)
-    surface.sound_player = ->(name) { GameRoomSounds.play(@program, name) } if surface.respond_to?(:sound_player=)
-    history = layout.history
-    users = layout.users
-    chat = layout.chat
-    back_button = layout.back_button
-    form = layout.form
-    form.game_room_background_help_enabled = true
 
-    remember_position = lambda do
-      snapshot = layout.snapshot
-      @surface_state = snapshot.surface_state
-      @history_index = snapshot.history_index
-      @users_index = snapshot.users_index
-      @history_follows_tail = snapshot.history_follows_tail
-      @form_index = snapshot.form_index
-      @focus_location = snapshot.focus_location
-      @surface_identity = snapshot.surface_identity
-      @chat_text = snapshot.chat_text
-      @chat_index = snapshot.chat_index
-      @chat_check = snapshot.chat_check
-    end
-    layout.bind_status_commands do |command|
-      next if action != nil
-      remember_position.call
-      @selected_surface_action = {"kind" => "command", "action" => command}
-      action = :game_action
-      form.resume
-    end
-    shortcuts = normalized_game_shortcuts(@game.game_shortcuts(replay, Session.name))
-    handle_shortcut = lambda do |shortcut|
-      pending = form.game_room_pending_operation
-      if pending
-        next pending.reject_action unless pending.safe_shortcut?(shortcut)
-      else
-        next if action != nil
-      end
-      next if event_presentation_busy? && ![:announcement, :browse, :surface].include?(shortcut.kind)
-      next if @session["__frozen"] && ![:announcement, :browse, :surface].include?(shortcut.kind)
-
-      active_shortcut = refreshed_announcement_shortcut(shortcut, replay, Session.name)
-      selection = activate_game_shortcut(active_shortcut, surface, replay: replay)
-      if active_shortcut.kind == :staged_form && @latest_wait_replay != nil
-        # Preparing an offer has already committed a real event. Continue from
-        # that confirmed revision; otherwise the wait's old replay overwrites
-        # it and the executor correctly rejects the final proposal as stale.
-        replay = @latest_wait_replay
-        revision = @repository.events_revision(replay.accepted_events)
-        @latest_wait_replay = nil
-      end
-      if selection == :surface_handled
-        if active_shortcut.payload["focus_surface"] == true
-          field_index = surface.respond_to?(:command_field_index) ? surface.command_field_index : 0
-          layout.focus_game(field_index: field_index || 0, silent: true)
-        end
-        remember_position.call
-        refresh_history_control(history, replay) if @game.history_presentation_depends_on_surface_state?
-        next
-      end
-      if selection == :inline_refresh
-        remember_position.call
-        if pending
-          refresh_history_control(history, replay)
-          next
-        end
-        action = :refresh
-        form.resume
-        next
-      end
-      next if selection == nil || @session["__frozen"] || event_presentation_busy?
-
-      remember_position.call
-      @selected_surface_action = selection
-      action = :game_action
-      form.resume
-    end
-    bind_game_shortcuts(
-      form,
-      layout.shortcut_fields,
-      shortcuts,
-      &handle_shortcut
-    )
-    bind_history_navigation(form) do |operation, value|
-      entries = combined_history_entries(replay)
-      message = @history_navigator.navigate(entries, operation, value, view: history,
-        focused: form.fields[form.index.to_i].equal?(history))
-      speak(message.to_s) if !message.to_s.empty?
-    end
-    GameRoomParticipantMenu.bind(layout, available: -> do
-      actions = [:rules, :leave]
-      actions << :save_game if @save_game != nil && same_user?(@table_owner, Session.name)
-      compatible = !@table.key?("__discovery_protocol") || @table["__discovery_protocol"].to_i >= GameRoomLiveSessionStore::CURRENT_DISCOVERY_PROTOCOL
-      if compatible && same_user?(@table_owner, Session.name) && !@session["__frozen"]
-        actions << :edit_options if replay.finished? && @edit_options != nil
-        if replay.finished? && @manage_teams && @room_snapshot && @game.team_assignment(
-            @game.options_from_json(@room_snapshot.table["game_options"]), players: @room_snapshot.game_participants)
-          actions << :edit_teams
-        end
-        actions << :abort_game if !replay.finished? && @abort_game != nil
-      end
-      actions << :invite_online if @invite_online != nil
-      actions << :invite_contacts if @invite_contacts != nil
-      if @manage_observer != nil
-        actions.concat(GameRoomParticipantMenu.role_actions(room: @room_snapshot, viewer: Session.name, owner: @table_owner))
-      end
-      if @manage_computer != nil
-        actions.concat(GameRoomParticipantMenu.management_actions(
-          room: @room_snapshot, game: @game, active: !replay.finished?, viewer: Session.name, owner: @table_owner
-        ))
-      end
-      actions
-    end, game: @game, options: @game.options_from_json(@session["options"]), room: -> { @room_snapshot },
-      user_menu: ->(user) { @program.__send__(:usermenu, user) if action == nil },
-      control: -> { {active: !replay.finished?, players: @repository.players_for(@session), controllers: @session.fetch('__controllers', {})} },
-      settings: GameRoomParticipantMenu.settings_callback(@game, client: @game_client),
-      read_options: -> {
-      source = replay.finished? ? @room_snapshot&.table.to_h["game_options"] : @session["options"]
-      speak(@game.table_options_announcement(@game.options_from_json(source)))
-    }) do |requested, participant|
-      if form.game_room_pending_operation
-        if requested == :rules
-          show_game_rules(replay)
-        else
-          form.game_room_pending_operation.reject_action
-        end
-        next
-      end
-      next if action != nil
-
-      remember_position.call
-      @selected_participant = participant
-      action = requested == :leave ? :back : requested
-      form.resume
-    end
-    layout.restart_button.on(:press) do
-      next if action != nil || !replay.finished? || !same_user?(@table_owner, Session.name)
-      next if event_presentation_busy?
-      next if @finished_at && monotonic_time - @finished_at < @game.restart_guard_seconds.to_f
-
-      remember_position.call
-      action = :restart
-      form.resume
-    end
-    surface.on_action do |selection|
-      next if action != nil
-      next if @session["__frozen"]
-      if selection["kind"] == "surface" && selection["action"] == "refresh"
-        remember_position.call
-        action = :presentation_refresh
-        form.resume_for_refresh
-        next
-      end
-      next if event_presentation_busy?
-
-
-      if selection["_stay_open"] == true
-        remember_position.call
-        @selected_surface_action = selection
-        action = :inline_game_action
-        form.resume
-      else
-        remember_position.call
-        @selected_surface_action = selection
-        action = :game_action
-        form.resume
-      end
-    end
-    @game_client.attach_view(form, surface) if @game_client.respond_to?(:attach_view)
-    back_button.on(:press) do
-      next form.game_room_pending_operation.reject_action if form.game_room_pending_operation
-      next if action != nil
-      if surface.cancel_pending_action?
-        surface.cancel_pending_action!
-        remember_position.call
-      else
-        remember_position.call
-        action = :back
-        form.resume
-      end
-    end
-    chat.on_submit do
-      next if action != nil
-
-      remember_position.call
-      submission = GameRoomChatCommands.interpret(@chat_text, surface)
-      if submission.kind == :empty
-        alert(_("Type a chat message first."))
-      elsif submission.kind == :error
-        alert(submission.message.to_s)
-        clear_chat_draft
-      elsif submission.kind == :chat && @send_chat == nil
-        alert(_("Chat is not available."))
-      elsif submission.kind == :chat
-        @chat_submission = GameRoomUI::ChatSubmission.capture(chat, session_id: layout.session_id)
-        @pending_chat_message = submission.text
-        action = :chat
-        form.resume
-      elsif submission.kind == :movement
-        next if @session["__frozen"] || event_presentation_busy?
-        @chat_submission = GameRoomUI::ChatSubmission.capture(chat, session_id: layout.session_id)
-        @selected_surface_action = submission.action
-        @clear_chat_after_action = true
-        action = :game_action
-        form.resume
-      end
-    end
-    form.add_timer(FormTimer.new(TIMER_INTERVAL, repeat: true) do
-      next if form.game_room_pending_operation
-      next if action != nil
-
-      presentation_changed = @event_presentation&.advance
-      @game_client&.tick
-      announce_due_timers(replay)
-      publish_session_view(replay, surface)
-      automatic_due = automatic_action_due?(replay)
-      sync_event = @synchronizer.next_event(
-        allow_recovery: recovery_allowed?(automatic_due)
-      )
-      local_action = if @session_runner || replay.finished? || connection_recovery_pending? || event_presentation_busy? || presentation_changed
-        nil
-      else
-        @game.automatic_surface_action(
-          replay,
-          Session.name,
-          surface: surface,
-          context: action_context
-        )
-      end
-      if local_action != nil && sync_event == nil
-        remember_position.call
-        @selected_surface_action = local_action
-        action = :game_action
-        form.resume_for_refresh
-        next
-      end
-
-      if sync_event&.kind == :closed
-        action = :room_closed
-        form.resume_for_refresh
-      elsif sync_event&.kind == :game_started
-        remember_position.call
-        @new_session_id = sync_event.session_id
-        action = :new_session
-        form.resume_for_refresh
-      elsif sync_event&.kind == :game_changed
-        remember_position.call
-        received_at = sync_event.received_at
-        @pending_signal_received_at = received_at.is_a?(Numeric) ? received_at.to_f : monotonic_time
-        log_signal_timing("signal_consumed", @pending_signal_received_at)
-        # A LiveSessions wake-up only says that something may have changed.
-        # Confirm the event revision before rebuilding the form so duplicate
-        # or already-applied notifications stay invisible to the user.
-        action = :check_signal
-        form.resume_for_refresh
-      elsif sync_event&.kind == :table_changed
-        remember_position.call
-        action = :room_refresh
-        form.resume_for_refresh
-      elsif sync_event&.kind == :recovery
-        remember_position.call
-        action = :recovery_refresh
-        form.resume_for_refresh
-      elsif presentation_changed || @game_client&.refresh_due?
-        remember_position.call
-        action = :presentation_refresh
-        form.resume_for_refresh
-      elsif automatic_due && !connection_recovery_pending?
-        remember_position.call
-        action = :refresh
-        form.resume_for_refresh
-      end
-    end)
-
-    if announce_finished_focus
-      speech_wait
-      form.wait
-    elsif !silent_entry
-      form.wait
-    else
-      layout.wait_without_announcement
-    end
-
-    loop do
-      case action
-      when :inline_game_action
-        selection = @selected_surface_action
-        @selected_surface_action = nil
-        inline_result = submit_inline_action(replay, selection)
-        if inline_result != nil
-          replay, inserted = inline_result
-          newest_id = inserted.map { |event| @repository.event_id(event) }.max.to_i
-          revision = [revision[0].to_i + inserted.length, [revision[1].to_i, newest_id].max]
-        end
-      when :check_signal
-        remote_action, remote_session_id = synchronized_network_task(
-          _("Checking for game updates"),
-          ui: refresh_input_ui, complete: false
-        ) do
-          remote_game_update(revision)
-        end || [nil, nil]
-        if remote_action == :new_session
-          @new_session_id = remote_session_id
-          action = :new_session
-          break
-        elsif remote_action == :refresh
-          action = :refresh
-          break
-        end
-        @pending_signal_received_at = nil
-      when :room_refresh
-        room_status, snapshot, activity_entries, remote_action, remote_session_id = synchronized_network_task(
-          _("Updating table"),
-          ui: refresh_input_ui, complete: false
-        ) do
-          room_update = fetch_room_snapshot
-          # Replacing a participant and changing the master are table
-          # notifications, not game moves. The persisted move revision can
-          # stay unchanged while the hand, turn and permissions all change.
-          # Consult the already received session projection as well; this
-          # does not force another network read or rebuild for ordinary chat.
-          room_update + (room_update.first == :updated ? remote_game_update(revision) : [nil, nil])
-        end || [:failed, nil, []]
-        if room_status == :closed
-          action = :room_closed
-          break
-        elsif room_status == :updated
-          apply_room_snapshot(users, history, replay, snapshot, activity_entries)
-        end
-        if remote_action == :new_session
-          @new_session_id = remote_session_id
-          action = :new_session
-          break
-        elsif remote_action == :refresh || (room_status == :updated && !departed_players_for_replacement(replay, snapshot).empty?)
-          action = :refresh
-          break
-        end
-      when :recovery_refresh
-        recovery_started_at = monotonic_time
-        payload = synchronized_network_task(_("Updating game"), ui: refresh_input_ui) do
-          recover_game_update(revision)
-        end
-        room_status, snapshot, activity_entries, remote_action, remote_session_id = payload || [:failed, nil, [], nil, nil]
-        Log.debug(
-          "ELTEN Game Room connection recovery " \
-          "table=#{table_id} session=#{@repository.session_id(@session)} " \
-          "elapsed_ms=#{((monotonic_time - recovery_started_at) * 1_000).round(1)} " \
-          "room_status=#{room_status} remote_action=#{remote_action || 'none'}"
-        )
-        if room_status == :closed
-          action = :room_closed
-          break
-        end
-        apply_room_snapshot(users, history, replay, snapshot, activity_entries) if room_status == :updated
-        if remote_action == :new_session
-          @new_session_id = remote_session_id
-          action = :new_session
-          break
-        elsif remote_action == :refresh || (room_status == :updated && !departed_players_for_replacement(replay, snapshot).empty?)
-          action = :refresh
-          break
-        end
-      else
-        break
-      end
-      action = nil
-      layout.wait_without_announcement
-    end
-    @latest_wait_replay = replay
-    action
-  ensure
-    # Ctrl+F1 opens its background help only after this wait returns. Preserve the
-    # current game-field descriptions before removing handlers and their tips.
-    @rules_shortcut_snapshot = if action == :rules && @layout != nil
-      GameRoomContextHelp.game_field_tips(@layout.game_help_fields)
-    end
-  end
 
   # Do not reconnect across an automatic realtime point submission.
   def recovery_allowed?(automatic_due)
@@ -1292,11 +869,15 @@ class GameScreen
     end
   end
 
-  def start_game_client
+  def start_game_client(session: @session, owner: @table_owner)
+    id = @repository.session_id(session)
+    return true if @game_client && @client_session_id == id
+    @game_client&.close
     @game_client = @game.build_client(@program, **@game_services)
+    @client_session_id = id
     if @game_client.respond_to?(:bind_screen)
-      @game_client.bind_screen(session_id: @repository.session_id(@session), table_id: table_id,
-        owner: @table_owner, viewer: Session.name, members: -> { game_recipients })
+      @game_client.bind_screen(session_id: id, table_id: table_id,
+        owner: owner, viewer: Session.name, members: -> { game_recipients })
     end
     @game_client == nil || !!@game_client.start
   end
@@ -1319,8 +900,10 @@ class GameScreen
     # In particular Pong closes Communications at the final point and retains
     # match-scoped packet/announcement counters. Never reopen that old channel.
     # Wait for a confirmed new session before disposing the current client.
-    @game_client&.close
-    @game_client = nil
+    if @client_session_id != @repository.session_id(session)
+      @game_client&.close
+      @game_client = nil
+    end
     @session = session
     @new_session_id = nil
     prepare_presentation_session(session)
@@ -1354,6 +937,33 @@ class GameScreen
     GameRoomExecutionPolicy.departed_players(game: @game, replay: replay, session: @session,
       players: @repository.players_for(@session), members: room&.members, owner: @table_owner,
       viewer: Session.name, transport: @game_services[:transport])
+  end
+
+  def fetch_game_payload
+    network_task(_("Updating game"), ui: refresh_input_ui,
+      silent: @automatic_recovery_pending || @new_session_id != nil) do
+      @synchronizer.synchronize(complete: @new_session_id == nil) do
+        room = @room_snapshot || @room_snapshot_provider.call
+        # Notifications carry persisted events. Only failed/uncertain reads
+        # bypass local stack metadata; retain the complete room projection.
+        snapshot = @repository.snapshot_for(@session,
+          force_events: @automatic_recovery_pending && !@synchronizer.reconciled?)
+        [snapshot, room, @activity_entries || activity_entries_for(room)]
+      end
+    end
+  end
+
+  def replace_departed_players(players)
+    network_task(_("Updating table"), ui: :none) do
+      replaced = false
+      players.each do |seat|
+        current = @repository.snapshot_for(@session).session
+        guard = @repository.control_change_guard(table: @table, game: @game, session: current, player: seat)
+        replaced = @game_services[:transport].set_seat_controller(@table,
+          session_id: @repository.session_id(@session), seat: seat, bot: true, control_guard: guard) || replaced
+      end
+      replaced
+    end
   end
 
   def fetch_room_snapshot
@@ -1455,28 +1065,12 @@ class GameScreen
   end
 
   def process_new_table_activity(replay, entries: @activity_entries, background: false)
-    @last_seen_activity_id = @layout.activity_cursor if !background && @last_seen_activity_id == nil && @layout != nil
-    newest_id = entries.to_a.map(&:id).max.to_i
-    if @last_seen_activity_id == nil
-      @last_seen_activity_id = newest_id
-      @layout.activity_cursor = newest_id if !background && @layout != nil
-      return
-    end
-
-    new_entries = entries.to_a.select { |entry| entry.id.to_i > @last_seen_activity_id.to_i }
-    new_entries.each do |entry|
-      next if entry.kind == "chat" && same_user?(entry.actor, Session.name)
-
-      GameRoomSounds.play(@program, "chatmsg") if entry.kind == "chat"
-      text = @activity_repository&.text_for(entry, game_name: @game_name, global: false)
-      speak_table_automatically(text) if !text.to_s.empty?
-    end
-    if !background && !new_entries.empty? && @history_follows_tail
-      @history_index = [combined_history_items(replay).length - 1, 0].max
-    end
-    @last_seen_activity_id = [@last_seen_activity_id.to_i, newest_id].max
-    @layout.activity_cursor = @last_seen_activity_id if !background && @layout != nil
-  end
+   event_presenter.last_seen_activity_id = @layout.activity_cursor if !background && event_presenter.last_seen_activity_id == nil && @layout != nil
+   changed = event_presenter.process_table_activity(entries, viewer: Session.name,
+     text: ->(entry) { @activity_repository&.text_for(entry, game_name: @game_name, global: false) })
+   follow_presentation_history(replay) if !background && changed
+   @layout.activity_cursor = event_presenter.last_seen_activity_id if !background && @layout != nil
+ end
 
   def submit_chat
     pending_message = @pending_chat_message
@@ -1616,16 +1210,16 @@ class GameScreen
     false
   end
 
-  def action_context
+  def action_context(session: @session, table_owner: @table_owner)
     GameRoomGames::ActionContext.new(
-      session_id: @repository.session_id(@session),
+      session_id: @repository.session_id(session),
       table_id: table_id,
       hidden_submissions: @hidden_submissions,
       random_source: @random_source,
-      options: @game.options_from_json(@session["options"]),
-      table_owner: @table_owner,
+      options: @game.options_from_json(session["options"]),
+      table_owner: table_owner,
       local_data: @game_client&.context_data,
-      now: action_time
+      now: (@action_clock ||= GameRoomSessionClock.new).public_send(@game.precise_action_clock? ? :now_f : :now, session)
     )
   end
 
@@ -1638,6 +1232,8 @@ class GameScreen
   end
 
   def game_recipients
+    packet = @session_runner&.presentation_snapshot
+    return packet[:members] if packet
     participants = if @room_snapshot == nil
       @repository.players_for(@session)
     else
@@ -1680,146 +1276,8 @@ class GameScreen
     (@table["__id"] || @table["id"]).to_i
   end
 
-  def event_presentation_busy?
-    @event_presentation != nil && @event_presentation.busy?
-  end
-
-  def prepare_presentation_session(session, background: false)
-    id = (session["__id"] || session["id"]).to_i
-    return true if @presentation_session_id == id
-    # Native IDs are random, not an ordering clock. A suspended foreground
-    # replay may still refer to a match already replaced by the background UI.
-    @retired_presentation_sessions ||= {}
-    return false if @retired_presentation_sessions[id]
-    if @presentation_session_id
-      @retired_presentation_sessions[@presentation_session_id] = true
-      @event_presentation&.close
-      @event_presentation = nil
-      @last_seen_event_id = background ? 0 : nil
-      @turn_history_entries = {}
-      @spoken_timer_announcements = {}
-      @background_timer_data = nil
-    end
-    @presentation_session_id = id
-    @decision_presentation_started = false
-    true
-  end
-
-  def process_new_events(replay, signal_received_at: nil, session: @session, background: false)
-    return unless prepare_presentation_session(session, background: background)
-    newest_id = replay.accepted_events.map { |event| @repository.event_id(event) }.max.to_i
-    if @last_seen_event_id == nil
-      @last_seen_event_id = newest_id
-      presentation_replay.remember(session, replay)
-      @history_index = [combined_history_items(replay).length - 1, 0].max unless background
-      present_initial_decision(replay)
-      return
-    end
-
-    new_events = replay.accepted_events.select do |event|
-      @repository.event_id(event) > @last_seen_event_id
-    end
-    event_replays = event_replays_for(replay, new_events, session: session)
-    # Reconnection can deliver several already completed turns together.
-    # Alert only for a decision still pending in the latest state, once per
-    # batch; a delayed sound sequence must not announce an obsolete turn.
-    decision_key = @game.required_decision_key(replay, Session.name)
-    decision_new = !@decision_presentation_started || event_replays.values.any? do |before, after|
-      decision_key && @game.required_decision_key(after, Session.name) == decision_key &&
-        @game.required_decision_key(before, Session.name) != decision_key
-    end
-    @decision_presentation_started = true
-    decision_boundary = @decision_boundary = [@presentation_session_id, newest_id]
-    present_decision = lambda do
-      if decision_new && decision_boundary == @decision_boundary
-        present_required_decision(nil, replay)
-      end
-    end
-    if !new_events.empty? && @game.respond_to?(:serial_event_presentation?) && @game.serial_event_presentation?
-      first_before = event_replays[@repository.event_id(new_events.first)]&.first
-      @event_presentation ||= GameRoomEventPresentation.new(clock: -> { monotonic_time }, initial_replay: first_before)
-    end
-    new_events.each do |event|
-      event_id = @repository.event_id(event)
-
-      before_replay, after_replay = event_replays.fetch(event_id, [nil, replay])
-      turn_entry = remember_turn_transition(before_replay, after_replay, event_id)
-      if @event_presentation != nil
-        @event_presentation.enqueue(
-          replay: after_replay, defer_replay: after_replay.finished?,
-          start: -> { present_game_event(event, before_replay, after_replay, after_replay, signal_received_at) },
-          finish: -> do
-            present_decision.call if event_id == newest_id
-            present_turn_transition(turn_entry, after_replay)
-            present_game_result(after_replay, signal_received_at) if event_id == newest_id
-          end
-        )
-      else
-        present_game_event(event, before_replay, after_replay, replay, signal_received_at)
-        present_turn_transition(turn_entry, after_replay)
-      end
-    end
-    merge_turn_history!(replay)
-    if newest_id > @last_seen_event_id
-      present_game_result(replay, signal_received_at) if @event_presentation == nil
-      @history_index = [combined_history_items(replay).length - 1, 0].max if !background && @history_follows_tail
-    end
-    @last_seen_event_id = [@last_seen_event_id, newest_id].max
-    present_decision.call if @event_presentation == nil || new_events.empty? && !event_presentation_busy?
-    @event_presentation&.advance
-  end
-
-  def present_game_event(event, before_replay, after_replay, description_replay, signal_received_at)
-    @game_client&.event(event, before_replay, after_replay, Session.name, @repository)
-    sounds = begin
-      cues = GameRoomSounds.event_cue(
-        game: @game, event: event, before_replay: before_replay, after_replay: after_replay,
-        repository: @repository, viewer: Session.name
-      )
-      Array(cues).map { |cue| GameRoomSounds.play(@program, cue) }
-    rescue StandardError => error
-      Log.warning("ELTEN Game Room event sound failed: #{error.class}: #{error.message}") if defined?(Log)
-      []
-    end
-    descriptions = normalize_event_descriptions(
-      @game.describe_event_for_display(event, @repository, description_replay, Session.name, surface_state: @surface_state)
-    )
-    descriptions = [] if @game_client&.respond_to?(:presents_game_event?) && @game_client.presents_game_event?(event)
-    # The result remains in canonical history, but the common result presenter
-    # owns its automatic announcement (also after serialized sound playback).
-    result = @game.result_text(after_replay) if after_replay != nil
-    descriptions = descriptions.reject { |text| GameRoomContent.utf8(text) == GameRoomContent.utf8(result) } if result != nil
-    descriptions.each_with_index do |description, index|
-      log_signal_timing("speech_queued", signal_received_at,
-        details: "event_id=#{@repository.event_id(event)} item=#{index + 1}/#{descriptions.length}")
-      speak_table_automatically(description)
-    end
-    sounds
-  end
-
-  def present_turn_transition(turn_entry, replay)
-    return if turn_entry == nil
-
-    message = @game.turn_announcement(replay, Session.name)
-    speak_table_automatically(message) if !message.to_s.empty?
-  end
-
-  def present_initial_decision(replay)
-    return if @decision_presentation_started
-    @decision_presentation_started = true
-    present_required_decision(nil, replay)
-  end
-
-  def present_required_decision(before_replay, after_replay)
-    return unless @game.respond_to?(:required_decision_key)
-    return unless GameRoomParticipants.includes?(after_replay.players, Session.name)
-    key = @game.required_decision_key(after_replay, Session.name)
-    return if key == nil || key == @game.required_decision_key(before_replay, Session.name)
-    return unless GameRoomBackgroundPolicy.turn_sound?(@program, covered: table_presentation_covered?)
-    GameRoomSounds.play(@program, "ding")
-  end
-
   def table_presentation_covered?
+    return @session_runner.covered? if @session_runner
     return @runner_covered.call if @runner_covered
     defined?($currentthread) && $currentthread && @presentation_ui_thread &&
       !@presentation_ui_thread.equal?($currentthread)
@@ -1830,86 +1288,74 @@ class GameScreen
     speak(message, stop: false, break_sequence: false)
   end
 
-  def present_game_result(replay, signal_received_at)
-    return if @game_client&.respond_to?(:presents_game_result?) && @game_client.presents_game_result?(replay)
-    result = @game.result_text(replay)
-    return if result == nil
-
-    log_signal_timing("result_speech_queued", signal_received_at)
-    speak_table_automatically(result)
-  end
-
-  def event_replays_for(replay, new_events, session: @session)
-    presentation_replay.transitions(session, replay, new_events)
-  rescue StandardError => error
-    @presentation_replay = nil
-    Log.warning("ELTEN Game Room could not reconstruct sound events: #{error.class}: #{error.message}; #{Array(error.backtrace).first}") if defined?(Log)
-    {}
-  end
-
-  def presentation_replay
-    @presentation_replay ||= GameRoomPresentationReplay.new(@game, @repository)
-  end
-
-  def remember_turn_transition(before_replay, after_replay, event_id)
-    entry = @game.turn_transition_history_entry(
-      before_replay,
-      after_replay,
-      event_id: event_id
+  def event_presenter
+    @event_presenter ||= GameRoomEventPresenter.new(
+      game: -> { @game }, repository: -> { @repository }, program: -> { @program }, viewer: -> { Session.name },
+      client: -> { @game_client }, surface_state: -> { @surface_state }, clock: -> { monotonic_time },
+      covered: -> { table_presentation_covered? }, speech: ->(message) { speak_table_automatically(message) },
+      trace: method(:log_signal_timing), session_changed: -> { @background_timer_data = nil },
+      history_changed: ->(replay, initial) { follow_presentation_history(replay, initial: initial) }
     )
-    @turn_history_entries[entry.event_id.to_i] = entry if entry != nil
-    entry
-  rescue StandardError => error
-    Log.warning("ELTEN Game Room turn transition failed: #{error.class}: #{error.message}") if defined?(Log)
-    nil
   end
 
-  def merge_turn_history!(replay)
-    return replay if replay == nil || @turn_history_entries.empty?
-
-    source = replay.history.reject { |entry| entry.kind == :turn }
-    pending = @turn_history_entries.dup
-    pending_ids = pending.keys.sort
-    pending_index = 0
-    merged = []
-    source.each_with_index do |entry, index|
-      event_id = entry.event_id.to_i
-      while pending_index < pending_ids.length && pending_ids[pending_index] < event_id
-        pending_id = pending_ids[pending_index]
-        merged << pending.delete(pending_id) if pending.key?(pending_id)
-        pending_index += 1
-      end
-
-      merged << entry
-      next_event_id = source[index + 1]&.event_id&.to_i
-      if next_event_id != event_id && pending.key?(event_id)
-        merged << pending.delete(event_id)
-        pending_index += 1 if pending_ids[pending_index] == event_id
-      end
-    end
-    while pending_index < pending_ids.length
-      pending_id = pending_ids[pending_index]
-      merged << pending[pending_id] if pending.key?(pending_id)
-      pending_index += 1
-    end
-    replay.history = merged
-    replay
+  def follow_presentation_history(replay, initial: false)
+    @history_index = [combined_history_items(replay).length - 1, 0].max if initial || @history_follows_tail
   end
 
-  def normalize_event_descriptions(description)
-    Array(description).compact.map(&:to_s).reject(&:empty?)
+  def event_presentation_busy?(*args, **options)
+    event_presenter.event_presentation_busy?(*args, **options)
+  end
+
+  def prepare_presentation_session(*args, **options)
+    event_presenter.prepare_presentation_session(*args, **options)
+  end
+
+  def process_new_events(*args, session: @session, **options)
+    event_presenter.process_new_events(*args, session: session, **options)
+  end
+
+  def present_game_event(*args, **options)
+    event_presenter.present_game_event(*args, **options)
+  end
+
+  def present_turn_transition(*args, **options)
+    event_presenter.present_turn_transition(*args, **options)
+  end
+
+  def present_initial_decision(*args, **options)
+    event_presenter.present_initial_decision(*args, **options)
+  end
+
+  def present_required_decision(*args, **options)
+    event_presenter.present_required_decision(*args, **options)
+  end
+
+  def present_game_result(*args, **options)
+    event_presenter.present_game_result(*args, **options)
+  end
+
+  def event_replays_for(*args, session: @session, **options)
+    event_presenter.event_replays_for(*args, session: session, **options)
+  end
+
+  def presentation_replay(*args, **options)
+    event_presenter.presentation_replay(*args, **options)
+  end
+
+  def remember_turn_transition(*args, **options)
+    event_presenter.remember_turn_transition(*args, **options)
+  end
+
+  def merge_turn_history!(*args, **options)
+    event_presenter.merge_turn_history!(*args, **options)
+  end
+
+  def normalize_event_descriptions(*args, **options)
+    event_presenter.normalize_event_descriptions(*args, **options)
   end
 
   def announce_due_timers(replay, now: action_time)
-    @game.timer_announcements(replay, Session.name, now: now).to_a.each do |announcement|
-      key, message = announcement.to_a
-      next if key.to_s.empty? || message.to_s.empty? || @spoken_timer_announcements[key.to_s]
-
-      @spoken_timer_announcements[key.to_s] = true
-      speak_table_automatically(message.to_s)
-    end
-  rescue StandardError => error
-    Log.warning("ELTEN Game Room timer announcement failed: #{error.class}: #{error.message}") if defined?(Log)
+    event_presenter.announce_due_timers(replay, now: now)
   end
 
   def verify_pending_move(replay)
@@ -1928,31 +1374,11 @@ class GameScreen
   def network_task(title, ui: nil, silent: false, &operation)
     return nil if @synchronizer&.waiting?
 
-    if @layout&.binding_generation.to_i > 0
-      token = EltenAPI::Tasks::CancellationToken.new
-      pending = GameRoomUI::PendingOperation.new(layout: @layout, table_id: table_id,
-        session_id: @layout.session_id, token: token, title: title)
-      ui = pending
-    end
-    options = { title: title, cancellable: true, show_after: 5.0 }
-    options[:ui] = ui if ui != nil
-    options[:cancellation_token] = token if token
-    if @game_client.respond_to?(:network_task_ui)
-      token ||= EltenAPI::Tasks::CancellationToken.new
-      task_ui = @game_client.network_task_ui(ui: ui, title: title, show_after: 5.0, cancellation_token: token)
-      options[:ui], options[:cancellation_token] = task_ui, token
-    end
-    EltenAPI::Tasks.run(**options) do |progress, token|
-      token.raise_if_cancelled!
-      if @session_runner
-        @session_runner.synchronize do
-          token.raise_if_cancelled!
-          operation.call
-        end
-      else
-        operation.call
-      end
-    end
+    task = GameRoomNetworkTask.new
+    pending_table_id = table_id if @layout&.binding_generation.to_i > 0
+    task.run(title, layout: @layout, table_id: pending_table_id, ui: ui,
+      client: @game_client, runner: @session_runner,
+      before_close: -> { remember_layout_position }, &operation)
   rescue EltenAPI::Tasks::Cancelled
     @automatic_recovery_pending = true
     @synchronizer&.request_recovery!(delay: GameRoomSync::ERROR_BACKOFF)
@@ -1978,13 +1404,11 @@ class GameScreen
     alert(_("The operation could not be completed. Please try again.")) if !silent
     nil
   ensure
-    task_ui&.close
-    remember_layout_position if pending&.active?
-    pending&.close
+    task&.close
   end
 
-  def remember_layout_position
-    snapshot = @layout.snapshot
+  def remember_layout_position(layout = @layout)
+    snapshot = layout.snapshot
     @surface_state, @surface_identity = snapshot.surface_state, snapshot.surface_identity
     @history_index, @history_follows_tail = snapshot.history_index, snapshot.history_follows_tail
     @users_index, @form_index, @focus_location = snapshot.users_index, snapshot.form_index, snapshot.focus_location
@@ -2031,3 +1455,5 @@ class GameScreen
   end
 
 end
+
+require_relative 'game_screen/input'

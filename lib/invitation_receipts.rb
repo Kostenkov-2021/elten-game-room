@@ -1,3 +1,4 @@
+require_relative 'host_bridge'
 require "thread"
 
 # A durable reply is still needed when the invited person has no room connection.
@@ -20,8 +21,8 @@ module GameRoomInvitationReceipts
       program, @program = @program, nil
       return unless program
       host = ::NotificationGroups
-      host.instance_variable_get(:@game_room_receipt_registry_lock).synchronize do
-        registry = host.instance_variable_get(:@game_room_receipt_programs)
+      GameRoomHostBridge.registry(host, key: :@game_room_receipt_programs,
+        lock: :@game_room_receipt_registry_lock, initial: {}) do |registry|
         registry.delete(@uuid) if registry[@uuid].equal?(program)
       end
       if program.instance_variable_get(:@game_room_receipt_registration).equal?(self)
@@ -40,13 +41,8 @@ module GameRoomInvitationReceipts
     return if uuid.empty?
 
     host = ::NotificationGroups
-    lock = host.instance_variable_get(:@game_room_receipt_registry_lock) || Mutex.new
-    host.instance_variable_set(:@game_room_receipt_registry_lock, lock)
-    lock.synchronize do
-      registry = host.instance_variable_get(:@game_room_receipt_programs) || {}
-      registry[uuid] = program
-      host.instance_variable_set(:@game_room_receipt_programs, registry)
-    end
+    GameRoomHostBridge.registry(host, key: :@game_room_receipt_programs,
+      lock: :@game_room_receipt_registry_lock, initial: {}) { |registry| registry[uuid] = program }
     unless program.instance_variable_get(:@game_room_receipt_registration)
       registration = Registration.new(program, uuid)
       program.instance_variable_set(:@game_room_receipt_registration, registration)
@@ -56,16 +52,8 @@ module GameRoomInvitationReceipts
     end
     return if host.instance_variable_get(:@game_room_receipt_bridge_version) == 2
 
-    bridge = host.instance_variable_get(:@game_room_receipt_bridge)
-    bridge = nil unless bridge.is_a?(Module) && host.ancestors.include?(bridge)
-    bridge ||= host.ancestors.take_while { |ancestor| !ancestor.equal?(host) }.find do |candidate|
-      next false unless candidate.instance_methods(false).include?(:build_notification_groups)
-      path = candidate.instance_method(:build_notification_groups).source_location&.first.to_s.tr('\\', '/')
-      path.end_with?('/lib/invitation_receipts.rb')
-    end
-    bridge ||= Module.new
-    host.prepend(bridge) unless host.ancestors.include?(bridge)
-    host.instance_variable_set(:@game_room_receipt_bridge, bridge)
+    GameRoomHostBridge.prepare(host, marker: :@game_room_receipt_bridge,
+      method_name: :build_notification_groups, source: '/lib/invitation_receipts.rb')
     # Replace legacy lexical bodies as well: merely reusing their module
     # would still retain the first application namespace.
     TOPLEVEL_BINDING.eval(<<~'RUBY', __FILE__, __LINE__ + 1)

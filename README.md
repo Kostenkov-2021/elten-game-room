@@ -5,9 +5,6 @@ dla ELTEN-a. Repozytorium zaczyna historię od opublikowanej wersji **1.1.0,
 build 176**. Kod aplikacji, tłumaczenie i dźwięki w tym pierwszym stanie są
 bezpośrednią kopią tego buildu.
 
-Szczegóły pochodzenia i sumę podpisanej paczki zapisano w
-[BASELINE.md](docs/BASELINE.md).
-
 ## Gry
 
 Obecny rejestr obejmuje 32 gry: 3-5-8, 99, Audio Ball, Axel Pong, Biblios,
@@ -40,14 +37,14 @@ Ustaw `ELTEN_HOST_SOURCE` na katalog źródeł ELTEN-a zawierający `src/`.
 W katalogu repozytorium uruchom:
 
 ```console
-ruby tools/run-tests.rb --report test-results.json
+ruby test/run.rb --report tmp/test-results.json
 ```
 
 Każdy test jest również samodzielnym skryptem Ruby, więc można uruchomić tylko
 wybrany plik, na przykład:
 
 ```console
-ruby test/ninety_nine_test.rb
+ruby test/games/ninety_nine/rules_test.rb
 ```
 
 Runner uruchamia każdy skrypt w osobnym procesie, zbiera wszystkie błędy
@@ -55,31 +52,27 @@ i stosuje limit 180 sekund na skrypt (`--timeout` zmienia limit).
 Brak wymaganych źródeł hosta nie jest zaliczonym testem. `--allow-skip`
 jest wyłącznie jawną zgodą na pomijanie opcjonalnych prób, nie ustawieniem CI.
 Pomocniki w `test/support/` nie powinny wykonywać scenariuszy innych testów.
-Historyczne porównania quizu z pełnymi raportami dawnych audytów znajdują się
-w `test/historical/` i nie należą do zwykłego przebiegu ani CI. Kontrole bieżących
-zestawów, sum, korekt, podziału Wiedźmina i eksportu TXT pozostają w `test/`.
-Mając oryginalne raporty, ustaw `GAME_ROOM_QUIZ_AUDIT_ROOT` na katalog zawierający
-`quiz-factual-audit-220/` oraz `quiz-recovery-audit-after-221/`, a następnie uruchom:
+Każda gra ma własny katalog. Aby wybrać wszystkie scenariusze jednej gry:
 
 ```console
-ruby tools/run-quiz-tests.rb --historical-audit
+ruby test/run.rb test/games/quiz
 ```
 
-Bez tego ustawienia kontrole historyczne szukają raportów w sąsiednim
-`../diagnostics/`. Jawnie wybrana kontrola z brakującymi raportami kończy się
-błędem z listą plików, nigdy pozornym sukcesem. Raporty nie są pobierane,
-publikowane ani dołączane do instalatora.
-Szczegóły zakresu porządków: [MAINTAINABILITY_CLEANUP.md](docs/MAINTAINABILITY_CLEANUP.md).
+Runner rekurencyjnie wybiera scenariusze bez pomocników i fixture. Kontrole
+bieżących pytań, sum, korekt, podziału Wiedźmina i eksportu są częścią testów
+Quizu. Jednorazowe porównania z dawnymi zewnętrznymi audytami zostały usunięte.
+Układ katalogów i wybór warstw: [docs/TESTING.md](docs/TESTING.md).
+Indeks bieżącej dokumentacji: [docs/INDEX.md](docs/INDEX.md).
 
 ## Praca nad kodem
 
-Rosyjski interfejs i zestaw quizu opisuje
-[RUSSIAN_LOCALIZATION.md](docs/RUSSIAN_LOCALIZATION.md).
 Źródłem tłumaczeń są katalogi PO; pliki MO powstają ze wspólnego kompilatora.
+Układ katalogów, polecenia i kontrakt builderów: [docs/TRANSLATIONS.md](docs/TRANSLATIONS.md).
 
 Najważniejsze punkty wejścia:
 
-- `__app.rb` — manifest, trwały rejestr użytkowników, rejestr gier i główna klasa programu;
+- `__app.rb` — manifest, trwały rejestr użytkowników i główna klasa programu;
+- `games/catalog.rb` — rejestr gier i jawne zależności modeli;
 - `games/` — reguły i modele poszczególnych gier;
 - `lib/game_surfaces/` — wspólne kontrolki dostępnego pola gry;
 - `lib/game_screen.rb` — wspólny ekran partii;
@@ -93,6 +86,9 @@ Dokładniejszy opis znajduje się w [architekturze](docs/ARCHITECTURE.md), a
 instrukcja dodawania gry w [ADDING_A_GAME.md](docs/ADDING_A_GAME.md).
 
 ## Budowanie paczki
+
+Historia zmian widoczna w „Co nowego” pochodzi z
+[game_room_changelog.rb](lib/game_room_changelog.rb) i katalogów tłumaczeń.
 
 Instrukcja tworzenia niepodpisanej i podpisanej paczki znajduje się w
 [BUILDING.md](docs/BUILDING.md). Certyfikat i klucz autora nigdy nie powinny

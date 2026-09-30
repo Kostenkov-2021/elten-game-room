@@ -1,4 +1,5 @@
 require "json"
+require_relative "base"
 require_relative "../lib/board_presentation"
 
 require_relative "../lib/game_room_localization"
