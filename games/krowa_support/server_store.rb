@@ -9,6 +9,7 @@ module GameRoomGames
   class KrowaServerStore
     DAILY_TABLE = "krowa_daily_completions".freeze
     DAILY_SCORES_TABLE = "krowa_daily_scores".freeze
+    DAILY_ASSIGNMENTS_TABLE = "krowa_daily_assignments".freeze
     WORD_TABLE = "krowa_word_scores".freeze
     TOWER_TABLE = "krowa_tower_scores".freeze
     TOWER_ROUNDS_TABLE = "krowa_tower_rounds".freeze
@@ -156,11 +157,37 @@ module GameRoomGames
       days.uniq
     end
 
-    def daily_word(date_id)
+    # Every contender re-reads the first server ID after its insertion. A lost
+    # acknowledgement is resolved by reading, never by blindly writing again.
+    def assign_daily(date_id, now:)
       date = normalized_date(date_id)
-      return nil if date == nil
+      today = GameRoomKrowa::WarsawDate.today_id(clock: -> { Time.at(now).utc })
+      return nil if date == nil || date != today || !available?
+      row = daily_assignment_row(date)
+      if row == nil
+        assignment = @bank.new_daily_assignment(date)
+        failure = nil
+        begin
+          daily_assignments_table.insert("day_key" => date_key(date), "assignment" => assignment)
+        rescue StandardError => error
+          raise if defined?(EltenAPI::Tasks::Cancelled) && error.is_a?(EltenAPI::Tasks::Cancelled)
+          failure = error
+        end
+        row = daily_assignment_row(date)
+        raise failure if row == nil && failure
+      end
+      return nil unless row
+      @bank.assigned_daily(date, row["assignment"])
+      row["assignment"]
+    end
 
-      @bank.daily(Time.utc(*date.split("-").map(&:to_i), 12)).last
+    def daily_word(date_id, today:)
+      date = normalized_date(date_id)
+      current = normalized_date(today)
+      return nil if date == nil || current == nil || date >= current || !available?
+
+      row = daily_assignment_row(date)
+      row && GameRoomKrowa::DailyAssignment.open(date, row["assignment"])
     end
 
     # Returns :published, :unchanged or :unavailable.
@@ -303,6 +330,10 @@ module GameRoomGames
     end
 
     def daily_table; @daily_table ||= @server_tables.fetch(DAILY_TABLE); end
+    def daily_assignments_table; @daily_assignments_table ||= @server_tables.fetch(DAILY_ASSIGNMENTS_TABLE); end
+    def daily_assignment_row(date)
+      daily_assignments_table.select(where: {"day_key" => date_key(date)}, order: [["__id", "asc"]], limit: 1).to_a.first
+    end
     def daily_scores_table; @daily_scores_table ||= @server_tables.fetch(DAILY_SCORES_TABLE); end
     def word_table; @word_table ||= @server_tables.fetch(WORD_TABLE); end
     def tower_table; @tower_table ||= @server_tables.fetch(TOWER_TABLE); end

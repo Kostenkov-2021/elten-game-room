@@ -43,6 +43,8 @@ module GameRoomGames
       action == "move" ? "play2" : nil
     end
 
+    def notification_option_keys(_options); %w[board_size]; end
+
     def id
       "checkers"
     end

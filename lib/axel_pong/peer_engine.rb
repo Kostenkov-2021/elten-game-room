@@ -5,9 +5,10 @@ module GameRoomPong
   # A remote return starts incoming flight at the far baseline. Locally owned
   # human/bot exchanges keep the original uninterrupted full-precision flight.
   class PeerEngine < Engine
-    def initialize(side:, authority:, **args)
+    def initialize(side:, authority:, on_feedback: nil, **args)
       super(**args)
       @side, @authority = side, authority
+      @on_feedback = on_feedback
     end
 
     def strike(side, **args)
@@ -68,6 +69,7 @@ module GameRoomPong
         end
       end
       cue(data['action'], side)
+      notify_feedback
       true
     end
 
@@ -89,9 +91,9 @@ module GameRoomPong
       @edge_attempts[side] = edges if edges
     end
 
-    def remote_bot_sound(kind, side)
+    def remote_bot_sound(kind, side, x, y)
       return unless @bots.include?(side) && !controls_side?(side) && %w[step edge].include?(kind)
-      append_cue(kind, side, @ball['x'], @ball['y'])
+      append_cue(kind, side, x, y)
     end
 
     def serve_timeout(confirmed: false)
@@ -133,17 +135,26 @@ module GameRoomPong
       # than rounding. Local physics keeps its full precision.
       transmitted = @ball.transform_values { |v| v.is_a?(Float) ? (v * 1000).to_i / 1000.0 : v }
       @transition = {'action' => action, 'side' => side, 'turn' => @turn, 'ball' => transmitted}
+      notify_feedback unless action == 'goal'
+    end
+
+    # Report accepted contacts, wall impacts and movements before the next
+    # physics step. The engine itself has no audio/UI API.
+    def notify_feedback
+      @on_feedback.call(snapshot) if @on_feedback
     end
 
     def cue(kind, side)
       return if kind == 'wall' && !@authority
       super
+      notify_feedback if %w[step edge wall].include?(kind)
     end
 
     def append_cue(kind, side, x, y)
       @event_seq += 1
       @events << [@event_seq, kind, side, x, y]
       @events.shift while @events.length > 8
+      notify_feedback
     end
   end
 end

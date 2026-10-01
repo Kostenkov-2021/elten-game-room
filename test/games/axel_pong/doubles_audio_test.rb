@@ -109,16 +109,17 @@ check.call('doubles ball depth follows teams while pan follows each local paddle
   end
 end
 
-check.call('doubles wall pitch and impact depth use the listener team') do
+check.call('doubles wall pitch and same-frame distance mix use the listener team') do
   [[0, 0, 1, 1], [0, 1, 0, 1]].each do |teams|
     teams.each_index do |viewer|
       with_audio do |audio, program|
         state = snapshot(teams)
+        state['b'].merge!('x' => 29.0, 'y' => 5.0)
         state['fx'] = [[1, 'wall', nil, 29.0, 5.0]]
         audio.update(state, viewer: viewer, paused: false)
         sound = program.sounds['pong_wall']
         depth = teams[viewer].zero? ? 5 : 15
-        near(sound.volume, 0.95 - (depth - 4) * 0.06, "viewer #{viewer}: wrong wall depth")
+        near(sound.volume, 1 - depth * 0.04, "viewer #{viewer}: wrong wall depth")
         near(sound.frequency, 44100 * (teams[viewer].zero? ? 1.15 : 0.85), "viewer #{viewer}: wrong wall pitch")
         near(sound.pan, rendered_pan(29 - state['p'][viewer]), "viewer #{viewer}: wrong impact pan")
         state['b'].merge!('x' => 3.0, 'y' => 15.0)
@@ -163,7 +164,7 @@ check.call('doubles edge cues use the actual participant court end') do
       with_audio do |audio, program|
         state = snapshot(teams)
         teams.each_index do |source|
-          state['fx'] = [[source + 1, 'edge', source, 1.0, 10.0]]
+          state['fx'] = [[source + 1, 'edge', source, state['p'][source], teams[source] * 20]]
           audio.update(state, viewer: viewer, paused: true)
           name = source == viewer ? 'pong_edge' : 'pong_op_edge'
           sound = program.voice(name, source)
@@ -187,7 +188,7 @@ check.call('doubles footsteps use team samples and gains with each participant p
           number = 0
           [false, true].each do |paused|
             teams.each_index do |source|
-              state['fx'] = [[number += 1, 'step', source, 15, 10]]
+              state['fx'] = [[number += 1, 'step', source, state['p'][source], teams[source] * 20]]
               before = program.played.length
               audio.update(state, viewer: viewer, paused: paused)
               friendly = teams[source] == teams[viewer]
@@ -220,14 +221,16 @@ check.call('doubles ringing movement cues follow their own participant independe
         opponents = teams.each_index.select { |seat| teams[seat] != teams[viewer] }
         sources = [[step_asset(teams, teammate, viewer), teammate],
           [step_asset(teams, opponents[0], viewer), opponents[0]], ['pong_op_edge', opponents[0]]]
-        state['fx'] = [[1, 'step', teammate, 15, 10], [2, 'step', opponents[0], 15, 10],
-          [3, 'edge', opponents[0], 15, 10]]
+        state['fx'] = [[1, 'step', teammate, state['p'][teammate], teams[teammate] * 20],
+          [2, 'step', opponents[0], state['p'][opponents[0]], teams[opponents[0]] * 20],
+          [3, 'edge', opponents[0], state['p'][opponents[0]], teams[opponents[0]] * 20]]
         audio.update(state, viewer: viewer, paused: false)
         sources.each do |name, source|
           assert(program.voice(name, source).playing?, "#{name}: movement cue missing for viewer #{viewer}")
           near(program.voice(name, source).pan, rendered_pan(state['p'][source] - state['p'][viewer]), "#{name}: wrong initial source for viewer #{viewer}")
         end
-        state['fx'] = [[4, 'step', opponents[1], 15, 10], [5, 'step', viewer, 15, 10]]
+        state['fx'] = [[4, 'step', opponents[1], state['p'][opponents[1]], teams[opponents[1]] * 20],
+          [5, 'step', viewer, state['p'][viewer], teams[viewer] * 20]]
         audio.update(state, viewer: viewer, paused: false)
         sources << [step_asset(teams, opponents[1], viewer), opponents[1]]
         sources << [step_asset(teams, viewer, viewer), viewer]
@@ -250,7 +253,7 @@ check.call('doubles ringing movement cues follow their own participant independe
         assert(program.voice(step_asset(teams, viewer, viewer), viewer).plays == 1 && program.voice(step_asset(teams, teammate, viewer), teammate).plays == 1,
           'teammate and local movement did not retain independent voices of the own sample')
         previous_edge_plays = program.voice('pong_op_edge', teammate).plays
-        state['fx'] = [[6, 'edge', teammate, 15, 10]]
+        state['fx'] = [[6, 'edge', teammate, state['p'][teammate], teams[teammate] * 20]]
         audio.update(state, viewer: viewer, paused: false)
         sound = program.voice('pong_op_edge', teammate)
         near(sound.volume, 1.0, 'teammate edge was attenuated to the far end')
@@ -276,7 +279,7 @@ check.call('doubles friendly footsteps track partner and self switches without r
           sound = program.voice(step_asset(teams, source, viewer), source)
           source_plays[source] += 1
           program.pong_preferences.merge!('own_volume' => 100, 'opponent_volume' => 150)
-          state['fx'] = [[number + 1, 'step', source, 15, 10]]
+          state['fx'] = [[number + 1, 'step', source, state['p'][source], teams[source] * 20]]
           audio.update(state, viewer: viewer, paused: false)
           context = "teams #{teams.inspect}, viewer #{viewer}, source #{source}"
           assert(sound.plays == source_plays[source], "#{context}: friendly footstep did not use its independent own sample")
@@ -307,7 +310,7 @@ check.call('doubles friendly footsteps track partner and self switches without r
           voice = program.voice(step_asset(teams, source, viewer), source)
           assert(!voice.playing? && voice.plays == 2, 'reset resumed a stale friendly footstep')
         end
-        state['fx'] = [[1, 'step', viewer, 15, 10]]
+        state['fx'] = [[1, 'step', viewer, state['p'][viewer], teams[viewer] * 20]]
         audio.update(state, viewer: viewer, paused: true)
         sound = program.voice(step_asset(teams, viewer, viewer), viewer)
         near(sound.pan, 0, 'first footstep after reset retained the teammate position')
@@ -350,7 +353,9 @@ check.call('doubles shield toggles belong to the team while impacts retain parti
             x = state['p'][source]
             state['fx'] = [[number += 1, kind, source, x, teams[source].zero? ? 0 : 20]]
             audio.update(state, viewer: viewer, paused: false)
-            name = program.played.last
+            # Rolling playback now starts after a fresh impact, rather than
+            # before dispatching it. Select the shield cue, not that loop.
+            name = program.played.reverse.find { |asset| asset != 'pong_ball' }
             if kind == 'shield_hit'
               assert(name.start_with?(own ? 'pong_own_shield_hit' : 'pong_op_shield_hit'), 'shield impact confused teammate and local paddle')
               near(program.sounds[name].volume, own ? 1.0 : 0.91, 'shield impact gain changed')

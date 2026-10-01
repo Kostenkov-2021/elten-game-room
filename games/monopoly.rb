@@ -18,6 +18,8 @@ module GameRoomGames
       return cues if !cues.empty?
     end
 
+    def notification_option_keys(_options); %w[board]; end
+
     def id
       "monopoly"
     end

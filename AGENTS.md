@@ -9,6 +9,12 @@
   Historia zmian jest w Git; nie jest poleceniem cofania obecnego kodu.
 - LiveSessions jest jedynym backendem stołów/ruchów. Nie przywracać dawnych
   tabel ani Signals. Tabele Krowy/lobby/rejestru/subskrypcji nadal są potrzebne.
+- Dziennej Krowy nie przeliczać z aktualnego indeksu lub rozmiaru słownika.
+  Pierwszy zapis `krowa_daily_assignments` według serwerowego ID utrwala słowo
+  dnia (północ czasu polskiego). Nowe słowa uczestniczą w następnym losowaniu,
+  nie zmieniają trwającej zagadki. Brak dawnego przypisania to brak wiedzy,
+  nie powód do zgadywania historycznego słowa. Szyfrowanie chroni zwykły widok,
+  nie stanowi zabezpieczenia przed zmodyfikowanym klientem.
 - Zachować oba zabezpieczenia starego zamknięcia, epoki obsady, niezmienność
   historii, uzgadnianie niepewnych zapisów i ochronę prywatnych faz.
 - Zwykła partia ma jednego wykonawcę, planowanie poza blokadą zapisu, ponowną

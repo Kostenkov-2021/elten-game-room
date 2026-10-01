@@ -14,6 +14,16 @@ module GameRoomGames
     }.freeze
 
     def id; "domino"; end
+    def notification_option_keys(_options); %w[tile_set teams]; end
+    def notification_variant(options)
+      setting = SETS[options["tile_set"]]
+      if setting
+        max, copies = setting
+        set = {6 => _("Double 6"), 9 => _("Double 9"), 12 => _("Double 12"), 15 => _("Double 15"), 18 => _("Double 18")}.fetch(max)
+        set = GameRoomContent.utf8("%{copies} × %{set}") % {copies: copies, set: set} if copies > 1
+      end
+      [set, notification_flag(options, "teams", _("Team play"), _("Individual play"))].compact.join(", ")
+    end
     def name; _("Domino"); end
 
     def option_definitions

@@ -11,9 +11,10 @@ module GameRoomGames
 
     def game_view_spec(replay, viewer)
       GameRoomLayout::ViewSpec.new(surface: surface_spec(replay, viewer),
-        trailing_parts: ["commands"], restartable: !solo_variant?(replay.state),
+        trailing_parts: ["commands"], restartable: replay.state[:options]["variant"] != "daily",
+        restart_label: _("Start game"),
         finished_text: solo_variant?(replay.state) ? _("Game over.") : nil,
-        status_commands: krowa_status_commands)
+        status_commands: replay.finished? ? krowa_status_commands : [])
     end
 
     def surface_spec(replay, viewer)
@@ -50,29 +51,18 @@ module GameRoomGames
           commands << GameSurfaces::Command.new(id: "reroll", label: label, payload: {"round" => state[:round]})
         end
       end
-      commands.concat(krowa_status_commands) unless replay.finished?
       if state[:last_solution]
         commands << GameSurfaces::Command.new(id: "krowa_definition", label: _("Word definition"), payload: {"word" => state[:last_solution]})
       elsif player && state[:surrender_words].key?(player)
         commands << GameSurfaces::Command.new(id: "krowa_definition", label: _("Word definition"))
       end
-      parts << part("commands", GameSurfaces::CommandPanelSpec.new(commands: commands))
+      parts << part("commands", GameSurfaces::CommandPanelSpec.new(commands: commands)) unless commands.empty?
       GameSurfaces::CompositeSpec.new(parts: parts)
-    end
-
-    def custom_game_shortcuts(_replay, _viewer)
-      room_shortcuts
-    end
-
-    def room_shortcuts
-      [GameShortcut.new(key: "d", modifiers: [:control], label: _("Krowa settings"),
-        kind: :action, action_kind: "command", action_name: "krowa_audio")]
     end
 
     def local_action(selection, replay, _viewer)
       return nil unless selection["kind"] == "command"
-      return :audio if selection["action"] == "krowa_audio"
-      return :gallery if selection["action"] == "krowa_gallery"
+      return replay.finished? ? :gallery : :gallery_unavailable if selection["action"] == "krowa_gallery"
       return :definition if selection["action"] == "krowa_definition" && selection["word"] && selection["word"] == replay.state[:last_solution]
       nil
     end

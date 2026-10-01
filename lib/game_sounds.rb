@@ -8,6 +8,7 @@ module GameRoomSounds
     chatmsg
     notice
     table_notice
+    invitation_rejected
     buzzer
     buzzer2
     war_open
@@ -85,6 +86,13 @@ module GameRoomSounds
   end
 
   module_function
+
+  def table_activity(program, entry, viewer:)
+    return play(program, "chatmsg") if entry.kind == "chat" && !GameRoomParticipants.same?(entry.actor, viewer)
+    if entry.kind == "invitation_rejected" && GameRoomParticipants.same?(entry.actor, viewer)
+      play(program, "invitation_rejected")
+    end
+  end
 
   def play(program, name)
     return nil if name == nil || !ASSET_NAMES.include?(name.to_s)

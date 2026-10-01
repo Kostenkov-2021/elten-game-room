@@ -1,7 +1,7 @@
 require_relative "../../support/tysiac_two_player"
 
 game = GameRoomGames::Tysiac.new
-assert(game.minimum_players == 2 && game.maximum_players == 3, "two-player Tysiac unavailable")
+assert(game.minimum_players == 2 && game.maximum_players == 4, "two-player Tysiac unavailable")
 assert(game.default_options["variant"] == "three_players", "three-player default changed")
 assert(game.validation_error({}, player_count: 3) == nil, "old table rejected")
 assert(game.validation_error({}, player_count: 2) != nil, "three-player table started with two")

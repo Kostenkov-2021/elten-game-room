@@ -40,6 +40,8 @@ module GameRoomGames
       return "play" if action == "bet" && event["value"].to_s !~ /\A(?:check|fold)\|/
     end
 
+    def notification_option_keys(_options); %w[variant]; end
+
     def id
       "poker"
     end

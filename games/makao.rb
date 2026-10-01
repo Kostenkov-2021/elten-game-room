@@ -41,6 +41,8 @@ module GameRoomGames
       end
     end
 
+    def notification_option_keys(_options); %w[profile]; end
+
     def id
       "makao"
     end

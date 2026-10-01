@@ -1,6 +1,11 @@
 module GameRoomGames
   module KrowaServerSchema
     TABLES = {
+      "krowa_daily_assignments" => {
+        "visibility" => "public", "columns" => {"day_key" => "integer", "assignment" => "string:512"},
+        "permissions" => ["select", "insert"], "indexes" => [["day_key"]],
+        "limits" => {"max_select_limit" => 500}
+      },
       "krowa_daily_completions" => {
         "visibility" => "shared", "columns" => {"day_key" => "integer", "status" => "integer"},
         "permissions" => ["select", "insert"], "indexes" => [["day_key"]],

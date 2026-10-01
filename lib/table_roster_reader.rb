@@ -5,11 +5,12 @@ require_relative 'game_content'
 
 # One explicit request for one view; late replies cannot speak over another
 # table, a newly focused control, or a reopened list. No joining or polling.
-class GameRoomTableRosterReader
+class GameRoomTableDetailsReader
   using GameRoomLocalization::Translations
 
-  def initialize(loader:, selected:, id_for:, active:, speaker:, worker: nil)
+  def initialize(loader:, selected:, id_for:, active:, speaker:, worker: nil, formatter:, unavailable:)
     @loader, @selected, @id_for, @active, @speaker = loader, selected, id_for, active, speaker
+    @formatter, @unavailable = formatter, unavailable
     runtime = Programs.current_runtime if defined?(Programs) && Programs.respond_to?(:current_runtime)
     @worker = worker || GameRoomBackground::Work.new(runtime: runtime)
     @generation = 0
@@ -36,17 +37,13 @@ class GameRoomTableRosterReader
     return unless @active.call && snapshot && @request == [@generation, @id_for.call(snapshot).to_s]
     value, error = result
     if error || !value || value[:status] == :unavailable
-      say(_('The table participants are currently unavailable.'))
+      say(@unavailable.call)
     elsif value[:status] == :closed
       say(_('This table is no longer available.'))
     elsif value[:status] == :ready
-      players = value.fetch(:players).map { |person| GameRoomParticipants.display_name(person) }
-      observers = value.fetch(:observers)
-      message = players.empty? ? _('No players at this table.') : _('Players: %{players}.') % {players: players.join(', ')}
-      message += ' ' + (_('Observers: %{players}.') % {players: observers.join(', ')}) unless observers.empty?
-      say(message)
+      say(@formatter.call(value) || @unavailable.call)
     else
-      say(_('The table participants are currently unavailable.'))
+      say(@unavailable.call)
     end
   end
 
@@ -54,5 +51,28 @@ class GameRoomTableRosterReader
 
   def say(text)
     @speaker.call(GameRoomContent.utf8(text))
+  end
+end
+
+class GameRoomTableRosterReader < GameRoomTableDetailsReader
+  using GameRoomLocalization::Translations
+  def initialize(**options)
+    super(**options, unavailable: -> { _('The table participants are currently unavailable.') }, formatter: ->(value) {
+      players = value.fetch(:players).map { |person| GameRoomParticipants.display_name(person) }
+      observers = value.fetch(:observers)
+      message = players.empty? ? _('No players at this table.') : _('Players: %{players}.') % {players: players.join(', ')}
+      message += ' ' + (_('Observers: %{players}.') % {players: observers.join(', ')}) unless observers.empty?
+      message
+    })
+  end
+end
+
+class GameRoomTableOptionsReader < GameRoomTableDetailsReader
+  using GameRoomLocalization::Translations
+  def initialize(game_for:, **options)
+    super(**options, unavailable: -> { _('The settings of this table are not available.') }, formatter: ->(value) {
+      game = game_for.call(value[:game])
+      game.table_options_announcement(game.options_from_json(value[:options])) if game && !value[:options].to_s.empty?
+    })
   end
 end

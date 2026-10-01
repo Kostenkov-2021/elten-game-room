@@ -123,8 +123,8 @@
           "pl": "Wieża kończy się po wyczerpaniu limitu lub poddaniu przez gospodarza. Wynik to liczba ukończonych rund. Lista rund znajdująca się w rankingu zawiera słowa i liczbę prób."
         },
         {
-          "en": "Krowa's music and sound effects are off by default. Ctrl+D opens their switches and separate volume sliders. These sounds also respect the shared game-sound mute and volume settings in Game Room.",
-          "pl": "Muzyka i efekty dźwiękowe Krowy są domyślnie wyłączone. Pod Ctrl+D znajdziesz ich przełączniki oraz osobne suwaki głośności. Te dźwięki podlegają również wspólnemu wyciszeniu i głośności dźwięków gier w Game Roomie."
+          "en": "Krowa's music and sound effects are off by default. Ctrl+P or Krowa settings in the table menu opens their switches and separate volume sliders. These sounds also respect the shared game-sound mute and volume settings in Power Games.",
+          "pl": "Muzyka i efekty dźwiękowe Krowy są domyślnie wyłączone. Pod Ctrl+P lub w ustawieniach Krowy w menu stołu znajdziesz ich przełączniki oraz osobne suwaki głośności. Te dźwięki podlegają również wspólnemu wyciszeniu i głośności dźwięków gier w Power Games."
         }
       ]
     },
@@ -138,6 +138,10 @@
         {
           "en": "Daily Krowa has its own entry in Rankings. Choose a date to hear each player's result and number of attempts. Today's solution stays hidden; for previous days, the list also shows the word. After solving Daily Krowa, you can choose whether to publish your result there.",
           "pl": "Dzienna Krowa ma osobną pozycję w Rankingach. Wybierz datę, aby sprawdzić wyniki graczy i liczbę prób. Dzisiejsze rozwiązanie pozostaje ukryte, a przy poprzednich dniach lista pokazuje również słowo. Po odgadnięciu Dziennej Krowy możesz zdecydować, czy opublikować tam swój wynik."
+        },
+        {
+          "en": "A daily word stays assigned to its date, even after a dictionary update. New words can take part in the next draw, for a new day after midnight in Poland. If an older day's actual word was not saved, the ranking does not guess it from today's dictionary. After solving or giving up a Random word, Start game lets you draw another at the same table.",
+          "pl": "Dzienne słowo pozostaje przypisane do swojej daty, również po aktualizacji słownika. Nowe słowa mogą brać udział w następnym losowaniu, na nowy dzień po północy czasu polskiego. Jeśli rzeczywistego słowa ze starszego dnia nie zapisano, ranking nie zgaduje go na podstawie obecnego słownika. Po odgadnięciu lub poddaniu Losowego słowa przycisk Rozpocznij grę pozwala wylosować następne przy tym samym stole."
         },
         {
           "en": "The gallery remembers the words you have guessed on your own and your best attempt count for each one. You can open it before a game or after it ends. Its menu lets you sort by date, attempt count or word length. Select a word with Enter to open its leaderboard. After a game, you can agree to publish your result, which also opens the leaderboard for that word.",
@@ -182,8 +186,8 @@
           "pl": "Enter w polu odpowiedzi: zgłoś wpisany rzeczownik i wyczyść pole na następną próbę."
         },
         {
-          "en": "Ctrl+D: open Krowa settings for music, effects and your custom dictionary.",
-          "pl": "Ctrl+D: otwórz ustawienia muzyki, efektów i własnego słownika Krowy."
+          "en": "Ctrl+P: open Krowa settings for music, effects and your custom dictionary.",
+          "pl": "Ctrl+P: otwórz ustawienia muzyki, efektów i własnego słownika Krowy."
         }
       ]
     }

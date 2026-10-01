@@ -1,5 +1,10 @@
 # Dokumentacja
 
+## Planowane poprawki
+
+- [Nowy plan poprawek Game Roomu](NEXT_FIXES_PLAN.md):
+  zakres do wdrożenia i oznaczone kwestie do doprecyzowania.
+
 ## Utrzymanie
 
 - [Architektura](ARCHITECTURE.md): przepływ danych, warstwy i ich właściciele.

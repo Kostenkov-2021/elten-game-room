@@ -1,6 +1,7 @@
 require_relative "word_repository"
 require_relative "daily_puzzle_provider"
 require_relative "warsaw_date"
+require_relative "daily_assignment"
 
 module GameRoomGames
   class KrowaWordBank
@@ -28,6 +29,19 @@ module GameRoomGames
       @repository.word_at(index)
     end
 
+    def id_of(word); @repository.id_of(word); end
+
+    def assigned_daily(day, assignment)
+      word = GameRoomKrowa::DailyAssignment.open(day, assignment)
+      raise ArgumentError, "Update the dictionary to play this daily word" unless include?(word)
+      [day, word]
+    end
+
+    def new_daily_assignment(day)
+      word = daily(Time.utc(*day.split("-").map(&:to_i), 12)).last
+      GameRoomKrowa::DailyAssignment.seal(day, word)
+    end
+
     def choose(length:, maximum: 13, excluded: [], random:)
       lengths = length.to_i.zero? ? (3..maximum).to_a : [length.to_i]
       pools = lengths.to_h { |size| [size, @repository.words_of_length(size) - excluded] }
@@ -41,6 +55,7 @@ module GameRoomGames
     end
 
     def daily(now)
+      # Candidate only. Games/rankings use the immutable server assignment.
       raise ArgumentError, "Server time is required" unless now && now.to_f.positive?
       date = GameRoomKrowa::WarsawDate.today_id(clock: -> { Time.at(now).utc })
       puzzle = GameRoomKrowa::DailyPuzzleProvider.new(@repository, date_provider: -> { date }).today

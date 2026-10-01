@@ -52,7 +52,8 @@ end
       assert(program.managed.length == created, 'repeated setup leaked sound handles')
       state = {'teams' => teams, 'p' => [4.0, 10.0, 19.0, 25.0],
         'b' => {'x' => 15.0, 'y' => 5.0, 'dy' => 1.0}, 'invisible' => false,
-        'fx' => teams.each_index.map { |seat| [seat + 1, 'step', seat, 15, 10] }}
+        'fx' => []}
+      state['fx'] = teams.each_index.map { |seat| [seat + 1, 'step', seat, state['p'][seat], teams[seat] * 20] }
       program.in_frame = true
       audio.update(state, viewer: viewer, paused: false)
       steps = teams.each_index.map do |seat|
@@ -69,7 +70,7 @@ end
       end
       assert(steps.map(&:object_id).uniq.length == 4, 'participants share a playing handle')
       source = (viewer + 1) % 4
-      state['fx'] = [[5, 'step', source, 15, 10]]
+      state['fx'] = [[5, 'step', source, state['p'][source], teams[source] * 20]]
       audio.update(state, viewer: viewer, paused: false)
       steps.each_with_index do |voice, seat|
         assert(voice.plays == (seat == source ? 2 : 1), 'one step restarted another player')
@@ -87,7 +88,7 @@ end
         assert(delta.zero? ? voice.pan.zero? : voice.pan * delta > 0, 'ringing voice followed another participant')
         assert(voice.plays == (seat == source ? 2 : 1), 'position/gain update replayed a step')
       end
-      state['fx'] = teams.each_index.map { |seat| [seat + 6, 'edge', seat, 15, 10] }
+      state['fx'] = teams.each_index.map { |seat| [seat + 6, 'edge', seat, state['p'][seat], teams[seat] * 20] }
       audio.update(state, viewer: viewer, paused: true)
       edges = teams.each_index.map do |seat|
         voice = program.instances[seat == viewer ? 'pong_edge' : 'pong_op_edge'][seat]

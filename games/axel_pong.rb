@@ -13,6 +13,8 @@ module GameRoomGames
 
     CUSTOM_TARGET_RANGE = (2..999).freeze
 
+    def notification_option_keys(_options); %w[team_size arcade difficulty]; end
+
     def id; 'axel_pong'; end
     def name; _('Axel Pong'); end
     def maximum_players; 4; end

@@ -118,7 +118,7 @@ module GameRoomPreferences
   def sound_group(name)
     return "chat" if name.to_s == "chatmsg"
     return "room" if ROOM_SOUND_NAMES.include?(name.to_s)
-    return "notifications" if %w[notice table_notice].include?(name.to_s)
+    return "notifications" if %w[notice table_notice invitation_rejected].include?(name.to_s)
 
     "game"
   end

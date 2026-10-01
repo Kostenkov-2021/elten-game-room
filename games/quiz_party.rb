@@ -42,6 +42,8 @@ module GameRoomGames
       "quiz"
     end
 
+    def notification_option_keys(_options); %w[content_language_id content_set_id]; end
+
     def controller_change_phase_error(replay)
       _("The current game contains private data that cannot be transferred at this stage.") if
         %i[answering revealing].include?(replay.state[:phase])

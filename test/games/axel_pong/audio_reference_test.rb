@@ -8,11 +8,12 @@ number = 0
 [0, 1].each do |viewer|
   [0, 4, 8, 12, 16, 20].zip([1.3, 1.15, 1, 0.85, 0.7, 0.7]).each do |depth, pitch|
     state['fx'] = [[number += 1, 'wall', nil, 1, viewer.zero? ? depth : 20 - depth]]
+    state['b'].merge!('x' => 1, 'y' => viewer.zero? ? depth : 20 - depth)
     audio.update(state, viewer: viewer, paused: false)
     sound = program.sounds['pong_wall']
-    volume = depth <= 3 ? 1.0 : [0.95 - (depth - 4) * 0.06, 0].max
+    volume = 1.0 - depth * 0.04
     assert((sound.frequency / 44100.0 - pitch).abs < 0.000001, 'wall band')
-    assert((sound.volume - volume).abs < 0.000001, 'wall distance curve')
+    assert((sound.volume - volume).abs < 0.000001, 'wall must use normal distance mix by frame end')
   end
   state['p'] = [8, 23]
   state['fx'] = [[number += 1, 'hit', viewer, 29, 10], [number += 1, 'hit', 1 - viewer, 1, 9]]

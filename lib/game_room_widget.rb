@@ -15,7 +15,7 @@ module GameRoomWidget
     include GameRoomUI::PingControl
     attr_reader :snapshots
 
-    def initialize(loader:, opener:, labeler:, id_for:, active: -> { true }, clock: -> { Process.clock_gettime(Process::CLOCK_MONOTONIC) }, worker: nil, foreground: nil, manual_refresh: -> {}, creator: nil, invitations: nil, program: nil, on_visit: nil, roster: nil)
+    def initialize(loader:, opener:, labeler:, id_for:, active: -> { true }, clock: -> { Process.clock_gettime(Process::CLOCK_MONOTONIC) }, worker: nil, foreground: nil, manual_refresh: -> {}, creator: nil, invitations: nil, program: nil, on_visit: nil, roster: nil, table_options: nil, game_for: nil)
       @game_room_program = program
       @on_visit = on_visit
       @loader = loader
@@ -40,10 +40,10 @@ module GameRoomWidget
       @updating = false
       super(
         [],
-        header: _("Game Room tables"),
+        header: _("Power Games tables"),
         index: 0,
         quiet: true,
-        empty_label: _("Loading Game Room tables")
+        empty_label: _("Loading Power Games tables")
       )
       on(:select) { open_selected }
       if roster
@@ -52,7 +52,13 @@ module GameRoomWidget
         on(:move) { @roster_reader.invalidate }
         on(:blur) { @roster_reader.invalidate }
       end
-      bind_widget_actions if @creator || @invitations || @roster_reader
+      if table_options
+        @options_reader = GameRoomTableOptionsReader.new(loader: table_options, selected: -> { selected_snapshot },
+          id_for: @id_for, active: -> { active? && !@creating && !@entry_refresh }, speaker: ->(text) { speak(text) }, game_for: game_for)
+        on(:move) { @options_reader.invalidate }
+        on(:blur) { @options_reader.invalidate }
+      end
+      bind_widget_actions if @creator || @invitations || @roster_reader || @options_reader
     end
 
     def focus(*arguments)
@@ -76,6 +82,12 @@ module GameRoomWidget
       if active?
         update_game_room_ping
         @roster_reader&.update
+        @options_reader&.update
+        if @options_reader && GameRoomTablePresets.pressed?(self, 'r', :control)
+          GameRoomTablePresets.consume_key(self)
+          @options_reader.request
+          return
+        end
         if @roster_reader && GameRoomTablePresets.pressed?(self, 'w', :control)
           GameRoomTablePresets.consume_key(self)
           @roster_reader.request
@@ -114,18 +126,19 @@ module GameRoomWidget
       return false unless active? && !@entry_refresh && @clock.call >= @retry_at
       if @worker.busy?
         @announce_refresh ||= announce
-        self.empty_label = _("Loading Game Room tables") if @snapshots.empty?
+        self.empty_label = _("Loading Power Games tables") if @snapshots.empty?
         return false
       end
       @announce_refresh ||= announce
       @refresh_at = @clock.call + 5.0
-      self.empty_label = _("Loading Game Room tables") if @snapshots.empty?
+      self.empty_label = _("Loading Power Games tables") if @snapshots.empty?
       @worker_generation = @generation
       @worker.start { load_snapshots }
     end
 
     def close
       @roster_reader&.close
+      @options_reader&.close
       @worker.close
     end
 
@@ -150,6 +163,7 @@ module GameRoomWidget
       # Do not register these shortcuts globally or on other main-screen tabs.
       disable_contextinglobal
       bind_context do |menu|
+        menu.option(GameRoomContent.utf8(_("Read the table variant and settings"))) { @options_reader.request } if @options_reader
         menu.option(GameRoomContent.utf8(_("Read the table participants"))) { @roster_reader.request } if @roster_reader
         menu.option(GameRoomContent.utf8(_("Accept invitation"))) { accept_invitation } if @invitations
         (@creator ? creation_actions : []).each do |_key, slot, label|
@@ -159,6 +173,7 @@ module GameRoomWidget
       tips = (@creator ? creation_actions : []).map { |_key, slot, label| GameRoomContextHelp.shortcut_tip(slot == nil ? 'Ctrl+N' : GameRoomTablePresets.shortcut(slot), label) }
       tips.unshift(GameRoomContextHelp.shortcut_tip('Ctrl+J', _("Accept invitation"))) if @invitations
       tips.unshift(GameRoomContextHelp.shortcut_tip('Ctrl+W', _("Read the table participants"))) if @roster_reader
+      tips.unshift(GameRoomContextHelp.shortcut_tip('Ctrl+R', _("Read the table variant and settings"))) if @options_reader
       tips << GameRoomContent.utf8(_("Ctrl+F4: read HTTP ping and available Communications relay or P2P ping.")) if @game_room_program
       GameRoomContextHelp.replace([self], tips)
     end
@@ -203,6 +218,7 @@ module GameRoomWidget
 
     def refresh_on_entry
       @roster_reader&.invalidate
+      @options_reader&.invalidate
       @entry_refresh = true
       @generation += 1
       @announce_refresh = false
@@ -229,7 +245,7 @@ module GameRoomWidget
       @snapshots = []
       self.options = []
       self.index = 0
-      self.empty_label = _("Game Room tables could not be loaded. Press R to retry.")
+      self.empty_label = _("Power Games tables could not be loaded. Press R to retry.")
     end
 
     def apply_ready_result
@@ -260,7 +276,7 @@ module GameRoomWidget
         delay = error ? GameRoomNetworkErrors.retry_delay(error, normal: 15.0, rate_limit: 60.0) : 15.0
         @retry_at = @clock.call + delay
         @refresh_at = @retry_at
-        message = _("Game Room tables could not be loaded. Press R to retry.")
+        message = _("Power Games tables could not be loaded. Press R to retry.")
         clear_failed_entry if clear_on_error
         self.empty_label = message if @snapshots.empty?
         speak(message) if announce && @announce_refresh
@@ -275,7 +291,7 @@ module GameRoomWidget
       # made while the request was pending.
       update_options(@snapshots.map { |snapshot| @labeler.call(snapshot) },
         keys: @snapshots.map { |snapshot| @id_for.call(snapshot).to_s })
-      self.empty_label = _("No matching Game Room tables")
+      self.empty_label = _("No matching Power Games tables")
       # Native sayoption only reads actual rows and is silent for empty lists.
       if announce && @announce_refresh
         @snapshots.empty? ? speak(empty_label) : sayoption

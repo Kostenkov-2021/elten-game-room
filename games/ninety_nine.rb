@@ -65,6 +65,12 @@ module GameRoomGames
       "ninety_nine"
     end
 
+    def notification_option_keys(_options); %w[starting_tokens]; end
+    def notification_variant(options)
+      value = options["starting_tokens"]
+      value.is_a?(Integer) && value.positive? ? (_("Starting tokens: %{count}") % {count: value}) : ""
+    end
+
     def eliminated_from_game?(replay, viewer)
       replay.state.fetch(:eliminated, {}).any? { |player, out| out && same_user?(player, viewer) }
     end

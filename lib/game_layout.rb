@@ -249,6 +249,7 @@ module GameRoomLayout
       @history.entry_index = bounded_index(history_index, @history_items) if history_index != nil
       @users.index = bounded_index(users_index, @user_items) if users_index != nil
       @phase = phase
+      @restart_button.label = text_or_default(view_spec.restart_label, _("Restart game"))
       waiting_text = phase == :finished ? _("Waiting for a new game to start") : _("Waiting for the game to start")
       waiting_text = view_spec.finished_text if phase == :finished && view_spec.finished_text != nil
       @waiting_status.options = [waiting_text] if @waiting_status.options != [waiting_text]

@@ -3,6 +3,7 @@
 require_relative "normalizer"
 require_relative "noun_data"
 require_relative "word_length"
+require "digest"
 
 module GameRoomKrowa
   class WordRepository
@@ -50,6 +51,12 @@ module GameRoomKrowa
 
     def index_of(word)
       @word_indexes[Normalizer.call(word)]
+    end
+
+    # Stable identity, independent of array positions and duplicate entries.
+    def id_of(word)
+      normalized = Normalizer.call(word)
+      Digest::SHA256.hexdigest("krowa-word-v1|#{normalized}") if @word_set.key?(normalized)
     end
 
     def word_at(index)

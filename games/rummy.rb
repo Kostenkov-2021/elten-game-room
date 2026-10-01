@@ -20,6 +20,11 @@ module GameRoomGames
     ].freeze
 
     def id; "rummy"; end
+    def notification_option_keys(_options); %w[elimination manipulation]; end
+    def notification_variant(options)
+      [notification_flag(options, "elimination", _("Elimination mode"), _("Normal scoring")),
+        notification_flag(options, "manipulation", _("with combination manipulation"), _("without combination manipulation"))].compact.join(", ")
+    end
 
     def event_sound_cues(event:, before_replay:, after_replay:, history:, viewer:, random_variant:)
       GameRoomRoundCues.for_event(history, after_replay, viewer, assets: %w[shuffle draw play])

@@ -32,6 +32,12 @@ module GameRoomGames
       "farkle"
     end
 
+    def notification_option_keys(_options); %w[score_limit]; end
+    def notification_variant(options)
+      value = options["score_limit"]
+      value.is_a?(Integer) && value.positive? ? (_("Score limit: %{points}") % {points: value}) : ""
+    end
+
     def name
       _("Farkle")
     end

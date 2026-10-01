@@ -37,6 +37,7 @@ module GameRoomGames
       raise "Invalid server time" unless stamp.is_a?(Time)
 
       @date = GameRoomKrowa::WarsawDate.today_id(clock: -> { stamp.utc })
+      @server_time = stamp.to_f
       # Migrate local completions from preview builds before treating the
       # server as authoritative. A missing protected-table stamp fails closed.
       if @store.available?
@@ -87,10 +88,14 @@ module GameRoomGames
       return @error if @error
       return unavailable_message if completed_today?
 
+      assignment = @store.assign_daily(@date, now: @server_time)
+      return access_error_message unless assignment
+
       case @store.record_daily_open(@date)
       when :opened
         @completed = true
         options["__daily_day"] = @date
+        options["__daily_assignment"] = assignment
         true
       when :already_used
         @completed = true

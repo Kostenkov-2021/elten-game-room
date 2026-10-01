@@ -22,6 +22,7 @@ module GameRoomGames
     end
 
     def id; "taboo"; end
+    def notification_option_keys(_options); %w[content_language_id content_set_id]; end
     def name; _("Taboo"); end
     def minimum_players; 4; end
     def maximum_players; 8; end

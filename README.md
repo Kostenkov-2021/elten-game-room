@@ -1,6 +1,6 @@
-# ELTEN Game Room
+# Power Games
 
-ELTEN Game Room to dostępny zestaw gier wieloosobowych działający jako program
+Power Games (dawniej ELTEN Game Room) to dostępny zestaw gier wieloosobowych działający jako program
 dla ELTEN-a. Repozytorium zaczyna historię od opublikowanej wersji **1.1.0,
 build 176**. Kod aplikacji, tłumaczenie i dźwięki w tym pierwszym stanie są
 bezpośrednią kopią tego buildu.
@@ -102,7 +102,7 @@ to możliwe — krótki fragment logu bez danych prywatnych.
 
 ## Licencja i zasoby
 
-Kod ELTEN Game Room jest udostępniany na licencji GNU General Public License
+Kod Power Games jest udostępniany na licencji GNU General Public License
 version 3. Pełny tekst znajduje się w pliku [LICENSE](LICENSE). Pochodzenie i
 odrębne warunki dodatkowych składników opisuje
 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).

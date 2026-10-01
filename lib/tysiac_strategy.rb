@@ -61,7 +61,15 @@ module TysiacPlanning
       @game = game
       @replay = replay
       @state = replay.state
-      @players = @state[:players].to_a
+      @players = game.send(:round_players, @state).to_a
+      @teams = @state.fetch(:teams, {})
+      # The planner's per-seat view refers to a shared account for partners.
+      # Production scoring still writes each team exactly once.
+      unless @teams.empty?
+        @state = @state.merge(%i[scores barrels zero_rounds surrender_uses].to_h do |field|
+          [field, @players.to_h { |player| [player, @state[field].fetch(@teams.fetch(player))] }]
+        end)
+      end
       @actor = player_key(actor)
       @random = Random.new(random_seed(random_source))
       @ranks = game.class::RANKS
@@ -100,7 +108,7 @@ module TysiacPlanning
         next if simulated == nil
 
         finish_round(simulated)
-        simulated[:round_points].fetch(@actor, 0).to_i
+        collected_points(simulated, @actor)
       end
       return nil if outcomes.empty?
 
@@ -185,7 +193,7 @@ module TysiacPlanning
         simulated = clone_world(world)
         simulated[:contract] = simulation_contract
         finish_round(simulated)
-        simulated[:round_points].fetch(@actor, 0).to_i
+        collected_points(simulated, @actor)
       end
       statistics = bids.map do |action, bid|
         made = outcomes.count { |points| points >= bid }
@@ -235,7 +243,15 @@ module TysiacPlanning
       following = recipients[pass_index + 1]
       current_recipient = current == nil ? nil : player_key(current)
       next_recipient = following == nil ? nil : player_key(following)
-      candidates = if next_recipient == nil
+      candidates = if !@teams.empty?
+        remaining = recipients.drop(pass_index)
+        card_actions.flat_map do |action|
+          first = action["card"].to_s
+          team_pass_sequences(@state[:hands].fetch(@actor) - [first], remaining.drop(1)).map do |rest|
+            [action, [[current_recipient, first]] + rest]
+          end
+        end
+      elsif next_recipient == nil
         card_actions.map { |action| [action, [[current_recipient, action["card"].to_s]]] }
       else
         card_actions.flat_map do |first_action|
@@ -260,7 +276,7 @@ module TysiacPlanning
           simulated[:taker] = @actor
           simulated[:contract] = @state[:contract].to_i
           finish_round(simulated)
-          simulated[:round_points].fetch(@actor, 0).to_i
+          collected_points(simulated, @actor)
         end
         next [action, -Float::INFINITY, 0.0] if outcomes.empty?
 
@@ -270,8 +286,8 @@ module TysiacPlanning
         lower_quartile = ordered[((ordered.length - 1) * 0.25).floor]
         mean = outcomes.sum / outcomes.length.to_f
         heuristic = @game.bot_action_score(@replay, @actor, action).to_f
-        pass_risk = passes.sum do |_recipient, card|
-          pass_marriage_risk_penalty(card, hand: @state[:hands].fetch(@actor, []))
+        pass_risk = passes.sum do |recipient, card|
+          allied?(recipient, @actor) ? 0 : pass_marriage_risk_penalty(card, hand: @state[:hands].fetch(@actor, []))
         end
         [
           action,
@@ -407,7 +423,7 @@ module TysiacPlanning
       opponents = @players.reject { |player| same_player?(player, @actor) }
       sizes = opponents.to_h { |player| [player, @state[:hands].fetch(player, []).length] }
       talon_size = unknown.length - sizes.values.sum
-      expected = two_players? ? @game.send(:talon_size, @state) * 2 : 3
+      expected = @game.send(:talon_size, @state) * (two_players? ? 2 : 1)
       return nil if talon_size != expected
 
       shuffled = deterministic_shuffle(unknown, @random)
@@ -433,6 +449,9 @@ module TysiacPlanning
       ten_cards = simulated[:hands].fetch(taker, []).to_a + world.fetch(:talon, []).to_a
       pair = if two_players?
         ranked_discards(ten_cards, @game.send(:talon_size, @state), actor: taker).first
+      elsif !@teams.empty?
+        recipients = @players.reject { |player| same_player?(player, taker) }
+        team_pass_sequences(ten_cards, recipients, actor: taker, width: 1).first&.map(&:last)
       else
         recommended_pass_pair(ten_cards, actor: taker)
       end
@@ -459,6 +478,23 @@ module TysiacPlanning
 
     def two_players?
       @game.send(:two_players?, @state)
+    end
+
+    # Keep every first-card candidate, but bound the continuation beam. Only
+    # the bidder's own hand is used here, never a real partner's hidden hand.
+    def team_pass_sequences(hand, recipients, actor: @actor, width: 3)
+      return [[]] if recipients.empty?
+      recipient = recipients.first
+      candidates = hand.sort_by do |card|
+        marriage = breaks_marriage?(hand, card) ? 2_000 : 0
+        value = @card_points.fetch(card_rank(card)) * 18 + card_strength(card) * 12
+        [marriage + (allied?(recipient, actor) ? -value : value), card]
+      end.first(width)
+      candidates.flat_map do |card|
+        team_pass_sequences(hand - [card], recipients.drop(1), actor: actor, width: width).map do |rest|
+          [[recipient, card]] + rest
+        end
+      end
     end
 
     def ranked_discards(hand, count, actor:)
@@ -503,7 +539,7 @@ module TysiacPlanning
       return nil if barrel_active?(@actor)
 
       threatened = player_key(@state[:current_bidder])
-      return nil if threatened == nil || same_player?(threatened, @actor)
+      return nil if threatened == nil || allied?(threatened, @actor)
       threatened_barrel = @state[:barrels].fetch(threatened, { active: false })
       return nil if threatened_barrel[:active] != true
 
@@ -559,7 +595,7 @@ module TysiacPlanning
         next if simulated == nil
 
         finish_round(simulated)
-        simulated[:round_points].fetch(bidder, 0).to_i
+        collected_points(simulated, bidder)
       end
       return 0.0 if outcomes.empty?
 
@@ -607,7 +643,7 @@ module TysiacPlanning
       award = (raw_award / 5.0).ceil * 5
       target = @state[:options]["score_limit"].to_i
       @players.any? do |player|
-        next false if same_player?(player, @actor) || barrel_active?(player)
+        next false if allied?(player, @actor) || barrel_active?(player)
 
         @state[:scores].fetch(player, 0).to_i + award >= target
       end
@@ -732,9 +768,7 @@ module TysiacPlanning
         trump: @state[:trump],
         current_trick: @state[:current_trick].to_a.map(&:dup),
         trick_number: @state[:trick_number].to_i,
-        round_points: @state[:round_points].each_with_object({}) do |(player, points), result_hash|
-          result_hash[player_key(player)] = points.to_i
-        end,
+        round_points: @players.to_h { |player| [player, @state[:round_points].fetch(player, 0).to_i] },
         scores: @state[:scores].each_with_object({}) do |(player, points), result_hash|
           result_hash[player_key(player)] = points.to_i
         end,
@@ -791,7 +825,7 @@ module TysiacPlanning
       preserving = legal.reject { |card| breaks_marriage?(hand, card) }
       legal = preserving if !preserving.empty?
       taker = world[:taker]
-      need = [world[:contract] - world[:round_points].fetch(taker, 0), 0].max
+      need = [world[:contract] - collected_points(world, taker), 0].max
 
       if world[:current_trick].empty?
         certain = legal.select { |card| guaranteed_lead_winner?(world, actor, card) }
@@ -802,13 +836,21 @@ module TysiacPlanning
       end
 
       current_winner = trick_winner(world[:current_trick], world[:trump])
+      if !@teams.empty? && allied?(current_winner, actor)
+        donated = legal.select do |card|
+          allied?(trick_winner(world[:current_trick] + [{player: actor, card: card}], world[:trump]), actor)
+        end
+        if world[:current_trick].length == @players.length - 1 && !donated.empty?
+          return ["normal", donated.max_by { |card| @card_points.fetch(card_rank(card)) }]
+        end
+      end
       trick_points = world[:current_trick].sum { |play| @card_points.fetch(card_rank(play[:card])) }
-      avoids_third_zero = world[:round_points].fetch(actor, 0).to_i == 0 &&
+      avoids_third_zero = collected_points(world, actor) == 0 &&
         world[:zero_rounds].fetch(actor, 0).to_i >= 2
-      wants_trick = if same_player?(actor, taker)
+      wants_trick = if allied?(actor, taker)
         need > 0 || trick_points >= 10 || opponent_close_to_winning?(world, actor)
       else
-        same_player?(current_winner, taker) || trick_points >= 10 || avoids_third_zero
+        allied?(current_winner, taker) || trick_points >= 10 || avoids_third_zero
       end
       return ["normal", legal.min_by { |card| rollout_card_cost(card) }] if !wants_trick
 
@@ -935,10 +977,10 @@ module TysiacPlanning
 
     def evaluate(world, actor)
       taker = world[:taker]
-      taker_points = world[:round_points].fetch(taker, 0).to_i
+      taker_points = collected_points(world, taker)
       made = taker_points >= world[:contract]
-      actor_points = world[:round_points].fetch(actor, 0).to_i
-      if same_player?(actor, taker)
+      actor_points = collected_points(world, actor)
+      if allied?(actor, taker)
         value = made ? 12_000.0 : -14_000.0
         value += (taker_points - world[:contract]) * (made ? 8.0 : 35.0)
         return value + match_context_utility(world, actor, made)
@@ -960,9 +1002,9 @@ module TysiacPlanning
       value = deltas.fetch(actor, 0).to_f * 20.0
       value += 50_000.0 if projected.fetch(actor, 0) >= world[:score_limit].to_i
       value -= 50_000.0 if world[:players].any? do |player|
-        !same_player?(player, actor) && projected.fetch(player, 0) >= world[:score_limit].to_i
+        !allied?(player, actor) && projected.fetch(player, 0) >= world[:score_limit].to_i
       end
-      opponent_gain = world[:players].reject { |player| same_player?(player, actor) }
+      opponent_gain = world[:players].reject { |player| allied?(player, actor) }
         .map { |player| deltas.fetch(player, 0) }.max.to_i
       value - [opponent_gain, 0].max * 4.0
     end
@@ -970,8 +1012,8 @@ module TysiacPlanning
     def projected_round_delta(world, player, taker_made)
       barrel = world[:barrels].fetch(player, { active: false, deals_left: 0 })
       active_barrel = barrel[:active] == true
-      points = world[:round_points].fetch(player, 0).to_i
-      delta = if same_player?(player, world[:taker])
+      points = collected_points(world, player)
+      delta = if allied?(player, world[:taker])
         if active_barrel
           if taker_made && world[:contract].to_i >= 120
             world[:contract].to_i
@@ -989,8 +1031,8 @@ module TysiacPlanning
         (points.to_f / 5.0).round * 5
       end
 
-      if active_barrel && !(!taker_made && same_player?(player, world[:taker])) &&
-          !(taker_made && same_player?(player, world[:taker]) && world[:contract].to_i >= 120) &&
+      if active_barrel && !(!taker_made && allied?(player, world[:taker])) &&
+          !(taker_made && allied?(player, world[:taker]) && world[:contract].to_i >= 120) &&
           barrel[:deals_left].to_i <= 1
         delta -= 120
       elsif !active_barrel && points == 0 && world[:zero_rounds].fetch(player, 0).to_i >= 2
@@ -1001,7 +1043,7 @@ module TysiacPlanning
 
     def opponent_close_to_winning?(world, actor)
       world[:players].any? do |player|
-        !same_player?(player, actor) &&
+        !allied?(player, actor) &&
           world[:scores].fetch(player, 0).to_i >= world[:score_limit].to_i - 120
       end
     end
@@ -1140,6 +1182,16 @@ module TysiacPlanning
 
     def same_player?(first, second)
       first.to_s.casecmp?(second.to_s)
+    end
+
+    def allied?(first, second)
+      return true if same_player?(first, second)
+      team = @teams[player_key(first)]
+      team && team == @teams[player_key(second)]
+    end
+
+    def collected_points(world, actor)
+      world[:players].sum { |player| allied?(player, actor) ? world[:round_points].fetch(player, 0).to_i : 0 }
     end
 
     def barrel_active?(actor)

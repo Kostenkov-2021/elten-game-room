@@ -3,6 +3,7 @@ require_relative "game_room_background"
 require_relative "network_errors"
 require_relative "game_room_clock"
 require_relative "notification_time"
+require_relative "table_variant"
 require_relative "table_query_snapshot"
 
 # Public interests, not saved games. Identity always comes from the server's
@@ -317,8 +318,9 @@ module GameRoomTableWatch
   # off the UI thread. Uncertain writes are never retried as successful delivery
   # is unknowable; only an explicit 429 may be retried after backoff.
   class Sender
-    def initialize(user:, repository:, online:, send_notice:, worker: nil, current_user: -> { Session.name }, clock: nil)
+    def initialize(user:, repository:, online:, send_notice:, worker: nil, current_user: -> { Session.name }, clock: nil, variant: ->(_row) { nil })
       @user, @repository, @online, @send_notice = user.to_s, repository, online, send_notice
+      @variant = variant
       @worker = worker || GameRoomBackground::Work.new(runtime: defined?(Programs) ? Programs.current_runtime : nil)
       @current_user, @clock, @queue, @seen = current_user, clock || Clock.new, [], {}
       @next_at = 0.0
@@ -333,7 +335,7 @@ module GameRoomTableWatch
       @seen.delete_if { |_id, at| @clock.call - at > 600 }
       now = @clock.call.to_i
       @queue << { metadata: { "format" => 1, "game" => row["game"], "table_id" => row["__id"].to_i,
-        "live_session_id" => key, "created_at" => now, "expires_at" => now + 300 }, recipients: nil }
+        "live_session_id" => key, "created_at" => now, "expires_at" => now + 300, "variant" => @variant.call(row) }, recipients: nil }
       true
     end
 

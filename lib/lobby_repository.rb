@@ -82,6 +82,10 @@ class LobbyRepository
     @transport.discovered_roster(snapshot.table)
   end
 
+  def discovered_options(snapshot)
+    @transport.discovered_options(snapshot.table)
+  end
+
   def snapshot_for(row, force: false)
     snapshot = force ? @transport.room_snapshot(row, force: true) : @transport.room_snapshot(row)
     return snapshot == nil ? nil : native_snapshot(snapshot)

@@ -132,6 +132,7 @@ module GameRoomTableWatchRuntime
     @table_watch_sender ||= begin
       client = EltenLink::Client.new
       GameRoomTableWatch::Sender.new(user: receiver.user, repository: table_watch_repository,
+        variant: ->(table) { GameRoomTableVariant.payload(self::GAME_REGISTRY.build(table["game"]), table["game_options"]) },
         clock: @table_watch_clock,
         online: -> { EltenLink::Users.online(client) }, send_notice: ->(user, metadata, expires) {
           EltenLink::Apps.notify(client, appid: server_app_uuid, user: user, type: GameRoomTableWatch::TYPE,

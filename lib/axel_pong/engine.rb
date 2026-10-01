@@ -416,7 +416,14 @@ module GameRoomPong
     def cue(kind, side)
       @edge_attempts[side] += 1 if kind == 'edge' && side != nil
       @event_seq += 1
-      @events << [@event_seq, kind, side, @ball['x'].round(3), @ball['y'].round(3)]
+      # A queued footstep belongs to the position at which it happened, not
+      # the paddle's final position after subsequent moves in the same frame.
+      x, y = if %w[step edge].include?(kind)
+        [@paddles[side].round(4), @rotation.team(side) * DEPTH]
+      else
+        [@ball['x'].round(3), @ball['y'].round(3)]
+      end
+      @events << [@event_seq, kind, side, x, y]
       @events.shift while @events.length > 8
     end
 

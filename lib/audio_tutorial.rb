@@ -63,7 +63,7 @@ class GameRoomAudioTutorial
     volume = @program.respond_to?(:game_room_sound_volume, true) ? @program.send(:game_room_sound_volume, asset).to_f : 1.0
     enabled = !@program.respond_to?(:game_room_sound_enabled?, true) || @program.send(:game_room_sound_enabled?, asset)
     if !enabled || volume <= 0
-      speak(GameRoomContent.utf8(_("This sound is muted in Game Room settings.")))
+      speak(GameRoomContent.utf8(_("This sound is muted in Power Games settings.")))
       return
     end
     @sound = @program.play_sound_from_asset(asset, volume: volume, sample: false, loop: false)

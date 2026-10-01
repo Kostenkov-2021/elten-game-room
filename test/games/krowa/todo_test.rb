@@ -17,9 +17,6 @@ repository = GameRoomKrowa::WordRepository.default
 %w[mural murale gej geje zapadnia zapadnie aronia aronie].each do |word|
   assert(repository.words_of_length(word.length).include?(word), "daily pool excludes new noun: #{word}")
 end
-assert(bank.daily(Time.utc(2026, 9, 25, 12)).last == "idy", "daily selection ignores the expanded pool")
-assert(bank.daily(Time.utc(2026, 9, 26, 12)).last == "kuesty", "past daily word was not recalculated")
-assert(bank.daily(Time.utc(2026, 9, 27, 12)).last == "listowia", "current daily word was not recalculated")
 
 game = KrowaTestGame.new
 {3 => 15, 4 => 24, 5 => 30, 6 => 42, 7 => 49, 8 => 64}.each do |length, count|
@@ -41,6 +38,9 @@ assert(random.guess("Alice", "fuf") == :ok, "random word lost the local dictiona
 
 tables = KrowaTestTables.new
 store = GameRoomGames::KrowaServerStore.new(server_tables: tables, bank: bank, user: "Alice")
+assignments = tables.fetch("krowa_daily_assignments")
+assignments.insert("day_key" => 20260926, "assignment" => GameRoomKrowa::DailyAssignment.seal("2026-09-26", "arfa"))
+assignments.insert("day_key" => 20260927, "assignment" => GameRoomKrowa::DailyAssignment.seal("2026-09-27", "bele"))
 assert(store.publish_daily("2026-09-26", 7) == :unavailable, "unclaimed daily result published")
 assert(store.record_daily_open("2026-09-26") == :opened, "past daily claim failed")
 assert(store.publish_daily("2026-09-26", 7) == :published, "daily result not published")
@@ -60,10 +60,11 @@ assert(rank.map { |row| [row["__insertion_user"], row["attempts"]] } == [["Bob",
 
 leaderboards = GameRoomGames::KrowaLeaderboardClient.new(game.program, game.game, store: store)
 rows = leaderboards.send(:daily_date_rows, %w[2026-09-27 2026-09-26], "2026-09-27")
-assert(rows == [["2026-09-27", ""], ["2026-09-26", "kuesty"]], "daily date list reveals today's answer")
+assert(rows == [["2026-09-27", ""], ["2026-09-26", "arfa"]], "daily date list reveals today's answer or recomputes history")
 today = leaderboards.send(:daily_ranking_header, "2026-09-27", "2026-09-27")
 old = leaderboards.send(:daily_ranking_header, "2026-09-26", "2026-09-27")
-assert(!today.include?("listowia") && old.include?("kuesty"), "daily ranking headers reveal or hide the wrong word")
+assert(!today.include?("bele") && old.include?("arfa"), "daily ranking headers reveal or hide the wrong word")
+assert(store.daily_word("2026-09-25", today: "2026-09-27") == nil, "unknown history guessed from current dictionary")
 
 501.times do |index|
   scores.user = "Player#{index}"

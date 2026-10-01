@@ -10,6 +10,31 @@ module GameRoomGames
         []
       end
 
+      # Explicit opt-in: never copy private/internal settings into notices.
+      def notification_option_keys(_options)
+        []
+      end
+
+      def notification_variant(options)
+        notification_option_keys(options).filter_map { |key| notification_choice(options, key) }.join(", ")
+      end
+
+      def notification_choice(options, key)
+        return nil unless options.key?(key)
+        if key == GameRoomContent::SET_OPTION_KEY
+          return available_content_sets(options[GameRoomContent::LANGUAGE_OPTION_KEY]).find { |set| set.id == options[key] }&.title
+        end
+        definition = effective_option_definitions(options).find { |item| item.key.to_s == key }
+        choice = definition&.choices.to_a.find { |item| item.value.to_s == options[key].to_s }
+        choice && GameRoomContent.utf8(choice.label)
+      end
+
+      def notification_flag(options, key, yes, no)
+        return yes if options[key] == true
+        return no if options[key] == false
+        nil
+      end
+
       # Local view persistence is declared by its game and never serialized
       # into table options, actions, subscriptions or a saved game.
       def board_preference_definitions

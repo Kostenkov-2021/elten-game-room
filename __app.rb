@@ -1,10 +1,10 @@
 =begin Elten3AppInfo
 {
   "id": "c24d98cc-9ccd-4d50-b801-459da324ff60",
-  "name": "ELTEN Game Room",
+  "name": "Power Games",
   "description": "Accessible multiplayer games for ELTEN users.",
-  "version": "2.0.4.2",
-  "build_id": "241",
+  "version": "2.0.4.3",
+  "build_id": "242",
   "EltenAPIVersion": "3.0.4",
   "main_language": "en",
   "supported_languages": ["en", "pl", "cs", "es", "ru"],
@@ -19,11 +19,11 @@
   "main_class": "EltenGameRoom",
   "platforms": ["all"],
   "menu": {
-    "main": "ELTEN Game Room"
+    "main": "Power Games"
   },
   "required_assets": {
     "sounds": [
-      "connect", "disconnect", "chatmsg", "notice", "table_notice", "buzzer", "buzzer2", "war_open", "ding", "shuffle", "draw", "draw2",
+      "connect", "disconnect", "chatmsg", "notice", "table_notice", "invitation_rejected", "buzzer", "buzzer2", "war_open", "ding", "shuffle", "draw", "draw2",
       "farkle", "cht-roll-dice", "cht-bank", "cht-lost-points", "cht-cat-minus-8", "cht-cat-plus-8",
       "hit1", "hit_ship1", "hit_ship2", "rocket_launch1", "rocket_launch2", "rocket_launch3", "rocket_miss",
       "interception", "lose1", "lose3", "play", "play2", "replay",
@@ -160,8 +160,8 @@ class EltenGameRoom < Program
   extend GameRoomTableWatchRuntime
   extend GameRoomContactFiltersRuntime
   extend GameRoomAnalyticsRuntime
-  GAME_ROOM_VERSION = "2.0.4.2".freeze
-  GAME_ROOM_BUILD_ID = 241
+  GAME_ROOM_VERSION = "2.0.4.3".freeze
+  GAME_ROOM_BUILD_ID = 242
   GAME_ROOM_CAPABILITIES = ["invitations", "live_sessions", "live_session_stack"].freeze
   LOBBY_ACTIVITY_POLL_INTERVAL = 5.0
 
@@ -237,7 +237,7 @@ class EltenGameRoom < Program
       extension.stop { table_watch_stop; contacts_stop; stop_analytics }
       extension.main_tab(
         "tables",
-        label: _("Game Room"),
+        label: _("Power Games"),
         visible: -> { normalized_settings["widget_enabled"] }
       ) do |context|
         current = context.current_control
@@ -303,7 +303,8 @@ class EltenGameRoom < Program
       receiver = table_watch_receiver
       if receiver.visible?(notification)
         sound = nil if receiver.received?(notification)
-        title = [notification.sender, GAME_REGISTRY.name(metadata["game"])].map { |text| GameRoomContent.utf8(text) }.join(", ")
+        variant = GameRoomTableVariant.text(GAME_REGISTRY.build(metadata["game"]), metadata["variant"])
+        title = [notification.sender, GAME_REGISTRY.name(metadata["game"]), variant].map { |text| GameRoomContent.utf8(text) }.reject(&:empty?).join(", ")
         notification.presentation(title: title, body: GameRoomContent.utf8(_("New table")),
           sound: sound, action: :open_new_table)
       else
@@ -314,12 +315,15 @@ class EltenGameRoom < Program
           body: _("This table announcement has expired or is no longer available."), sound: nil).suppress_default!
       end
     when "game_room.invitation"
+      variant = GameRoomTableVariant.text(GAME_REGISTRY.build(metadata["game"]), metadata["variant"])
+      game_label = GAME_REGISTRY.name(metadata["game"]) || metadata["game_name"].to_s
+      game_label = [game_label, variant].reject(&:empty?).join(", ")
       presentation = notification.presentation(
         title: _("Game invitation"),
         body: (metadata["continuation"] == true ? _("%{sender} invites you to resume %{table} (%{game}).") : _("%{sender} invites you to %{table} (%{game}).")) % {
           sender: metadata["sender"].to_s,
           table: metadata["table_name"].to_s,
-          game: metadata["game_name"].to_s
+          game: game_label
         },
         sound: sound,
         action: :open_invitation
@@ -518,7 +522,7 @@ class EltenGameRoom < Program
     if state == :stamp_required
       alert(_("Development mode without server table access. Global lobby history and sending invitations are unavailable."))
     else
-      alert(_("Server table access could not be checked. Global lobby history and sending invitations are unavailable until you reopen Game Room."))
+      alert(_("Server table access could not be checked. Global lobby history and sending invitations are unavailable until you reopen Power Games."))
     end
   end
 
@@ -574,7 +578,7 @@ class EltenGameRoom < Program
         open_main_option(selected_index)
         reset_lobby_activity_cursor
       when :exit
-        return if confirm(_("Do you want to exit ELTEN Game Room?"))
+        return if confirm(_("Do you want to exit Power Games?"))
       when :invitations
         switch_to_invited_table
         reset_lobby_activity_cursor
@@ -847,7 +851,7 @@ class EltenGameRoom < Program
 
   def show_game_rules(game, options: nil)
     if game == nil
-      alert(_("Rules for this game are not available in this version of ELTEN Game Room."))
+      alert(_("Rules for this game are not available in this version of Power Games."))
       return
     end
 
@@ -1119,6 +1123,13 @@ class EltenGameRoom < Program
       roster_reader = GameRoomTableRosterReader.new(loader: ->(snapshot) { @lobby.discovered_roster(snapshot) },
         selected: -> { snapshots[tables.index.to_i] }, id_for: ->(snapshot) { @lobby.table_id(snapshot.table) },
         active: -> { form.fields[form.index.to_i].equal?(tables) }, speaker: ->(text) { speak(text) })
+      options_reader = GameRoomTableOptionsReader.new(loader: ->(snapshot) { @lobby.discovered_options(snapshot) },
+        selected: -> { snapshots[tables.index.to_i] }, id_for: ->(snapshot) { @lobby.table_id(snapshot.table) },
+        active: -> { form.fields[form.index.to_i].equal?(tables) }, speaker: ->(text) { speak(text) },
+        game_for: ->(id) { game_definition(id) })
+      tables.on(:move) { options_reader.invalidate }
+      tables.on(:blur) { options_reader.invalidate }
+      form.add_timer(FormTimer.new(0.1, repeat: true) { options_reader.update })
       tables.on(:move) { roster_reader.invalidate }
       tables.on(:blur) { roster_reader.invalidate }
       form.add_timer(FormTimer.new(0.1, repeat: true) { roster_reader.update })
@@ -1136,7 +1147,7 @@ class EltenGameRoom < Program
       form.bind_context do |menu|
         menu.option(_("Read the table participants"), nil, "w") { roster_reader.request }
         menu.option(_("Read the table variant and settings"), nil, "r") do
-          announce_table_options(game_definition(game_id), snapshots[tables.index.to_i]&.table)
+          options_reader.request
         end
       end
       GameRoomContextHelp.replace([tables], [GameRoomContextHelp.shortcut_tip(
@@ -1146,6 +1157,7 @@ class EltenGameRoom < Program
         form.wait
       ensure
         roster_reader.close
+        options_reader.close
       end
       return false if action != :join
 
@@ -1362,7 +1374,7 @@ class EltenGameRoom < Program
       end
       @table_network_view = {layout: layout, table_id: table_id, synchronizer: synchronizer}
       layout.activity_cursor = activity_cursor
-      layout.primary_button.label = _("Resume game") if own_table && state.session == nil && !row["resume_save_id"].to_s.empty?
+      layout.primary_button.label = table_start_label(state)
       if state.active? || state.finished?
         current_screen, prepared_screen = prepared_screen, nil
         result = run_game_screen(state.session, state.game, table: row, prepared_screen: current_screen)
@@ -2113,6 +2125,7 @@ class EltenGameRoom < Program
       "table_name" => row["name"].to_s,
       "game" => row["game"].to_s,
       "game_name" => game_name(row["game"]),
+      "variant" => GameRoomTableVariant.payload(game_definition(row["game"]), row["game_options"]),
       "sender" => Session.name.to_s,
       "created_at" => now,
       "expires_at" => now + InvitationRepository::DEFAULT_TTL
@@ -2151,6 +2164,13 @@ class EltenGameRoom < Program
 
   def pong_preferences
     @pong_preferences ||= GameRoomPong::Preferences.normalize(game_room_settings['pong']).freeze
+  end
+
+  def show_krowa_settings
+    client = game_definition("krowa").build_client(self, **game_local_services)
+    client.show_settings
+  ensure
+    client&.close
   end
 
   def show_pong_settings(tick: nil, clock: -> { Process.clock_gettime(Process::CLOCK_MONOTONIC) })
@@ -2192,12 +2212,14 @@ class EltenGameRoom < Program
       creator: ->(slot) { launch_game_room_entry(:create_table_from_widget, slot) },
       invitations: -> { launch_game_room_entry(:accept_invitation_from_widget) },
       roster: ->(snapshot) { @lobby.discovered_roster(snapshot) },
+      table_options: ->(snapshot) { @lobby.discovered_options(snapshot) },
+      game_for: ->(id) { game_definition(id) },
       labeler: ->(snapshot) { widget_table_label(snapshot) },
       manual_refresh: lambda {
         self.class.contacts_cache.snapshot(force: true) if game_room_settings(reload: true)["widget_contacts_only"]
       },
       id_for: ->(snapshot) { @lobby.table_id(snapshot.table) },
-      foreground: ->(&operation) { run_network_task(_("Loading Game Room tables"), silent: true, &operation) },
+      foreground: ->(&operation) { run_network_task(_("Loading Power Games tables"), silent: true, &operation) },
       active: -> { widget_active? }
     )
     self.class.manage(@widget_control) if self.class.respond_to?(:manage)
@@ -2591,7 +2613,7 @@ class EltenGameRoom < Program
     entries.to_a.select { |entry| entry.id.to_i > after_id.to_i }.each do |entry|
       next if entry.kind == "chat" && GameRoomParticipants.same?(entry.actor, Session.name)
 
-      play_game_sound("chatmsg") if entry.kind == "chat"
+      GameRoomSounds.table_activity(self, entry, viewer: Session.name)
       text = @table_activity.text_for(entry, game_name: ->(id) { game_name(id) }, global: false)
       if !text.to_s.empty? && GameRoomBackgroundPolicy.speech?(self, covered: covered)
         speak(text, stop: false, break_sequence: false)
@@ -2640,7 +2662,7 @@ class EltenGameRoom < Program
 
     game = state.game || game_definition(row["game"])
     if game == nil
-      alert(_("This game is not supported by this version of ELTEN Game Room."))
+      alert(_("This game is not supported by this version of Power Games."))
       return
     end
 
@@ -2716,6 +2738,19 @@ class EltenGameRoom < Program
     result
   end
 
+  def table_start_label(state)
+    return _("Resume game") if state.session == nil && !state.room.table["resume_save_id"].to_s.empty?
+    game = state.game
+    players = state.room.game_participants
+    if game
+      options = game.options_for_team_roster(game.options_from_json(state.room.table["game_options"]), players: players)
+      if game.team_assignment(options, players: players) && !game.prepared_team_assignment(options, players: players)
+        return _("Choose teams")
+      end
+    end
+    _("Start game")
+  end
+
   def configure_team_assignment(game, options, participants)
     assignment = game.team_assignment(options, players: participants)
     return options if assignment == nil
@@ -2726,7 +2761,7 @@ class EltenGameRoom < Program
       players = GameRoomScreens::TeamList.new(assignment, index: player_index)
       change_button = Button.new(_("Change team"))
       automatic_button = Button.new(_("Choose teams randomly"))
-      start_button = Button.new(_("Accept"))
+      start_button = Button.new(_("Accept teams"))
       cancel_button = Button.new(_("Cancel"))
       form = GameRoomUI::Form.new(
         [players, automatic_button, start_button, change_button, cancel_button],
@@ -2891,7 +2926,7 @@ class EltenGameRoom < Program
     self.class.cancel_new_table_notice(table)
     game ||= game_definition(session["game"])
     if game == nil
-      alert(_("This game is not supported by this version of ELTEN Game Room."))
+      alert(_("This game is not supported by this version of Power Games."))
       return
     end
 
@@ -3081,7 +3116,7 @@ class EltenGameRoom < Program
   end
 
   def invalid_player_count_message(game, current_count)
-    return _("This game is not supported by this version of ELTEN Game Room.") if game == nil
+    return _("This game is not supported by this version of Power Games.") if game == nil
 
     minimum = [game.minimum_players.to_i, 1].max
     maximum = [game.maximum_players.to_i, minimum].max

@@ -44,8 +44,12 @@ class KrowaTestGame
     @program = program
     @bank = GameRoomGames::KrowaWordBank.new(GameRoomKrowa::WordRepository.new(%w[kot las dom rak sok mat koza krowa palacz kwiatek krokodyl telewizor]))
     @game = GameRoomGames::Krowa.new(bank: @bank)
+    options = @game.default_options.merge("variant" => variant, "length" => 3, "race_scoring" => scoring)
+    if variant == "daily"
+      options.merge!("__daily_day" => "2026-09-18", "__daily_assignment" => @bank.new_daily_assignment("2026-09-18"))
+    end
     @session = {"__id" => 10, "table_id" => 2, "created_at" => 1_800_000_000,
-      "options" => JSON.generate(@game.default_options.merge("variant" => variant, "length" => 3, "race_scoring" => scoring))}
+      "options" => JSON.generate(options)}
     @repository = KrowaTestRepository.new(players)
     @events = []
     @context = GameRoomGames::ActionContext.new(session_id: 10, table_id: 2, table_owner: "Alice",

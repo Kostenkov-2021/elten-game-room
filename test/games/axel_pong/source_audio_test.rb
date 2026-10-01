@@ -49,7 +49,7 @@ check.call('R06: ringing wall follows the ball without replaying') do
   state['fx'] = [[1, 'wall', nil, 29, 5]]
   a.update(state, viewer: 0, paused: false)
   sound = p.sounds['pong_wall']; plays = sound.plays
-  near(sound.volume, 0.89)
+  near(sound.volume, 0.8)
   state['b'].merge!('x' => 3, 'y' => 15)
   state['fx'] = []
   a.update(state, viewer: 0, paused: false)

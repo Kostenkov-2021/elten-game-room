@@ -61,6 +61,7 @@ module GameRoomPong
 
     def reset
       @last_effect = 0
+      @early_movement_effects = {}
       @movement_cue_sources = {}
       @movement_volume_groups = {}
       crowd_reset
@@ -101,24 +102,19 @@ module GameRoomPong
       paddle, ball = snapshot['p'][viewer], snapshot['b']
       pan, volume = spatial(paddle, ball['x'], ball['y'], court_side(snapshot, viewer))
       level = paused || snapshot['invisible'] || ball['dy'] == 0 ? 0 : volume
-      loop_sound('pong_ball', pan: pan, level: level)
       update_echo(paddle)
       update_crowd(paused)
-      # Update an already ringing impact before processing fresh effects:
-      # a new wall contact still starts with its original impact curve.
-      if @sounds['pong_wall']&.playing?
-        @pans['pong_wall'], @levels['pong_wall'] = pan, volume
-        apply_mix('pong_wall', pan, volume)
-      end
-      snapshot['fx'].each do |number, kind, side, x, y|
-        next if number <= @last_effect
-        @last_effect = number
-        next if paused && !%w[step edge].include?(kind)
-        play_effect(kind, side, x, y, snapshot, viewer)
-        crowd_event('chant') if kind == 'serve'
-        crowd_event('increase') if kind == 'hit'
-      end
+      update_effects(snapshot, viewer, paused)
+      update_wall(snapshot, viewer)
+      loop_sound('pong_ball', pan: pan, level: level)
       update_movement_cues(snapshot, viewer)
+    end
+
+    # Sound an event before the next physics step. The regular presentation
+    # continues spatial playback without replaying these effects.
+    def feedback(snapshot, viewer:, paused:)
+      update_effects(snapshot, viewer, paused, immediate: true)
+      update_wall(snapshot, viewer) unless paused
     end
 
     def silence
@@ -141,6 +137,38 @@ module GameRoomPong
     end
 
     private
+
+    def update_effects(snapshot, viewer, paused, immediate: false)
+      first = snapshot['fx'].first&.first || @last_effect + 1
+      @early_movement_effects.delete_if { |number, _| number < first || number <= @last_effect }
+      snapshot['fx'].each do |number, kind, side, x, y|
+        next if number <= @last_effect
+        if immediate && paused
+          # Movement is allowed while waiting for a serve. Do not consume a
+          # just-received contact yet: readiness is recomputed later this frame.
+          next unless %w[step edge].include?(kind)
+          next if @early_movement_effects[number]
+          @early_movement_effects[number] = true
+        else
+          @last_effect = number
+          next if @early_movement_effects.delete(number)
+        end
+        next if paused && !%w[step edge].include?(kind)
+        play_effect(kind, side, x, y, snapshot, viewer)
+        crowd_event('chant') if kind == 'serve'
+        crowd_event('increase') if kind == 'hit'
+      end
+    end
+
+    def update_wall(snapshot, viewer)
+      return unless @sounds['pong_wall']&.playing?
+      ball = snapshot['b']
+      pan, volume = spatial(snapshot['p'][viewer], ball['x'], ball['y'], court_side(snapshot, viewer))
+      # Original UpdateSounds follows collision handling within the same frame;
+      # the initial impact curve must not persist until another presentation.
+      @pans['pong_wall'], @levels['pong_wall'] = pan, volume
+      apply_mix('pong_wall', pan, volume)
+    end
 
     def load_sound(asset, key)
       sound = @program.create_sound_from_asset(asset, loop: asset == 'pong_ball' || LOOP_ASSETS.include?(asset))
@@ -206,8 +234,8 @@ module GameRoomPong
       when 'step', 'edge'
         return if side == nil
         own = court_side(snapshot, side) == viewer_side if kind == 'step'
-        x = snapshot['p'][side]
         pan, volume = spatial(paddle, x, court_side(snapshot, side) * 20, viewer_side)
+        pan = 0 if side == viewer
         name = kind == 'step' ? (own ? 'pong_move' : 'pong_op_move') : (own ? 'pong_edge' : 'pong_op_edge')
         name = 'pong_move_double' if kind == 'step' && first_team_player?(snapshot, side)
         name = participant_sound_key(name, side)
@@ -218,7 +246,6 @@ module GameRoomPong
           pitch = 1.3 - (x.to_i - 15).abs.clamp(0, 14) * (0.6 / 14)
         end
       when 'hit', 'serve'
-        @sounds['pong_ball'].position = 0 if @sounds['pong_ball']
         name = participant_sound_key(own ? 'pong_hit' : 'pong_op_hit', side)
         pitch = participant_pitch(snapshot, side)
         pan, volume = own ? [0, 1.0] : spatial(paddle, snapshot['p'][side], court_side(snapshot, side) * 20, viewer_side)
@@ -232,7 +259,6 @@ module GameRoomPong
         pan, volume = 0, own ? 2.0 : 0.24
         pitch = 0.9438743126816935 unless own
       when 'shield_hit'
-        @sounds['pong_ball'].position = 0 if @sounds['pong_ball']
         name = "pong_#{own ? 'own' : 'op'}_shield_hit#{@rng.rand(10) + 1}"
         name = 'pong_shield_hit' unless @sounds[name]
         pitch = participant_pitch(snapshot, side)
@@ -243,7 +269,21 @@ module GameRoomPong
       else
         return
       end
-      play_sound(name, pan: pan, level: volume, pitch: pitch)
+      result = play_sound(name, pan: pan, level: volume, pitch: pitch)
+      restart_ball(x, y, snapshot, viewer) if %w[serve hit shield_hit].include?(kind)
+      result
+    end
+
+    def restart_ball(x, y, snapshot, viewer)
+      sound = @sounds['pong_ball']
+      return unless sound
+      # Pygame Channel.play starts from the beginning at zero volume, then
+      # applies contact pan/gain. BASS play alone resumes the old position.
+      sound.volume = 0
+      sound.position = 0
+      pan, volume = spatial(snapshot['p'][viewer], x, y, court_side(snapshot, viewer))
+      level = snapshot['invisible'] || snapshot['b']['dy'] == 0 ? 0 : volume
+      loop_sound('pong_ball', pan: pan, level: level)
     end
 
     def clear_announcements

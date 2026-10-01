@@ -15,6 +15,8 @@ module GameRoomGames
     POINTS_TO_WIN = 7
     SET_BREAK = 5
 
+    def notification_option_keys(_options); %w[difficulty]; end
+
     def id; 'audio_ball'; end
     def name; _('Audio Ball'); end
     def supports_bots?; true; end

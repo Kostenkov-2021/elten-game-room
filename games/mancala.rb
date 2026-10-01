@@ -42,6 +42,11 @@ module GameRoomGames
       "mancala"
     end
 
+    def notification_option_keys(_options); %w[variant]; end
+    def notification_variant(options)
+      {"oware" => _("Oware"), "ayoayo" => _("Ayoayo"), "kalah" => _("Kalah")}.fetch(options["variant"], "")
+    end
+
     def name
       _("Mancala")
     end

@@ -12,7 +12,7 @@ require_relative "../../../lib/axel_pong/bot"
   [viewer, 1 - viewer].each do |side|
     frequencies = [1, 8, 15, 22, 29].map do |position|
       state['p'][side] = position
-      state['fx'] = [[number += 1, 'step', side, 15, 0]]
+      state['fx'] = [[number += 1, 'step', side, position, side * 20]]
       audio.update(state, viewer: viewer, paused: false)
       sound = program.sounds[side == viewer ? 'pong_move' : 'pong_op_move']
       expected_volume = side == viewer ? 0.5 : 0.2
@@ -23,10 +23,10 @@ require_relative "../../../lib/axel_pong/bot"
     assert(frequencies.zip(expected).all? { |actual, target| (actual - target).abs < 0.000001 }, 'paddle pitch is not symmetric about the centre')
   end
   program.gain = 0.2
-  state['fx'] = [[number += 1, 'step', 1 - viewer, 15, 0]]
+  state['fx'] = [[number += 1, 'step', 1 - viewer, state['p'][1 - viewer], (1 - viewer) * 20]]
   audio.update(state, viewer: viewer, paused: false)
   assert((program.sounds['pong_op_move'].volume - 0.04).abs < 0.000001, 'opponent paddle ignored shared volume')
-  state['fx'] = [[number += 1, 'step', viewer, 15, 0]]
+  state['fx'] = [[number += 1, 'step', viewer, state['p'][viewer], viewer * 20]]
   audio.update(state, viewer: viewer, paused: false)
   assert((program.sounds['pong_move'].volume - 0.1).abs < 0.000001, 'own paddle ignored shared volume')
   audio.close

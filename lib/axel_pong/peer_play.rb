@@ -104,7 +104,7 @@ module GameRoomPong
         arcade: options['arcade'], automatic: local_automatic, rally: @replay.state[:rally],
         first_server: first_server, teams: @teams, guest: guest, bots: bots,
         paddles: previous && previous['p'], shields: previous && previous['shields'],
-        movement_feedback: feedback, rng: Random.new(seed))
+        movement_feedback: feedback, rng: Random.new(seed), on_feedback: method(:play_feedback))
       @engine_rally, @engine_epoch = @replay.state[:rally], connection_state.epoch
       @bots = host? ? bots.map { |side| Bot.new(side, level: options['difficulty'], rng: Random.new(seed + side + 1)) } : []
       @bots.each { |bot| bot.step(rally_state.engine) }
@@ -118,6 +118,12 @@ module GameRoomPong
       @peer_disagreements = {}
       connection_state.event_sequence ||= 0
       @hurry_until = point_state.point_reason = nil
+    end
+
+    # Invoked on the existing UI frame: while simulating a local event or
+    # applying validated peer input, never on a network worker.
+    def play_feedback(snapshot)
+      @audio.feedback(snapshot, viewer: audio_side, paused: rally_state.paused)
     end
 
     def receive_peer_packets(now)
@@ -160,9 +166,9 @@ module GameRoomPong
               next if side == @side
               rally_state.engine.remote_paddle(side, body['state']['p'][side], edges: body['state']['edges']&.[](side))
             end
-            body['state']['fx'].each do |number, kind, side, *_|
+            body['state']['fx'].each do |number, kind, side, x, y|
               next unless number > @last_bot_sound
-              rally_state.engine.remote_bot_sound(kind, side)
+              rally_state.engine.remote_bot_sound(kind, side, x, y)
             end
             @last_bot_sound = [@last_bot_sound, body['state']['fx'].last&.first.to_i].max
             rally_state.snapshot ||= rally_state.engine.snapshot

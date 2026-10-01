@@ -36,12 +36,13 @@ module GameRoomGames
       false
     end
 
-    def open_gallery
+    def open_gallery(replay: @last_replay)
+      return gallery_unavailable if replay && !replay.finished?
       prepare_local_services
       gallery_dialog
     end
 
-    def open_settings
+    def show_settings
       prepare_local_services
       settings_dialog
     end
@@ -70,6 +71,7 @@ module GameRoomGames
     end
 
     def before_wait(replay, viewer)
+      @last_replay = replay
       @music_asset = @game.background_music(replay)
       @audio.update(@music_asset)
       @profile&.observe(replay)
@@ -88,9 +90,9 @@ module GameRoomGames
         return true
       end
       case @game.local_action(selection, replay, viewer)
-      when :audio then settings_dialog; true
       when :definition then definition_dialog(selection["word"]); true
-      when :gallery then gallery_dialog; true
+      when :gallery then open_gallery(replay: replay); true
+      when :gallery_unavailable then gallery_unavailable; true
       else false
       end
     end
@@ -138,6 +140,10 @@ module GameRoomGames
     def close; @audio.close; end
 
     private
+
+    def gallery_unavailable
+      alert(_("The gallery is available before the game starts and after it ends."))
+    end
 
     def gallery_dialog
       entries = @profile.data["gallery"]

@@ -83,12 +83,12 @@ module GameRoomScreens
       action = nil
       options = ListBox.new(
         @options,
-        header: _("ELTEN Game Room"),
+        header: _("Power Games"),
         index: @index,
         quiet: true
       )
       require_relative 'game_history_view'
-      history = GameRoomHistory::View.new(header: _("Game Room history"))
+      history = GameRoomHistory::View.new(header: _("Power Games history"))
       history.replace_entries(@history_items)
       open_button = Button.new(_("Open"))
       exit_button = Button.new(_("Exit"))
@@ -292,7 +292,7 @@ module GameRoomScreens
           header: _(GameRoomUI::VOLUME_LABELS.fetch(group)), index: levels.fetch(group), quiet: true)]
       end
       widget_enabled = CheckBox.new(
-        _("Show Game Room on the ELTEN main screen"),
+        _("Show Power Games on the ELTEN main screen"),
         checked: setting_enabled?("widget_enabled")
       )
       widget_games = multiple_game_list(_("Games shown on the main screen"), @values["widget_games"])

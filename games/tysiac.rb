@@ -7,7 +7,7 @@ require_relative "../lib/game_room_localization"
 
 module GameRoomGames
   using GameRoomLocalization::Translations
-  # Three-player Tysiac and the two-player, two-talon variant.
+  # Individual and partnership Tysiac share the same deal and action log.
   # Card identities are reconstructed from the public deal seed, just as in
   # the other card games in Game Room. The interface never announces cards
   # passed by the taker to the other defenders.
@@ -68,6 +68,14 @@ module GameRoomGames
       "tysiac"
     end
 
+    def notification_option_keys(options)
+      %w[variant] + (options["variant"] == "two_players" ? ["talon_size"] : [])
+    end
+    def notification_variant(options)
+      size = notification_choice(options, "talon_size") if options["variant"] == "two_players"
+      [notification_choice(options, "variant"), size && (_("Talons: %{size}") % {size: size})].compact.join(", ")
+    end
+
     def name
       _("1000 card game")
     end
@@ -81,7 +89,25 @@ module GameRoomGames
     end
 
     def maximum_players
-      3
+      4
+    end
+
+    def team_size(options, player_count:)
+      normalize_options(options)["variant"] == "teams" && player_count == 4 ? 2 : 0
+    end
+
+    def bot_allied?(replay, first, second)
+      score_unit(replay.state, first) == score_unit(replay.state, second)
+    end
+
+    def bot_reward(replay, actor)
+      return 0.0 unless replay.finished?
+      replay.winner == score_unit(replay.state, actor) ? 1.0 : -1.0
+    end
+
+    def result_text(replay)
+      return nil unless replay.winner
+      _("%{winner} won the game.") % {winner: unit_label(replay.state, replay.winner)}
     end
 
     def supports_bots?
@@ -103,6 +129,9 @@ module GameRoomGames
       player = player_key(state, actor)
       {
         "players" => state[:players],
+        "round_players" => round_players(state),
+        "teams" => state[:teams],
+        "resting_player" => state[:resting_player],
         "current_player" => state[:current_player],
         "phase" => state[:phase].to_s,
         "round" => state[:round],
@@ -152,7 +181,9 @@ module GameRoomGames
       [
         OptionDefinition.new(key: "variant", label: _("1000 card game variant"), kind: :choice, default: "three_players", choices: [
           OptionChoice.new(value: "three_players", label: _("Three players")),
-          OptionChoice.new(value: "two_players", label: _("Two players"))
+          OptionChoice.new(value: "two_players", label: _("Two players")),
+          OptionChoice.new(value: "four_players", label: _("Four players, one sits out each deal")),
+          OptionChoice.new(value: "teams", label: _("Two teams of two"))
         ]),
         OptionDefinition.new(key: "talon_size", label: _("Cards in each talon"), kind: :choice, default: "3", choices: [
           OptionChoice.new(value: "2", label: _("2 cards")),
@@ -173,9 +204,13 @@ module GameRoomGames
       values = normalize_options(options)
       target = values["score_limit"].to_i
       return _("The target score must be at least 200 and divisible by 5.") if target < 200 || target % 5 != 0
-      required = values["variant"] == "two_players" ? 2 : 3
+      required = {"two_players" => 2, "three_players" => 3, "four_players" => 4, "teams" => 4}.fetch(values["variant"])
       if player_count != nil && player_count.to_i != required
         return _("This 1000 card game variant requires exactly %{count} players.") % { count: required }
+      end
+      if values["variant"] == "teams" && values[GameRoomTeams::OPTION_KEY]
+        seats = values[GameRoomTeams::OPTION_KEY]
+        return _("Choose equal teams with at least two players each.") unless seats.length == 4 && seats.count(0) == 2 && seats.count(1) == 2
       end
 
       nil
@@ -427,7 +462,7 @@ module GameRoomGames
     end
 
     def participant_scores(replay)
-      replay.state[:scores].dup
+      replay.players.to_h { |player| [player, replay.state[:scores].fetch(score_unit(replay.state, player))] }
     end
 
     def shortcut_features
@@ -503,7 +538,7 @@ module GameRoomGames
       if event["action"].to_s == "pass_card" && same_user?(repository.actor_of(event), viewer)
         target, card = event["value"].to_s.split("|", 2)
         if target != nil && card != nil
-          recipients = replay.players.reject do |player|
+          recipients = round_players(replay.state).reject do |player|
             same_user?(player, repository.actor_of(event))
           end
           target_index = recipients.index { |player| same_user?(player, target) }
@@ -532,15 +567,23 @@ module GameRoomGames
     private
 
     def initial_state(players, options)
+      assignment = team_assignment(options, players: players)
+      teams = assignment ? players.to_h { |player| [player, "team:#{assignment.team_index_for(player)}"] } : {}
+      units = assignment ? assignment.team_ids : players
+      order = assignment ? (0...2).flat_map { |seat| assignment.team_ids.map { |unit| assignment.members_for(unit)[seat] } } : players
       {
         players: players,
+        play_order: order,
+        round_players: order,
+        teams: teams,
+        resting_player: nil,
         options: options,
-        scores: players.each_with_object({}) { |player, result| result[player] = 0 },
-        barrels: players.each_with_object({}) do |player, result|
+        scores: units.each_with_object({}) { |player, result| result[player] = 0 },
+        barrels: units.each_with_object({}) do |player, result|
           result[player] = { active: false, deals_left: 0 }
         end,
-        zero_rounds: players.each_with_object({}) { |player, result| result[player] = 0 },
-        surrender_uses: players.each_with_object({}) { |player, result| result[player] = 0 },
+        zero_rounds: units.each_with_object({}) { |player, result| result[player] = 0 },
+        surrender_uses: units.each_with_object({}) { |player, result| result[player] = 0 },
         round: 0,
         dealer_index: nil,
         phase: :awaiting_deal,
@@ -581,25 +624,28 @@ module GameRoomGames
       end
 
       deck = shuffled_deck(seed)
-      hands = {}
-      hand_size = two_players?(state) ? 12 - talon_size(state) : 7
-      state[:players].each_with_index do |player, index|
+      order = state[:play_order]
+      state[:resting_player] = state[:options]["variant"] == "four_players" ? order[dealer] : nil
+      state[:round_players] = order.reject { |player| player == state[:resting_player] }
+      hands = state[:players].to_h { |player| [player, []] }
+      hand_size = two_players?(state) ? 12 - talon_size(state) : (team_game?(state) ? 5 : 7)
+      round_players(state).each_with_index do |player, index|
         hands[player] = deck.slice(index * hand_size, hand_size)
       end
       state[:round] = round
       state[:dealer_index] = dealer
       state[:phase] = :bidding
       state[:hands] = hands
-      state[:talon] = two_players?(state) ? [] : deck.last(3)
+      state[:talon] = two_players?(state) ? [] : deck.last(talon_size(state))
       state[:talons] = two_players?(state) ? deck.last(talon_size(state) * 2).each_slice(talon_size(state)).to_a : []
       state[:set_aside] = []
       state[:discarded_cards] = []
       state[:talon_visible] = false
       state[:bids] = state[:players].each_with_object({}) { |player, result| result[player] = nil }
-      state[:passed] = state[:players].each_with_object({}) { |player, result| result[player] = false }
+      state[:passed] = state[:players].to_h { |player| [player, player == state[:resting_player]] }
       state[:current_bid] = nil
       state[:current_bidder] = nil
-      state[:first_bidder] = state[:players][(dealer + 1) % count]
+      state[:first_bidder] = order[(dealer + 1) % count]
       state[:current_player] = state[:first_bidder]
       state[:taker] = nil
       state[:contract] = nil
@@ -614,13 +660,18 @@ module GameRoomGames
         key: "deal:#{round}",
         text: _("Round %{round} was dealt by %{dealer}. %{player} opens the auction.") % {
           round: round,
-          dealer: participant_name(state[:players][dealer]),
+          dealer: participant_name(order[dealer]),
           player: participant_name(state[:first_bidder])
         },
         event_id: event_id,
         actor: actor,
         kind: :deal
       )
+      if state[:resting_player]
+        history << HistoryEntry.new(key: "rest:#{round}",
+          text: _("%{player} sits out this deal.") % {player: participant_name(state[:resting_player])},
+          event_id: event_id, actor: state[:resting_player], kind: :rest)
+      end
       true
     rescue ArgumentError
       false
@@ -763,7 +814,7 @@ module GameRoomGames
         field: expected,
         value: card
       )
-      if state[:pass_index] >= 2
+      if state[:pass_index] >= pass_recipients(state).length
         state[:phase] = :contract
         state[:current_player] = taker
       end
@@ -852,7 +903,7 @@ module GameRoomGames
         kind: :play
       )
 
-      if state[:current_trick].length < state[:players].length
+      if state[:current_trick].length < round_players(state).length
         state[:current_player] = next_player(state, player)
         return true
       end
@@ -895,7 +946,7 @@ module GameRoomGames
       before_scores = state[:scores].dup
       before_zero_rounds = state[:zero_rounds].dup
       before_surrender_uses = state[:surrender_uses].dup
-      barrel_before = state[:players].each_with_object({}) do |player, result|
+      barrel_before = scoring_units(state).each_with_object({}) do |player, result|
         barrel = state[:barrels][player]
         result[player] = { active: barrel[:active], deals_left: barrel[:deals_left] }
       end
@@ -907,18 +958,18 @@ module GameRoomGames
       end
       settle_barrels_and_winner(state, barrel_before, consume_deal: !surrendered)
 
-      round_results = state[:players].map do |player|
+      round_results = scoring_units(state).map do |player|
         delta = state[:scores][player].to_i - before_scores[player].to_i
-        round_score_text(player, state[:round_points][player].to_i, delta)
+        round_score_text(unit_label(state, player), unit_points(state, player), delta)
       end
       notices = if surrendered
-        taker = state[:taker]
-        [cycle_notice(taker, before_surrender_uses[taker].to_i + 1, :surrender)]
+        taker = score_unit(state, state[:taker])
+        [cycle_notice(unit_label(state, taker), before_surrender_uses[taker].to_i + 1, :surrender)]
       else
-        state[:players].filter_map do |player|
-          next if barrel_before[player][:active] || state[:round_points][player].to_i != 0
+        scoring_units(state).filter_map do |player|
+          next if barrel_before[player][:active] || unit_points(state, player) != 0
 
-          cycle_notice(player, before_zero_rounds[player].to_i + 1, :zero)
+          cycle_notice(unit_label(state, player), before_zero_rounds[player].to_i + 1, :zero)
         end
       end
       (round_results + notices).each_with_index do |text, index|
@@ -930,18 +981,20 @@ module GameRoomGames
           kind: :round_result
         )
       end
-      state[:players].each do |player|
+      scoring_units(state).each do |player|
         next if barrel_before[player][:active] || !state[:barrels][player][:active]
         history << HistoryEntry.new(
           key: "barrel:#{state[:round]}:#{event_id}:#{player}",
-          text: _("%{player} is now on the barrel.") % { player: participant_name(player) },
+          text: _("%{player} is now on the barrel.") % { player: unit_label(state, player) },
           event_id: event_id, actor: player, kind: :barrel
         )
       end
       if state[:winner] != nil
         state[:phase] = :finished
         state[:current_player] = nil
-        history << result_history(event_id: event_id, winner: state[:winner])
+        entry = result_history(event_id: event_id, winner: state[:winner])
+        entry.text = _("%{winner} won the game.") % {winner: unit_label(state, state[:winner])}
+        history << entry
       else
         state[:phase] = :round_complete
         state[:current_player] = nil
@@ -950,9 +1003,9 @@ module GameRoomGames
     end
 
     def apply_played_scores(state, barrel_before)
-      taker = state[:taker]
-      made = state[:round_points][taker].to_i >= state[:contract].to_i
-      state[:players].each do |player|
+      taker = score_unit(state, state[:taker])
+      made = unit_points(state, taker) >= state[:contract].to_i
+      scoring_units(state).each do |player|
         on_barrel = barrel_before[player][:active]
         if same_user?(player, taker)
           if on_barrel
@@ -966,29 +1019,29 @@ module GameRoomGames
             state[:scores][player] += made ? state[:contract].to_i : -state[:contract].to_i
           end
         elsif !on_barrel
-          state[:scores][player] += round_nearest_five(state[:round_points][player])
+          state[:scores][player] += round_nearest_five(unit_points(state, player))
         end
       end
     end
 
     def apply_surrender_scores(state, barrel_before)
-      taker = state[:taker]
+      taker = score_unit(state, state[:taker])
       state[:surrender_uses][taker] += 1
       if state[:surrender_uses][taker] >= 3
         state[:scores][taker] -= BARREL_DISTANCE
         state[:surrender_uses][taker] = 0
       end
       award = round_up_five([60, state[:contract].to_f / 2.0].max)
-      state[:players].each do |player|
+      scoring_units(state).each do |player|
         next if same_user?(player, taker) || barrel_before[player][:active]
         state[:scores][player] += award
       end
     end
 
     def apply_zero_penalties(state, barrel_before)
-      state[:players].each do |player|
+      scoring_units(state).each do |player|
         next if barrel_before[player][:active]
-        if state[:round_points][player].to_i == 0
+        if unit_points(state, player) == 0
           state[:zero_rounds][player] += 1
           if state[:zero_rounds][player] >= 3
             state[:scores][player] -= BARREL_DISTANCE
@@ -1001,7 +1054,7 @@ module GameRoomGames
     def settle_barrels_and_winner(state, barrel_before, consume_deal: true)
       target = state[:options]["score_limit"].to_i
       if consume_deal
-        state[:players].each do |player|
+        scoring_units(state).each do |player|
           next if !barrel_before[player][:active] || !state[:barrels][player][:active]
           next if state[:scores][player] >= target
 
@@ -1013,13 +1066,13 @@ module GameRoomGames
         end
       end
 
-      winners = state[:players].select { |player| state[:scores][player] >= target }
+      winners = scoring_units(state).select { |player| state[:scores][player] >= target }
       if !winners.empty?
         state[:winner] = winners.max_by { |player| state[:scores][player] }
         return
       end
 
-      state[:players].each do |player|
+      scoring_units(state).each do |player|
         next if state[:barrels][player][:active]
         if state[:scores][player] >= target - BARREL_DISTANCE && state[:scores][player] < target
           state[:scores][player] = target - BARREL_DISTANCE
@@ -1059,26 +1112,28 @@ module GameRoomGames
     end
 
     def next_bidding_player(state, actor)
-      index = state[:players].index { |player| same_user?(player, actor) }
-      state[:players].length.times do
-        index = (index + 1) % state[:players].length
-        return state[:players][index] if !state[:passed][state[:players][index]]
+      players = round_players(state)
+      index = players.index { |player| same_user?(player, actor) }
+      players.length.times do
+        index = (index + 1) % players.length
+        return players[index] if !state[:passed][players[index]]
       end
       nil
     end
 
     def next_player(state, actor)
-      index = state[:players].index { |player| same_user?(player, actor) }
-      state[:players][(index + 1) % state[:players].length]
+      players = round_players(state)
+      index = players.index { |player| same_user?(player, actor) }
+      players[(index + 1) % players.length]
     end
 
     def pass_recipients(state)
-      state[:players].reject { |player| same_user?(player, state[:taker]) }
+      round_players(state).reject { |player| same_user?(player, state[:taker]) }
     end
 
     def surrender_available?(state, actor)
       [:passing, :discarding].include?(state[:phase]) && state[:pass_index].to_i == 0 &&
-        same_user?(state[:taker], actor) && !state[:barrels][state[:taker]][:active]
+        same_user?(state[:taker], actor) && !state[:barrels][score_unit(state, state[:taker])][:active]
     end
 
     def bot_bid_score(state, actor, action, final:)
@@ -1116,7 +1171,7 @@ module GameRoomGames
 
       # A player already on the barrel needs a contract of at least 120. Do
       # not waste a credible opportunity by deliberately stopping below it.
-      barrel = state[:barrels].fetch(player, { active: false })
+      barrel = state[:barrels].fetch(score_unit(state, player), { active: false })
       if barrel[:active] && estimate >= BID_LIMIT_WITHOUT_MARRIAGE - 10
         target = [target, BID_LIMIT_WITHOUT_MARRIAGE].max
       end
@@ -1167,6 +1222,11 @@ module GameRoomGames
       rank = card_rank(card)
       suit_count = hand.count { |candidate| card_suit(candidate) == suit }
       marriage = hand.include?("K#{suit}") && hand.include?("Q#{suit}")
+      target = pass_recipients(state)[state[:pass_index].to_i]
+      if team_game?(state) && score_unit(state, target) == score_unit(state, actor)
+        return CARD_POINTS.fetch(rank) * 18.0 + RANKS.index(rank).to_i * 12.0 -
+          (marriage && ["K", "Q"].include?(rank) ? 2_000.0 : 0.0)
+      end
       score = 300.0
       score -= CARD_POINTS.fetch(rank) * 18.0
       score -= RANKS.index(rank).to_i * 12.0
@@ -1181,7 +1241,7 @@ module GameRoomGames
     def bot_surrender_score(state, actor)
       estimate = bot_contract_estimate(state, actor)
       deficit = state[:contract].to_f - estimate
-      uses = state[:surrender_uses].fetch(player_key(state, actor), 0).to_i
+      uses = state[:surrender_uses].fetch(score_unit(state, actor), 0).to_i
       third_surrender_cost = uses >= 2 ? BARREL_DISTANCE : 0
       return -50_000.0 if deficit < 25.0
       return -50_000.0 if third_surrender_cost > 0 && deficit < 70.0
@@ -1203,11 +1263,14 @@ module GameRoomGames
       trick = state[:current_trick].to_a
       candidate_trick = trick + [{ player: player, card: card }]
       wins_now = same_user?(trick_winner(candidate_trick, new_trump), player)
-      last_seat = candidate_trick.length == state[:players].length
+      last_seat = candidate_trick.length == round_players(state).length
       trick_points = candidate_trick.sum { |play| CARD_POINTS.fetch(card_rank(play[:card])) }
       taker = state[:taker]
-      taker_need = [state[:contract].to_i - state[:round_points].fetch(taker, 0).to_i, 0].max
-      own_need = same_user?(player, taker) ? taker_need : 0
+      taker_need = [state[:contract].to_i - unit_points(state, score_unit(state, taker)), 0].max
+      own_need = score_unit(state, player) == score_unit(state, taker) ? taker_need : 0
+      if team_game?(state) && last_seat && score_unit(state, trick_winner(candidate_trick, new_trump)) == score_unit(state, player)
+        return 3_000.0 + trick_points * 45.0 + card_points * 18.0 - strength * 3.0
+      end
       score = 0.0
 
       if mode != "marriage" && ["K", "Q"].include?(rank) &&
@@ -1397,6 +1460,7 @@ module GameRoomGames
     end
 
     def hand_header(state, viewer)
+      return _("You sit out this deal.") if same_user?(viewer, state[:resting_player])
       passing_prompt(state, viewer) || _("Your hand")
     end
 
@@ -1437,7 +1501,36 @@ module GameRoomGames
     end
 
     def talon_size(state)
-      two_players?(state) ? state[:options]["talon_size"].to_i : 3
+      two_players?(state) ? state[:options]["talon_size"].to_i : (team_game?(state) ? 4 : 3)
+    end
+
+    def round_players(state)
+      state.fetch(:round_players, state[:players])
+    end
+
+    def team_game?(state)
+      state[:options]["variant"] == "teams"
+    end
+
+    def score_unit(state, actor)
+      player = player_key(state, actor)
+      state.fetch(:teams, {}).fetch(player, player)
+    end
+
+    def scoring_units(state)
+      team_game?(state) ? state[:scores].keys : round_players(state)
+    end
+
+    def unit_points(state, unit)
+      return state[:round_points][unit].to_i unless team_game?(state)
+      state[:players].sum { |player| score_unit(state, player) == unit ? state[:round_points][player].to_i : 0 }
+    end
+
+    def unit_label(state, unit)
+      return participant_name(unit) unless unit.to_s.start_with?("team:")
+      members = state[:players].select { |player| score_unit(state, player) == unit }
+      _("Team %{team}: %{players}") % {team: unit.delete_prefix("team:").to_i + 1,
+        players: members.map { |player| participant_name(player) }.join(", ")}
     end
 
     def surrender_command(state, viewer)
@@ -1474,6 +1567,7 @@ module GameRoomGames
     end
 
     def hand_text(state, viewer)
+      return _("You sit out this deal.") if same_user?(viewer, state[:resting_player])
       hand = hand_for(state, viewer).sort_by { |card| card_sort_key(card) }
       return _("Your hand is empty.") if hand.empty?
       _("Your hand: %{cards}.") % { cards: hand.map { |card| card_label(card) }.join(", ") }
@@ -1490,11 +1584,12 @@ module GameRoomGames
     end
 
     def scores_text(state, sorted: false)
-      players = sorted ? score_announcement_order(state[:players], state[:scores]) : state[:players]
+      units = state[:scores].keys
+      players = sorted ? score_announcement_order(units, state[:scores]) : units
       _("Scores: %{scores}.") % {
         scores: players.map do |player|
           text = _("%{player}: %{score}") % {
-            player: participant_name(player),
+            player: unit_label(state, player),
             score: state[:scores][player]
           }
           text += _(", on the barrel") if state[:barrels][player][:active]
@@ -1505,11 +1600,11 @@ module GameRoomGames
 
     def statistics_text(state)
       _("Statistics: %{statistics}.") % {
-        statistics: state[:players].map do |player|
+        statistics: state[:scores].keys.map do |player|
           barrel = state[:barrels][player]
           suffix = barrel[:active] ? _(", on the barrel, %{deals} deals left") % { deals: barrel[:deals_left] } : ""
           _("%{player}: zeros %{zeros}/3, surrenders %{surrenders}/3%{barrel}") % {
-            player: participant_name(player),
+            player: unit_label(state, player),
             zeros: state[:zero_rounds][player],
             surrenders: state[:surrender_uses][player],
             barrel: suffix
@@ -1520,7 +1615,7 @@ module GameRoomGames
 
     def bids_text(state)
       return _("The auction has not started.") if state[:round].to_i == 0
-      entries = state[:players].map do |player|
+      entries = round_players(state).map do |player|
         value = state[:bids][player]
         value = _("not bid yet") if value == nil
         value = _("passed") if value.to_s == "pass"

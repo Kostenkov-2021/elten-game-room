@@ -41,6 +41,11 @@ module GameRoomGames
       "three_five_eight"
     end
 
+    def notification_option_keys(_options); %w[card_exchange]; end
+    def notification_variant(options)
+      notification_flag(options, "card_exchange", _("with card exchange"), _("without card exchange")).to_s
+    end
+
     def event_sound_cues(event:, before_replay:, after_replay:, history:, viewer:, random_variant:)
       action = event["action"].to_s
       cues = []

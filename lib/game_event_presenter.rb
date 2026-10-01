@@ -28,7 +28,7 @@ class GameRoomEventPresenter
     fresh = entries.to_a.select { |entry| entry.id.to_i > @last_seen_activity_id.to_i }
     fresh.each do |entry|
       next if entry.kind == 'chat' && GameRoomParticipants.same?(entry.actor, viewer)
-      GameRoomSounds.play(@program.call, 'chatmsg') if entry.kind == 'chat'
+      GameRoomSounds.table_activity(@program.call, entry, viewer: viewer)
       message = text.call(entry)
       @speech.call(message) unless message.to_s.empty?
     end

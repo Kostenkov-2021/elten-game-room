@@ -344,6 +344,23 @@ module GameRoomChangelog
         "When opening Game Room, you can download and install a newer version available in ELTEN. Updating is optional: choosing No keeps the installed version, and an update never interrupts an open game. After updating, Game Room returns to the requested table or invitation.",
         "The Game Room code has been reorganized to make it easier to develop games and introduce further fixes. Thanks to Dawid Pieper (Pajper) for preparing these changes."
       ].freeze
+    ).freeze,
+    Entry.new(
+      version: "2.0.4.3",
+      build: 242,
+      changes: [
+        "In Axel Pong, the ball should move more smoothly between the right and left sides of the table. After a return, it should fly across smoothly instead of seemingly teleporting from one side to the other.",
+        "Wall impacts and paddle movement sounds in Axel Pong are better synchronized with play, including during rapid paddle movement.",
+        "ELTEN Game Room is now called Power Games. This is the same application: your settings, saved games, statistics and subscriptions remain unchanged.",
+        "Daily Krowa keeps one word assigned to each day, so dictionary updates no longer change that day's puzzle or its recorded solution. New words can be drawn from the next day. Old ranking entries without a confirmed solution no longer show a guessed word.",
+        "Krowa settings are available with Ctrl+P and from the table menu, like in Axel Pong and Audio Ball. The gallery can be opened before a game or after it ends, but not during play.",
+        "After solving or surrendering a random word in Krowa, Start game lets you play again at the same table. Daily Krowa still allows only one start per day.",
+        "Team games now show Choose teams, then Accept teams, and finally Start game. Accepting the teams does not start the match, and confirmed teams are remembered for the next game.",
+        "Ctrl+R also reads a table's variant and settings before you join, both on the widget and in Join table. You do not have to enter the table to check its rules.",
+        "New-table notifications and invitations include a short description of the game's most important variant settings, without reading the whole configuration.",
+        "Thousand has two new variants: four individual players, with one sitting out each deal in turn, and two teams of two. Team play uses a four-card talon and shared scores, barrels and surrender penalties. Bots can play both variants.",
+        "A distinct sound now accompanies a declined invitation in the sender's table history. It follows the notification volume and mute settings."
+      ].freeze
     ).freeze
   ].freeze
 

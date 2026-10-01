@@ -26,7 +26,7 @@ module GameRoomStartupUpdate
   end
 
   def self.check(program)
-    EltenAPI::Tasks.run(title: GameRoomContent.utf8(_("Checking for Game Room updates")),
+    EltenAPI::Tasks.run(title: GameRoomContent.utf8(_("Checking for Power Games updates")),
       timeout: CHECK_TIMEOUT, cancellable: true, show_after: 0.5) do |_progress, token|
       token.raise_if_cancelled!
       candidate(program, EltenLink::Apps.list(program.__send__(:elten_link)))
@@ -48,15 +48,15 @@ module GameRoomStartupUpdate
       return false unless remote
 
       confirmed = false
-      message = GameRoomContent.utf8(_("A new version of Game Room is available (%{version}, build %{build}). Would you like to update now? Choosing No opens the installed version.")) % {
+      message = GameRoomContent.utf8(_("A new version of Power Games is available (%{version}, build %{build}). Would you like to update now? Choosing No opens the installed version.")) % {
         version: GameRoomContent.utf8(remote.version.to_s), build: GameRoomContent.utf8(remote.build_id.to_s)
       }
       confirm(message) { confirmed = true }
       return false unless confirmed
 
       @game_room_update_scene = InstallScene.new(self, remote, [entry, arguments],
-        GameRoomContent.utf8(_("The update was not installed. Opening the installed version of Game Room.")),
-        GameRoomContent.utf8(_("Game Room could not be reopened. Please open it from Programs.")))
+        GameRoomContent.utf8(_("The update was not installed. Opening the installed version of Power Games.")),
+        GameRoomContent.utf8(_("Power Games could not be reopened. Please open it from Programs.")))
       true
     end
   end

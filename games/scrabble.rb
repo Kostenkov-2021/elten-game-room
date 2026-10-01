@@ -24,6 +24,8 @@ module GameRoomGames
       return "draw" if kinds.include?(:exchange)
     end
 
+    def notification_option_keys(_options); %w[content_language_id]; end
+
     def id; "scrabble"; end
     def name; _("Scrabble"); end
     def background_client?; true; end

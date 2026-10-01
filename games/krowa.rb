@@ -33,6 +33,14 @@ module GameRoomGames
     end
 
     def id; "krowa"; end
+    def notification_option_keys(options)
+      %w[variant] + (%w[random race].include?(options["variant"]) ? ["length"] : [])
+    end
+    def notification_variant(options)
+      length = notification_choice(options, "length") if notification_option_keys(options).include?("length")
+      length = options["length"].to_i.zero? ? _("random word length") : (_("%{count} letters") % {count: options["length"]}) if length
+      [notification_choice(options, "variant"), length].compact.join(", ")
+    end
     def controller_change_phase_error(_replay)
       _("The current game contains private data that cannot be transferred at this stage.")
     end
@@ -44,6 +52,8 @@ module GameRoomGames
 
     def precise_action_clock?; true; end
     def supports_leaderboards?; true; end
+    def personal_settings_label; _("Krowa settings"); end
+    def personal_settings_action; :show_krowa_settings; end
     def private_table_required?(options); options["variant"] == "daily"; end
 
     def build_client(program, **services)
@@ -86,10 +96,10 @@ module GameRoomGames
     end
 
     def run_room_command(program, command, viewer:, **services)
-      return false unless %w[krowa_gallery krowa_audio].include?(command.to_s)
+      return false unless command.to_s == "krowa_gallery"
 
       client = build_client(program, **services)
-      command.to_s == "krowa_gallery" ? client.open_gallery : client.open_settings
+      client.open_gallery
       true
     ensure
       client&.close
@@ -139,11 +149,15 @@ module GameRoomGames
       super.tap do |options|
         day = values.to_h["__daily_day"]
         options["__daily_day"] = day if options["variant"] == "daily" && /\A\d{4}-\d{2}-\d{2}\z/.match?(day.to_s)
+        assignment = values.to_h["__daily_assignment"]
+        if options["variant"] == "daily" && assignment.is_a?(String) && assignment.bytesize <= 512
+          options["__daily_assignment"] = assignment
+        end
       end
     end
 
     def new_game_options(values)
-      normalize_options(values).reject { |key, _| key == "__daily_day" }
+      normalize_options(values).reject { |key, _| %w[__daily_day __daily_assignment].include?(key) }
     end
 
     def bot_reward(replay, player)
@@ -297,10 +311,7 @@ module GameRoomGames
     end
 
     def krowa_status_commands
-      [
-        GameSurfaces::Command.new(id: "krowa_gallery", label: _("Krowa gallery")),
-        GameSurfaces::Command.new(id: "krowa_audio", label: _("Krowa settings (Ctrl+D)"))
-      ]
+      [GameSurfaces::Command.new(id: "krowa_gallery", label: _("Krowa gallery"))]
     end
 
     def tower?(state); state[:options]["variant"] == "tower"; end
@@ -375,7 +386,9 @@ module GameRoomGames
           day, word = if state[:options]["variant"] == "daily"
             day = state[:options]["__daily_day"] || context.local_data.to_h["daily_day"]
             return [:clock, nil] unless /\A\d{4}-\d{2}-\d{2}\z/.match?(day.to_s)
-            @bank.daily(Time.utc(*day.split("-").map(&:to_i), 12))
+            assignment = state[:options]["__daily_assignment"]
+            return [:missing_secret, nil] unless assignment
+            @bank.assigned_daily(day, assignment)
           else
             maximum = tower?(state) ? 8 : 13
             length = tower?(state) ? 0 : state[:options]["length"]

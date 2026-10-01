@@ -113,6 +113,10 @@ class GameRoomTransport
     @live_store.discovered_roster(table)
   end
 
+  def discovered_options(table)
+    @live_store.discovered_options(table)
+  end
+
   def note_realtime_activity(table_id, session_id)
     @live_store.note_realtime_activity(table_id, session_id)
   end

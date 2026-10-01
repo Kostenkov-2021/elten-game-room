@@ -33,9 +33,10 @@ module GameRoomGames
             GameRoomRules.translate("Seven-letter words: 49 attempts"),
             GameRoomRules.translate("Eight-letter words: 64 attempts."),
             GameRoomRules.translate("The tower ends when you run out of attempts or the host gives up. Your score is the number of completed rounds. The round list in the leaderboard contains the words and attempt counts."),
-            GameRoomRules.translate("Krowa's music and sound effects are off by default. Ctrl+D opens their switches and separate volume sliders. These sounds also respect the shared game-sound mute and volume settings in Game Room.")),
+            GameRoomRules.translate("Krowa's music and sound effects are off by default. Ctrl+P or Krowa settings in the table menu opens their switches and separate volume sliders. These sounds also respect the shared game-sound mute and volume settings in Power Games.")),
           rule_section(:gallery, GameRoomRules.translate("Your gallery, dictionary and rankings"),
             GameRoomRules.translate("Daily Krowa has its own entry in Rankings. Choose a date to hear each player's result and number of attempts. Today's solution stays hidden; for previous days, the list also shows the word. After solving Daily Krowa, you can choose whether to publish your result there."),
+            GameRoomRules.translate("A daily word stays assigned to its date, even after a dictionary update. New words can take part in the next draw, for a new day after midnight in Poland. If an older day's actual word was not saved, the ranking does not guess it from today's dictionary. After solving or giving up a Random word, Start game lets you draw another at the same table."),
             GameRoomRules.translate("The gallery remembers the words you have guessed on your own and your best attempt count for each one. You can open it before a game or after it ends. Its menu lets you sort by date, attempt count or word length. Select a word with Enter to open its leaderboard. After a game, you can agree to publish your result, which also opens the leaderboard for that word."),
             GameRoomRules.translate("The Rankings item in the main menu gives you access to word results and Word Tower round counts. Your gallery and custom dictionary are stored locally and separately for each account. To remove your own words, open My dictionary in Krowa settings, select them with Space and choose Delete selected.")),
           rule_section(:saving, GameRoomRules.translate("Saving your game"),
@@ -44,7 +45,7 @@ module GameRoomGames
             GameRoomRules.translate("Tab: move to the next field. In table settings, fields unrelated to the selected variant are hidden, so you do not need to skip them."),
             GameRoomRules.translate("Shift+Tab: move to the previous field."),
             GameRoomRules.translate("Enter in the answer field: submit the typed noun and clear the field for the next attempt."),
-            GameRoomRules.translate("Ctrl+D: open Krowa settings for music, effects and your custom dictionary."))
+            GameRoomRules.translate("Ctrl+P: open Krowa settings for music, effects and your custom dictionary."))
         ]
       end
     end

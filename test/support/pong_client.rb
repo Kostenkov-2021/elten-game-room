@@ -38,6 +38,7 @@ class PongTestAudio
   def start_match; end
   def close; end
   def update(s, viewer:, paused:); @updates << [s, viewer, paused]; end
+  def feedback(s, viewer:, paused:); end
 end
 class PongTestChannel
   attr_accessor :epoch, :connected, :drop, :hold_events

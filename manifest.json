@@ -1,9 +1,9 @@
 {
   "id": "c24d98cc-9ccd-4d50-b801-459da324ff60",
-  "name": "ELTEN Game Room",
+  "name": "Power Games",
   "description": "Accessible multiplayer games for ELTEN users.",
-  "version": "2.0.4.2",
-  "build_id": "241",
+  "version": "2.0.4.3",
+  "build_id": "242",
   "EltenAPIVersion": "3.0.4",
   "main_language": "en",
   "supported_languages": [
@@ -26,7 +26,7 @@
     "all"
   ],
   "menu": {
-    "main": "ELTEN Game Room"
+    "main": "Power Games"
   },
   "required_assets": {
     "sounds": [
@@ -35,6 +35,7 @@
       "chatmsg",
       "notice",
       "table_notice",
+      "invitation_rejected",
       "buzzer",
       "buzzer2",
       "war_open",

@@ -10,8 +10,12 @@ begin
   h.advance(4)
   assert(count.call(host).zero? && count.call(guest).zero?, 'remote client sounded a silent fractional bot move')
   host.move_to(2, 16.2)
+  host.move_to(2, 16.3, silent: true)
   h.advance(4)
   assert(count.call(host) == 1 && count.call(guest) == 1, 'remote bot step was missing or repeated')
+  cue = ->(engine) { engine.events.find { |_, kind, side, *_| kind == 'step' && side == 2 } }
+  assert(cue.call(host)[3..4] == cue.call(guest)[3..4] && cue.call(guest)[3] == 16.2,
+    'remote bot step used the later position packet instead of its event position')
   h.advance(10)
   assert(count.call(guest) == 1, 'repeated position snapshot repeated bot audio')
   assert(guest.paddles[2] == host.paddles[2], 'suppressing invented bot steps lost its position')

@@ -156,8 +156,8 @@ binary_widget_worker = Object.new
 binary_widget_worker.define_singleton_method(:closed?) { false }
 binary_widget = GameRoomWidget::TableList.new(loader: -> { [] }, opener: ->(_) {},
   labeler: ->(_) { "" }, id_for: ->(_) { 0 }, worker: binary_widget_worker)
-raise "Binary widget falsely reports no tables before loading" unless binary_widget.empty_label == "Wczytywanie stołów Game Roomu"
-raise "Missing widget failure translation" unless GameRoomLocalization.translate("Game Room tables could not be loaded. Press R to retry.") == "Nie udało się wczytać stołów Game Roomu. Naciśnij R, aby spróbować ponownie."
+raise "Binary widget falsely reports no tables before loading" unless binary_widget.empty_label == "Wczytywanie stołów Power Games"
+raise "Missing widget failure translation" unless GameRoomLocalization.translate("Power Games tables could not be loaded. Press R to retry.") == "Nie udało się wczytać stołów Power Games. Naciśnij R, aby spróbować ponownie."
 
 # Exercise translated UI strings through the same binary-source boundary.
 # No host window is opened: only the modal list construction is captured.

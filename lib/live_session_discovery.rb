@@ -14,8 +14,27 @@ class GameRoomLiveSessionStore
     end
 
     def discovered_roster(table)
+      item, metadata, status = refreshed_discovery(table)
+      return {status: status} unless status == :ready
+      return {status: :unavailable} if item.respond_to?(:hide_participants?) && item.hide_participants?
+      discovery_participants(table, item, metadata)
+    end
+
+    def discovered_options(table)
+      _item, metadata, status = refreshed_discovery(table)
+      return {status: status} unless status == :ready
+      options = discovery_options(metadata)
+      return {status: :unavailable} if options.empty? || !JSON.parse(options).is_a?(Hash)
+      {status: :ready, game: metadata['game'], options: options}
+    rescue JSON::ParserError, ArgumentError, Zlib::Error
+      {status: :unavailable}
+    end
+
+    private
+
+    def refreshed_discovery(table)
       item = table.to_h['__discovered_session']
-      return {status: :unavailable} unless item&.respond_to?(:refresh)
+      return [nil, nil, :unavailable] unless item&.respond_to?(:refresh)
       begin
         item.refresh(timeout: 5)
       rescue StandardError => error
@@ -25,16 +44,18 @@ class GameRoomLiveSessionStore
         raise unless GameRoomNetworkErrors.expected?(error) && error.respond_to?(:code) &&
           error.code.to_s == 'apps.live_sessions.discovery_expired'
         item = discover_pages(sources: [:public]).find { |candidate| candidate.id.to_s == table['__live_session_id'].to_s }
-        return {status: :unavailable} unless item
+        return [nil, nil, :closed] unless item
         item.refresh(timeout: 5)
       end
-      return {status: :closed} if item.state.to_s == 'closed'
-      return {status: :unavailable} unless item.state.to_s == 'open'
-      return {status: :unavailable} if item.visibility.to_s != 'public' ||
-        (item.respond_to?(:hide_participants?) && item.hide_participants?)
+      return [nil, nil, :closed] if item.state.to_s == 'closed'
+      return [nil, nil, :unavailable] unless item.state.to_s == 'open' && item.visibility.to_s == 'public'
       metadata = item.discovery_metadata.to_h
-      return {status: :unavailable} unless supported_metadata?(metadata) &&
+      return [nil, nil, :unavailable] unless supported_metadata?(metadata) &&
         metadata['table_id'].to_i == table_identifier(table) && item.id.to_s == table['__live_session_id'].to_s
+      [item, metadata, :ready]
+    end
+
+    def discovery_participants(table, item, metadata)
       members = item.respond_to?(:participants) ? item.participants : nil
       roster = metadata['roster']
       return {status: :unavailable} unless members.is_a?(Array) && roster.is_a?(Array) && roster.length == 3 &&
@@ -57,8 +78,6 @@ class GameRoomLiveSessionStore
       bots.each { |number, name| players << GameRoomParticipants.bot_id(table_identifier(table), number, name_token: name) }
       {status: :ready, players: players, observers: roles.select { |_, role| role == 1 }.map { |id, _| users[id] }}
     end
-
-    private
 
     def activity_record?(record)
       kind, data = record.packet.values_at('kind', 'data')

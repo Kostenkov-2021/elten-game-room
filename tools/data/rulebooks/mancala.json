@@ -66,8 +66,8 @@
           "pl": "Nie wolno jednym biciem zabrać wszystkich kamieni ze strony przeciwnika. Taki ruch można wykonać, ale bicie nie następuje. Jeśli przed twoją turą rząd przeciwnika jest pusty, musisz wybrać ruch, który dostarczy mu kamieni, o ile taki ruch istnieje. W przeciwnym razie gra się kończy, a każda osoba otrzymuje kamienie pozostałe po własnej stronie."
         },
         {
-          "en": "Oware ends immediately when someone owns more than half of all seeds. With the default 48, that means 25. Game Room also ends a sequence of 120 moves without any capture: each side's remaining seeds go to its own store. This is the local safeguard against endless circulation, not a threefold-repetition rule. Equal final scores mean a draw.",
-          "pl": "Oware kończy się od razu, gdy ktoś zdobędzie więcej niż połowę wszystkich kamieni. Przy domyślnych 48 oznacza to 25. Game Room kończy też serię 120 ruchów bez żadnego bicia: pozostałe kamienie trafiają do magazynu właściciela danego rzędu. To nasze zabezpieczenie przed niekończącym się krążeniem, a nie reguła trzykrotnego powtórzenia pozycji. Równy wynik końcowy oznacza remis."
+          "en": "Oware ends immediately when someone owns more than half of all seeds. With the default 48, that means 25. Power Games also ends a sequence of 120 moves without any capture: each side's remaining seeds go to its own store. This is the local safeguard against endless circulation, not a threefold-repetition rule. Equal final scores mean a draw.",
+          "pl": "Oware kończy się od razu, gdy ktoś zdobędzie więcej niż połowę wszystkich kamieni. Przy domyślnych 48 oznacza to 25. Power Games kończy też serię 120 ruchów bez żadnego bicia: pozostałe kamienie trafiają do magazynu właściciela danego rzędu. To nasze zabezpieczenie przed niekończącym się krążeniem, a nie reguła trzykrotnego powtórzenia pozycji. Równy wynik końcowy oznacza remis."
         }
       ]
     },
@@ -87,8 +87,8 @@
           "pl": "Jeśli ten ostatni, wcześniej pusty dołek należy do ciebie, a naprzeciwko są kamienie, zdobywasz je razem z własnym ostatnim kamieniem. Oba dołki zostają puste. Na przykład trzy kamienie naprzeciwko i twój ostatni dają cztery punkty. Zakończenie po stronie przeciwnika albo naprzeciwko pustego dołka nie daje bicia."
         },
         {
-          "en": "When the opposing row is empty, you must feed it if a legal move can do so. If the player whose turn comes next has no legal move, all seeds still on the board go to the person who made the last move. This also applies when the next player has seeds but cannot feed the empty opposing row. Game Room uses this particular Ayoayo variant; other published descriptions may award these seeds differently.",
-          "pl": "Gdy rząd przeciwnika jest pusty, musisz go zasilić, jeśli istnieje legalny ruch, który to umożliwia. Jeżeli osoba mająca teraz grać nie ma legalnego ruchu, wszystkie kamienie pozostałe na planszy otrzymuje gracz, który wykonał ostatni ruch. Dotyczy to również sytuacji, w której następny gracz ma kamienie, ale nie może zasilić pustego rzędu przeciwnika. W Game Roomie gramy właśnie w tę odmianę Ayoayo; inne opisy mogą przyznawać te kamienie inaczej."
+          "en": "When the opposing row is empty, you must feed it if a legal move can do so. If the player whose turn comes next has no legal move, all seeds still on the board go to the person who made the last move. This also applies when the next player has seeds but cannot feed the empty opposing row. Power Games uses this particular Ayoayo variant; other published descriptions may award these seeds differently.",
+          "pl": "Gdy rząd przeciwnika jest pusty, musisz go zasilić, jeśli istnieje legalny ruch, który to umożliwia. Jeżeli osoba mająca teraz grać nie ma legalnego ruchu, wszystkie kamienie pozostałe na planszy otrzymuje gracz, który wykonał ostatni ruch. Dotyczy to również sytuacji, w której następny gracz ma kamienie, ale nie może zasilić pustego rzędu przeciwnika. W Power Games gramy właśnie w tę odmianę Ayoayo; inne opisy mogą przyznawać te kamienie inaczej."
         },
         {
           "en": "After gathering the remaining seeds, compare the stores. More seeds wins and equal stores mean a draw. Unlike Oware, Ayoayo does not stop merely because someone has passed half of the total.",

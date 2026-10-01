@@ -68,7 +68,7 @@
       "id": "background",
       "title": {"en": "Leaving the playfield", "pl": "Poza polem gry"},
       "paragraphs": [
-        {"en":"Opening a menu, help, Messages or another ELTEN window does not pause the match. The ball, bots, score and table chat continue to update. Keys used in that other window do not move your paddle or serve when you return. To defend manually, return to the playfield. The General category of Game Room settings controls speech outside the table window.","pl":"Otwarcie menu, pomocy, Wiadomości lub innego okna ELTEN-a nie wstrzymuje meczu. Piłka, boty, wynik i czat stołu nadal się odświeżają. Klawisze użyte w innym oknie nie poruszają paletką ani nie serwują po powrocie. Aby bronić ręcznie, wróć do pola gry. Mowę poza oknem stołu ustawisz w kategorii Ogólne w ustawieniach Game Roomu."}
+        {"en":"Opening a menu, help, Messages or another ELTEN window does not pause the match. The ball, bots, score and table chat continue to update. Keys used in that other window do not move your paddle or serve when you return. To defend manually, return to the playfield. The General category of Power Games settings controls speech outside the table window.","pl":"Otwarcie menu, pomocy, Wiadomości lub innego okna ELTEN-a nie wstrzymuje meczu. Piłka, boty, wynik i czat stołu nadal się odświeżają. Klawisze użyte w innym oknie nie poruszają paletką ani nie serwują po powrocie. Aby bronić ręcznie, wróć do pola gry. Mowę poza oknem stołu ustawisz w kategorii Ogólne w ustawieniach Power Games."}
       ]
     },
     {
@@ -126,8 +126,8 @@
       },
       "paragraphs": [
         {
-          "en": "Ctrl+P and the Pong settings item in the table menu open your local Pong settings. Besides automatic return, you can adjust your paddle movement, the opponent's movement and the recorded announcer separately. Each volume ranges from 0 to 200 percent; 100 percent keeps the original balance, and 0 mutes that group. Game Room's overall volume still applies. Save keeps these values for your future matches on this computer; Cancel leaves them unchanged. They are not table rules and do not change the opponent's settings. The match continues while this panel is open, but its controls do not move your paddle.",
-          "pl": "Ctrl+P oraz pozycja Ustawienia Ponga w menu stołu otwierają Twoje lokalne ustawienia Ponga. Oprócz automatycznego odbijania ustawisz w nim oddzielnie głośność ruchu swojej paletki, ruchu przeciwnika i nagrań lektora. Każdy regulator ma zakres od 0 do 200 procent: 100 procent zachowuje oryginalne proporcje, a 0 wycisza daną grupę. Nadal działa ogólna głośność Game Roomu. Zapisz zachowuje te wartości na kolejne mecze na tym komputerze; Anuluj pozostawia je bez zmian. Nie są to zasady stołu i nie wpływają na ustawienia przeciwnika. Podczas korzystania z tego panelu mecz trwa dalej, ale jego kontrolki nie sterują paletką."
+          "en": "Ctrl+P and the Pong settings item in the table menu open your local Pong settings. Besides automatic return, you can adjust your paddle movement, the opponent's movement and the recorded announcer separately. Each volume ranges from 0 to 200 percent; 100 percent keeps the original balance, and 0 mutes that group. Power Games's overall volume still applies. Save keeps these values for your future matches on this computer; Cancel leaves them unchanged. They are not table rules and do not change the opponent's settings. The match continues while this panel is open, but its controls do not move your paddle.",
+          "pl": "Ctrl+P oraz pozycja Ustawienia Ponga w menu stołu otwierają Twoje lokalne ustawienia Ponga. Oprócz automatycznego odbijania ustawisz w nim oddzielnie głośność ruchu swojej paletki, ruchu przeciwnika i nagrań lektora. Każdy regulator ma zakres od 0 do 200 procent: 100 procent zachowuje oryginalne proporcje, a 0 wycisza daną grupę. Nadal działa ogólna głośność Power Games. Zapisz zachowuje te wartości na kolejne mecze na tym komputerze; Anuluj pozostawia je bez zmian. Nie są to zasady stołu i nie wpływają na ustawienia przeciwnika. Podczas korzystania z tego panelu mecz trwa dalej, ale jego kontrolki nie sterują paletką."
         }
       ]
     },
@@ -139,8 +139,8 @@
       },
       "paragraphs": [
         {
-          "en": "Shift+E changes side-wall cues between off, noise and tones. These are additional local sounds that help you judge your paddle's distance from the left and right edges. The nearer an edge is, the louder its cue. This setting does not move your paddle or change what your opponent hears. Game Room's sound-volume and mute controls still apply.",
-          "pl": "Shift+E zmienia brzmienie band: wyłączone, szum albo tony. To dodatkowe dźwięki słyszane tylko u Ciebie, które pomagają ocenić odległość paletki od lewej i prawej krawędzi. Im bliższa krawędź, tym głośniejszy jej sygnał. Ustawienie nie porusza paletką i nie zmienia dźwięków przeciwnika. Nadal obowiązują ustawienia głośności i wyciszenia dźwięków Game Roomu."
+          "en": "Shift+E changes side-wall cues between off, noise and tones. These are additional local sounds that help you judge your paddle's distance from the left and right edges. The nearer an edge is, the louder its cue. This setting does not move your paddle or change what your opponent hears. Power Games's sound-volume and mute controls still apply.",
+          "pl": "Shift+E zmienia brzmienie band: wyłączone, szum albo tony. To dodatkowe dźwięki słyszane tylko u Ciebie, które pomagają ocenić odległość paletki od lewej i prawej krawędzi. Im bliższa krawędź, tym głośniejszy jej sygnał. Ustawienie nie porusza paletką i nie zmienia dźwięków przeciwnika. Nadal obowiązują ustawienia głośności i wyciszenia dźwięków Power Games."
         }
       ]
     },
@@ -165,8 +165,8 @@
       },
       "paragraphs": [
         {
-          "en": "The table and score use Game Room's normal session; movement uses Communications. During a human match, each player calculates their own flight and return locally. Lost or delayed paddle-position updates alone do not stop the ball. Serves, returns and misses travel separately in order. An actual connection failure pauses the rally; a replacement connection restarts the unfinished point with the confirmed score unchanged. Observers may listen but cannot control a paddle. Unfinished matches cannot currently be saved.",
-          "pl": "Stół i wynik korzystają ze zwykłej sesji Game Roomu, a ruch — z Communications. W meczu dwóch osób każdy klient sam oblicza lot piłki i własne odbicie. Zgubiona albo opóźniona aktualizacja pozycji paletki nie zatrzymuje od razu gry. Serwisy, odbicia i utrata punktu są przesyłane osobno, w odpowiedniej kolejności. Rzeczywista awaria połączenia wstrzymuje wymianę; po ponownym zestawieniu kanału niedokończony punkt zaczyna się od nowa, bez zmiany potwierdzonego wyniku. Obserwatorzy mogą słuchać, lecz nie sterują paletkami. Na razie nie można zapisać niedokończonego meczu."
+          "en": "The table and score use Power Games's normal session; movement uses Communications. During a human match, each player calculates their own flight and return locally. Lost or delayed paddle-position updates alone do not stop the ball. Serves, returns and misses travel separately in order. An actual connection failure pauses the rally; a replacement connection restarts the unfinished point with the confirmed score unchanged. Observers may listen but cannot control a paddle. Unfinished matches cannot currently be saved.",
+          "pl": "Stół i wynik korzystają ze zwykłej sesji Power Games, a ruch — z Communications. W meczu dwóch osób każdy klient sam oblicza lot piłki i własne odbicie. Zgubiona albo opóźniona aktualizacja pozycji paletki nie zatrzymuje od razu gry. Serwisy, odbicia i utrata punktu są przesyłane osobno, w odpowiedniej kolejności. Rzeczywista awaria połączenia wstrzymuje wymianę; po ponownym zestawieniu kanału niedokończony punkt zaczyna się od nowa, bez zmiany potwierdzonego wyniku. Obserwatorzy mogą słuchać, lecz nie sterują paletkami. Na razie nie można zapisać niedokończonego meczu."
         }
       ]
     },
