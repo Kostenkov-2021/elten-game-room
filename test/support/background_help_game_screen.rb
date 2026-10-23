@@ -42,10 +42,17 @@ class Form
   class << self; attr_accessor :driver; end
   def wait
     @wait = true
+    # The managed bot worker uses real pacing and performs real search. A
+    # synthetic frame count is not a time budget for that asynchronous work.
+    # Preserve both the normal delay and strategy; bound a stuck test by the
+    # actual elapsed time instead of outrunning the worker with the UI clock.
+    deadline = Process.clock_gettime(Process::CLOCK_MONOTONIC) + 30.0
     while @wait
       $help_clock += 0.016
       $help_frames += 1
-      raise 'Game did not progress while help was open' if $help_frames > 5000
+      if Process.clock_gettime(Process::CLOCK_MONOTONIC) >= deadline
+        raise "Game did not progress while help was open within 30 seconds (#{$help_frames} fixture frames)"
+      end
       Form.driver.call(self)
       update
       Thread.pass # The real session worker, not a synchronous UI bot, must run.

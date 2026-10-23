@@ -60,13 +60,14 @@ allowed = notice.call(2, 'Carol')
 tournament = notice.call(3, 'Owner', {'tournament_match' => true})
 not_tournament = notice.call(4, 'Owner', {'tournament_match' => 'true'})
 forged = notice.call(5, 'Owner', {'sender' => 'Carol'})
-rows = [blocked, allowed, tournament, not_tournament, forged]
+unblocked_forged = notice.call(7, 'Bob', {'sender' => 'Carol'})
+rows = [blocked, allowed, tournament, not_tournament, forged, unblocked_forged]
 EltenAPI::NotificationService.rows = rows
 GameRoomInvitationReceipts.install(program)
 grouping = Object.new.extend(NotificationGroups)
 rows.each do |row|
   _, _, presentation = Programs.receive_app_notification(row)
-  hidden = [1, 4, 5].include?(row.id)
+  hidden = [1, 4, 5, 7].include?(row.id)
   assert(presentation.default_suppressed? == hidden, "wrong speech visibility for #{row.id}")
   presentation.sound
 end

@@ -2,6 +2,7 @@
 require_relative '../game_room_ui'
 require_relative '../game_content'
 require_relative '../game_room_localization'
+require_relative '../game_room_background'
 require_relative 'publication'
 require_relative 'draft_preview'
 
@@ -74,10 +75,32 @@ module GameRoomTournaments
         ensure
           @running = false
           @finished = true
+          @work_admission = nil
         end
       end
 
       private
+
+      # Keep one untouched local-tool intention until the existing bounded
+      # queue admits it. Once admitted, only the owner's normal result/readback
+      # path runs; this never retries an operation that might already have run.
+      def start_work_when_admitted(work, &operation)
+        raise ArgumentError, 'operation is required' unless operation
+        raise 'Local window already has an unadmitted operation' if @work_admission
+        @work_admission = [work, operation]
+        admit_pending_work
+      end
+
+      def admit_pending_work
+        return true unless @work_admission
+        work, operation = @work_admission
+        return false unless GameRoomBackground.admit(work, &operation)
+        @work_admission = nil
+        true
+      rescue Exception
+        @work_admission = nil
+        raise
+      end
 
       def make_form(fields, cancel:)
         @form = Form.new(fields, program: @program, quiet: true)

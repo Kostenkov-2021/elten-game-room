@@ -17,6 +17,16 @@ module GameRoomGames
       tournament_target_small_points(values.fetch('score_limit'), order: values['elimination'] ? 'lower' : 'higher')
     end
 
+    def tournament_placement_result(replay, options:)
+      result = super
+      return result unless replay.draw == true
+
+      # Elimination can end with a shared victory for only the lowest-scoring
+      # players. Keep that explicit public list in new-policy results, without
+      # changing the scalar draw or any historical receipt policy.
+      result.merge(winners: replay.state.fetch(:winners), draw: false)
+    end
+
     def player_spatial_audio?; true; end
     include PublicHistoryAnnouncements
     Rules = GameRoomRummyRules

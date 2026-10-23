@@ -98,10 +98,11 @@ module GameRoomAudioBall
       @channel.configure_p2p(replay.state[:options])
       changed = !@replay || @replay.state.values_at(:rally, :server) != replay.state.values_at(:rally, :server)
       @replay, @players = replay, replay.players
+      @teams=@game.team_assignment(replay.state[:options],players:@players)&.seats || [0,1]
       @side = @players.index { |player| player.to_s.casecmp?(viewer.to_s) }
       @side = nil if bot_seat?(viewer)
       @required = @players.reject { |player| bot_seat?(player) || player.to_s.casecmp?(@viewer) }
-      @channel.enable_events('audio-ball-peer-2', routing: :peers)
+      @channel.enable_events(@players.length==4 ? 'audio-ball-peer-3' : 'audio-ball-peer-2', routing: :peers)
       @channel.required_members = (@required + [@owner]).uniq
       reset_rally if changed
       if replay.finished?
@@ -120,7 +121,8 @@ module GameRoomAudioBall
       return if @replay && rally < @replay.state[:rally]
       result = after.state[:last_point]
       return unless result
-      side = after.players.index { |player| player.to_s.casecmp?(viewer.to_s) }
+      seat = after.players.index { |player| player.to_s.casecmp?(viewer.to_s) }
+      side = seat && @teams[seat]
       preview = point_state.goal_preview if point_state.goal_preview && point_state.goal_preview[:rally] == before.state[:rally] &&
         point_state.goal_preview[:winner] == result[:winner]
       @audio.point(result[:scores], sets: after.state[:sets], set_finished: result[:set_finished],
@@ -160,7 +162,7 @@ module GameRoomAudioBall
       @surface.on_audio_ball_command = nil if @surface.respond_to?(:on_audio_ball_command=)
       @form.delete_timer(@timer) if @form && @timer
       @timer = @surface = @form = nil
-      @audio.update(rally_state.snapshot, viewer: @side || 0, paused: true) if rally_state.snapshot
+      @audio.update(rally_state.snapshot, viewer: listening_side, paused: true) if rally_state.snapshot
     end
 
     def tick
@@ -201,6 +203,10 @@ module GameRoomAudioBall
       @selected_flight = @selected_lane ? flight : nil
       if active
         announce_set
+        if allowed_input && rally_state.engine.wrong_turn?(@side) && commands.any? { |command| Engine::SHOTS.include?(command) }
+          wrong_turn_press
+          commands=[]
+        end
         advance_engine(elapsed)
         commands.each do |command|
           next unless allowed_input && rally_state.engine.phase != :flying
@@ -274,7 +280,7 @@ module GameRoomAudioBall
       @defense_input.reset
       @selected_lane = @selected_flight = nil
       server = @replay.state[:server]
-      rally_state.engine = server == nil ? nil : Engine.new(level: @replay.state[:options]['difficulty'], server: server)
+      rally_state.engine = server == nil ? nil : Engine.new(level: @replay.state[:options]['difficulty'], server: server,teams:@teams)
       rally_state.snapshot = rally_state.engine&.snapshot
       presentation_state.observer_synced = false
       presentation_state.observer_audio_floor = @last_audio_transition = nil
@@ -286,6 +292,7 @@ module GameRoomAudioBall
       end
       point_state.pending_point = point_state.point_reason = presentation_state.warning_key = nil
       @disagreements = {}
+      @wrong_request_key=nil
       result = @replay.state[:last_point]
       rally_state.ready_at = result ? point_ready_at(result) : @clock.call
       @ready_deadline_created_at = @clock.call
@@ -352,9 +359,10 @@ module GameRoomAudioBall
         data = packet['d']
         next unless valid_event?(data) && (data['r'] - @replay.state[:rally]).between?(0, 1)
         player = @players[data['side']]
-        author = data['action'] == 'point' || bot_seat?(player) ? @owner : player.to_s
+        author = %w[point wrong_turn].include?(data['action']) || bot_seat?(player) ? @owner : player.to_s
         next unless author.casecmp?(sender.to_s) && !sender.to_s.casecmp?(@viewer)
         next if data['action'] == 'warn' && bot_seat?(player)
+        next if data['action']=='wrong_press' && !host?
         next if rally_state.deferred.include?(data)
         base_turn = data['r'] == @replay.state[:rally] ? rally_state.engine.turn : 0
         if data['turn'] > base_turn + GameRoomRealtime::EventChannel::LIMIT || rally_state.deferred.length >= GameRoomRealtime::EventChannel::LIMIT
@@ -368,6 +376,17 @@ module GameRoomAudioBall
       rally_state.deferred.delete_if do |data|
         next true if data['r'] < @replay.state[:rally]
         next false if data['r'] > @replay.state[:rally]
+        if data['action']=='wrong_press'
+          next false if data['turn']>rally_state.engine.turn
+          if data['turn']==rally_state.engine.turn && !rally_state.paused && local_ready?(@clock.call)
+            drain_transitions if rally_state.engine.wrong_turn(data['side'])
+          end
+          next true
+        end
+        if data['action']=='wrong_turn' && data['turn']==rally_state.engine.turn
+          transition_audio(data) if rally_state.engine.apply(data.reject { |key,_| key=='r' })
+          next true
+        end
         if data['action'] == 'warn'
           next false if data['turn'] > rally_state.engine.turn
           accept_warning(data)
@@ -397,9 +416,11 @@ module GameRoomAudioBall
 
     def valid_event?(data)
       return false unless data['r'].is_a?(Integer) && data['r'] >= 0 && data['turn'].is_a?(Integer) && data['turn'].between?(0, 2**31 - 1)
-      return false unless [0, 1].include?(data['side'])
+      return false unless data['side'].is_a?(Integer) && data['side'].between?(0,data['action']=='point' ? 1 : @players.length-1)
       keys = %w[r action side turn]
       case data['action']
+      when 'wrong_press','wrong_turn'
+        return false unless @players.length==4
       when 'prepare', 'point'
       when 'hit', 'defend'
         return false unless Engine::SHOTS.include?(data['shot'])
@@ -534,7 +555,7 @@ module GameRoomAudioBall
 
     def accept_warning(data)
       return false unless data['hits'] == rally_state.engine.hits && (rally_state.engine.turn - data['turn']).between?(0, 1)
-      return false unless [:waiting, :prepared].include?(rally_state.engine.phase) && data['side'] == 1 - rally_state.engine.holder
+      return false unless [:waiting, :prepared].include?(rally_state.engine.phase) && @teams[data['side']] != @teams[rally_state.engine.holder]
       key = [@replay.state[:rally], rally_state.engine.hits, rally_state.engine.holder]
       return false if presentation_state.warning_key == key
       return false unless rally_state.engine.warn(data['side']) || (!host? && @side == nil && rally_state.engine.warning)
@@ -546,6 +567,21 @@ module GameRoomAudioBall
 
     def local_ready?(now)
       rally_state.engine != nil && !point_state.pending_point && !connection_state.recovering && !connection_state.resync_requested && now >= rally_state.ready_at
+    end
+
+    def listening_side
+      @side && @teams ? @teams[@side] : 0
+    end
+
+    def wrong_turn_press
+      key=[@replay.state[:rally],rally_state.engine.turn]
+      return if @wrong_request_key==key
+      @wrong_request_key=key
+      if host?
+        drain_transitions if rally_state.engine.wrong_turn(@side)
+      else
+        emit_event('action'=>'wrong_press','side'=>@side,'turn'=>rally_state.engine.turn)
+      end
     end
 
     def agree_point(now)
@@ -566,7 +602,9 @@ module GameRoomAudioBall
     def preview_goal(winner)
       return if point_state.goal_preview && point_state.goal_preview[:rally] == @replay.state[:rally]
       point_state.goal_preview = {rally: @replay.state[:rally], winner: winner, at: @clock.call}
-      @audio.goal(viewer: @side, winner: winner)
+      options = {viewer: @side && listening_side, winner: winner}
+      options[:reason] = 'wrong_turn' if rally_state.engine.snapshot['fault'] != nil
+      @audio.goal(**options)
     end
 
     def point_ready_at(result)
@@ -584,8 +622,8 @@ module GameRoomAudioBall
       key = [@replay.state[:rally], data['turn'], data['action']]
       return if @last_audio_transition == key
       @last_audio_transition = key
-      @audio.prepare(data['side'], viewer: @side || 0) if data['action'] == 'prepare'
-      @audio.stop_ball(data['side'], viewer: @side || 0) if data['action'] == 'defend' && @audio.respond_to?(:stop_ball)
+      @audio.prepare(@teams[data['side']], viewer: listening_side) if data['action'] == 'prepare'
+      @audio.stop_ball(@teams[data['side']], viewer: listening_side) if data['action'] == 'defend' && @audio.respond_to?(:stop_ball)
     end
 
     def observer_snapshot_cue?(data)
@@ -612,11 +650,14 @@ module GameRoomAudioBall
         presentation_state.announced_set = number
         @audio.announce_set(number) unless @single_point
       end
-      service = [number, @replay.state[:scores].sum / 2]
+      server = @replay.state[:server]
+      receiver = Rotation.seat(@teams, server, 1)
+      service = [number, @replay.state[:scores].sum / 2, @players[server], @players[receiver]]
       return if @announced_service == service
       @announced_service = service
-      player = GameRoomParticipants.display_name(@players[@replay.state[:server]])
-      text = GameRoomContent.utf8(_('%{player} serves.')) % {player: GameRoomContent.utf8(player)}
+      text = GameRoomContent.utf8(_('%{player} serves to %{receiver}.')) % {
+        player: GameRoomContent.utf8(GameRoomParticipants.display_name(@players[server])),
+        receiver: GameRoomContent.utf8(GameRoomParticipants.display_name(@players[receiver]))}
       if @audio.respond_to?(:announce)
         @audio.announce(text)
       else
@@ -627,7 +668,7 @@ module GameRoomAudioBall
     def present
       return unless rally_state.snapshot
       @surface.present(rally_state.snapshot, pause_status) if @surface
-      @audio.update(rally_state.snapshot, viewer: @side || 0, paused: rally_state.paused)
+      @audio.update(rally_state.snapshot, viewer: listening_side, paused: rally_state.paused)
     end
 
     def pause_status

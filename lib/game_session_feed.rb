@@ -32,6 +32,10 @@ class GameRoomSessionFeed
     end
   end
 
+  def consume_room_game_change(_id)
+    @mutex.synchronize { value, @game = @game&.last, nil; value }
+  end
+
   def consume_game_start(_id)
     @mutex.synchronize { value, @started = @started, nil; value }
   end

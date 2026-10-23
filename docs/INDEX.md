@@ -16,6 +16,17 @@ translations must be kept up to date together.
 
 ## Planned fixes
 
+- [Partnerships, conferences and Audio Ball doubles — 23 October 2026](FIXES_PLAN_2026_10_23.md):
+  partner invitation and notification design, automatic pairing at tournament
+  start, actionable start failures, table-conference leave/microphone behavior
+  and doubles with ordinary listening and wrong-turn goals. Implemented in
+  working sources; the plan records scoped verification and its limits.
+- [Power Games audit — 22 October 2026](AUDIT_PLAN_2026_10_22.md):
+  proposed whole-project source review for correctness, performance and cleanup;
+  targeted local checks and live trials of changed runtime paths and their
+  actual dependencies, not a repeat of every game campaign. One primary auditor
+  and one independent code/test reviewer; completion requires one full audit
+  pass without new defects or further source improvements. Started.
 - [Power Games fixes — 21 October 2026](FIXES_PLAN_2026_10_21.md):
   selected game declarations, technical scores, an all-participants-zero
   decision, small-point visibility and a table voice-chat button with
@@ -43,8 +54,8 @@ translations must be kept up to date together.
 
 ## Feature contracts
 
-- [Mahjong integration](MAHJONG.md): variant/seat requirements, pure models
-  and remaining client integration; not a playable release.
+- [Mahjong integration](MAHJONG.md): variants, scoring profiles, shared UI,
+  ordinary games, server-private tournament hands and finite history budgets.
 
 - [Forms and help](UI.md), [card hands](CARD_HAND.md)
   and the [audio tutorial](AUDIO_TUTORIAL.md).

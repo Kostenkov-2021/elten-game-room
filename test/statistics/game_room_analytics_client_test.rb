@@ -131,13 +131,6 @@ class AnalyticsHttp
       return {"rows" => selected.drop(query.fetch("offset", 0)).first([query.fetch("limit", 2000), @server_select_limit].min)}
     end
     values = query.fetch("values")
-    if method == "POST" && suffix == "bulk"
-      raise "Unsupported bulk operation" unless query["operation"] == "insert"
-      inserted = values.map do |value|
-        value.merge("__id" => (rows.map { |item| item["__id"] }.max || 0) + 1).tap { |item| rows << item }
-      end
-      return {"rows" => inserted.map(&:dup)}
-    end
     row = if method == "PATCH"
       rows.find { |item| item["__id"] == suffix.to_i }.tap { |item| item.merge!(values) }
     elsif method == "PUT" && !rows.empty?

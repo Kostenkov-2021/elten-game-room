@@ -21,7 +21,7 @@ end
 
 Dir.mktmpdir("game-room-po-authority-") do |temporary|
   %w[tools/support lib locale tools/data/rulebooks games content].each { |directory| FileUtils.mkdir_p(File.join(temporary, directory)) }
-  %w[translations.rb support/translation_catalog.rb support/translation_extractor.rb support/translation_documents.rb compile-rulebooks.rb Gemfile.i18n Gemfile.i18n.lock plural_forms.json].each do |name|
+  %w[translations.rb support/translation_catalog.rb support/translation_extractor.rb support/translation_documents.rb support/output_set.rb compile-rulebooks.rb Gemfile.i18n Gemfile.i18n.lock plural_forms.json].each do |name|
     FileUtils.cp(File.join(root, "tools", name), File.join(temporary, "tools", name))
   end
   FileUtils.cp(File.join(root, "lib/game_room_plural_rule.rb"), File.join(temporary, "lib/game_room_plural_rule.rb"))

@@ -4,18 +4,24 @@ F=TournamentForfeitNative
 
 F.with_fixture do |f|
   stale=f.preview
-  f.documents.on_insert=->(row) {raise IOError,'lost header ACK' if row['part_index']==0}
-  assert_raises(IOError) {f.confirm(stale)}
-  f.documents.on_insert=nil
-  old=f.services['Alice'].operations.find { |row| JSON.parse(row['values']['document_json'])['kind']=='ordinary-match-forfeit-v3' }
-  original=f.documents.rows.map(&:dup)
+  # Historical wire state: creation was already in flight before the old
+  # administrative header arrived. Do not construct this by granting a new
+  # entry past a visible uncertain intent; that is now deliberately fenced.
   f.h.as('Alice') { f.services['Alice'].open_match(match_id:f.match['match_id'],leg:1) }
+  service=f.services['Alice']
+  key=service.send(:anchor,f.candidate,5,f.match,'forfeit')
+  journal=service.instance_variable_get(:@journal)
+  old=journal.prepare(kind:'plan_document',intent_id:'historical-stale-administration',
+    values:key.merge('kind'=>'plan_document','document_json'=>JSON.generate(stale)))
+  journal.claim(old['id'])
+  f.documents.insert(T::ServerPlanDocument.encode(stale,anchor:key).first)
+  original=f.documents.rows.map(&:dup)
   writes=f.documents.insert_count
   error=assert_raises(T::OrdinaryMatchService::Blocked) {f.services['Alice'].reconcile(old['id'])}
   assert_equal(:forfeit_preview_changed,error.code)
   assert_equal(writes,f.documents.insert_count)
   assert_equal([],f.services['Bob'].result_view['results'],'Incomplete attempt was counted as a result')
-  assert(f.services['Bob'].entry_status(match_id:f.match['match_id'],leg:1)['binding'],'Incomplete attempt blocked entry')
+  assert_raises(T::ServerPlanArchive::Unconfirmed) { f.services['Bob'].entry_status(match_id:f.match['match_id'],leg:1) }
   fresh=f.preview
   assert(stale!=fresh,'Fixture did not change the accepted history')
   assert_equal(writes,f.documents.insert_count,'Fresh preview wrote without consent')
@@ -93,11 +99,15 @@ F.with_fixture do |f|
 end
 
 F.with_fixture do |f|
+  # A historical header already in flight may arrive after native start.
+  # Partial result projection must still allow normal game completion and
+  # collection, without authorizing a new start past that partial header.
   preview=f.preview
-  f.documents.on_insert=->(row) {raise IOError,'partial before ordinary result' if row['part_index']==0}
-  assert_raises(IOError) {f.confirm(preview)}
-  f.documents.on_insert=nil
   f.start
+  key=f.services['Alice'].send(:anchor,f.candidate,5,f.match,'forfeit')
+  f.documents.on_insert=->(row) {raise IOError,'partial before ordinary result' if row['part_index']==0}
+  assert_raises(IOError) { f.documents.insert(T::ServerPlanDocument.encode(preview,anchor:key).first) }
+  f.documents.on_insert=nil
   12.times do
     replay=f.h.replay('Alice')
     break if replay.finished?

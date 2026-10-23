@@ -27,7 +27,24 @@ GameRoomTest::TemporaryDirectory.create('deadline-binding-') do |directory|
   end
   services['Alice']=build.call('Alice')
   h.as('Alice') {lobbies['Alice'].close_table(h.table)}
-  table=h.as('Alice') {services['Alice'].open_match(match_id:'d'*64,leg:1)}
+  if ARGV.include?('--legacy-v6')
+    # Create the old marker through the actual writer, then restore today's
+    # default before a fresh service reads the unchanged existing binding.
+    current_policy=T::GameResult::CURRENT_RESULT_POLICY
+    T::GameResult.send(:remove_const,:CURRENT_RESULT_POLICY)
+    T::GameResult.const_set(:CURRENT_RESULT_POLICY,T::GameResult::SELECTED_SMALL_RESULT_POLICY)
+  end
+  begin
+    table=h.as('Alice') {services['Alice'].open_match(match_id:'d'*64,leg:1)}
+  ensure
+    if current_policy
+      T::GameResult.send(:remove_const,:CURRENT_RESULT_POLICY)
+      T::GameResult.const_set(:CURRENT_RESULT_POLICY,current_policy)
+    end
+  end
+  binding=services['Alice'].instance_variable_get(:@bindings).fetch(table['__id']).first
+  expected_policy=ARGV.include?('--legacy-v6') ? 'game-owned-result-v6' : 'game-owned-result-v7'
+  assert_equal(expected_policy,binding.fetch('result_policy'))
   existing=Marshal.dump(docs.rows)
   services.delete('Alice').close
   source=source.merge('usernames'=>{'alice'=>'Alice','peterman'=>'Peterman'},'deadline_at'=>300)

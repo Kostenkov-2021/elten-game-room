@@ -189,7 +189,8 @@ module GameRoomGames
     end
 
     def daily_date_rows(dates, today)
-      dates.map { |date| [date, date < today ? @store.daily_word(date, today: today).to_s : ""] }
+      words = @store.daily_words(dates, today: today)
+      dates.map { |date| [date, words[date].to_s] }
     end
 
     def daily_ranking_header(date, today)

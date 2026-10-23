@@ -613,7 +613,7 @@ module GameRoomGames
       return [:invalid, nil] if deadline_reached?(state, context.now)
 
       answer = selection["answer"].to_s
-      return [:invalid, nil] if !/\A[0-9]+\z/.match?(answer) || answer.to_i >= OPTION_COUNT
+      return [:invalid, nil] if !/\A[0-3]\z/.match?(answer)
 
       envelope = context.hidden_submissions.prepare(
         session_id: context.session_id,

@@ -20,6 +20,26 @@ delivery, after checking whether the notification is muted or dismissed; it
 returns nil so that the host does not play it a second time. Mapping alone
 does not play sound.
 
+Deferred notification delivery uses the same native
+`EltenAPI::UI.notifications_muted?` boundary as immediate host delivery, before
+reading the sound or calling the speech callback. Muting calls alone does not
+mute notifications; a notice processed while notifications are muted is not
+announced again when that mode is disabled. This applies after contact/clock
+deferral and after tournament-notice verification.
+
+Invitation mapping, contact/blacklist filtering and pending/action lookup share
+the native envelope sender check in `GameRoomInvitationIdentity`. A conflicting
+metadata sender is suppressed in delivery and in the host notification list;
+an absent metadata name uses the authenticated sender's original spelling.
+Legacy adapters without a native sender accessor retain their metadata fallback.
+This does not replace the room admission or account-identity checks.
+
+The Daily Krowa date browser loads historical assignment rows in bounded
+100-day batches through the native `in` filter, outside the UI thread.
+Ascending native IDs retain the first assignment even across duplicate-filled
+pages; current/future dates are excluded before querying. Missing history stays
+blank and a corrupt canonical assignment remains an error, not a redraw.
+
 ## Option editor
 
 The option editor changes the contents of a numeric `EditBox` through the
@@ -101,6 +121,14 @@ through the actual menu path.
 
 ## History and options
 
+An answer sheet's local draft includes its `sheet_id`. Refreshes of that same
+sheet preserve unfinished input; a different sheet starts from its new field
+values even when the field IDs repeat. This also applies when recovery skips
+intermediate phases, such as returning directly to another Categories round.
+Legacy local snapshots without a sheet ID remain readable. Regression:
+`test/ui/answer_sheet_identity_native_test.rb`, using the native controls and
+the game's actual round/attempt identifiers through the shared layout.
+
 The create-table game selector, the game list under Join a table and the
 rules library append the game's localized `short_description` after its name. Other selectors and
 individual table rows keep their existing labels. The widget reads that same
@@ -153,3 +181,11 @@ Tournament and match lists set `game_room_invitation_context_field` and append
 the shared invitation action after their own context actions. Other fields
 keep the form's ordinary invitation action. This changes menu order only:
 Ctrl+J still uses the same invitation picker and admission checks.
+
+An open tournament action list follows its next registration/start/deadline
+boundary with one local, one-shot timer, including when the viewer has not
+registered and receives no coordinator wake. Updating actions preserves their
+selected identity and does not refocus or announce the list. Ordinary time
+boundaries do not read the server; retention expiry uses one fresh directory
+read. Closing the dashboard disposes its pending timer. Regression:
+`test/tournaments/public_preview_time_boundary_native_test.rb`.

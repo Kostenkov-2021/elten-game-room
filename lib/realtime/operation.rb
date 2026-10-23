@@ -18,8 +18,11 @@ module GameRoomRealtime
     def start(kind, &block)
       return false if busy? || @closed
       generation = @generation
-      started = @work.start do
+      started = GameRoomBackground.admit(@work) do
         begin
+          # Native capacity can leave the operation queued after cancellation.
+          # Do not begin an obsolete RPC when that queue is eventually drained.
+          next nil if @closed || generation != @generation
           [generation, block.call, nil]
         rescue StandardError => error
           [generation, nil, error]
@@ -56,7 +59,8 @@ module GameRoomRealtime
       @kind = @started_at = nil
       @work.take # Discard an already completed result without retiring a thread.
       if @work.busy?
-        @work.close
+        # Work#close discards its handle, not the running native request.
+        # Keep it observable until completion so this lane retains its bound.
         @blocked = true
       end
       prepare
@@ -72,9 +76,17 @@ module GameRoomRealtime
 
     def prepare
       return if @closed
-      @retired = nil if @retired && !@retired.busy?
+      if @retired
+        @retired.take # Discard a late result before testing the actual busy state.
+        unless @retired.busy?
+          @retired.close
+          @retired = nil
+        end
+      end
       return unless @blocked
+      @work.take
       if !@work.busy?
+        @work.close
         @work = @factory.call
         @blocked = false
       elsif !@retired

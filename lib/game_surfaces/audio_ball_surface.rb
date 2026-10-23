@@ -1,5 +1,6 @@
 require_relative "specifications"
 require_relative '../audio_ball/keyboard'
+require_relative '../audio_ball/rotation'
 
 require_relative "../game_room_localization"
 
@@ -163,13 +164,18 @@ module GameSurfaces
       when 'hurry'
         @on_audio_ball_command&.call(command)
       when 'scores'
-        speak(@spec.players.each_with_index.map do |player, side|
+        speak((@spec.score_labels || @spec.players).each_with_index.map do |player, side|
           _('%{player}. Points: %{points}. Sets: %{sets}.') % {
             player: GameRoomContent.utf8(player), points: @spec.scores[side], sets: @spec.sets[side] }
         end.join(' '))
       when 'server'
         server = @snapshot && @snapshot['server']
-        text = [0, 1].include?(server) ? (_('%{player} serves.') % { player: GameRoomContent.utf8(@spec.players[server]) }) : ''
+        text = ''
+        if server.is_a?(Integer) && server.between?(0, @spec.players.length - 1)
+          receiver = GameRoomAudioBall::Rotation.seat(@spec.teams || [0, 1], server, 1)
+          text = GameRoomContent.utf8(_('%{player} serves to %{receiver}.')) % {
+            player: GameRoomContent.utf8(@spec.players[server]), receiver: GameRoomContent.utf8(@spec.players[receiver])}
+        end
         speak([text, @status].reject(&:empty?).join(' '))
       else
         return false

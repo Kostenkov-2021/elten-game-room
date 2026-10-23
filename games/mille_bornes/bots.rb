@@ -29,14 +29,14 @@ module GameRoomGames
     end
 
     def bot_action_score(replay, actor, action, context: nil)
-      observation = bot_observation(replay, actor)
+      state = replay.state
       return 50_000 if action["action"] == "dirty_trick"
       return 10_000 if action["action"] == "draw"
       type = card_type(action["card"])
-      track = observation["tracks"][observation["own_unit"]]
-      recycling = replay.state[:options]["recycle_discard"]
+      track = state[:tracks][unit_for(state, actor)]
+      recycling = state[:options]["recycle_discard"]
       if action["action"] == "discard"
-        copies = observation["hand"].count { |card| card_type(card) == type }
+        copies = hand_for(state, actor).count { |card| card_type(card) == type }
         value = if SAFETIES.include?(type)
           track[:safeties].include?(type) ? 0 : 3000
         elsif DISTANCES.include?(type)
@@ -68,7 +68,7 @@ module GameRoomGames
         return 1150 if action["problem"] == "counterflow" && track[:moving]
         return action["problem"] == "speed_limit" ? 1000 : 1100
       end
-      target = observation["tracks"][observation["seats"][action["target"].to_i]]
+      target = state[:tracks][state[:seats][action["target"].to_i]]
       300 + target[:miles] + (target[:moving] ? 150 : 0)
     end
 

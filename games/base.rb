@@ -167,7 +167,7 @@ module GameRoomGames
         game_id: id,
         title: name,
         sections: localized_rule_sections || (rule_sections + (supports_bot_move_delay? ? [rule_section(:bot_pacing, GameRoomRules.translate("Time to follow a bot's move"),
-          GameRoomRules.translate("Bot move delay lets the table pause briefly before a computer acts, so people can follow the play. Choose 0 to 5 seconds. Zero removes the deliberate pause; it does not disable the bot or change its playing strength. UNO and Makao start at one second, other games at zero."),
+          GameRoomRules.translate("Bot move delay lets the table pause briefly before a computer acts, so people can follow the play. Choose 0 to 5 seconds. Zero removes the deliberate pause; it does not disable the bot or change its playing strength. The default delay is one second."),
           GameRoomRules.translate("The delay belongs to the table and is preserved when a supported game is saved. It does not prevent permitted human actions while waiting. Near a turn deadline the wait is shortened so it cannot keep the bot from acting in time."))] : []))
       )
       return book if options == nil

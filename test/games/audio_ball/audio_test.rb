@@ -94,7 +94,8 @@ def test(name, &block)
 end
 
 def audio_ball_assets
-  GameRoomAudioBall::Audio::ASSETS + GameRoomRealtime::ScoreAnnouncements::ANNOUNCEMENTS
+  GameRoomAudioBall::Audio::ASSETS + GameRoomRealtime::ScoreAnnouncements::ANNOUNCEMENTS +
+    [GameRoomAudioBall::PointAudio::WRONG_TURN]
 end
 
 def flight(shot = 'up', position: 25.0, turn: 1)
@@ -106,7 +107,7 @@ test('allocates managed shot loops and prepare/stop streams once') do
   audio = GameRoomAudioBall::Audio.new(program)
   expected = %w[audio_ball_up audio_ball_left audio_ball_down audio_ball_prepare audio_ball_stopped]
   assert(GameRoomAudioBall::Audio::ASSETS.sort == expected.sort, 'The asset list does not match the default cues')
-  expected += GameRoomRealtime::ScoreAnnouncements::ANNOUNCEMENTS
+  expected += GameRoomRealtime::ScoreAnnouncements::ANNOUNCEMENTS + [GameRoomAudioBall::PointAudio::WRONG_TURN]
   assert(program.created.sort == expected.map { |name| [name, false, GameRoomAudioBall::Audio::SHOTS.value?(name)] }.sort,
     'Shots must loop and preparation must play once using host streams')
   audio.load

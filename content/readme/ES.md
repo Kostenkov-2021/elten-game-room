@@ -55,7 +55,11 @@ Los sonidos distinguen el reparto, el robo y el descarte de una ficha, la declar
 
 Al responder a una ficha, D lee la ficha a la que se refiere Pasar, Chow, Pung, Kong o Mahjong. No cambia ni confirma la elección. En Solitario, D sigue leyendo las coordenadas.
 
-W lee el valor de una victoria válida: fan o han y fu, y los puntos ganados. No estima una mano incompleta. Antes de ganar en Riichi excluye las ura-dora ocultas, por lo que el valor final puede ser mayor. U lee tus grupos expuestos, Mayús+U los de los demás y R el número de mano, los vientos y la situación actual. En Riichi, I lee los indicadores y fichas dora, tu cantidad de dora, las declaraciones de Riichi, los depósitos, honba y tu restricción furiten. Estas teclas solo leen información.
+W lee el valor de una victoria válida: fan o han y fu, y los puntos ganados. Sin una victoria válida no indica el valor final de la mano. Antes de ganar en Riichi excluye las ura-dora ocultas, por lo que el valor final puede ser mayor. U lee tus grupos expuestos, Mayús+U los de los demás y R el número de mano, los vientos y la situación actual. En Riichi, I lee los indicadores y fichas dora, tu cantidad de dora, las declaraciones de Riichi, los depósitos, honba y tu restricción furiten. Estas teclas solo leen información.
+
+En Hong Kong, Riichi y MCR, W también lee un subtotal de los bonos básicos que ya tienes: tríos de dragones y vientos puntuables, además de las fichas de bonificación correspondientes o una declaración de Riichi aceptada. Los tríos ocultos cuentan mientras los conserves juntos. No es el valor de una mano incompleta: los patrones de la mano completa pueden sustituir esos bonos. MCR indica las flores por separado, pues no ayudan a alcanzar 8 fan; Riichi separa las dora visibles porque requieren yaku. Al crear la mesa, Vista previa de puntuación básica con W está en Sí. Elige No para oír solo el valor de una victoria válida. La opción no cambia la puntuación ni las condiciones para ganar.
+
+Cada variante tiene su catálogo de puntuación: Hong Kong enumera todos los fan premiados y bonos por viento, MCR las 81 entradas agrupadas por fan y Riichi los valores de yaku para mano abierta y cerrada, yakuman y fu. MCR también explica las exclusiones y los kongs mixtos de 6 fan. El solitario puntúa parejas retiradas, no fan.
 
 S lee los puntos actuales de todos. M indica cuántas fichas quedan por robar en el muro. Solo informan: no roban, descartan ni pasan ni revelan manos ajenas. En Solitario, S lee parejas retiradas y M fichas restantes del diseño.
 
@@ -96,6 +100,8 @@ En la lista de usuarios, Enter abre el menú habitual de usuarios de ELTEN. Desd
 El botón «Crear conversación de voz» de la mesa permite crear un canal de conferencia de ELTEN. Elige un nombre, si será público u oculto y, si quieres, una contraseña. Un canal oculto no aparece en la lista habitual, pero ocultarlo no sustituye a protegerlo con contraseña.
 
 Los demás oyen una invitación breve y ven «Unirse a la conversación de voz» en la mesa. Al unirte, el botón cambia a «Desconectar conversación de voz». Puedes salir de la conferencia y volver a unirte después. Cuando se desconecta quien la creó, también se retira la invitación de la mesa; quienes ya se hayan unido pueden seguir hablando. No se abre ningún diálogo por sí solo durante la partida. Si ya estás en otra conferencia, tendrás que confirmar el cambio. No se modifican tus ajustes de micrófono ni de pulsar para hablar.
+
+Al salir de una mesa también te desconectas de su conferencia. Ctrl+Shift+M silencia o activa tu micrófono en la conferencia actual.
 
 ### El anfitrión y la gestión de bots y equipos
 
@@ -363,16 +369,15 @@ Las opciones para inscribirse, retirarse o elegir compañero aparecen cuando se 
 
 ### Lista de participantes
 
-Elige «Participantes» para ver a los jugadores inscritos y sus compañeros. Enter sobre una persona abre el menú habitual de usuario de ELTEN. Ctrl+R actualiza la lista.
+Elige «Participantes» para ver a los inscritos. En un torneo por equipos, cada equipo aparece una sola vez al principio y debajo figuran las personas sin compañero. Enter sobre un equipo abre sus miembros; sobre una persona abre el menú habitual de usuario de ELTEN. Escape vuelve al mismo equipo y Ctrl+R actualiza la lista.
 
 El organizador dispone de estas acciones en el menú contextual:
 
 - Ctrl+I — invitar desde una lista conjunta de usuarios conectados y contactos. Espacio marca personas y Enter envía las invitaciones a todas las seleccionadas. No aparecen quienes ya están inscritos o fueron invitados antes.
-- Ctrl+P — elegir o cambiar al compañero del participante seleccionado en un torneo de parejas, o elegir «Sin compañero». Cambiar parejas existentes requiere confirmación.
 - Delete — retirar al participante seleccionado tras confirmar.
 - Ctrl+L — consultar las personas invitadas y los estados «Pendiente» o «Rechazada». Esta lista no permite reenviar invitaciones.
 
-Para invitar, la inscripción debe estar abierta. Solo se pueden retirar participantes y cambiar parejas antes de comenzar el torneo.
+Para invitar, la inscripción debe estar abierta. Los participantes se pueden retirar antes de comenzar el torneo.
 
 Puedes rechazar una nueva invitación desde las acciones del torneo. Sigue siendo válida mientras la inscripción esté abierta, sin un plazo adicional en días. No se puede volver a invitar a la misma persona a ese torneo, aunque haya rechazado la invitación. Rechazarla no impide inscribirse por cuenta propia.
 
@@ -384,11 +389,13 @@ El organizador puede invitarte a inscribirte. La invitación abre las acciones d
 
 En un torneo de parejas fijas, cada persona se inscribe por separado. Después:
 
-1. Abre «Compañero de equipo» y elige a otro participante.
-2. Pídele que te elija en esa misma pantalla.
-3. La pareja queda confirmada cuando os habéis elegido mutuamente. En la pantalla del compañero también verás si aún esperas su aceptación.
+1. Abre «Compañero de equipo» y elige con quién quieres jugar.
+2. Esa persona recibe una propuesta de pareja y puede aceptarla o rechazarla. Encontrará las mismas opciones en «Compañero de equipo».
+3. Al aceptarla, los dos recibís la confirmación y vuestro equipo aparece en Participantes.
 
-Antes del inicio puedes cambiar o quitar tu elección. El organizador también puede asignar parejas. Los encuentros por equipos no se pueden preparar mientras haya participantes sin compañero. Mantienes la misma pareja durante todo el torneo y compartís el resultado.
+Solo puedes tener una propuesta enviada. Si eliges a otra persona, debes confirmar que cancelas la anterior. Para cambiar una pareja ya acordada, confirma primero que quieres disolverla. Tu compañero recibirá un aviso.
+
+Al comenzar el torneo, el programa conserva las parejas acordadas y empareja al azar a los demás inscritos. El organizador no elige esas parejas. Si queda un número impar sin compañero o faltan participantes, recibe una explicación de por qué no puede comenzar. Durante el torneo mantenéis la pareja y compartís el resultado.
 
 La notificación de inicio abre los partidos del torneo. Al terminar una fase, un único aviso indica cuál viene a continuación y abre la clasificación de la fase terminada. Tras la final solo llega el aviso de fin del torneo, con el ganador o los ganadores empatados y acceso a la clasificación final. Estos sonidos respetan tus ajustes habituales de notificaciones.
 

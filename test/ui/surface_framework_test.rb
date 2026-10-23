@@ -867,6 +867,14 @@ sheet.fields[2].text = "Poznan"
 sheet.fields[3].trigger(:press)
 assert(sheet_action.kind == "answer_sheet", "answer sheet emitted an invalid action")
 assert(sheet_action["answers"] == { "country" => "Poland", "city" => "Poznan" }, "answer sheet lost answers")
+assert(sheet.state["sheet_id"] == "cities", "answer sheet state lost its identity")
+next_sheet = GameSurfaces.build(
+  GameSurfaces::AnswerSheetSpec.new(
+    id: "cities_next_round",
+    fields: [GameSurfaces::AnswerField.new(id: "country", label: "Country")]
+  ), state: sheet.state
+)
+assert(next_sheet.state["answers"] == { "country" => "" }, "a different sheet reused the previous answers")
 
 review = GameSurfaces.build(
   GameSurfaces::ReviewSpec.new(

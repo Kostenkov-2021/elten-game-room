@@ -181,20 +181,21 @@ module GameRoomTournaments
       return unless @refresh_work && !@refresh_work.busy?
       revision=view_revision
       return if revision==@view_revision
-      @view_revision=@refresh_revision=revision
-      @refresh_generation=@read_generation
       # Reuse the just-delivered presentation for this exact fixture. Play,
       # Accept, Refresh and native entry still validate through the workspace.
       if @program.class.respond_to?(:tournament_proposal_snapshot)
         value=@program.class.tournament_proposal_snapshot(@reference,match_id:@match['match_id'],leg:@match['leg'])
         if value
+          @view_revision=revision
           render(value)
           return
         end
       end
-      @refresh_work.start do
+      return unless GameRoomBackground.admit(@refresh_work) do
         @workspace.proposal_view_on_worker(publication_ref:@reference,match_id:@match['match_id'],leg:@match['leg'],guard:-> {@context.current?(@lease)})
       end
+      @view_revision=@refresh_revision=revision
+      @refresh_generation=@read_generation
     end
   end
 end

@@ -64,14 +64,15 @@ module GameRoomTournaments
       archive(parent,root).publish(intent_id:'server-sporting-phase-v1:'+retained['operation_key'],document:document,anchor:retained)
       current
     end
-    def reconcile(id)
+    def reconcile(id,completed_only:false)
       check!
       record=@journal.fetch(id)
       raise OperationJournal::Invalid,:missing_plan_operation unless record
       document=StrictJson.parse(record['values']['document_json'],max_nesting:12)
       root=root!
       parent=find_parent(root,document['parent_schedule_id'])
-      archive(parent,root).resume(id)
+      writer=archive(parent,root)
+      completed_only ? writer.reconcile(id) : writer.resume(id)
     end
     private
     def find_parent(root,wanted)

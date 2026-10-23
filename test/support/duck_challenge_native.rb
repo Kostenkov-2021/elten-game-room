@@ -5,6 +5,14 @@ GridBox = EltenAPI::Controls::GridBox
 require_relative '../../lib/game_surfaces'
 require_relative 'duck_challenge_ui'
 
+# The control-only host fixture omits the logged-in account service. Layout's
+# existing voice control still reads it, even when these tests have no channel.
+unless defined?(Session)
+  module Session
+    def self.name; 'Alice'; end
+  end
+end
+
 module EltenWindow
   class << self
     attr_accessor :duck_characters

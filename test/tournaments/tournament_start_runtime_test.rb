@@ -1,5 +1,6 @@
 require_relative '../support/binary_rules_load' if ARGV.first
 require_relative '../support/settings_widget'
+require_relative '../support/native_notification_mute'
 require_relative '../support/app_notification_models'
 require_relative '../support/tournament_public_ui'
 require File.join(EltenTestHost.root,'src/eapi/notificationgroups')
@@ -43,7 +44,6 @@ EltenGameRoom.define_singleton_method(:normalized_settings){settings}
 sounds=[]
 EltenGameRoom.define_singleton_method(:play_sound_from_asset){|name,**options|sounds<<[name,options]}
 events=[]
-previous_dnd=$donotdisturb
 $notifications_callback=->(event){events<<event}
 begin
   assert(Programs.receive_app_notification(rows[0]).last.default_suppressed?,'Disconnected start reader exposed metadata')
@@ -80,12 +80,12 @@ begin
   assert_equal(3,events.size)
   assert_equal(3,reads.size)
   assert_equal(2,sounds.size,'Idle ticks repeated the notification sound')
-  $donotdisturb=true
-  Programs.receive_app_notification(rows[3])
-  EltenGameRoom.tournament_starts_tick
-  wait_background_work(worker) or raise 'Do-not-disturb verification did not finish'
-  EltenGameRoom.tournament_starts_tick
-  $donotdisturb=false
+  GameRoomTest::NativeNotificationMute.with_mode(1) do
+    Programs.receive_app_notification(rows[3])
+    EltenGameRoom.tournament_starts_tick
+    wait_background_work(worker) or raise 'Do-not-disturb verification did not finish'
+    EltenGameRoom.tournament_starts_tick
+  end
   EltenGameRoom.tournament_starts_tick
   assert_equal(3,events.size,'Do not disturb was ignored')
   assert_equal(2,sounds.size,'Do not disturb played or postponed the sound')
@@ -154,7 +154,6 @@ begin
     assert(event_reads.last[1]!=Thread.current && event_reads.last[2]==runtime,'Event verification lost its owning background runtime')
   end
 ensure
-  $donotdisturb=previous_dnd
   EltenGameRoom.stop_tournament_starts
   $notifications_callback=nil
   runtime.close

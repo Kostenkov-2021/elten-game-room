@@ -14,6 +14,17 @@ module GameRoomGames
     SHORT_RANKS = %w[9 T J Q K A].freeze
     BATTLE_LIMITS = (20..300).freeze
 
+    def tournament_placement_result(replay, options:)
+      result = super
+      counts = tournament_placement_scores(replay, options: options).fetch(:scores)
+      most = counts.values.max
+      result.merge(winners: replay.players.select { |player| counts.fetch(player) == most }, draw: false)
+    end
+
+    def tournament_placement_scores(replay, options:)
+      {scores: replay.players.to_h { |player| [player, replay.state[:piles].fetch(player).size] }, order: 'higher'}
+    end
+
     def event_sound_cues(event:, before_replay:, after_replay:, history:, viewer:, random_variant:)
       return "shuffle" if event["action"].to_s == "deal"
       kinds = history.map(&:kind)

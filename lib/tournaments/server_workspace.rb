@@ -100,7 +100,7 @@ module GameRoomTournaments
             current=phase_store(reference,root_source:-> {account!;root}).current
             reader=OrdinaryMatchService.new(program:@program,registry:@registry,lobby:nil,games:nil,transport:nil,
               table:@provider.fetch('tournament_plan_documents'),journal:ordinary_journal,source:-> {account!;current},user:method(:account!))
-            view=reader.result_view
+            view=reader.result_view(allow_incomplete_forfeits:false)
             views=current.fetch('phase_history',[]).map{|phase|phase.fetch('view')} + [view]
             times=views.flat_map{|phase|phase.fetch('progress_times',[])}
             # Missing/partial evidence is never evidence of abandonment.
@@ -170,7 +170,7 @@ module GameRoomTournaments
         rescue Publication::Invalid => error
           raise unless [:registration_open, :no_players, :too_few_players, :too_many_players,
             :plan_too_large, :unsupported_format, :invalid_group_configuration, :unresolved_source_diagnostics, :missing_publication].include?(error.code)
-          {reason: error.code}.freeze
+          {reason: error.code}.merge(error.details.empty? ? {} : {details: error.details}).freeze
         end
       end
     end
@@ -210,6 +210,10 @@ module GameRoomTournaments
       OrdinaryMatchService.new(program:@program,registry:@registry,lobby:lobby,games:games,transport:transport,
         table:@provider.fetch('tournament_plan_documents'),journal:ordinary_journal,
         source:-> {account!; server_source(reference)},user:method(:account!),
+        completed_source:-> do
+          account!
+          phase_store(reference,root_source:-> {evidence_source(reference)}).current
+        end,
         read_scope:method(:with_read_scope),
         entry_guard:method(:authorize_entry_on_worker),changed:method(:signal_change))
     end
@@ -285,7 +289,7 @@ module GameRoomTournaments
         rescue Publication::Invalid => error
           raise unless [:registration_open, :no_players, :too_few_players, :too_many_players,
             :plan_too_large, :unsupported_format, :invalid_group_configuration, :unresolved_source_diagnostics, :missing_publication, :incomplete_pairs].include?(error.code)
-          {reason: error.code}.freeze
+          {reason: error.code}.merge(error.details.empty? ? {} : {details: error.details}).freeze
         ensure
           reader&.close
         end
@@ -309,7 +313,7 @@ module GameRoomTournaments
         rescue Publication::Invalid => error
           raise unless [:registration_open, :no_players, :too_few_players, :too_many_players,
             :plan_too_large, :unsupported_format, :invalid_group_configuration, :unresolved_source_diagnostics, :missing_publication, :incomplete_pairs].include?(error.code)
-          {reason: error.code}.freeze
+          {reason: error.code}.merge(error.details.empty? ? {} : {details: error.details}).freeze
         ensure
           reader&.close
         end
@@ -399,6 +403,7 @@ module GameRoomTournaments
       account!;compose
       reference=stored_reference(publication_ref)
       value=@service.notification_context(publication_ref:reference)
+      value=value.reject { |key,_| key=='partner_changes' } unless kind=='partnership'
       return value unless %w[finished phase_finished].include?(kind) && value['publication']
       # Rendering/validating a notice is read-only. Only the coordinator may
       # advance a sporting phase; a notice must not race its plan publication.
@@ -500,6 +505,18 @@ module GameRoomTournaments
       values=Data.freeze_tree(Data.copy([id,account,partner,intent]))
       membership_change(id){@service.set_partner(tournament_id:values[0],account:values[1],partner:values[2],intent_id:values[3])}
     end
+    def partnership_action(id, action, partner, request_key, intent)
+      membership_change(id, input: [id, action, partner, request_key, intent]) do |values|
+        @service.partnership_action(tournament_id: values[0], action: values[1], partner: values[2],
+          request_key: values[3], intent_id: values[4])
+      end
+    end
+
+    def complete_partnerships_on_worker(publication_ref:)
+      account!; compose
+      row = @service.publication(publication_ref: stored_reference(publication_ref))
+      @service.complete_partnerships(tournament_id: row['__id'])
+    end
     def remove_participant(id, account)
       values=Data.freeze_tree(Data.copy([id,account]))
       membership_change(id){@service.remove_participant(tournament_id:values[0],account:values[1])}
@@ -511,7 +528,16 @@ module GameRoomTournaments
         phase_record=phase_journal.fetch(copy)
         if phase_record
           document=StrictJson.parse(phase_record['values']['document_json'],max_nesting:12)
-          next phase_store(stored_reference(document.fetch('publication_ref'))).reconcile(copy)
+          reference=document.fetch('publication_ref')
+          begin
+            next phase_store(stored_reference(reference)).reconcile(copy)
+          rescue Publication::Invalid=>error
+            raise unless error.code==:missing_publication
+            # A complete phase may make the old tournament expire during its
+            # final acknowledgement. Only read back that exact stored intent;
+            # never finish missing parts using an expired publication.
+            next phase_store(reference,root_source:-> {evidence_source(reference)}).reconcile(copy,completed_only:true)
+          end
         end
         proposal_record=proposal_journal.fetch(copy)
         if proposal_record
@@ -643,6 +669,11 @@ module GameRoomTournaments
       phase_store(reference).current
     end
 
+    def evidence_source(reference)
+      account!
+      @service.server_schedule_source(publication_ref:reference,evidence_only:true)
+    end
+
     def phase_journal
       account!
       @phase_journal ||= OperationJournal.new(directory:File.join(@program.data_path, 'tournaments-' + Digest::SHA256.hexdigest(@identity)[0,16],'tournament-server-phase-journals'),
@@ -748,11 +779,24 @@ module GameRoomTournaments
         _("You already accepted another match. Cancel that invitation or finish the match first.")
       elsif error.respond_to?(:code)
         case error.code
-        when :too_few_players then _("There are not enough participants to start this tournament.")
-        when :incomplete_pairs then _("Some participants still need partners. Complete the pairs before creating matches.")
+        when :too_few_players
+          if error.respond_to?(:details) && error.details[:minimum]
+            _("Cannot start: %{count} participants registered; at least %{minimum} are required.") % error.details
+          else
+            _("There are not enough participants to start this tournament.")
+          end
+        when :incomplete_pairs
+          if error.respond_to?(:details) && error.details[:count]
+            _("Cannot start: unpaired participants: %{count}. An even number is required.") % {count: error.details[:count]}
+          else
+            _("Some participants still need partners. Complete the pairs before creating matches.")
+          end
+        when :partner_already_set then _("Dissolve your current partnership before choosing someone else.")
+        when :partner_unavailable then _("This participant already has a partner.")
+        when :own_partnership_only then _("You can only choose your own partner.")
         when :not_open then _("Registration has not opened yet.")
         when :closed,:tournament_started then _("Registration is closed.")
-        when :participant_limit,:tournament_full,:capacity_exceeded then _("The tournament is full.")
+        when :participant_limit,:participant_limit_reached,:tournament_full,:capacity_exceeded then _("The tournament is full.")
         when :source_changed,:stale_publication,:phase_changed then _("The tournament changed. Refresh and choose the action again.")
         when :not_organizer then _("Only the organizer can do this.")
         when :already_at_another_table then _("Leave your current table before accepting a tournament match.")
@@ -776,7 +820,7 @@ module GameRoomTournaments
     # These APIs are also used directly by managed background work. UI access
     # and nested calls share the operation's scope, never another worker's.
     module WorkerReads
-      %i[directory_on_worker notification_context_on_worker start_notice_source_on_worker event_notice_source_on_worker coordination_source_on_worker
+      %i[directory_on_worker notification_context_on_worker start_notice_source_on_worker event_notice_source_on_worker coordination_source_on_worker complete_partnerships_on_worker
         coordination_view_on_worker readiness_on_worker proposal_on_worker proposal_view_on_worker entry_status_on_worker].each do |name|
         define_method(name) do |*args,**keywords,&block|
           with_read_scope { super(*args,**keywords,&block) }

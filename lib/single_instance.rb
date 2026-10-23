@@ -15,28 +15,34 @@ module GameRoomSingleInstance
     end
 
     def enter(program, method, arguments, launch: false)
-      owner = @lock.synchronize do
-        @active = nil if @active && !@active[:thread].alive?
-        if @active
-          @active
-        elsif !launch
-          requests = program.instance_variable_get(:@game_room_initial_requests) || []
-          program.instance_variable_set(:@game_room_initial_requests, nil)
-          @active = {program: program, thread: Thread.current, entry: method, requests: requests}
-          program.instance_variable_set(:@game_room_redirected, false)
-          nil
+      loop do
+        owner = @lock.synchronize do
+          @active = nil if @active && !@active[:thread].alive?
+          if @active
+            @active
+          elsif !launch
+            requests = program.instance_variable_get(:@game_room_initial_requests) || []
+            program.instance_variable_set(:@game_room_initial_requests, nil)
+            @active = {program: program, thread: Thread.current, entry: method, requests: requests}
+            program.instance_variable_set(:@game_room_redirected, false)
+            nil
+          end
         end
-      end
-      if owner
+        break unless owner
         return yield if !launch && owner[:program].equal?(program) && owner[:thread].equal?(Thread.current) &&
           (program.instance_variable_get(:@game_room_dispatching_entry) ||
             (owner[:entry] == :notification_action && method == :open_widget_table))
-        @lock.synchronize do
-          if method != :program_main && @active.equal?(owner)
+        admitted = @lock.synchronize do
+          next false unless @active.equal?(owner)
+          if method != :program_main
             request = [method, arguments]
             owner[:requests] << request unless owner[:requests].include?(request) || owner[:requests].size >= 8
           end
+          true
         end
+        # A native scene can finish between lookup and admission. Route again
+        # instead of acknowledging a request which no live owner accepted.
+        next unless admitted
         program.instance_variable_set(:@game_room_redirected, true) unless owner[:program].equal?(program)
         if defined?($mainthread) && $mainthread && !Thread.current.equal?($mainthread) &&
             !owner[:thread].equal?(Thread.current)

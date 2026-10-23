@@ -85,8 +85,8 @@ module GameRoomTournaments
       raise OrdinaryMatchService::Blocked, :invalid_forfeit_receipt
     end
 
-    def verify_administrative_intent!(document, candidate, id, match)
-      current, current_id = source!
+    def verify_administrative_intent!(document, candidate, id, match, source: @source)
+      current, current_id = source!(reader: source)
       raise OrdinaryMatchService::Blocked, :source_changed unless current == candidate && current_id == id
       forfeit_match!(current, match['match_id'], match['leg'], candidate['schedule_id'])
       reject_voided_return!(candidate,id,match)
@@ -111,10 +111,10 @@ module GameRoomTournaments
       end
     end
 
-    def reject_voided_return!(candidate,id,match)
+    def reject_voided_return!(candidate,id,match,allow_incomplete:true)
       other=paired_return(candidate,match)
       return unless other
-      receipt=forfeit_document(candidate,id,other)
+      receipt=forfeit_document(candidate,id,other,allow_incomplete:allow_incomplete)
       raise OrdinaryMatchService::Blocked,:result_already_recorded if receipt&.dig('summary','resolution')=='all_zero'
     end
 

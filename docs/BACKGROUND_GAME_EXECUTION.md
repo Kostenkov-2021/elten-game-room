@@ -9,8 +9,10 @@ announcements and effects for events already received, even before returning
 to the game. On return, the screen shows the confirmed replay without
 announcing those events again.
 
-Pong and Audio Ball do not use this runner. Their independent simulation,
-pause protocol, input and Communications remain unchanged.
+Pong and Audio Ball also use this runner for durable model events and
+tournament presence. Their physics, real-time bots, pause protocol, input and
+Communications belong to their separate clients and active-UI progress loop,
+not the runner's worker. See [REALTIME.md](REALTIME.md).
 
 ## Speech and sounds while Messages or the forum is open
 
@@ -26,8 +28,9 @@ window, focus, draft, selection or history position.
 For tournament tables, this bridge also pumps the existing finite coordination
 worker, because native parallel windows suspend the host's extension tick.
 The foreground extension and covered presenter share a one-second cadence.
-This keeps the participant reservation alive without another model loop or
-network I/O on the UI thread. The bridge does not tick other host extensions.
+This services pending tournament coordination without another model loop or
+network I/O on the UI thread. It does not restore readiness or periodic
+participant-reservation renewal. The bridge does not tick other host extensions.
 
 It uses the same event descriptions, turn transitions, score, sound selector,
 volume settings and shared deduplication cursors. Speech uses `stop: false`

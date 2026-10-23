@@ -41,6 +41,7 @@ module GameRoomTournaments
         withdraw:@workspace.method(:withdraw),alert:@alert,mode_label:@workspace.mode_label,actor:@workspace.actor,
         overview:method(:show_schedule),results:->(row){show_schedule(row,mode: :results)},
         phase:method(:change_phase),manage_participants:method(:manage_participants),set_partner:@workspace.method(:set_partner),
+        partner_action:@workspace.method(:partnership_action),
         edit_tournament:method(:edit_tournament),delete_tournament:method(:delete_tournament),
         create:-> {create_tournament if @owner.check},recover:-> {show_operations if @owner.check},mine:@mine,
         invite:method(:invite_to_tournament),decline_invitation:method(:decline_invitation),reference:@reference,initial_action:@initial_action,clock:@clock).run

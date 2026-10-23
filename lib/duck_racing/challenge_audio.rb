@@ -97,7 +97,7 @@ module GameRoomDuckRacing
     # Echo an already accepted human input. The model, not this presenter,
     # filters held keys/repeats and decides whether input is currently legal.
     def feedback(sound:, tone:)
-      return false if @closed || @error || @sequence
+      return false if @closed || @error || @paused || @sequence
       raise ArgumentError, 'Invalid challenge feedback' unless [:rhythm, :simon].include?(sound)
       cue = normalize_cue(sound: sound, tone: tone, offset_ms: 0, duration_ms: 150)
       now_ms = @clock_ms.call
@@ -115,7 +115,7 @@ module GameRoomDuckRacing
     # Finish the accepted shot before speaking its quality. The next target
     # waits for this feedback and a fixed pause, never for speech completion.
     def shot(pan:, announcement:)
-      return false if @closed || @error
+      return false if @closed || @error || @paused
       cue = normalize_cue(sound: :shot, pan: pan, offset_ms: 0, duration_ms: 200)
         .merge(completion_announcement: announcement, gap_after_ms: SHOT_FEEDBACK_PAUSE_MS)
       now_ms = @clock_ms.call
@@ -136,8 +136,32 @@ module GameRoomDuckRacing
     # writing hints to history or depending on a speech synthesizer's status.
     def finished?; !busy?; end
 
+    # The owning client also freezes this presenter's active clock. Preserve
+    # physical position and descriptor IDs; resuming is not a new sequence or
+    # an acknowledgement. Historical accepted-event presenters are not paused.
+    def set_paused(paused)
+      return false if @closed || @error || @paused == paused
+      @paused = paused
+      audio_call do
+        @playing.each_value do |voice|
+          sound = voice[:sound]
+          if paused
+            voice[:session_paused] = !!sound.playing?
+            sound.pause if voice[:session_paused]
+          elsif voice.delete(:session_paused)
+            GameRoomSoundOutput.apply(@program, sound, shared_volume(voice[:asset]))
+            sound.play
+            raise PlaybackError.new(:playback_failed, 'Challenge sound did not resume') unless sound.playing?
+          end
+        end
+      end
+      true
+    rescue PlaybackError => error
+      fail_playback(error)
+    end
+
     def step(now_ms = @clock_ms.call)
-      return false if @closed || @error || @stepping
+      return false if @closed || @error || @paused || @stepping
       validate_time(now_ms)
       @last_ms = now_ms
       @stepping = true

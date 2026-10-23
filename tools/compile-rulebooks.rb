@@ -1,6 +1,7 @@
 ﻿require 'json'
 require 'fileutils'
 require 'optparse'
+require_relative 'support/output_set'
 
 module GameRoomRulebookCompiler
   ROOT = File.expand_path('..', __dir__)
@@ -79,14 +80,16 @@ module GameRoomRulebookCompiler
 
   def run(root: ROOT, check: false)
     changed = []
+    prepared = {}
     outputs(root).each do |relative, text|
       path = File.join(root, relative)
       next if File.file?(path) && File.binread(path) == text.b
       changed << relative
       next if check
       FileUtils.mkdir_p(File.dirname(path))
-      File.binwrite(path, text)
+      prepared[path] = text
     end
+    GameRoomToolOutputs.commit(prepared, label: 'Rulebooks') unless prepared.empty?
     changed
   end
 end

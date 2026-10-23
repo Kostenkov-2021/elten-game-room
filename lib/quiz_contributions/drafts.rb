@@ -13,13 +13,20 @@ module GameRoomQuizContributions
       @storage, @user, @current_user = storage, user.to_s.downcase, current_user
     end
 
+    # The set UUID also identifies submissions, so it must not be changed to
+    # distinguish edits based on different cloud snapshots.
+    def self.branch_key(value)
+      JSON.generate([value['id'], value['resource_id'], value['resource_name']])
+    end
+
+    def self.same_version?(stored, reference)
+      reference.key?('items') && branch_key(stored) == branch_key(reference) &&
+        stored['snapshot'] == reference['snapshot'] && Model.draft(stored) == Model.draft(reference)
+    end
+
     def list
       transaction do |account|
-        account['drafts'].map do |id, value|
-          clean = Model.draft(value)
-          raise Invalid, _('Invalid local drafts.') unless id == clean['id']
-          editor_copy(value)
-        end
+        entries(account).map { |_, _, value| editor_copy(value) }
       end
     end
 
@@ -29,15 +36,26 @@ module GameRoomQuizContributions
       clean['resource_id'] = value['resource_id'] if value['resource_id'].is_a?(Integer)
       clean['resource_name'] = value['resource_name'] if value['resource_name'].is_a?(String)
       transaction do |account|
-        old = account['drafts'][clean['id']]
+        entry = entries(account).find { |_, _, old| self.class.branch_key(old) == self.class.branch_key(clean) }
+        old = entry&.last
         clean['snapshot'] = SecureRandom.uuid unless old && Model.draft(old) == Model.draft(clean) && old['snapshot'] == clean['snapshot']
-        account['drafts'][clean['id']] = clean
+        if entry
+          entry[0][entry[1]] = clean
+        elsif account['drafts'].key?(clean['id'])
+          (account['branches'] ||= {})[self.class.branch_key(clean)] = clean
+        else
+          account['drafts'][clean['id']] = clean
+        end
       end
       Model.copy(clean)
     end
 
-    def remove(id)
-      transaction { |account| account['drafts'].delete(id); true }
+    def remove(reference)
+      transaction do |account|
+        entry = entries(account).find { |_, _, value| self.class.same_version?(value, reference) }
+        entry[0].delete(entry[1]) if entry
+        true
+      end
     end
 
     def delivered?(key)
@@ -52,6 +70,22 @@ module GameRoomQuizContributions
     end
 
     private
+
+    def entries(account)
+      primary = account['drafts'].map do |id, value|
+        raise Invalid, _('Invalid local drafts.') unless Model.draft(value)['id'] == id
+        [account['drafts'], id, value]
+      end
+      extra = account.fetch('branches', {}).map do |key, value|
+        Model.draft(value)
+        raise Invalid, _('Invalid local drafts.') unless key == self.class.branch_key(value)
+        [account['branches'], key, value]
+      end
+      result = primary + extra
+      keys = result.map { |_, _, value| self.class.branch_key(value) }
+      raise Invalid, _('Invalid local drafts.') unless keys.uniq.size == keys.size
+      result
+    end
 
     def editor_copy(value)
       # Incomplete text may be nil in recovery, but native editors consume
@@ -79,7 +113,8 @@ module GameRoomQuizContributions
           raise Invalid, _('The local question drafts could not be read. The file has not been replaced.')
         end
         account = root['accounts'][@user] ||= {'drafts' => {}, 'delivered' => []}
-        raise Invalid, _('Invalid local drafts.') unless account.is_a?(Hash) && account['drafts'].is_a?(Hash) && account['delivered'].is_a?(Array)
+        raise Invalid, _('Invalid local drafts.') unless account.is_a?(Hash) && account['drafts'].is_a?(Hash) &&
+          account['delivered'].is_a?(Array) && (!account.key?('branches') || account['branches'].is_a?(Hash))
         result = yield account
         check_account
       end

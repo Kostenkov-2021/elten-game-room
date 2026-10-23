@@ -9,7 +9,7 @@ module GameRoomTournaments
       expected=KnockoutRound.from_metadata(base)
       raise Publication::Invalid,:invalid_knockout_configuration unless base==expected && base['players_per_match']==2
       raise Publication::Invalid,:invalid_phase_results unless history.is_a?(Array) && history.size<=4096
-      Standings.calculate(units:base['seeds'],results:history)
+      history=Standings.validated_results(units:base['seeds'],results:history,max_results:4096)
       pairs=base['matches'].to_h{|match|[match['participants'].sort,match]}
       raise Publication::Invalid,:invalid_phase_results unless history.all?{|row|pairs.key?(row['participants'].sort)}
       series=base['matches'].map do |match|

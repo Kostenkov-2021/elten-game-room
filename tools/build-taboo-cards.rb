@@ -1,53 +1,5 @@
 require_relative "../lib/game_content"
-require 'tempfile'
-
-# Validate and stage the complete bilingual set before replacing any output.
-# Keep rollback copies until all three replacements have succeeded.
-module GameRoomTabooBuild
-  def self.commit(outputs)
-    temporary, prepared, installed = [], [], []
-    preserve = false
-    begin
-      outputs.each do |path, bytes|
-        stage = Tempfile.create(['.taboo-stage-', '.rb'], File.dirname(path))
-        temporary << stage
-        stage.binmode
-        stage.write(bytes.encode('UTF-8'))
-        stage.close
-        backup = nil
-        if File.exist?(path)
-          backup = Tempfile.create(['.taboo-backup-', '.rb'], File.dirname(path))
-          temporary << backup
-          backup.binmode
-          backup.write(File.binread(path))
-          backup.close
-        end
-        prepared << [path, stage, backup]
-      end
-      prepared.each do |path, stage, backup|
-        File.rename(stage.path, path)
-        installed << [path, backup]
-      end
-    rescue StandardError => error
-      failures = []
-      installed.reverse_each do |path, backup|
-        begin
-          backup ? File.rename(backup.path, path) : File.unlink(path)
-        rescue StandardError => rollback_error
-          failures << "#{path}: #{rollback_error.class}"
-        end
-      end
-      raise error if failures.empty?
-      preserve = true
-      raise IOError, "Taboo output rollback failed: #{failures.join('; ')}. Recovery files: #{temporary.map(&:path).join(', ')}"
-    ensure
-      temporary.each do |file|
-        file.close unless file.closed?
-        File.unlink(file.path) if !preserve && File.exist?(file.path)
-      end
-    end
-  end
-end
+require_relative 'support/output_set'
 
 root = File.expand_path("../content", __dir__)
 rows = File.readlines(File.join(root,"taboo_editorial.txt"), encoding: "UTF-8").map(&:strip).reject { |line| line.empty? || line.start_with?("#") }
@@ -81,5 +33,5 @@ metadata.each do |m|
   body << "module GameRoomContent::Taboo#{m[:suffix]}; end\nGameRoomContent.registry.register_pack(GameRoomContent::Pack.new(\n  id: #{"taboo.general.#{m[:language].downcase}.v1".inspect}, set_id: 'taboo.general', kind: 'taboo_cards',\n  language_id: #{m[:language].inspect}, version: 1, title: 'General', game_ids: ['taboo'],\n  author: 'Game Room editorial', license: 'GPL-3.0-or-later', entry_count: 500,\n  checksum: #{m[:checksum].inspect},\n  loader: -> { require_relative #{m[:name].inspect}; GameRoomContent::Taboo#{m[:suffix]}.load }\n))\n"
 end
 outputs[File.join(root,"taboo_cards.rb")] = body
-GameRoomTabooBuild.commit(outputs)
+GameRoomToolOutputs.commit(outputs, label: 'Taboo')
 puts JSON.pretty_generate(metadata)

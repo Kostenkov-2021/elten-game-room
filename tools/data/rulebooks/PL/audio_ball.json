@@ -8,7 +8,7 @@
       },
       "paragraphs": [
         {
-          "pl": "W Audio Ballu twoim zadaniem jest rozpoznawać nadlatującą piłkę po dźwięku i wybierać odpowiednią obronę. Po udanej obronie piłka zatrzymuje się u ciebie i możesz przygotować następne uderzenie. Gdy przepuścisz piłkę, przeciwnik zdobywa punkt. Gracie we dwoje; zamiast drugiej osoby może grać bot."
+          "pl": "W Audio Ballu twoim zadaniem jest rozpoznawać nadlatującą piłkę po dźwięku i wybierać odpowiednią obronę. Po udanej obronie piłka zatrzymuje się u ciebie i możesz przygotować następne uderzenie. Gdy przepuścisz piłkę, przeciwnik zdobywa punkt. Zwykle gracie we dwoje; zamiast drugiej osoby może grać bot."
         },
         {
           "pl": "Do gry przydadzą się słuchawki. Przy zwykłym ustawieniu twoja strona znajduje się po prawej: piłkę przeciwnika słyszysz coraz bardziej z prawej, a po swoim uderzeniu słyszysz, jak oddala się w lewo."
@@ -120,7 +120,27 @@
           "pl": "W ustawieniach stołu można wybrać zwycięstwo po dwóch lub trzech wygranych setach zamiast po jednym. Każdy set nadal wymaga 7 punktów i dwóch punktów przewagi."
         },
         {
-          "pl": "Po zakończeniu seta punkty wracają do 0:0. Kolejny zaczyna się po pięciu sekundach, a pierwszy serwis przechodzi do drugiego gracza. Osoba rozpoczynająca pierwszy set zaczyna więc także trzeci, a jej przeciwnik drugi i czwarty. Mecz trwa, aż ktoś uzbiera wymaganą liczbę wygranych setów."
+          "pl": "W grze we dwoje po zakończeniu seta punkty wracają do 0:0. Kolejny zaczyna się po pięciu sekundach, a pierwszy serwis przechodzi do drugiego gracza. Osoba rozpoczynająca pierwszy set zaczyna więc także trzeci, a jej przeciwnik drugi i czwarty. Mecz trwa, aż ktoś uzbiera wymaganą liczbę wygranych setów."
+        }
+      ]
+    },
+    {
+      "id": "doubles",
+      "title": {
+        "pl": "Gra w deblu"
+      },
+      "paragraphs": [
+        {
+          "pl": "W ustawieniach stołu wybierz „Debel”, żeby zagrać w cztery osoby, w dwóch drużynach. Z partnerem zdobywacie wspólne punkty i wygrywacie sety."
+        },
+        {
+          "pl": "Partnerzy odbijają na zmianę. Po twoim uderzeniu broni jeden z przeciwników, potem twój partner, następnie drugi przeciwnik i znów ty. W swojej kolejce zatrzymujesz piłkę, przygotowujesz ją strzałką w prawo lub A i odsyłasz wybranym klawiszem ataku."
+        },
+        {
+          "pl": "Gdy piłka leci do twojego partnera, nie naciskaj klawiszy obrony. Za takie naciśnięcie przeciwnicy dostają punkt."
+        },
+        {
+          "pl": "Pierwszy serwujący jest losowany spośród czterech osób. Serwis przechodzi co dwa punkty na następną osobę w kolejności odbijania. Nowy set zaczyna osoba następna po tej, która rozpoczynała poprzedni. Dźwięki piłki i ustawienia odsłuchu działają tak samo jak w singlu."
         }
       ]
     },
@@ -197,6 +217,7 @@
   "option_chapters": {
     "mode": "goal",
     "difficulty": "pace",
-    "sets_to_win": "sets"
+    "sets_to_win": "sets",
+    "team_size": "doubles"
   }
 }

@@ -401,17 +401,21 @@ module GameRoomTableWatch
       job = @queue.first
       return unless job
       if job[:recipients] == nil
-        @operation = { kind: :load, job: job }
-        @worker.start { @repository.recipients(job[:metadata]["game"], online: @online.call, sender: @user) }
+        if GameRoomBackground.admit(@worker) { @repository.recipients(job[:metadata]["game"], online: @online.call, sender: @user) }
+          @operation = { kind: :load, job: job }
+        end
       else
-        recipient, attempt = job[:recipients].shift
-        @operation = { kind: :send, job: job, recipient: recipient, attempt: attempt }
-        @next_at = @clock.call + 0.5
-        @worker.start do
+        recipient, attempt = job[:recipients].first
+        started = GameRoomBackground.admit(@worker) do
           # Queue cancellation or account change can race the worker dispatch.
           if @queue.include?(job) && @current_user.call.to_s.casecmp?(@user)
             @send_notice.call(recipient, job[:metadata], [job[:metadata]["expires_at"] - @clock.call.to_i, 0].max)
           end
+        end
+        if started
+          job[:recipients].shift
+          @operation = { kind: :send, job: job, recipient: recipient, attempt: attempt }
+          @next_at = @clock.call + 0.5
         end
       end
     end

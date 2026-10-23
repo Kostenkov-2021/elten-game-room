@@ -2,11 +2,13 @@
 require_relative '../base'
 require_relative 'table_round'
 require_relative 'tile_labels'
+require_relative 'score_breakdown'
 
 module GameRoomGames
   using GameRoomLocalization::Translations
 
   module MahjongTablePresentation
+    include MahjongScoreBreakdown
     def table_surface_spec(round, players:, viewer:)
       unless players.is_a?(Array) && players.length == round.flow.hands.length
         raise ArgumentError, 'Mahjong presentation roster mismatch'
@@ -50,6 +52,8 @@ module GameRoomGames
           else
             _('%{han} han, %{fu} fu') % {han: score.han, fu: score.fu}
           end
+          breakdown = mahjong_score_breakdown(round)
+          value = round.variant == 'mcr' ? breakdown : value + "\n" + breakdown
           parts << mahjong_table_part('value', mahjong_table_info('mahjong-hand-value', _('Hand value'), value))
         end
         payments = settlement.payments.each_with_index.map do |points, seat|
@@ -106,8 +110,9 @@ module GameRoomGames
               payload: {'generation'=>flow.generation})
           end
           parts << mahjong_table_part('commands', GameSurfaces::CommandPanelSpec.new(commands: commands)) unless commands.empty?
-          unless round.concealed_kongs.empty?
-            choices = round.concealed_kongs.map do |kind|
+          concealed_kongs = round.concealed_kongs
+          unless concealed_kongs.empty?
+            choices = concealed_kongs.map do |kind|
               GameSurfaces::QuestionOption.new(id: kind.to_s, value: kind.to_s,
                 label: GameRoomMahjong::TileLabels.label(kind * 4))
             end
@@ -115,8 +120,9 @@ module GameRoomGames
               prompt: GameRoomContent.utf8(_('Choose a concealed kong')), mode: :single_choice,
               options: choices, submit_on_select: true))
           end
-          unless round.added_kongs.empty?
-            choices = round.added_kongs.map do |kind|
+          added_kongs = round.added_kongs
+          unless added_kongs.empty?
+            choices = added_kongs.map do |kind|
               GameSurfaces::QuestionOption.new(id: kind.to_s, value: kind.to_s,
                 label: GameRoomMahjong::TileLabels.label(kind * 4))
             end
@@ -124,8 +130,9 @@ module GameRoomGames
               prompt: GameRoomContent.utf8(_('Choose a pung to upgrade to a kong')), mode: :single_choice,
               options: choices, submit_on_select: true))
           end
-          unless round.riichi_discards.empty?
-            choices = round.riichi_discards.map do |tile|
+          riichi_discards = round.riichi_discards
+          unless riichi_discards.empty?
+            choices = riichi_discards.map do |tile|
               GameSurfaces::QuestionOption.new(id: tile.to_s, value: tile.to_s,
                 label: GameRoomMahjong::TileLabels.label(tile))
             end

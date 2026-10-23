@@ -1,6 +1,7 @@
 require "json"
 require "stringio"
 require_relative "host_source"
+require_relative 'host_session'
 
 %w[
   ri/__ri eapi/structs eapi/keyboard eapi/speech eapi/resources eltenlink/__eltenlink

@@ -1,7 +1,7 @@
 # Audio Ball
 
-The `audio_ball` game supports two players (humans or bots); the owner may
-observe. The original implementation is by `budyn1211` (PR #13).
+The `audio_ball` game supports singles and four-player doubles (humans or bots);
+the owner may observe. The original implementation is by `budyn1211` (PR #13).
 The shared transport is described in [REALTIME.md](REALTIME.md), and sound previews
 in [AUDIO_TUTORIAL.md](AUDIO_TUTORIAL.md).
 
@@ -59,11 +59,31 @@ longer than the initial three seconds still leaves 2.7 seconds for the score.
 The five-second set break continues to start at the durable result. Speech never acts
 as a network-readiness barrier.
 
-Creation uses the existing privacy control, followed by mode (Classic only),
+Creation uses the existing privacy control, followed by singles/doubles, mode (Classic only),
 difficulty and sets to win. There is no 7/11 choice and no generic bot-delay
 option for this real-time game. Unfinished matches cannot be saved.
 
 ## Audio and speech
+
+Doubles uses the shared team-assignment option, with two seats on each team.
+`Rotation` interleaves those teams' ordered seats; for example A1, B1, A2, B2.
+The initial server is one server-random draw over all four seats. The ordinary
+two-point service interval advances along that ring; the first server advances
+one place between sets. Each accepted hit passes control to the next seat.
+Points and sets belong to teams, not to individual seat indexes.
+
+A fresh defence press while the ball is flying to that player's teammate requests
+one wrong-turn goal. Preparation, a teammate holding the ball and an opponent's
+incoming flight do not qualify. The owner validates the receiver's team and the
+rally/turn identity and broadcasts the
+accepted transition through the ordinary agreement and durable point path.
+Duplicate requests and a competing miss cannot award a second point. Chat,
+settings, information shortcuts, observers, inherited held keys, breaks and
+network pauses do not produce wrong-turn requests.
+
+The ordinary listening-side and sound-pack settings remain personal. Both
+teammates hear their team's end of the same court; the other team is opposite.
+No extra mixer or team-specific sound profile is introduced.
 
 By default the listener is on the right and the opponent on the left. Incoming
 flights move left to right, outgoing flights right to left. Ctrl+P opens local
@@ -103,7 +123,8 @@ Provenance, transformations and license status of current recordings are in
    the ordinary Engine transitions.
 2. Only accepted prepare, hit, defend or miss transitions enter EventChannel.
 3. The authenticated actor sends directly through the shared Communications
-   relay to the other participants (`audio-ball-peer-2`, peer routing).
+   relay to the other participants (`audio-ball-peer-2` in singles,
+   `audio-ball-peer-3` in doubles, peer routing).
 4. Receivers check match, generation, rally, side and transition order before
    applying the event and updating audio. Only the recipient of a flight
    decides its timely defense or miss. The table owner controls bot sides,
@@ -120,6 +141,9 @@ Provenance, transformations and license status of current recordings are in
 
 T distinguishes waiting for a durable point, ordinary point/set breaks, and
 connection/readiness waits. These statuses are not automatic speech.
+The automatic service announcement and T both name the server and the receiving
+opponent, using the same doubles rotation as the engine. Service announcements
+remain deduplicated within each two-point block.
 
 The durable start and point records are owner-authored and reject duplicates,
 wrong sequence and foreign authors. This is not an independent anti-cheat
@@ -148,6 +172,12 @@ released on close. Only an accepted, deduplicated defense plays the stop cue.
 | Prepare | audio_ball_prepare | audio_ball_audiodisc_ready |
 | Defense | audio_ball_stopped | audio_ball_audiodisc_stop |
 | Goal | Pong effect variants | audio_ball_audiodisc_goal |
+
+In doubles, a goal caused by trying to defend a ball intended for the partner uses
+`audio_ball_wrong_turn` in either pack instead of the normal goal effect
+and goal voice. It follows the same agreed-point preview and deduplication;
+the accepted score keeps its usual recorded announcement. Neither the next
+defender nor the wrong-turn fault is announced automatically in speech.
 
 ## Ordered keyboard input and reload
 

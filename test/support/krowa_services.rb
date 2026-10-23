@@ -34,7 +34,16 @@ class KrowaTestTables
     end
     def select(where: {}, order: [], limit: 500, offset: 0, **extra)
       @queries << {where: where, order: order, limit: limit, offset: offset}.merge(extra)
-      selected = @rows.select { |row| where.all? { |key, value| row[key] == value } }
+      selected = @rows.select do |row|
+        where.all? do |key, value|
+          if value.is_a?(Hash)
+            raise 'Unsupported Krowa table fixture operator' unless value.keys == ['in']
+            value.fetch('in').include?(row[key])
+          else
+            row[key] == value
+          end
+        end
+      end
       if extra[:group_by]
         keys = Array(extra[:group_by])
         selected = selected.group_by { |row| keys.map { |key| row[key] } }.map do |values, members|

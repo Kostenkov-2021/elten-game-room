@@ -32,9 +32,10 @@ class FT2CompatibilityTrace
   def during(name)
     raise 'Zagnieżdżony pomiar' if @phase
     @phase = name
+    entered = true
     yield
   ensure
-    @phase = nil
+    @phase = nil if entered
   end
 
   def forbidden(rows)

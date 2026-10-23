@@ -8,13 +8,14 @@ module GameRoomTournaments
   # participant consent or permission to create/start a table.
   class TournamentEventNotice < TournamentStartNotice
     TYPES={'registration'=>'game_room.tournament_registration','finished'=>'game_room.tournament_finished',
-      'phase_finished'=>'game_room.tournament_phase_finished'}.freeze
+      'phase_finished'=>'game_room.tournament_phase_finished', 'partnership'=>'game_room.tournament_partnership'}.freeze
     LIFETIME=7*86400
 
     def self.metadata(raw)
       value=Data.copy(raw,max_bytes:2048,max_nodes:64,max_depth:4)
       fields=FIELDS+DESCRIPTION_FIELDS+%w[kind issued_at]
       fields=fields+['phase_id'] if value.is_a?(Hash) && value['kind']=='phase_finished'
+      fields+=%w[change_key change_index] if value.is_a?(Hash) && value['kind']=='partnership'
       permanent = value.is_a?(Hash) && value['version'] == 2 && value['kind'] == 'registration'
       fields += ['invitation_key'] if permanent
       unless value.is_a?(Hash) && value.keys.sort==fields.sort &&
@@ -28,6 +29,10 @@ module GameRoomTournaments
       value['publication_ref']=reference
       value['recipient']=Data.account(value['recipient']).downcase
       Data.key!(value['phase_id']) if value['kind']=='phase_finished'
+      if value['kind']=='partnership'
+        Data.key!(value['change_key'])
+        raise Publication::Invalid,:invalid_tournament_notice unless Data.integer?(value['change_index']) && value['change_index']<=511
+      end
       Data.key!(value['invitation_key']) if permanent
       expected=event_id(value)
       raise Publication::Invalid,:invalid_tournament_notice unless value['event_id']==expected
@@ -38,6 +43,7 @@ module GameRoomTournaments
       identity=['tournament-event-v1',value['kind'],value['backend_identity'],value['publication_ref']]
       identity << (value['version'] == 2 ? value['invitation_key'] : value['issued_at']) if value['kind']=='registration'
       identity << value['phase_id'] if value['kind']=='phase_finished'
+      identity.concat(value.values_at('change_key','change_index')) if value['kind']=='partnership'
       Digest::SHA256.hexdigest(JSON.generate(identity))
     end
 
@@ -47,18 +53,19 @@ module GameRoomTournaments
       super(**arguments)
     end
 
-    def notices(publication_ref:,recipient:nil,phase_id:nil,addressed:false,invitation_key:nil)
+    def notices(publication_ref:,recipient:nil,phase_id:nil,addressed:false,invitation_key:nil,change_key:nil,change_index:nil)
       current!
       reference=ScheduleSource.reference(publication_ref)
-      proof=source!(reference,delivery:true,phase_id:phase_id,invitation_key:invitation_key,recipient:recipient)
+      proof=source!(reference,delivery:true,phase_id:phase_id,invitation_key:invitation_key,recipient:recipient,change_key:change_key,change_index:change_index)
       raise ProposalNotice::Stale,'Not tournament organizer' unless proof['sender']==@scope['account']
-      people=@kind=='registration' ? [Data.account(recipient).downcase] : proof['participants']
+      people=@kind=='registration' ? [Data.account(recipient).downcase] : proof.fetch('recipients',proof['participants'])
       people.map do |person|
         check_recipient!(proof,person)
         metadata={'version'=>1,'kind'=>@kind,'issued_at'=>proof['issued_at'],'backend_identity'=>@scope['backend_identity'],
           'publication_ref'=>reference,'recipient'=>person,'title'=>proof['title'],'game'=>proof['game'],
           'event_id'=>nil}
         metadata['phase_id']=phase_id if @kind=='phase_finished'
+        metadata.merge!('change_key'=>change_key,'change_index'=>change_index) if @kind=='partnership'
         metadata.merge!('version'=>2,'invitation_key'=>invitation_key) if @kind=='registration' && invitation_key
         metadata['event_id']=self.class.event_id(metadata)
         metadata=self.class.metadata(metadata)
@@ -76,7 +83,7 @@ module GameRoomTournaments
         raise ProposalNotice::Stale,'Different tournament notice scope'
       end
       proof=source!(notice['publication_ref'],delivery:delivery,issued_at:notice['issued_at'],phase_id:notice['phase_id'],
-        invitation_key:notice['invitation_key'],recipient:notice['recipient'])
+        invitation_key:notice['invitation_key'],recipient:notice['recipient'],change_key:notice['change_key'],change_index:notice['change_index'])
       raise ProposalNotice::Stale,'Wrong organizer or changed description' unless sender==proof['sender'] &&
         (notice['version']==2 || notice.slice(*DESCRIPTION_FIELDS)==proof.slice(*DESCRIPTION_FIELDS))
       check_recipient!(proof,notice['recipient'])
@@ -87,13 +94,19 @@ module GameRoomTournaments
     def description(metadata:,sender:)
       current!
       notice=self.class.metadata(metadata)
+      if @kind=='partnership'
+        return unless notice['backend_identity']==@scope['backend_identity'] && notice['recipient']==@scope['account']
+        # Unlike organizer notices, a proposal may come from any entrant. Only
+        # the asynchronously verified transition supplies its description.
+        return nil
+      end
       return unless notice['kind']==@kind && notice['backend_identity']==@scope['backend_identity'] &&
         notice['recipient']==@scope['account'] && Data.account(sender).downcase==notice['publication_ref']['author']
       notice.slice(*DESCRIPTION_FIELDS)
     end
 
     def delivery_identity(notice)
-      notice.slice(*(FIELDS+%w[kind phase_id]))
+      notice.slice(*(FIELDS+%w[kind phase_id change_key change_index]))
     end
 
     def retention_deadline
@@ -130,17 +143,19 @@ module GameRoomTournaments
     private
 
     def check_recipient!(proof,person)
-      if @kind=='registration'
+      if @kind=='partnership'
+        raise ProposalNotice::Stale,'Not a partnership recipient' unless proof['recipients'].include?(person)
+      elsif @kind=='registration'
         raise ProposalNotice::Stale,'Already registered or tournament full' if proof['participants'].include?(person) || proof['full']
       else
         raise ProposalNotice::Stale,'Not a participant' unless proof['participants'].include?(person)
       end
     end
 
-    def source!(reference,delivery:,issued_at:nil,phase_id:nil,invitation_key:nil,recipient:nil)
+    def source!(reference,delivery:,issued_at:nil,phase_id:nil,invitation_key:nil,recipient:nil,change_key:nil,change_index:nil)
       raise ProposalNotice::Unavailable,'Tournament notice source is not connected' unless @source
       raw=@kind=='phase_finished' ? @source.call(reference,phase_id) : @source.call(reference)
-      value=Data.copy(raw,max_bytes:262_144,max_nodes:16_384,max_depth:12)
+      value=Data.copy(raw,max_bytes:@kind=='partnership' ? 1_048_576 : 262_144,max_nodes:32_768,max_depth:12)
       current!
       row=value['publication']
       raise ProposalNotice::Stale,'Tournament unavailable' unless row && row['__insertion_user'].downcase==reference['author'] && row['publication_key']==reference['publication_key']
@@ -153,7 +168,22 @@ module GameRoomTournaments
       proof={'sender'=>reference['author'],'title'=>row['title'],'game'=>row['game'],'participants'=>people,
         'usernames'=>value['usernames'],
         'publication_digest'=>RegistrationProjection.publication_generation(row)}
-      if @kind=='registration'
+      if @kind=='partnership'
+        change=value.fetch('partner_changes',[]).find { |item| item['key']==change_key && item['index']==change_index }
+        raise ProposalNotice::Stale,'Partnership change unavailable' unless change
+        if change['kind']=='requested'
+          request=value.fetch('pair_requests',[]).find { |item| item['from']==change['from'] && item['to']==change['to'] && item['key']==change['request_key'] }
+          raise ProposalNotice::Stale,'Partnership proposal is no longer current' unless request && !TournamentTiming.started?(row,now)
+        end
+        proof['sender']=change['author']
+        proof['change']=change
+        affected=%w[requested cancelled declined].include?(change['kind']) ? [change['to']] : change.values_at('from','to')
+        proof['recipients']=affected.uniq.reject { |person| person==change['author'] }
+        proof['usernames']=(proof['usernames'] || {}).merge(change['from']=>change['from_name'],change['to']=>change['to_name'])
+        proof['starts_at']=proof['issued_at']=change.fetch('time')
+        raise ProposalNotice::Stale,'Partnership change time changed' if issued_at && issued_at!=proof['issued_at']
+        proof['expires_at']=proof['issued_at']+LIFETIME
+      elsif @kind=='registration'
         raise ProposalNotice::Stale,'Registration not open' unless TournamentTiming.registration_open?(row,now)
         settings=JSON.parse(row['settings_json'])
         proof['full']=!!(settings['participant_limit'] && value.fetch('members').size>=settings['participant_limit'])

@@ -2,6 +2,7 @@ require_relative 'server_workspace'
 require_relative 'proposal_notice'
 require_relative 'tournament_start_notice'
 require_relative 'phase_description'
+require_relative '../game_room_background'
 
 module GameRoomTournaments
   # Finite directory/result work. Ordinary table invitations need no readiness
@@ -20,10 +21,12 @@ module GameRoomTournaments
       Data.freeze_tree(value)
     end
 
-    def initialize(workspace:,user:,clock:,worker:,wake:,started:->(_reference){},finished:->(_reference){},phase_finished:->(_reference,_phase_id){})
+    def initialize(workspace:,user:,clock:,worker:,wake:,started:->(_reference){},finished:->(_reference){},phase_finished:->(_reference,_phase_id){},partners_changed:->(_reference,_change){})
       @workspace,@user,@clock,@worker,@wake,@started=workspace,user,clock,worker,wake,started
       @finished=finished
       @phase_finished=phase_finished
+      @partners_changed=partners_changed
+      @announced_partners={}
       @owner=Data.account(user.call).downcase
       @lock=Mutex.new
       @pending,@deadlines={}, {}
@@ -76,7 +79,7 @@ module GameRoomTournaments
       if (done=@worker.take)
         value,error=done
         if !error && value && @active_job && @active_job.first!=:directory
-          visible=value.slice('completed','directory','results','blocked','overview')
+          visible=value.slice('completed','directory','results','blocked','blocked_details','overview')
           reference=@active_job.first
           @lock.synchronize do
             if !visible.empty? && @view_values[reference]!=visible
@@ -134,10 +137,14 @@ module GameRoomTournaments
         end
       end
       return unless job
-      @active_job=job
-      @worker.start do
+      started=GameRoomBackground.admit(@worker) do
         check!
         job.first==:directory ? directory : coordinate(job.first,**job.last)
+      end
+      if started
+        @active_job=job
+      else
+        @lock.synchronize{@retry_job ||= job unless @closed}
       end
     end
 
@@ -163,10 +170,17 @@ module GameRoomTournaments
       end
 
       begin
+        if context['needs_pair_completion']
+          result = @workspace.complete_partnerships_on_worker(publication_ref: reference)
+          context = notification_context!(reference, broadcast: !!result, sender: nil)
+          visible['directory'] = context.slice('publication','members','pairs','pair_requests','invitations')
+        end
         source=@workspace.coordination_view_on_worker(publication_ref:reference)
-      rescue Publication::Invalid=>error
+      rescue Publication::Invalid, PublicService::Error=>error
         raise unless %i[registration_open no_players too_few_players incomplete_pairs unresolved_source_diagnostics].include?(error.code)
-        return visible.merge('blocked'=>error.code.to_s)
+        result = visible.merge('blocked'=>error.code.to_s)
+        result['blocked_details'] = error.details.transform_keys(&:to_s) if error.respond_to?(:details)
+        return result
       end
       visible['results']=source.fetch('results')
       visible['overview']=source.slice('candidate','results','phase_history')
@@ -205,6 +219,14 @@ module GameRoomTournaments
       raise ProposalNotice::Stale,'Unrelated tournament wake' if sender && !eligible.include?(sender)
       raise ProposalNotice::Stale,'Not a tournament participant' unless eligible.include?(@owner)
       check!
+      source.fetch('partner_changes',[]).each do |change|
+        next unless change['author']==@owner
+        key=[reference,change['key'],change['index']]
+        next if @announced_partners.key?(key)
+        @partners_changed.call(reference,change)
+        @announced_partners.shift if @announced_partners.size>=512
+        @announced_partners[key]=true
+      end
       if broadcast
         names=source['usernames'] || RegistrationProjection.usernames(source.fetch('members'))
         people.reject{|person|person==@owner}.each{|person|@wake.call(RegistrationProjection.delivery_name(names,person),reference)}

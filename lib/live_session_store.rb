@@ -212,11 +212,13 @@ class GameRoomLiveSessionStore
     end
   end
 
-  def create_room(name:, game:, owner:, game_options:, capacity: MAX_CAPACITY, private_table: false, resume_save_id: nil, bot_count: 0, bot_names: nil, tournament_match: nil, stack_entries: STACK_ENTRIES)
+  def create_room(name:, game:, owner:, game_options:, capacity: MAX_CAPACITY, private_table: false, resume_save_id: nil, bot_count: 0, bot_names: nil, tournament_match: nil, stack_entries: STACK_ENTRIES, creation_guard: nil)
     unless stack_entries.is_a?(Integer) && stack_entries.between?(STACK_ENTRIES, 32_768)
       raise ArgumentError, "Invalid session history capacity"
     end
     start
+    account = invitation_account_identity
+    raise GameRoomNetworkErrors::GamePaused, 'Room creation account changed' unless same_user?(account.last, owner)
     table_id = unused_identifier
     maximum = bounded_capacity(capacity)
     offline = @local_view && endpoint.respond_to?(:offline?) && endpoint.offline?
@@ -243,35 +245,33 @@ class GameRoomLiveSessionStore
       metadata['protocol'] = PRIVATE_CARDS_DISCOVERY_PROTOCOL
       metadata['private_cards'] = GameRoomPrivateCards::VERSION
     end
-    discovery = metadata.dup
-    discovery.merge!("status" => "waiting", "bot_count" => [[bot_count.to_i, 0].max, maximum - 1].min,
-      "player_count" => 1 + [[bot_count.to_i, 0].max, maximum - 1].min, "max_players" => maximum)
-    session = endpoint.create(
+    count = [[bot_count.to_i, 0].max, maximum - 1].min
+    discovery = metadata.merge("status" => "waiting", "bot_count" => count,
+      "player_count" => 1 + count, "max_players" => maximum)
+    wire_discovery = compact_discovery(discovery)
+    packet = GameRoomEventProtocol.record_packet(kind: 'room_created', actor: owner,
+      data: metadata.slice('name', 'game', 'owner', 'game_options', 'created_at', 'tournament_match').merge(
+        'status' => 'waiting', 'max_players' => maximum, 'bot_count' => count,
+        'bot_names' => Array.new(count) { |index| bot_names.to_a[index] }))
+    creation_guard&.call
+    raise GameRoomNetworkErrors::GamePaused, 'Room creation account changed' unless invitation_account_current?(account)
+    session = account.first.create(
       metadata: metadata,
       participant_metadata: participant_metadata(table_id),
       capacity: maximum,
       visibility: private_table == true ? :private : :public,
-      discovery_metadata: compact_discovery(discovery),
+      discovery_metadata: wire_discovery,
       stack_entry_bytes: STACK_ENTRY_BYTES,
       stack_entries: stack_entries,
       pool_count: metadata['private_cards'] ? GameRoomPrivateCards::MAX_POOLS : 1,
       private_messages: true
     )
+    raise GameRoomNetworkErrors::GamePaused, 'Room creation account changed' unless invitation_account_current?(account)
     if stack_entries > STACK_ENTRIES && session.limits.fetch("max_stack_entries", 0).to_i < stack_entries
       raise ArgumentError, "Requested session history capacity was not granted"
     end
     attach_session(table_id, session)
-    append_record(table_id, "room_created", {
-      "name" => name.to_s,
-      "game" => game.to_s,
-      "owner" => owner.to_s,
-      "status" => "waiting",
-      "max_players" => maximum,
-      "bot_count" => [[bot_count.to_i, 0].max, maximum - 1].min,
-      "bot_names" => Array.new([[bot_count.to_i, 0].max, maximum - 1].min) { |index| bot_names.to_a[index] },
-      "game_options" => game_options.to_s,
-      "created_at" => metadata["created_at"]
-    }.merge(tournament_match ? {'tournament_match'=>metadata['tournament_match']} : {}), actor: owner)
+    append_packet(table_id, packet)
     table_for(table_id)
   rescue Exception => error
     raise unless @local_view || error.is_a?(StandardError)
@@ -1155,6 +1155,35 @@ class GameRoomLiveSessionStore
     end
   end
 
+  # The blocking SDK call validates its successful envelope, not this page.
+  # Check the complete read boundary before ingesting even its first entry.
+  def validate_stack_read_page!(page, session, after:)
+    valid = page.is_a?(Hash) && page['session_id'] == session.id.to_s &&
+      page['entries'].is_a?(Array) && page['entries'].length <= STACK_PAGE_SIZE &&
+      page['cursor'].is_a?(Integer) && page['through'].is_a?(Integer) && page['through'] >= after
+    cursor = after
+    if valid && page['gap']
+      gap = page['gap']
+      valid = gap.is_a?(Hash) && gap['from'] == cursor + 1 && gap['to'].is_a?(Integer) &&
+        gap['to'] >= gap['from'] && gap['to'] <= page['through']
+      cursor = gap['to'] if valid
+    end
+    if valid
+      page['entries'].each do |entry|
+        unless entry.is_a?(Hash) && entry['seq'].is_a?(Integer) && entry['seq'] == cursor + 1 && entry.key?('packet')
+          valid = false
+          break
+        end
+        cursor = entry['seq']
+      end
+      valid &&= page['cursor'] == cursor && cursor <= page['through'] &&
+        page['has_more'] == (cursor < page['through']) && (cursor > after || page['has_more'] == false)
+    end
+    raise EltenLink::Error.new('Invalid live session stack page', code: 'invalid_json') unless valid
+
+    page['entries']
+  end
+
   def ensure_current(table_id, force: false, cancellation_token: nil, timeout: nil)
     begin_room_io(table_id)
     session = active_session(table_id)
@@ -1171,7 +1200,7 @@ class GameRoomLiveSessionStore
       cancellation_token&.raise_if_cancelled!
       page = session.stack_read(after: cursor, limit: STACK_PAGE_SIZE, **read_options)
       return false unless @mutex.synchronize { @sessions[table_id].equal?(session) }
-      Array(page["entries"]).each do |entry|
+      validate_stack_read_page!(page, session, after: cursor).each do |entry|
         sender = if entry["sender"].is_a?(Hash)
           entry["sender"]["user"].to_s
         elsif session.respond_to?(:participant)
@@ -1190,7 +1219,7 @@ class GameRoomLiveSessionStore
           source_session: session
         )
       end
-      next_cursor = page["cursor"].to_i
+      next_cursor = page["cursor"]
       current = @mutex.synchronize do
         next false unless @sessions[table_id].equal?(session)
 
@@ -1199,7 +1228,7 @@ class GameRoomLiveSessionStore
         true
       end
       return false unless current
-      break if next_cursor <= cursor || page["has_more"] != true
+      break unless page["has_more"]
 
       cursor = next_cursor
     end

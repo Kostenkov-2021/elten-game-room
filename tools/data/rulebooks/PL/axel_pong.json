@@ -167,6 +167,9 @@
           "pl": "- Głośność lektora dotyczy głosowych zapowiedzi w grze."
         },
         {
+          "pl": "- W opcji „Dźwięki zawodników w deblu” wybierzesz brzmienie kroków i odbić. Domyślnie zależy ono od miejsca w drużynie. Wybierz „Stałe własne dźwięki”, jeśli chcesz zawsze słyszeć siebie tak samo, a partnera inaczej."
+        },
+        {
           "pl": "Dodatkowo Shift+E przełącza dźwięki bocznych krawędzi: szum, tony lub wyłączenie. Im bliżej danej krawędzi stoi rakietka, tym głośniej słychać jej sygnał."
         }
       ]

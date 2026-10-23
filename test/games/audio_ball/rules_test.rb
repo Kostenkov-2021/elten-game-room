@@ -26,14 +26,14 @@ game = GameRoomGames::AudioBall.new
 audio_ball_test('fixed roster, real-time capabilities and ordered table options') do
   assert(GameRoomGames::AudioBall::POINTS_TO_WIN == 7, 'Audio Ball set target must be seven points')
   assert(game.id == 'audio_ball' && game.name == 'Audio Ball', 'Audio Ball identity changed')
-  assert(game.minimum_players == 2 && game.maximum_players == 2, 'Audio Ball is not exactly one versus one')
+  assert(game.minimum_players == 2 && game.maximum_players == 4, 'Audio Ball must offer singles and four-player doubles')
   assert(game.supports_bots? && !game.supports_bot_move_delay?, 'continuous bots inherited turn-based pacing')
   assert(!game.supports_saved_games?, 'unfinished real-time matches can be saved')
   definitions = game.effective_option_definitions
-  assert(definitions.map(&:key) == %w[mode difficulty sets_to_win p2p_enabled p2p_participants_limit], 'game options duplicate privacy or have the wrong order')
-  assert(definitions.first(3).map { |definition| definition.choices.map(&:value) } == [['classic'], [1, 2, 3, 4, 5], [1, 2, 3]], 'unsupported mode, difficulty or match length is offered')
-  assert(definitions[1].choices.map(&:label) == ['Very easy', 'Easy', 'Normal', 'Hard', 'Very hard'], 'difficulty labels do not match their numeric values')
-  assert(game.default_options == {'mode' => 'classic', 'difficulty' => 3, 'sets_to_win' => 1,
+  assert(definitions.map(&:key) == %w[team_size mode difficulty sets_to_win p2p_enabled p2p_participants_limit], 'game options duplicate privacy or have the wrong order')
+  assert(definitions.first(4).map { |definition| definition.choices.map(&:value) } == [[0,2],['classic'], [1, 2, 3, 4, 5], [1, 2, 3]], 'unsupported mode, difficulty or match length is offered')
+  assert(definitions[2].choices.map(&:label) == ['Very easy', 'Easy', 'Normal', 'Hard', 'Very hard'], 'difficulty labels do not match their numeric values')
+  assert(game.default_options == {'team_size'=>0,'mode' => 'classic', 'difficulty' => 3, 'sets_to_win' => 1,
     'p2p_enabled' => false, 'p2p_participants_limit' => 8}, 'Audio Ball defaults changed')
   assert(game.normalize_options('mode' => 'arcade', 'difficulty' => 99, 'sets_to_win' => 0) == game.default_options, 'invalid choices did not fall back to defaults')
   assert(game.normalize_options(difficulty: '3', sets_to_win: '2')['sets_to_win'] == 2, 'choice values stopped normalizing to numbers')
@@ -291,7 +291,7 @@ audio_ball_test('surface contract and nonconflicting participant shortcuts') do
   spec = game.surface_spec(replay, 'aLiCe')
   assert(spec.is_a?(GameSurfaces::AudioBallSpec), 'Audio Ball returned a different surface type')
   assert(spec.to_h == {game_id: 'audio_ball', header: 'Audio Ball playfield', players: ['Alice', 'Computer 1'],
-    viewer: 0, scores: [0, 0], sets: [0, 0], set_number: 1, finished: false}, 'surface omitted match state or exposed raw bot IDs')
+    viewer: 0, scores: [0, 0], sets: [0, 0], set_number: 1, finished: false,teams:nil,score_labels:['Alice','Computer 1']}, 'surface omitted match state or exposed raw bot IDs')
   assert(game.surface_spec(replay, 'Watcher').viewer == nil && game.surface_spec(replay, 'bot:7:1').viewer == 1, 'surface gave observer a player seat')
   assert(game.shortcut_features == [], 'inherited bare-letter shortcuts conflict with shot controls')
   participant_keys = game.game_shortcuts(replay, 'Alice').map { |shortcut| [shortcut.key, shortcut.modifiers, shortcut.action_name] }

@@ -58,6 +58,13 @@ module GameRoomGames
 
     def precise_action_clock?; true; end
     def supports_leaderboards?; true; end
+
+    def tournament_placement_result(replay, options:)
+      result = super
+      leaders = replay.state.fetch(:winners)
+      leaders.empty? ? result : result.merge(winners: leaders.dup, draw: false)
+    end
+
     def personal_settings_label; _("Krowa settings"); end
     def personal_settings_action; :show_krowa_settings; end
     def private_table_required?(options); options["variant"] == "daily"; end

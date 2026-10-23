@@ -1,23 +1,11 @@
 require_relative "../support/host_source"
 require_relative "../support/settings_widget"
+require_relative "../support/native_notification_mute"
 require 'timeout'
 
 # Real host objects and list grouping, offline; no altered installed client.
 host = File.join(EltenTestHost.root, "src/eapi")
-lines = File.readlines(File.join(host, "program.rb"))
-first = lines.index { |line| line.start_with?("  class NotificationPresentation") }
-last = lines.index { |line| line.start_with?("  class Leaderboard") }
-unless first && last && first < last
-  raise "Missing native notification class boundaries in #{File.join(host, 'program.rb')}. Set ELTEN_HOST_SOURCE to the compatible work/elten-test-client checkout."
-end
-Object.class_eval("module Programs\n#{lines[first...last].join}\nend", "host_contacts_notifications.rb")
-%w[app_notification_from notification_value map_app_notification receive_app_notification].each do |name|
-  first = lines.index { |line| line.start_with?("    def #{name}(") }
-  raise "Missing native #{name} in #{File.join(host, 'program.rb')}. Check ELTEN_HOST_SOURCE." unless first
-  last = ((first + 1)...lines.length).find { |i| lines[i].start_with?("    def ") }
-  raise "Missing native #{name} end boundary in #{File.join(host, 'program.rb')}. Check ELTEN_HOST_SOURCE." unless last
-  Object.class_eval("module Programs\nclass << self\n#{lines[first...last].join}\nend\nend", "host_#{name}.rb")
-end
+require_relative '../support/app_notification_models'
 def p_(_context, text); text; end
 require File.join(host, "notificationgroups.rb")
 HostContactNotice = Struct.new(:id, :cat, :app_uuid, :date, :update_time, :revoked, :payload, :alert, keyword_init: true)
@@ -101,6 +89,8 @@ forged = notice.call(14, "Eve")
 forged.payload["metadata"]["sender"] = "Bob"
 assert(Programs.receive_app_notification(forged).last.default_suppressed?, "forged metadata bypassed contact filter")
 settings = settings.merge("invitation_notifications" => "everyone", "table_watch_contacts_only" => false)
+assert(Programs.receive_app_notification(forged).last.default_suppressed?, "everyone mode announced a mismatching sender")
+assert(helper.build_notification_groups([forged]).empty?, "everyone mode listed a mismatching sender")
 assert(helper.build_notification_groups(rows).flat_map(&:ids).sort == [10, 11, 12, 13], "disabled filters still hide people")
 assert(reads.length == 1, "disabling filters fetches contacts")
 
@@ -130,11 +120,11 @@ EltenAPI::NotificationService.rows = rows
 rows.each { |r| Programs.receive_app_notification(r) }
 Timeout.timeout(3) { started.pop }
 EltenAPI::NotificationService.rows = rows.drop(1)
-$donotdisturb = true
-release << true
-wait_background_work(EltenGameRoom.contacts_cache.instance_variable_get(:@worker))
-EltenGameRoom.contacts_tick
-$donotdisturb = false
+GameRoomTest::NativeNotificationMute.with_mode(1) do
+  release << true
+  wait_background_work(EltenGameRoom.contacts_cache.instance_variable_get(:@worker))
+  EltenGameRoom.contacts_tick
+end
 EltenGameRoom.contacts_tick
 assert(delivered.length == 2 && audio.length == 2, "expired/dismissed/DND notification was later announced")
 EltenGameRoom.contacts_stop

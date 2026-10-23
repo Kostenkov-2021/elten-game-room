@@ -443,7 +443,7 @@ module GameSurfaces
         @field.header = @presentation[:header]
       end
       if @presentation[:mode] == :text
-        @field.flags = if @presentation[:preparing]
+        @field.flags = if @presentation[:preparing] || @presentation[:session_paused]
           @field.flags.to_i | EditBox::Flags::ReadOnly
         else
           @field.flags.to_i & ~EditBox::Flags::ReadOnly

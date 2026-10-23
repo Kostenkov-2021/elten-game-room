@@ -100,7 +100,7 @@ class InvitationNotifications
       "__id" => hash_value(metadata, "invitation_id").to_i,
       "table_id" => hash_value(metadata, "table_id").to_i,
       "live_session_id" => hash_value(metadata, "live_session_id").to_s,
-      "sender" => authenticated_sender(notification, metadata),
+      "sender" => GameRoomInvitationIdentity.notification_sender(notification, metadata),
       "recipient" => recipient.to_s,
       "created_at" => GameRoomNotificationTime.created_at(notification) || hash_value(metadata, "created_at").to_i,
       "expires_at" => expiration,
@@ -115,7 +115,7 @@ class InvitationNotifications
 
     { "__id" => hash_value(metadata, "invitation_id"), "table_id" => hash_value(metadata, "table_id"),
       "live_session_id" => hash_value(metadata, "live_session_id"),
-      "sender" => authenticated_sender(notification, metadata), "recipient" => recipient }
+      "sender" => GameRoomInvitationIdentity.notification_sender(notification, metadata), "recipient" => recipient }
   end
 
   def matching_table_notification_id(notification, table_id, live_session_id)
@@ -150,17 +150,9 @@ class InvitationNotifications
     end
     return nil if type != NOTIFICATION_TYPE || !metadata.is_a?(Hash)
     return nil unless GameRoomInvitationIdentity.valid_notification_metadata?(metadata)
-    if notification.respond_to?(:sender)
-      sender = notification.sender.to_s
-      claimed = hash_value(metadata, "sender").to_s
-      return nil if sender.empty? || (!claimed.empty? && !sender.casecmp?(claimed))
-    end
+    return nil if GameRoomInvitationIdentity.notification_sender(notification, metadata).nil?
 
     metadata
-  end
-
-  def authenticated_sender(notification, metadata)
-    notification.respond_to?(:sender) ? notification.sender.to_s : hash_value(metadata, "sender").to_s
   end
 
   def notification_id(notification)

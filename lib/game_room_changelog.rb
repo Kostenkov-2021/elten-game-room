@@ -562,6 +562,23 @@ module GameRoomChangelog
         "Fixed restoring custom Makao settings when creating another table.",
         "Krowa sound effects are enabled by default. Your saved personal settings are preserved."
       ].freeze
+    ).freeze,
+    Entry.new(
+      version: "2.0.5.5",
+      build: 256,
+      changes: [
+        "Audio Ball now supports doubles: two teams of two players, alternating returns and sharing points and sets. You can play with people or computer players.",
+        "Audio Ball announces who serves and who receives. In doubles, pressing a defence key while the ball is flying to your partner gives the opponents a point, marked by a distinct sound instead of the normal goal recordings.",
+        "Choosing a tournament partner now uses invitations that can be accepted, declined or cancelled. Changing a pending invitation asks for confirmation, and partnership notifications explain what changed.",
+        "Agreed tournament pairs stay together. When the tournament starts, the remaining participants are paired at random, without the organizer choosing their partners. If the tournament cannot start, the program explains why.",
+        "Team tournament participant lists show each team once, above unpaired players. Enter on a team opens its members, with the usual user menu available for each person.",
+        "Axel Pong doubles has a personal option to keep your own footsteps and returns sounding the same in either team position, with a different sound for your partner. Open Ctrl+P to choose it.",
+        "Leaving a table also disconnects its voice conference. Ctrl+Shift+M toggles your conference microphone while you are at the table.",
+        "Expanded Mahjong rules explain all variants and their scoring. During play, you can check basic scoring progress and read the scoring breakdown after a completed hand.",
+        "Fixed finishing places in several tournament games, including shared results and matches that end before the usual score target is reached.",
+        "Improved responsiveness and recovery during simultaneous actions, background play, invitations and saved-game operations. Reduced repeated work in game updates, tournament lists and leaderboards.",
+        "Added five Polish general-knowledge questions proposed by bratczyk96 and corrected several reported questions. Thank you!"
+      ].freeze
     ).freeze
   ].freeze
 

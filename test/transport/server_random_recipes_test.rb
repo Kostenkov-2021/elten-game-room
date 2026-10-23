@@ -42,6 +42,23 @@ end
     "#{game.id}: legacy replay changed")
 end
 
+# A four-player first-server recipe must survive the same native decode and
+# authoritative replay as the singles recipe, not only Engine/relay fixtures.
+game = GameRoomGames::AudioBall.new
+native = NativeRoomHarness.new(game: game, users: %w[Alice Bob Carol Dave], options: {'team_size'=>2})
+native.start
+ctx = GameRoomGames::ActionContext.new(random_source: NoClientRandom.new, server_random: true,
+  table_owner: 'Alice', now: 1000)
+native.view('Alice').next_random_values = (1..16).to_a
+native.submit('Alice', {'kind'=>'command', 'action'=>'audio_ball_start'}, context: ctx)
+native.assert_converged('doubles server draw', expected_count: 1)
+assert(native.events('Alice').first.dig('__server_random','recipe') == {'kind'=>'first_server','players'=>4}, 'Doubles used singles entropy recipe')
+assert(native.replay('Alice').state[:server].between?(0,3), 'Native doubles draw was rejected')
+runner = runner_for(native)
+step(native, runner, count: 4)
+assert(native.events('Alice').size == 1, 'Accepted first-server draw was repeatedly resubmitted')
+runner.close
+
 request = GameRoomServerRandom.text_seed_command(action: 'deal', template: '2|{dealer}|{seed}', seats: [1, 3]).random_request
 assert(GameRoomServerRandom.valid_request?(request), 'seed template rejected')
 assert(GameRoomServerRandomRendering.render(request['recipe'], Array.new(16, 1)) == '2|1|' + '0' * 32, 'seed wire changed')

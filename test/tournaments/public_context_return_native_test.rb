@@ -69,12 +69,21 @@ driver.step(header,[]) do |form|
   list.context(menu,false)
   menu.actions.fetch(l.call('Open tournament')).call
 end
-%w[Edit\ tournament Manage\ participants].each do |action|
-  driver.step(l.call('Manage tournament'),[]) do |form|
-    list=form.fields.first
-    list.index=list.options.index(l.call(action))
-    list.trigger(:select)
-  end
+driver.step(l.call('Manage tournament'),[]) do |form|
+  list=form.fields.first
+  assert(!list.options.include?(l.call('Manage participants')),'Participants duplicated in management')
+  position=list.options.index(l.call('Edit tournament'))
+  assert(position,'Edit action missing')
+  list.index=position
+  list.trigger(:select)
+end
+driver.step(l.call('Manage tournament'),[27]){}
+driver.step(/\APróba 11 — Łódź — /,[]) do |form|
+  list=form.fields.first
+  position=list.options.index(l.call('Participants'))
+  assert(position,'Participants missing from tournament actions')
+  list.index=position
+  list.trigger(:select)
 end
 driver.step(/\APróba 11 — Łódź — /,[27]){}
 driver.step(header,[27]) do |form|
@@ -88,7 +97,9 @@ driver.step(header,[27]) do |form|
 end
 driver.step(l.call('Manage tournament'),[]) do |form|
   list=form.fields.first
-  list.index=list.options.index(l.call('Cancel tournament'))
+  position=list.options.index(l.call('Cancel tournament'))
+  assert(position,'Cancel action missing')
+  list.index=position
   list.trigger(:select)
 end
 begin

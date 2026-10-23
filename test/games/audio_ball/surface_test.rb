@@ -60,7 +60,7 @@ assert($spoken_messages.length == 1 && $spoken_messages.first.include?('Alice') 
   $spoken_messages.first.include?('12') && $spoken_messages.first.include?('10') &&
   $spoken_messages.first.include?('Sets: 1'), 'Shift+S did not read both points and sets')
 surface.handle_command('server')
-assert($spoken_messages.last.include?('Bob serves.'), 'server readout points at the wrong player')
+assert($spoken_messages.last.include?('Bob serves to Alice.'), 'server readout points at the wrong service pair')
 commands = []
 surface.on_audio_ball_command = ->(command) { commands << command }
 surface.handle_command('hurry')

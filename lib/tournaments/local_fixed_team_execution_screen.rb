@@ -177,8 +177,7 @@ module GameRoomTournaments
       input = options.merge(action: action)
       input[:selectors] = selection unless action == :catalog
       @status.set_text(status_text)
-      started = @readiness_work.start { @controller.perform(**input) }
-      raise 'Worker FT2 nie przyjął pojedynczej czynności' unless started
+      start_work_when_admitted(@readiness_work) { @controller.perform(**input) }
     rescue Exception
       @readiness_pending = nil
       raise
@@ -205,6 +204,7 @@ module GameRoomTournaments
 
     def drain_fixed
       return if @busy || !@readiness_pending || !current?
+      return unless admit_pending_work
       outcome = @readiness_work.take
       return unless outcome
       pending, @readiness_pending = @readiness_pending, nil

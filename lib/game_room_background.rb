@@ -4,6 +4,14 @@ require "thread"
 # a runtime to four workers; pending work waits in FIFO order without another
 # scheduler, UI pump, thread or retrying the operation itself.
 module GameRoomBackground
+  # A periodic owner retains its intention until the finite queue admits it.
+  # Capacity is not a failed request: no operation has started or needs retrying.
+  def self.admit(work, &operation)
+    work.start(&operation) != false
+  rescue EltenAPI::Tasks::Busy
+    false
+  end
+
   module Pending
     LIMIT = 128
     LOCK = Mutex.new

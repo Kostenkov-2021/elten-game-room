@@ -21,7 +21,7 @@ factory=->(actor){T::LocalWorkspace.new(program:state[:program],registry:GameRoo
   end
   driver.step(label.call('Team'),[13]) do |form|
     list=F.field(form,label.call('Partner'))
-    desired=index.zero? ? partner : label.call('Confirm partnership with %{player}')%{player:partner}
+    desired=index.zero? ? partner : label.call('Accept partnership with %{player}')%{player:partner}
     list.index=list.options.index(desired)
     assert(list.index,'Reciprocal partner choice missing')
     form.index=form.fields.index(list)
@@ -29,7 +29,8 @@ factory=->(actor){T::LocalWorkspace.new(program:state[:program],registry:GameRoo
   driver.step(/\AIndividual UI — /,[27])
   T::PublicPreview.new(program:state[:program],registry:GameRoomGames::CATALOG,publication:snapshot['announcements'].first,
     snapshot:snapshot,load:workspace.method(:load),join:workspace.method(:join),actor:workspace.actor,mode_label:workspace.mode_label,
-    clock:-> {150},set_partner:->(id,who,other,intent){factory.call(who).set_partner(id,who,other,intent)},alert:->(*){}).wait
+    clock:-> {150},set_partner:->(id,who,other,intent){factory.call(who).set_partner(id,who,other,intent)},
+    partner_action:->(id,action,other,key,intent){workspace.partnership_action(id,action,other,key,intent)},alert:->(*){}).wait
   driver.finish
   result=workspace.load
   assert_equal(index.zero? ? [] : [%w[alpha beta]],result['pairs'].map{|pair|pair['accounts']})

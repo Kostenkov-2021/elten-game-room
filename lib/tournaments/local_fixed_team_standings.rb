@@ -23,7 +23,7 @@ module GameRoomTournaments
         teams = match && match['players'].map { |person| person['team'] }.uniq.sort
         valid_order = if summary.is_a?(Hash)
           ordered = receipt['kind'] != 'forfeit' && GameResult::ORDERED_POLICIES.include?(policy) &&
-            !(policy == GameResult::CURRENT_RESULT_POLICY && summary['scores'].nil?)
+            !(GameResult::SELECTED_SMALL_POLICIES.include?(policy) && summary['scores'].nil?)
           ordered ? %w[higher lower].include?(summary['score_order']) : !summary.key?('score_order')
         end
         valid_summary = if !match

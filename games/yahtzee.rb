@@ -213,6 +213,21 @@ module GameRoomGames
       state[:players].to_h { |player| [player, total_score(state, player)] }
     end
 
+    def tournament_placement_result(replay, options:)
+      result = super
+      active = tournament_active_players(replay, options: options)
+      totals = replay.state.fetch(:totals)
+      maximum = active.map { |player| totals.fetch(player) }.max
+      # The historical scalar replay calls every shared maximum a draw.
+      # New bindings retain the actual winning subset; the shared exporter
+      # recognizes a full-roster tie without changing old game/results data.
+      result.merge(winners: active.select { |player| totals.fetch(player) == maximum }, draw: false)
+    end
+
+    def tournament_placement_scores(replay, options:)
+      {scores: tournament_public_unit_scores(replay, options: options), order: 'higher'}
+    end
+
     def tournament_forfeit_continuation(replay, losing_unit:, options:)
       return {'status'=>'unsupported'} if replay.finished?
       active = tournament_remaining_players(replay.state)

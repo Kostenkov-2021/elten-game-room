@@ -34,7 +34,7 @@ module GameRoomPong
       turn = @side == nil && !host? ? @observer_turn.to_i : rally_state.engine.turn
       goal = @side == nil && !host? ? rally_state.snapshot && rally_state.snapshot['goal'] : rally_state.engine.goal
       return false unless turn.zero? && !goal && data['side'] == rally_state.engine.server
-      speak(_('%{player}, serve within ten seconds or your opponent receives a point.') % {
+      announce_progress(_('%{player}, serve within ten seconds or your opponent receives a point.') % {
         player: GameRoomContent.utf8(GameRoomParticipants.display_name(@players[data['side']])) })
       true
     end

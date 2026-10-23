@@ -17,14 +17,13 @@ begin
     assert(app.lobby.creations.first[:private_table] == private_table, "preset privacy lost")
     assert(JSON.parse(app.lobby.creations.first[:game_options]) == preset["options"], "preset options changed")
     assert(announcements.length - before == (private_table ? 0 : 1), "preset publication scope wrong")
-    # The common lobby path returns the already existing table instead of
-    # making another one. Do not announce a creation or start/close a match.
-    existing = Struct.new(:table) { def created?; false; end }.new({"__id" => "existing"})
-    app.lobby.define_singleton_method(:create_table) { |**_| existing }
+    # A second explicit create requests the preset again, without a warning
+    # or redirect to an earlier membership.
     before = announcements.length
     app.send(:create_table_from_widget, 0)
-    assert(app.opened_tables.last == existing.table && announcements.length == before, "existing table was replaced or announced")
-    assert(app.notices.last == "You are already at a table.", "existing-table warning lost")
+    assert(app.lobby.creations.length == 2 && app.opened_tables.length == 2, 'Repeated preset request did not create another table')
+    assert(announcements.length - before == (private_table ? 0 : 1), 'Repeated preset publication scope wrong')
+    assert(app.notices.empty?, 'Explicit creation reported an unrelated existing table')
   end
 ensure
   EltenGameRoom.define_singleton_method(:announce_new_public_table, original_announcement)
@@ -47,4 +46,4 @@ end
 edited = app.send(:edit_table_preset, entry)
 assert(edited == entry.merge("name" => game.name) && forms == 1, "preset edit silently changes options")
 assert(app.remembered.empty? && app.lobby.creations.empty?, "preset editing has live/remembered side effects")
-puts "Preset creation integration: common lobby, public/private, existing membership, editor/focus and no automatic game start OK"
+puts "Preset creation integration: common lobby, fresh public/private requests, editor/focus and no automatic game start OK"

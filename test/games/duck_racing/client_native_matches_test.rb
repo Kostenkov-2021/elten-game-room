@@ -53,6 +53,7 @@ class DuckClientNativeMatchesTest
     end
     initial_match = @network.values.map(&:match).uniq
     assert_equal(1, initial_match.length)
+    pause_native_match
     2.times do |index|
       receipt = complete_point(kind)
       assert_equal(index + 1, receipt['id'])
@@ -100,6 +101,29 @@ class DuckClientNativeMatchesTest
     players = @replay.players
     {'__players' => players, '__initial_players' => players, '__table_owner' => 'Host', '__control_epoch' => 'initial',
       '__controllers' => players.to_h { |name| [name, GameRoomParticipants.bot?(name) ? 'bot' : name] }}
+  end
+
+  def pause_native_match
+    native_clients = @wrappers.transform_values(&:native_client)
+    projections = @wrappers.transform_values(&:projection)
+    @clients.each do |name, client|
+      client.update_table_control(native_control.merge('__frozen' => true))
+      client.before_wait(@replay, name)
+      assert_equal(native_clients.fetch(name), @wrappers.fetch(name).native_client,
+        'Pausing the Duck wrapper retired its current native point')
+      assert_equal(projections.fetch(name), @wrappers.fetch(name).projection)
+      assert_equal(true, native_clients.fetch(name).send(:session_paused?))
+      assert_equal(nil, client.context_data['duck_realtime_point'])
+    end
+    advance_native(60)
+    @clients.each do |name, client|
+      client.update_table_control(native_control.merge('__frozen' => false))
+      client.before_wait(@replay, name)
+      assert_equal(native_clients.fetch(name), @wrappers.fetch(name).native_client,
+        'Resuming the Duck wrapper replaced its native point')
+      assert_equal(false, native_clients.fetch(name).send(:session_paused?))
+      assert(!client.instance_variable_get(:@technical_error))
+    end
   end
 
   def attach_native(name, kind)

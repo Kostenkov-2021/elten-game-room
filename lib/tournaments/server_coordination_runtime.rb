@@ -29,7 +29,13 @@ module GameRoomTournaments
         worker:GameRoomBackground::Work.new(runtime:app_runtime),
         wake:->(recipient,reference){send_notification(recipient,type:ServerCoordination::TYPE,
           metadata:{'version'=>1,'backend_identity'=>workspace.backend_identity,'publication_ref'=>reference,'recipient'=>recipient.downcase},expires_in:120)},
-        phase_finished:->(reference,phase_id){
+        partners_changed:->(reference,change){
+          begin
+            send_tournament_event(kind:'partnership',publication_ref:reference,change_key:change['key'],change_index:change['index'])
+          rescue ProposalNotice::Stale
+            nil
+          end
+        },phase_finished:->(reference,phase_id){
           begin
             send_tournament_event(kind:'phase_finished',publication_ref:reference,phase_id:phase_id)
           rescue ProposalNotice::Stale

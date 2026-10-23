@@ -130,8 +130,11 @@ module GameRoomRealtime
           end
         end
       elsif !host? && @pending_invitation
-        invitation, @pending_invitation = @pending_invitation, nil
-        return unless invitation.status == :pending
+        invitation = @pending_invitation
+        unless invitation.status == :pending
+          @pending_invitation = nil
+          return
+        end
         previous = @session
         generation = @generation
         @accepting_invitation = invitation
@@ -147,7 +150,11 @@ module GameRoomRealtime
             [:session, session, previous && !previous.equal?(session) ? previous : nil]
           end
         end
-        @accepting_invitation = nil unless started
+        if started
+          @pending_invitation = nil if @pending_invitation.equal?(invitation)
+        else
+          @accepting_invitation = nil
+        end
       elsif host? && connected?
         present = @session.participants.map { |p| p.user.downcase }
         candidates = allowed_members.select do |name|
@@ -160,19 +167,21 @@ module GameRoomRealtime
         if missing
           key = missing.downcase
           attempt = @invite_attempts[key].to_i
-          @invite_attempts[key] = [attempt + 1, 3].min
-          @inviting = [key, [0.5 * (2 ** attempt), 2.0].min]
-          @invite_serial += 1
-          @invite_order[key] = @invite_serial
           session = @session
-          trace('invite_attempt')
-          @work.start(:invite) { session.invite(missing); [:invited, key] }
+          if @work.start(:invite) { session.invite(missing); [:invited, key] }
+            @invite_attempts[key] = [attempt + 1, 3].min
+            @inviting = [key, [0.5 * (2 ** attempt), 2.0].min]
+            @invite_serial += 1
+            @invite_order[key] = @invite_serial
+            trace('invite_attempt')
+          end
         end
       elsif @departing
         # Attach and register callbacks before the old session's departure RPC.
         # A slow or failed leave must not hold the new invitation hostage.
-        previous, @departing = @departing, nil
-        @work.start(:depart) { previous.leave if previous.state == :open; nil }
+        previous = @departing
+        started = @work.start(:depart) { previous.leave if previous.state == :open; nil }
+        @departing = nil if started && @departing.equal?(previous)
       end
     rescue StandardError => error
       record_error(error, stage: :tick)

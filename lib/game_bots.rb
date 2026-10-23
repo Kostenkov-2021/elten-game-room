@@ -24,6 +24,11 @@ module GameRoomBots
       names << name if [:key, :keyreq].include?(kind)
     end
     keywords = accepts_all ? arguments : arguments.select { |key, _value| accepted.include?(key) }
+    # Observation can map a long event history. Build it only if the actual
+    # keyword contract receives it; unknown **keywords strategies still do.
+    if block_given? && !keywords.key?(:observation) && (accepts_all || accepted.include?(:observation))
+      keywords = keywords.merge(observation: yield)
+    end
     strategy.choose(**keywords)
   end
 
@@ -114,14 +119,13 @@ module GameRoomBots
       end
       action = GameRoomBots.choose(selected_strategy, {
         actions: actions,
-        observation: game.bot_observation(replay, actor),
         actor: actor,
         random_source: context.random_source,
         game: game,
         replay: replay,
         context: context,
         simulation: simulation
-      })
+      }) { game.bot_observation(replay, actor) }
       return nil if action == nil
 
       Decision.new(actor: actor.to_s, action: action, available_actions: actions)

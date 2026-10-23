@@ -1,5 +1,6 @@
 require_relative '../support/private_card_games'
 require_relative '../../games/war'
+require_relative '../../lib/tournaments/game_result'
 
 game = GameRoomGames::War.new
 war_seen = false
@@ -34,6 +35,16 @@ war_seen = false
   assert(final.accepted_events.size == h.events(users.first).size, 'rejected War event')
   war_seen ||= final.history.any? { |entry| entry.kind == :war }
   assert(final.state[:hands].values.flatten.uniq.size == final.state[:hands].values.sum(&:size), 'duplicated pile card')
+  summary = GameRoomTournaments::GameResult.from_replay(game:game, replay:final,
+    players:users.map { |user| {'username'=>user, 'account'=>user.downcase} }, options:final.state[:options],
+    events:h.events(users.first), event_count:h.events(users.first).size,
+    result_policy:GameRoomTournaments::GameResult::CURRENT_RESULT_POLICY)
+  counts = final.state[:hands].transform_values(&:size)
+  leaders = users.select { |user| counts.fetch(user) == counts.values.max }
+  all_tied = leaders.size == users.size
+  assert(summary['draw'] == all_tied && summary['winners'] == (all_tied ? [] : leaders.map(&:downcase)),
+    'private War exported the wrong final leaders')
+  assert(summary['scores'].nil? && !summary.key?('score_order'), 'private War enabled numeric small points')
   runners.each_value(&:close)
 end
 assert(war_seen, 'war/face-down packet not covered')

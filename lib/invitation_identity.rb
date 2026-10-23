@@ -66,13 +66,25 @@ module GameRoomInvitationIdentity
   def notification_reference(notification, recipient:)
     metadata = notification.metadata.to_h.transform_keys(&:to_s)
     return nil unless valid_notification_metadata?(metadata)
-    claimed = metadata["sender"].to_s
-    sender = notification.respond_to?(:sender) ? notification.sender.to_s : claimed
-    return nil if notification.respond_to?(:sender) && (sender.empty? || (!claimed.empty? && !sender.casecmp?(claimed)))
+    sender = notification_sender(notification, metadata)
+    return nil if sender.nil?
 
     { "__id" => metadata["invitation_id"], "table_id" => metadata["table_id"],
       "live_session_id" => metadata["live_session_id"], "sender" => sender,
       "recipient" => recipient.to_s }
+  end
+
+  # Presentation, filtering and lookup must agree on the native envelope.
+  # Older adapters have no sender accessor; only those retain the metadata
+  # fallback. A missing metadata name must not hide the authenticated name.
+  def notification_sender(notification, metadata)
+    claimed = (metadata["sender"] || metadata[:sender]).to_s
+    return claimed unless notification.respond_to?(:sender)
+
+    sender = notification.sender.to_s
+    return nil if sender.empty? || (!claimed.empty? && !sender.casecmp?(claimed))
+
+    sender
   end
 
   def valid_notification_metadata?(metadata)

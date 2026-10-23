@@ -291,8 +291,8 @@ module GameRoomGames
 
     def surface_spec(replay, viewer)
       state = replay.state
-      if !replay.finished? && !same_user?(state[:current_player], viewer)
-        waiting_label = current_turn_shortcut_text(replay, viewer)
+      if replay.finished? || !same_user?(state[:current_player], viewer)
+        waiting_label = replay.finished? ? result_text(replay) : current_turn_shortcut_text(replay, viewer)
         return GameSurfaces::CardTableSpec.new(
           zones: [
             GameSurfaces::CardZoneSpec.new(

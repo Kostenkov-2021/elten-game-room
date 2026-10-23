@@ -39,8 +39,31 @@ module GameRoomAudioEncoding
         encoded[0]["channels"] == original[0]["channels"] && encoded[0]["sample_rate"].to_i == SAMPLE_RATE
       raise "Wrong encoded format or changed channel count" unless valid
       # EXCL also protects a destination created while ffmpeg was running.
-      File.open(target, File::WRONLY | File::CREAT | File::EXCL | File::BINARY) do |destination|
-        File.open(temporary.path, "rb") { |input| IO.copy_stream(input, destination) }
+      created = nil
+      begin
+        File.open(target, File::WRONLY | File::CREAT | File::EXCL | File::BINARY) do |destination|
+          identity = File.lstat(target)
+          raise IOError, 'Encoded audio destination changed' unless identity.file? && File.identical?(destination, target)
+          # Windows fstat may report dev=0 while path stat reports a drive ID.
+          # Capture the checked path identity for the later closed-file check.
+          created = identity
+          copied = File.open(temporary.path, "rb") { |input| IO.copy_stream(input, destination) }
+          raise IOError, 'Incomplete encoded audio copy' unless copied == File.size(temporary.path)
+        end
+      rescue Exception => error
+        # Remove only the file created by this attempt, never a pre-existing or
+        # concurrently replaced destination. EXCL failure leaves created=nil.
+        if created
+          begin
+            current = File.lstat(target)
+            File.delete(target) if current.file? && current.dev == created.dev && current.ino == created.ino
+          rescue Errno::ENOENT
+            nil
+          rescue SystemCallError, IOError => cleanup_error
+            raise IOError, "Cannot remove incomplete audio output: #{cleanup_error.message}", cause: error
+          end
+        end
+        raise error, cause: error.cause
       end
       encoded[0]
     end

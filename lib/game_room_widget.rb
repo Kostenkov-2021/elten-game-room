@@ -149,10 +149,13 @@ module GameRoomWidget
         return false
       end
       @announce_refresh ||= announce
-      @refresh_at = @clock.call + 5.0
       self.empty_label = _("Loading Power Games tables") if @snapshots.empty?
-      @worker_generation = @generation
-      @worker.start { load_snapshots }
+      admitted = GameRoomBackground.admit(@worker) { load_snapshots }
+      if admitted
+        @refresh_at = @clock.call + 5.0
+        @worker_generation = @generation
+      end
+      admitted
     end
 
     def close

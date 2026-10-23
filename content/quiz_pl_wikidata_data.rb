@@ -3,7 +3,7 @@ require 'json'
 module GameRoomContent
   module Packa0830f585cc4689a1e2a6335
     def self.load
-      JSON.parse(<<'QUIZ_DATA_cdfb3efbe7c08e05e150f9e18b1f2212a0e36a524b4c173c7aef3f6404264d5f')
+      JSON.parse(<<'QUIZ_DATA_4c4481b99970865a3bc6e798869cca337d0f9b51cfdb3fdb1daa70f9678c221a')
 {
   "questions": [
     {
@@ -72410,7 +72410,7 @@ module GameRoomContent
       "id": "polqa_01372",
       "category": "Kultura",
       "level": "medium",
-      "prompt": "Jaką dziedziną sztuki uprawiał Gerard Wilk?",
+      "prompt": "Jaką dziedzinę sztuki uprawiał Gerard Wilk?",
       "correct": "taniec",
       "wrong": [
         "rzeźbę",
@@ -136010,7 +136010,7 @@ module GameRoomContent
       "id": "polqa_02589",
       "category": "Nauka",
       "level": "medium",
-      "prompt": "Ile to jest 45 - 15?",
+      "prompt": "Ile to jest 45 minus 15?",
       "correct": "30",
       "wrong": [
         "20",
@@ -228590,7 +228590,7 @@ module GameRoomContent
       "correct": "lampasy",
       "wrong": [
         "epolety",
-        "galony na kołnierzu",
+        "galony",
         "szamerunki"
       ],
       "source": "https://huggingface.co/datasets/ipipan/polqa",
@@ -238333,11 +238333,96 @@ module GameRoomContent
       "source_license": "Submitted by the contributor for inclusion in Power Games; no separate reuse license specified",
       "author": "turekcom",
       "review_required": false
+    },
+    {
+      "id": "community_b96_20261023_01",
+      "category": "Kultura",
+      "level": "medium",
+      "prompt": "Który teleturniej prowadził Hubert Urbański w Polsacie, zanim został gospodarzem „Milionerów”?",
+      "correct": "Piramida",
+      "wrong": [
+        "Rekiny kart",
+        "100% dla stu",
+        "Magia liter"
+      ],
+      "source": "https://kultura.gazeta.pl/kultura/7,197031,32256137,pamietacie-piramide-to-pierwszy-teleturniej-prowadzony-przez.html",
+      "author": "bratczyk96",
+      "source_dataset": "Power Games community",
+      "source_license": "Submitted by the contributor for inclusion in Power Games; no separate reuse license specified",
+      "review_required": false
+    },
+    {
+      "id": "community_b96_20261023_02",
+      "category": "Język",
+      "level": "medium",
+      "prompt": "Z którym regionem Polski kojarzy się używanie formy „daj dla mnie” zamiast „daj mi”?",
+      "correct": "Z Podlasiem",
+      "wrong": [
+        "Ze Śląskiem",
+        "Z Podkarpaciem",
+        "Z Małopolską"
+      ],
+      "source": "https://www.polskieradio.pl/377/8110/artykul/2353215,daj-dla-mamy-czyli-mowimy-w-gwarze-podlaskiej",
+      "author": "bratczyk96",
+      "source_dataset": "Power Games community",
+      "source_license": "Submitted by the contributor for inclusion in Power Games; no separate reuse license specified",
+      "review_required": false
+    },
+    {
+      "id": "community_b96_20261023_03",
+      "category": "Literatura",
+      "level": "medium",
+      "prompt": "Kto napisał wiersz „Maja maleńkaja ajczyna”, opowiadający o rodzinnej Białostocczyźnie?",
+      "correct": "Wiktor Szwed",
+      "wrong": [
+        "Mira Łuksza",
+        "Barbara Goralczuk",
+        "Janka Kupała"
+      ],
+      "source": "https://vasminoh.school/wp-content/uploads/2023/08/kolazvarot-4-klas_compressed.pdf#page=110",
+      "author": "bratczyk96",
+      "source_dataset": "Power Games community",
+      "source_license": "Submitted by the contributor for inclusion in Power Games; no separate reuse license specified",
+      "review_required": false
+    },
+    {
+      "id": "community_b96_20261023_04",
+      "category": "Życie codzienne",
+      "level": "medium",
+      "prompt": "Jak nazywa się czekolada z wizerunkiem dziewczynki w chustce, produkowana przez rosyjską fabrykę Krasnyj Oktiabr?",
+      "correct": "Alionka",
+      "wrong": [
+        "Babajewski",
+        "Spartak",
+        "Komunarka"
+      ],
+      "source": "https://www.uniconf.ru/holding/candy_history/?id=329",
+      "author": "bratczyk96",
+      "source_dataset": "Power Games community",
+      "source_license": "Submitted by the contributor for inclusion in Power Games; no separate reuse license specified",
+      "review_required": false
+    },
+    {
+      "id": "community_b96_20261023_05",
+      "category": "Język",
+      "level": "medium",
+      "prompt": "Kliocki to rosyjska nazwa jakiej potrawy?",
+      "correct": "Klusek",
+      "wrong": [
+        "Ciasta",
+        "Wędliny",
+        "Zupy"
+      ],
+      "source": "https://www.culture.ru/lectures/dictionaries/63552/klecka",
+      "author": "bratczyk96",
+      "source_dataset": "Power Games community",
+      "source_license": "Submitted by the contributor for inclusion in Power Games; no separate reuse license specified",
+      "review_required": false
     }
   ],
   "source": "content/QUIZ_PL_GENERAL_SOURCES.txt"
 }
-QUIZ_DATA_cdfb3efbe7c08e05e150f9e18b1f2212a0e36a524b4c173c7aef3f6404264d5f
+QUIZ_DATA_4c4481b99970865a3bc6e798869cca337d0f9b51cfdb3fdb1daa70f9678c221a
     end
   end
 end

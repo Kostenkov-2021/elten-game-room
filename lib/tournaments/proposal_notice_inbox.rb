@@ -82,7 +82,7 @@ module GameRoomTournaments
       end
       unless @worker.busy? || @pending.empty?
         row = @pending.first
-        started = @worker.start { @service.inspect(metadata: row[1], sender: row[2]) }
+        started = GameRoomBackground.admit(@worker) { @service.inspect(metadata: row[1], sender: row[2]) }
         if started
           @running = row
           @pending.shift

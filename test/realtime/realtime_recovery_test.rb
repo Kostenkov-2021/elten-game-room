@@ -5,12 +5,14 @@ now = 0.0
 workers = []
 factory = -> { workers << ChannelWork.new; workers.last }
 operation = GameRoomRealtime::Operation.new(clock: -> { now }, factory: factory)
-operation.start(:setup) { :old }
+cancelled_calls = 0
+operation.start(:setup) { cancelled_calls += 1; :old }
 now = 8.1
 assert(operation.expired?, 'native setup without a result has no deadline')
 operation.cancel
 operation.start(:replacement) { :new }
 workers.first.finish
+assert(cancelled_calls.zero?, 'cancelled queued setup still called the native operation')
 assert(operation.take == nil, 'late cancelled setup became current')
 workers.last.finish
 assert(operation.take == [:new, nil, :replacement], 'replacement result lost')

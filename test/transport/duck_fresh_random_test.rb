@@ -35,8 +35,7 @@ game = GameRoomGames::DuckRacing.new
   h.submit(actor, selected, context:context.call(actor))
   assert(h.view(actor).calls[:random] == before + 1, 'roll did not use one server request')
   snapshots = h.users.map { |user| DuckGameAdapterTest.semantic(h.replay(user)) }
-  differences = snapshots.first.last.keys.select { |key| snapshots.map { |state| state.last[key] }.uniq.size > 1 }
-  assert(differences.empty?, "#{kind}: #{differences.map { |key| [key, snapshots.map { |s| s.last[key] }] }.inspect}")
+  assert(snapshots.uniq.size == 1, "#{kind}: roll diverged #{snapshots.inspect}")
   state = h.replay(actor).state
   rolls = state.dig(:round,:engine,:model,:players,seat,:rolls)
   if rolls

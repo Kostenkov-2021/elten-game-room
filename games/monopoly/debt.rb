@@ -130,29 +130,69 @@ module GameRoomGames
       end
 
       def settle_debts(state, event_id = nil, history = nil)
+        seen = {}
         loop do
+          claims = state[:debts].flat_map { |player, debts| debts.map { |debt| [player, debt] } }
+          break if claims.empty?
+          amounts = claims.map { |_, debt| debt[:amount] }
+          # At a complete-pass boundary this vector determines all following
+          # payments until a claim is exhausted. Keep raw (not clipped) funds:
+          # negative funds and creditor order must not be lost by netting debts.
+          funds = state[:players].map do |player|
+            state[:cash][player] + state[:debts].fetch(player, []).sum { |debt| debt[:amount] }
+          end
+          previous = seen[funds]
+          if previous && settle_repeated_debt_cycle(state, claims, previous, amounts, event_id, history)
+            state[:debts].each_value { |debts| debts.reject! { |debt| debt[:amount] <= 0 } }
+            seen.clear
+            next
+          end
+          seen[funds] = amounts
           paid_any = false
+          removed_any = false
           state[:debts].each do |player, debts|
             available = [state[:cash][player] + debts.sum { |debt| debt[:amount] }, 0].max
             debts.each do |debt|
               paid = [available, debt[:amount]].min
               next if paid <= 0
-              debt[:amount] -= paid
               available -= paid
-              credit_money(state, debt[:to], paid)
-              if history != nil
-                text = _("%{player} repays %{amount} of debt to %{recipient}.") % { player: participant_name(player), amount: paid, recipient: recipient_name(debt[:to]) }
-                if debt[:amount] > 0
-                  text += " " + _("%{player} still owes %{amount} to %{recipient}.") % { player: participant_name(player), amount: debt[:amount], recipient: recipient_name(debt[:to]) }
-                end
-                history << HistoryEntry.new(key: "debt:#{event_id}:#{history.length}", text: text, event_id: event_id, actor: player, kind: :game)
-              end
+              repay_debt(state, player, debt, paid, event_id, history)
               paid_any = true
             end
-            debts.reject! { |debt| debt[:amount] <= 0 }
+            removed_any = true if debts.reject! { |debt| debt[:amount] <= 0 }
           end
           break if !paid_any
+          # A later creditor can start receiving money after an earlier debt
+          # disappears. Never reuse a cycle across this change of topology.
+          seen.clear if removed_any
         end
+      end
+
+      def settle_repeated_debt_cycle(state, claims, previous, amounts, event_id, history)
+        reductions = previous.zip(amounts).map { |before, after| before - after }
+        repeats = reductions.each_with_index.filter_map do |reduction, index|
+          amounts[index] / reduction if reduction > 0
+        end.min
+        return false if repeats == nil || repeats <= 0
+        # The sampled cycle has already happened. Repeat only whole cycles
+        # that fit every remaining claim; condense their repeated repayments
+        # instead of creating amount-proportional history and replay work.
+        claims.each_with_index do |(player, debt), index|
+          paid = reductions[index] * repeats
+          repay_debt(state, player, debt, paid, event_id, history) if paid > 0
+        end
+        true
+      end
+
+      def repay_debt(state, player, debt, paid, event_id, history)
+        debt[:amount] -= paid
+        credit_money(state, debt[:to], paid)
+        return if history == nil
+        text = _("%{player} repays %{amount} of debt to %{recipient}.") % { player: participant_name(player), amount: paid, recipient: recipient_name(debt[:to]) }
+        if debt[:amount] > 0
+          text += " " + _("%{player} still owes %{amount} to %{recipient}.") % { player: participant_name(player), amount: debt[:amount], recipient: recipient_name(debt[:to]) }
+        end
+        history << HistoryEntry.new(key: "debt:#{event_id}:#{history.length}", text: text, event_id: event_id, actor: player, kind: :game)
       end
     end
 

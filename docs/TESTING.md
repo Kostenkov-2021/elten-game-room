@@ -2,8 +2,7 @@
 
 The directory structure is described relative to `test/`; run commands from
 the repository root. Scenarios are grouped by the owner of the behavior.
-Each of the 32 games
-has a `games/<id>/` directory; filenames inside it do not repeat the game ID.
+Each game has a `games/<id>/` directory; filenames inside it do not repeat the game ID.
 Tests of a game's rules, bots, interface, translations and tools are kept together.
 
 | Directory | Scope |
@@ -78,6 +77,14 @@ definitions from `*_test.rb`. Binary aggregates run their children
 through the same runner, with separate processes, preloads and languages. In a coverage
 report, the aggregate and its children are not independent additional tests.
 
+The owned-worker cleanup regression is a narrow test-subject exception: it loads
+the two actual guarded parent definitions to exercise their cleanup, rather than
+copying those methods. `tooling/test_fixture_isolation_test.rb` permits only those
+two exact imports and rejects missing, duplicated or other scenario imports.
+`tooling/local_table_import_boundary_test.rb` verifies no parent case executes on
+import and that the direct selected entry point still works. This is not a
+general exemption for importing a test as a fixture.
+
 For workspace-local scratch data, require `support/temporary_directory.rb` and
 use `GameRoomTest::TemporaryDirectory.create(prefix)`. It creates the ignored
 `tmp/` parent itself; a scenario must also work as the first test in a fresh
@@ -86,6 +93,14 @@ form removes its own directory, while the non-block form retains diagnostic evid
 Test local-time roundtrips against the current system clock, but use the shared
 `support/tournament_time.rb` adapter for specific daylight-saving gaps and folds.
 Those cases must run on UTC machines too, without changing Windows time-zone settings.
+
+Tests owning Open3 children/readers use `GameRoomTest::OwnedProcessCleanup.run`
+around their body, passing the arrays they populate. The scope records its own
+primary exception before cleanup; an unrelated caller's rescued exception must
+not hide a cleanup failure after a successful body. The low-level `call` accepts
+an explicitly owned primary error when needed, not an implicit ambient `$!`.
+Cleanup still targets only those owned resources, joins them with bounds and
+preserves the primary failure while reporting secondary failures.
 
 The checks for one-off Quiz audits requiring external reports and the test
 implementation of the old `TurnGate` have been removed. Current checksums,

@@ -30,6 +30,37 @@ begin
   assert(observed.equal?(cleanup_error), 'cleanup-only failure was swallowed')
   assert_equal([:last], events)
   assert(!output.string.include?('PASS'), 'success was printed before cleanup failed')
+
+  begin
+    raise ArgumentError, 'unrelated error already handled by caller'
+  rescue ArgumentError
+    observed = assert_raises(IOError) do
+      cases.run('successful body inside caller rescue') do |scenario|
+        scenario.cleanup { raise cleanup_error }
+      end
+    end
+    assert(observed.equal?(cleanup_error), 'caller rescue hid a cleanup-only failure')
+  end
+  assert(!output.string.include?('PASS'), 'caller rescue caused a false success')
+
+  fatal_error = Class.new(Exception).new('nonstandard body failure')
+  observed = assert_raises(fatal_error.class) do
+    cases.run('nonstandard body and cleanup') do |scenario|
+      scenario.cleanup { raise cleanup_error }
+      raise fatal_error
+    end
+  end
+  assert(observed.equal?(fatal_error), 'cleanup hid a nonstandard body failure')
+
+  observed = assert_raises(IOError) do
+    catch(:leave_case) do
+      cases.run('nonlocal exit and cleanup') do |scenario|
+        scenario.cleanup { raise cleanup_error }
+        throw :leave_case
+      end
+    end
+  end
+  assert(observed.equal?(cleanup_error), 'nonlocal exit hid a cleanup failure')
   cases.run('next scenario') { events << :next }
   assert_equal([:last, :next], events, 'cleanups leaked into the next scenario')
   assert_equal("PASS next scenario\n", output.string)

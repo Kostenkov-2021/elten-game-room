@@ -59,7 +59,7 @@ assert_equal(false, conflict.pairing_applied?(account: 'beta', operation_key: 's
 assert(conflict.pairing_applied?(account: 'alpha', operation_key: 'same-user-key'))
 
 # Real local gateway, durable journal and lost-ACK boundary. A withdrawal which
-# races the INSERT invalidates the global generation, not the stored UUID.
+# races the INSERT invalidates the affected participant epoch, not the UUID.
 sandbox do |context|
   context.actor = 'Organizer'
   service = -> { context.service(journal: context.reopen_journal) }
@@ -73,14 +73,14 @@ sandbox do |context|
   service.call.set_partner(tournament_id: id, account: 'alpha', partner: 'beta', intent_id: 'request')
   context.actor = 'beta'
   context.before_insert = lambda do |table, row|
-    next unless table == REG && row['kind'] == 'pairing'
+    next unless table == REG && row['kind'] == 'partnership'
     context.before_insert = nil
-    context.actor = 'gamma'
+    context.actor = 'alpha'
     service.call.withdraw(tournament_id: id)
     context.actor = 'beta'
   end
   context.after_insert = lambda do |table, row, _result|
-    next unless table == REG && row['kind'] == 'pairing'
+    next unless table == REG && row['kind'] == 'partnership'
     context.after_insert = nil
     raise T::LocalTestTables::Error, :lost_pairing_ack
   end
@@ -91,7 +91,7 @@ sandbox do |context|
     # Recovery must use the original attempt, never another INSERT.
   end
   journal = context.reopen_journal
-  attempted = journal.find(kind: 'pairing', intent_id: 'uncertain-old')
+  attempted = journal.find(kind: 'partnership', intent_id: 'uncertain-old')
   assert_equal('attempted', attempted['status'])
   writes = context.inserts.size
   resolved = service.call.reconcile(operation_id: attempted['id'])
@@ -100,10 +100,19 @@ sandbox do |context|
   assert_equal(writes, context.inserts.size)
   assert_equal(attempted['values'], resolved['values'])
 
+  context.actor = 'alpha'
+  service.call.join(tournament_id: id)
+  service.call.set_partner(tournament_id: id, account: 'alpha', partner: 'beta', intent_id: 'new-request')
+  context.actor = 'beta'
   fresh = service.call.set_partner(tournament_id: id, account: 'beta', partner: 'alpha', intent_id: 'new-explicit-choice')
   assert_equal(true, fresh.dig('evidence', 'pairing_applied'))
   context.actor = 'Organizer'
-  service.call.set_partner(tournament_id: id, account: 'beta', partner: 'delta', intent_id: 'later-organizer-choice')
+  assert_raises(T::PublicService::Error) { service.call.set_partner(tournament_id: id, account: 'beta', partner: 'delta', intent_id: 'later-organizer-choice') }
+  context.actor = 'beta'
+  service.call.set_partner(tournament_id: id, account: 'beta', partner: nil, intent_id: 'dissolve-own-pair')
+  service.call.set_partner(tournament_id: id, account: 'beta', partner: 'delta', intent_id: 'new-delta-request')
+  context.actor = 'delta'
+  service.call.set_partner(tournament_id: id, account: 'delta', partner: 'beta', intent_id: 'new-delta-accept')
   context.actor = 'beta'
   assert_equal([%w[beta delta]], service.call.list['pairs'].map { |r| r['accounts'] })
   writes = context.inserts.size

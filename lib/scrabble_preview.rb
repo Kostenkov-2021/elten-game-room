@@ -197,7 +197,7 @@ class GameRoomScrabblePreview
     payload = @pending
     # There is only one in-flight request and one replaceable latest sketch.
     # Native send has a bounded timeout; failure never blocks a legal move.
-    if @work.start { @transport.send_game_preview(table_id: @table_id, session_id: @session_id,
+    if GameRoomBackground.admit(@work) { @transport.send_game_preview(table_id: @table_id, session_id: @session_id,
         payload: payload, message_id: SecureRandom.uuid) }
       @sent = payload
       @pending = nil

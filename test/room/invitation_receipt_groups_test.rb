@@ -5,15 +5,7 @@ def p_(_context, text); text; end
 # Execute the actual host grouping and notification objects, not an imagined
 # suppress_default implementation. This is entirely offline.
 host = File.join(EltenTestHost.root, "src/eapi")
-lines = File.readlines(File.join(host, "program.rb"))
-first = lines.index { |line| line.start_with?("  class NotificationPresentation") }
-last = lines.index { |line| line.start_with?("  class Leaderboard") }
-Object.class_eval("module Programs\n#{lines[first...last].join}\nend", "host_notification_classes.rb")
-%w[app_notification_from notification_value map_app_notification receive_app_notification].each do |name|
-  first = lines.index { |line| line.start_with?("    def #{name}(") }
-  last = ((first + 1)...lines.length).find { |index| lines[index].start_with?("    def ") }
-  Object.class_eval("module Programs\nclass << self\n#{lines[first...last].join}\nend\nend", "host_#{name}.rb")
-end
+require_relative '../support/app_notification_models'
 require File.join(host, "notificationgroups.rb")
 class << EltenGameRoom
   def server_app_uuid; "test-app"; end

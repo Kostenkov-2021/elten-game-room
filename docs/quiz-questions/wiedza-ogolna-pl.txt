@@ -36201,7 +36201,7 @@ D. Linda
 Poprawna odpowiedź: B. Jane
 
 4526
-Jaką dziedziną sztuki uprawiał Gerard Wilk?
+Jaką dziedzinę sztuki uprawiał Gerard Wilk?
 A. taniec
 B. malarstwo
 C. rzeźbę
@@ -68001,7 +68001,7 @@ D. kalcyt
 Poprawna odpowiedź: C. karbid
 
 8501
-Ile to jest 45 - 15?
+Ile to jest 45 minus 15?
 A. 35
 B. 20
 C. 30
@@ -114293,7 +114293,7 @@ Jak nazywają się boczne pasy na mundurowych spodniach?
 A. lampasy
 B. szamerunki
 C. epolety
-D. galony na kołnierzu
+D. galony
 Poprawna odpowiedź: A. lampasy
 
 14288
@@ -119159,4 +119159,44 @@ B. Stephena Hawkinga
 C. Freemana Dysona
 D. Erwina Schrödingera
 Poprawna odpowiedź: B. Stephena Hawkinga
+
+14896
+Który teleturniej prowadził Hubert Urbański w Polsacie, zanim został gospodarzem „Milionerów”?
+A. 100% dla stu
+B. Magia liter
+C. Piramida
+D. Rekiny kart
+Poprawna odpowiedź: C. Piramida
+
+14897
+Z którym regionem Polski kojarzy się używanie formy „daj dla mnie” zamiast „daj mi”?
+A. Z Podlasiem
+B. Z Małopolską
+C. Z Podkarpaciem
+D. Ze Śląskiem
+Poprawna odpowiedź: A. Z Podlasiem
+
+14898
+Kto napisał wiersz „Maja maleńkaja ajczyna”, opowiadający o rodzinnej Białostocczyźnie?
+A. Mira Łuksza
+B. Wiktor Szwed
+C. Janka Kupała
+D. Barbara Goralczuk
+Poprawna odpowiedź: B. Wiktor Szwed
+
+14899
+Jak nazywa się czekolada z wizerunkiem dziewczynki w chustce, produkowana przez rosyjską fabrykę Krasnyj Oktiabr?
+A. Babajewski
+B. Spartak
+C. Alionka
+D. Komunarka
+Poprawna odpowiedź: C. Alionka
+
+14900
+Kliocki to rosyjska nazwa jakiej potrawy?
+A. Wędliny
+B. Klusek
+C. Ciasta
+D. Zupy
+Poprawna odpowiedź: B. Klusek
 

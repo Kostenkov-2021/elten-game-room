@@ -75,6 +75,25 @@ Dir.mktmpdir('quiz-recovery-native-') do |directory|
   assert(File.binread(path) == sparse_bytes.b, 'Reading sparse native recovery rewrote the original bytes')
   File.binwrite(path, JSON.generate(valid_root))
 
+  branch = drafts.save(ordinary.merge('resource_id' => 38, 'resource_name' => 'another-private-snapshot',
+    'description' => 'Another branch of the same set'))
+  with_branches = File.binread(path)
+  assert(drafts.list == [ordinary, partial, branch], 'Native storage lost a separate recovery branch')
+  assert(File.binread(path) == with_branches, 'Read-only branch listing rewrote recovery bytes')
+  drafts.remove(branch)
+  assert(drafts.list == [ordinary, partial], 'Removing a branch changed primary recovery')
+  malformed_branches = [nil, [], {'wrong identity' => branch}, {Q::Drafts.branch_key(branch) => nil},
+    {Q::Drafts.branch_key(ordinary) => ordinary}]
+  malformed_branches.each do |extra|
+    damaged = Q::Model.copy(valid_root)
+    damaged['accounts']['guest']['branches'] = extra
+    bytes = JSON.generate(damaged)
+    File.binwrite(path, bytes)
+    rejects { drafts.list }
+    assert(File.binread(path) == bytes.b, 'Malformed branches were rewritten instead of rejected')
+  end
+  File.binwrite(path, JSON.generate(valid_root))
+
   # Switching accounts while the native reader is finishing must abort before
   # returning private drafts or committing even an otherwise valid JSON file.
   native_reader = runtime.method(:read_json_file)

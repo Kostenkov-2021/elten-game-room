@@ -105,7 +105,7 @@ normal = RankingScopeFixture.new
 normal.browse
 assert(normal.menus == 2 && normal.views.size == 1, 'Public daily list did not return normally')
 assert(normal.calls.none? { |call| call[:on_ui] }, 'Daily solution query remained on the UI thread')
-assert(normal.assignment_reads.size == 2, 'Daily list added queries or read a current/future solution')
+assert(normal.assignment_reads.size == 1, 'Daily list did not batch past solutions or read a current/future solution')
 assert(normal.views.first[:rows] == [['2026-10-18', ''], ['2026-10-17', 'kot'], ['2026-10-16', 'kot']],
   'Date filtering, ordering or past solution changed')
 assert(normal.alerts.empty? && normal.unchanged?, 'Browsing changed data or reported failure')
@@ -113,15 +113,15 @@ assert(normal.alerts.empty? && normal.unchanged?, 'Browsing changed data or repo
 past = RankingScopeFixture.new
 past.browse(select: 1)
 assert(past.views.size == 2 && past.views.last[:header] == 'Daily Krowa: 2026-10-17, kot', 'Past ranking lost its solution')
-assert(past.assignment_reads.size == 3 && past.calls.none? { |call| call[:on_ui] }, 'Past ranking header queried on the UI or twice')
+assert(past.assignment_reads.size == 2 && past.calls.none? { |call| call[:on_ui] }, 'Past ranking header queried on the UI or twice')
 assert(past.unchanged?, 'Opening a ranking changed its records')
 
 current = RankingScopeFixture.new
 current.browse(select: 0)
 assert(current.views.last[:header] == 'Daily Krowa: 2026-10-18', 'Current solution appeared in the ranking header')
-assert(current.assignment_reads.size == 2 && current.calls.none? { |call| call[:on_ui] }, 'Current ranking made a hidden solution query')
+assert(current.assignment_reads.size == 1 && current.calls.none? { |call| call[:on_ui] }, 'Current ranking made a hidden solution query')
 
-[[1, 0], [3, 1]].each do |failure_at, expected_views|
+[[1, 0], [2, 1]].each do |failure_at, expected_views|
   failed = RankingScopeFixture.new(failure_at: failure_at)
   failed.browse(select: 1)
   assert(failed.views.size == expected_views && failed.menus == 2, 'Read failure escaped the public menu')

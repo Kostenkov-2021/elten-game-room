@@ -51,8 +51,7 @@ module GameRoomTournaments
         positions: @form.fields.grep(EditBox).map { |field| [field, field.index, field.check] }}.freeze
       @readiness_state = nil if action == :inspect && !options[:target]
       @status.set_text(local_readiness_status)
-      started = @readiness_work.start { @controller.readiness(action: action, match_id: match_id, **options) }
-      raise 'Worker gotowości nie przyjął pojedynczej akcji' unless started
+      start_work_when_admitted(@readiness_work) { @controller.readiness(action: action, match_id: match_id, **options) }
     rescue Exception
       @readiness_pending = nil
       raise
@@ -60,6 +59,7 @@ module GameRoomTournaments
 
     def drain_readiness
       return if @busy || !@readiness_pending || !current?
+      return unless admit_pending_work
       outcome = @readiness_work.take
       return unless outcome
       pending, @readiness_pending = @readiness_pending, nil

@@ -7,6 +7,7 @@ require 'fileutils'
 require 'thread'
 require_relative 'local_filesystem'
 require_relative 'server_plan_document'
+require_relative 'partnerships'
 
 module GameRoomTournaments
   # Trwały zamiar PRZED insertem. Nie wykonuje sieci ani ponawiania operacji.
@@ -36,7 +37,7 @@ module GameRoomTournaments
   # sprzętu na zanik zasilania. Awaria PO rename może oznaczać dokonany zapis:
   # trzeba odczytać stan, nigdy powtarzać wysyłki po niepewnym claim.
   class OperationJournal
-    TABLES = {'publication' => 'tournament_announcements', 'join' => 'tournament_registrations', 'withdrawal' => 'tournament_registrations', 'removal' => 'tournament_registrations', 'pairing' => 'tournament_registrations', 'amendment' => 'tournament_registrations', 'cancellation' => 'tournament_registrations', 'plan_document' => 'tournament_plan_documents', 'invitation' => 'tournament_registrations', 'invite_declined' => 'tournament_registrations'}.freeze
+    TABLES = {'publication' => 'tournament_announcements', 'join' => 'tournament_registrations', 'withdrawal' => 'tournament_registrations', 'removal' => 'tournament_registrations', 'pairing' => 'tournament_registrations', 'partnership' => 'tournament_registrations', 'pair_draw' => 'tournament_registrations', 'amendment' => 'tournament_registrations', 'cancellation' => 'tournament_registrations', 'plan_document' => 'tournament_plan_documents', 'invitation' => 'tournament_registrations', 'invite_declined' => 'tournament_registrations'}.freeze
     PUBLICATION_FIELDS = %w[publication_key schema_version title game rules settings_json schedule_json
       registration_opens_at registration_closes_at timezone].freeze
     MAX_INTEGER = (2**63) - 1
@@ -230,6 +231,7 @@ module GameRoomTournaments
       fields = kind == 'publication' ? PUBLICATION_FIELDS : %w[tournament_id operation_key kind]
       fields += ['account'] if %w[removal invitation invite_declined].include?(kind)
       fields += %w[account partner pairing_generation] if kind == 'pairing'
+      fields += %w[account partner pairing_generation amendment_json] if Partnerships::KINDS.include?(kind)
       fields += ['publication_generation'] if %w[amendment cancellation].include?(kind)
       fields += ['amendment_json'] if kind == 'amendment'
       unless values.is_a?(Hash) && values.keys.all? { |key| key.is_a?(String) } && values.keys.sort == fields.sort
@@ -245,11 +247,12 @@ module GameRoomTournaments
         if %w[invitation invite_declined].include?(kind)
           raise Invalid, :invalid_values unless owner?(values['account'])
         end
-        if kind == 'pairing'
+        if kind == 'pairing' || Partnerships::KINDS.include?(kind)
           unless owner?(values['account']) && values['account'] == values['account'].downcase &&
               (values['partner'].nil? || (owner?(values['partner']) && values['partner'] == values['partner'].downcase)) && key?(values['pairing_generation'])
             raise Invalid, :invalid_values
           end
+          Partnerships.body(values) if Partnerships::KINDS.include?(kind)
         end
         if %w[amendment cancellation].include?(kind)
           raise Invalid, :invalid_values unless key?(values['publication_generation'])

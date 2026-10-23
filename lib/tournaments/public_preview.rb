@@ -2,6 +2,7 @@
 require_relative '../game_room_ui'
 require_relative 'public_text'
 require_relative 'view_refresh'
+require_relative 'partner_choice'
 
 module GameRoomTournaments
   class PublicPreview
@@ -12,6 +13,7 @@ module GameRoomTournaments
     class Form < GameRoomUI::Form
       attr_writer :public_interaction
       attr_writer :public_update
+      def schedule_lifecycle(seconds,&block);register_timer(seconds,repeat:false,&block);end
       def update
         super
         @public_update&.call
@@ -30,20 +32,21 @@ module GameRoomTournaments
     end
     private_constant :Form
 
-    def initialize(program:, registry:, publication:, snapshot:, load:, join:, alert:, mode_label:, actor:, join_virtual: nil, overview: nil, withdraw: nil, manage_participants: nil, set_partner: nil, edit_tournament: nil, delete_tournament: nil,initial_action:nil,results:nil,phase:nil,invite:nil,decline_invitation:nil,clock:-> {Time.now.to_i})
+    def initialize(program:, registry:, publication:, snapshot:, load:, join:, alert:, mode_label:, actor:, join_virtual: nil, overview: nil, withdraw: nil, manage_participants: nil, set_partner: nil, partner_action: nil, edit_tournament: nil, delete_tournament: nil,initial_action:nil,results:nil,phase:nil,invite:nil,decline_invitation:nil,clock:-> {Time.now.to_i})
       @initial_action=initial_action
+      @registry = registry
       @program, @publication, @snapshot = program, publication, snapshot
       @load, @join, @alert = load, join, alert
       @join_virtual, @overview = join_virtual, overview
       @withdraw = withdraw
       @manage_participants = manage_participants
       @set_partner = set_partner
+      @partner_action = partner_action
       @edit_tournament, @delete_tournament = edit_tournament, delete_tournament
       @results,@phase,@clock=results,phase,clock
       @invite=invite
       @decline_invitation=decline_invitation
-      settings = JSON.parse(publication['settings_json'])
-      @pair_game = registry.build(publication['game']).team_size(settings['game_options'], player_count: settings['players_per_match']) == 2
+      update_pair_game
       @text = PublicText.new(registry: registry, mode_label: mode_label, actor: actor)
       @actor = text(actor)
       # Niezgodna para pozostaje tylko do odczytu; samo ID/tytuł nie dowodzi zamiaru.
@@ -57,6 +60,7 @@ module GameRoomTournaments
         show
       ensure
         @finished = true
+        @lifecycle_timer&.close
       end
     end
 
@@ -76,6 +80,7 @@ module GameRoomTournaments
         when :results
           @results.call(@publication) if @results
           refresh_snapshot
+        when :partner then choose_partner
         when :manage then manage_tournament
         when :edit,:delete
           if @publication['__insertion_user'].downcase==@actor.downcase
@@ -87,6 +92,7 @@ module GameRoomTournaments
       ensure
         @running=false
         @finished=true
+        @lifecycle_timer&.close
       end
     end
 
@@ -126,7 +132,7 @@ module GameRoomTournaments
       @form.public_interaction = method(:interaction)
       reference={'author'=>@publication['__insertion_user'].downcase,'publication_key'=>@publication['publication_key']}
       @view_refresh=ViewRefresh.new(@program,reference:reference){interaction(focus:false){refresh_snapshot}}
-      @form.public_update=-> {@view_refresh.tick unless @busy || @finished}
+      @form.public_update=method(:update_lifecycle)
       @form.game_room_general_help_tips = [text(_("Choose an action with the arrows and press Enter. Escape returns without leaving the tournament."))]
       @form.cancel_button = back
       @actions.on(:select){interaction{execute_action(@action_keys[@actions.index])}}
@@ -143,6 +149,10 @@ module GameRoomTournaments
         when :results
           @results.call(@publication) if @results
           refresh_snapshot
+        when :partner, :participants
+          # A drawn/confirmed team's notice remains useful after start, when
+          # choosing a new partner is no longer permitted.
+          execute_action(@action_keys.include?(@initial_action) ? @initial_action : :participants)
         when :manage then manage_tournament
         when :edit,:delete
           if @publication['__insertion_user'].downcase==@actor.downcase
@@ -244,8 +254,9 @@ module GameRoomTournaments
 
     def request_withdrawal
       return if @stale || @withdrawal_requested
-      @withdrawal_requested = true
+      @withdrawal_requested, @withdrawal_confirmed = true, false
       result = @withdraw.call(@publication.fetch('__id'))
+      @withdrawal_confirmed = result && result['status'] == 'confirmed'
       @result_text = text(result && result['status'] == 'confirmed' ? _("Withdrawal confirmed.") : _("Withdrawal not confirmed. Check Operations before trying again."))
       @join_requested = false if result && result['status'] == 'confirmed'
       refresh_snapshot
@@ -262,8 +273,9 @@ module GameRoomTournaments
         return
       end
       # Nie ponawiamy z tego widoku nawet po nil/niepewności callbacku.
-      @join_requested = true
+      @join_requested, @join_confirmed = true, false
       record = @virtual_name ? @join_virtual.call(@publication.fetch('__id'), text(@virtual_name.text).strip) : @join.call(@publication.fetch('__id'))
+      @join_confirmed = record && record['status'] == 'confirmed'
       @withdrawal_requested = false if record && record['status'] == 'confirmed'
       @result_text = result_text(record)
       render_status
@@ -301,8 +313,20 @@ module GameRoomTournaments
       @stale = current.nil?
       if current
         @publication = current
+        update_pair_game
+        # A successful read retires only confirmed local attempts. The service
+        # owns idempotence and registration epochs; uncertainty still requires
+        # explicit reconciliation, not another click on a stale view.
+        @join_requested = @join_confirmed = false if @join_confirmed
+        @withdrawal_requested = @withdrawal_confirmed = false if @withdrawal_confirmed
       end
       render_status
+    end
+
+    def update_pair_game
+      settings = JSON.parse(@publication.fetch('settings_json'))
+      @pair_game = @registry.build(@publication.fetch('game')).team_size(
+        settings.fetch('game_options'), player_count: settings.fetch('players_per_match')) == 2
     end
 
     def render_status
@@ -320,10 +344,11 @@ module GameRoomTournaments
     end
 
     def render_actions
-      state=TournamentLifecycle.classify(@publication,now:@clock.call)[:state]
+      now=@clock.call
+      state=TournamentLifecycle.classify(@publication,now:now)[:state]
       actions=[]
       unless @stale
-        actions << [:join,_("Join tournament")] if @join && !registered? && !@join_requested && @text.can_join?(@publication,@snapshot,now:@clock.call)
+        actions << [:join,_("Join tournament")] if @join && !registered? && !@join_requested && @text.can_join?(@publication,@snapshot,now:now)
         actions << [:decline_invitation,_("Decline invitation")] if @decline_invitation && !registered? && pending_invitation?
         actions << [:overview,_("Tournament matches")] if @overview
         actions << [:results,_("Standings")] if @results
@@ -334,53 +359,34 @@ module GameRoomTournaments
         actions << [:withdraw,_("Leave tournament")] if registered? && @withdraw && [:soon,:registration,:waiting].include?(state)
       end
       actions << [:refresh,_("Refresh")]
-      @actions.header=@text.action_header(@publication,@snapshot,now:@clock.call)
+      @actions.header=@text.action_header(@publication,@snapshot,now:now)
       @action_keys=actions.map(&:first)
       @actions.update_options(actions.map{|_,label|text(label)},keys:@action_keys)
+      @lifecycle_timer&.close
+      deadline=TournamentLifecycle.next_change(@publication,now:now) unless @stale
+      @lifecycle_timer=deadline && @form.schedule_lifecycle(deadline-now){@lifecycle_dirty=true}
+    end
+
+    # A directory revision is not a clock: an unregistered browser may receive
+    # no coordinator wake when registration opens/closes. Follow only the next
+    # local boundary, without refocusing or polling the server. Retention expiry
+    # needs one fresh directory read, as in the parent tournament list.
+    def update_lifecycle
+      return if @busy || @finished
+      @view_refresh.tick
+      return unless @lifecycle_dirty && !@busy && !@finished
+      @lifecycle_dirty=false
+      interaction(focus:false) do
+        expired=@publication['expires_at'] && @publication['expires_at']<=@clock.call
+        expired ? refresh_snapshot : render_status
+      end
     end
 
     def choose_partner
       return if @stale || @pairing_uncertain
-      actor=@actor.downcase
-      pairs=(@snapshot['pairs'] || []).select{|row|row['tournament_id']==@publication['__id']}
-      requests=(@snapshot['pair_requests'] || []).select{|row|row['tournament_id']==@publication['__id']}
-      own=pairs.find{|row|row['accounts'].include?(actor)}
-      request=requests.find{|row|row['from']==actor}
-      status=if own
-        text(_("Your partner: %{player}"))%{player:(own['accounts']-[actor]).first}
-      elsif request
-        text(_("Waiting for %{player} to confirm your partnership."))%{player:request['to']}
-      else
-        text(_("Choose a partner. The other player must also choose you to confirm the team."))
-      end
-      unavailable=pairs.reject{|row|row.equal?(own)}.flat_map{|row|row['accounts']}
-      people=@text.members(@publication,@snapshot).reject{|person|person['account']==actor || unavailable.include?(person['account'])}
-      labels=people.map do |person|
-        requests.any?{|row|row['from']==person['account'] && row['to']==actor} ? text(_("Confirm partnership with %{player}"))%{player:person['username']} : person['username']
-      end
-      list=ListBox.new(labels+[text(_("Without a partner"))],header:text(_("Partner")),quiet:true)
-      details=GameRoomUI::HelpText.new(text(_("Team")),type:EditBox::Flags::ReadOnly|EditBox::Flags::MultiLine,text:status,quiet:true)
-      back=Button.new(text(_("Back")))
-      form=GameRoomUI::Form.new([details,list,back],program:@program,quiet:true)
-      form.cancel_button=back
-      form.hide(back)
-      list.on(:select) do
-        next if @pairing_uncertain
-        @pairing_uncertain=true
-        partner=people[list.index]&.fetch('account')
-        result=@set_partner.call(@publication['__id'],actor,partner,'pair-selection:'+SecureRandom.uuid)
-        @pairing_uncertain=false if result && result['status']=='confirmed'
-        message = if result && result['status'] == 'confirmed'
-          result.dig('evidence', 'pairing_applied') == false ?
-            _("The tournament changed. Refresh its view before changing it again.") : _("Partner choice saved.")
-        else
-          _("The partner choice could not be confirmed. Refresh to check its status.")
-        end
-        @alert.call(text(message))
-        form.resume
-      end
-      back.on(:press){form.resume}
-      form.wait
+      PartnerChoice.new(program: @program, publication: @publication, account: @actor,
+        load: @load, choose: @set_partner, action: @partner_action, alert: @alert,
+        confirm: ->(message) { @program.send(:confirm, message) }).run
       refresh_snapshot
     end
 

@@ -121,6 +121,19 @@ module GameRoomGames
     def automatic_action_due?(replay, actor, context: nil); automatic_action(replay, actor, context: context) != nil; end
     def automatic_actor(replay, viewer, table_owner:); same_user?(viewer,table_owner) ? replay.players.first : viewer; end
     def participant_scores(replay); replay.state[:scores].dup; end
+
+    def tournament_placement_result(replay, options:)
+      result = super
+      scores = participant_scores(replay)
+      best = scores.values.max
+      result.merge(winners: replay.players.select { |player| scores.fetch(player) == best }, draw: false)
+    end
+
+    # Current-policy places use the final adjusted public totals, without
+    # enabling numeric small points or changing historical result exports.
+    def tournament_placement_scores(replay, options:)
+      {scores: tournament_public_unit_scores(replay, options: options), order: 'higher'}
+    end
     def shortcut_features; super + [:scores]; end
     def shortcut_feature_data(feature, replay, viewer)
       return { "message" => scores_text(replay.state, sorted: true) } if feature == :scores

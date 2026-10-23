@@ -12,6 +12,8 @@ module GameSurfaces
     def initialize(spec, state: {})
       @spec = spec
       raise ArgumentError, "an answer sheet requires an id" if @spec.id.to_s.empty?
+      remembered_id = state_value(state, "sheet_id", @spec.id)
+      state = {} if remembered_id.to_s != @spec.id.to_s
       @field_specs = @spec.fields.to_a
       validate_fields!
       remembered = state_value(state, "answers", {})
@@ -37,7 +39,7 @@ module GameSurfaces
     end
 
     def state
-      { "answers" => answers }
+      { "sheet_id" => @spec.id.to_s, "answers" => answers }
     end
 
     def submission_action

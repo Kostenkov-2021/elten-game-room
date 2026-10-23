@@ -6,8 +6,9 @@ require "rbconfig"
 
 root = File.expand_path("../..", __dir__)
 Dir.mktmpdir("game-room-rule-source-") do |temporary|
-  %w[tools games tools/data/rulebooks locale].each { |directory| FileUtils.mkdir_p(File.join(temporary, directory)) }
+  %w[tools/support games tools/data/rulebooks locale].each { |directory| FileUtils.mkdir_p(File.join(temporary, directory)) }
   FileUtils.cp(File.join(root, "tools/compile-rulebooks.rb"), File.join(temporary, "tools/compile-rulebooks.rb"))
+  FileUtils.cp(File.join(root, 'tools/support/output_set.rb'), File.join(temporary, 'tools/support/output_set.rb'))
   game = File.join(temporary, "games/example.rb")
   File.write(game, "module Example\n  class Game\n    def rule_sections\n      []\n    end\n  end\nend\n")
   book_path = File.join(temporary, "tools/data/rulebooks/example.json")

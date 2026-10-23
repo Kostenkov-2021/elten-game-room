@@ -85,13 +85,13 @@ Set `supports_bots?`, expose the full list of legal actions and register a
 strategy. A bot may use heuristics or search, but the selected action must
 go back through the ordinary `action_for`; the strategy must not append events itself.
 
-A turn-based game leaves `session_runner? == true`: the shared
-`GameRoomSessionRunner` plans, checks freshness and writes the decision.
-Do not add a second executor to `GameScreen` or the game control.
-A realtime game disables this runner only when its client has its own
-physics and bot loop; automatic point writes still pass through the ordinary
-action-commit boundary. Keep training tools and reports in `tools/`,
-not in libraries loaded by the installed game.
+Games retain `session_runner? == true`: the shared `GameRoomSessionRunner`
+plans durable actions, checks freshness and writes the decision. Realtime
+clients own their separate physics, input and bot loop, while the shared runner
+still records agreed points and handles presence boundaries. Do not disable
+that durable runner merely because a game has a realtime client, or add a
+second executor to `GameScreen` or the game control. Keep training tools and
+reports in `tools/`, not in libraries loaded by the installed game.
 
 Check separately:
 

@@ -13,8 +13,11 @@ module GameRoomTournaments
     DRAW_RESULT_POLICY = 'game-owned-result-v3'.freeze
     SCORE_ORDER_POLICY = 'game-owned-result-v4'.freeze
     RANKING_RESULT_POLICY = 'game-owned-result-v5'.freeze
-    CURRENT_RESULT_POLICY = 'game-owned-result-v6'.freeze
-    ORDERED_POLICIES = [SCORE_ORDER_POLICY, RANKING_RESULT_POLICY, CURRENT_RESULT_POLICY].freeze
+    SELECTED_SMALL_RESULT_POLICY = 'game-owned-result-v6'.freeze
+    PLACEMENT_RESULT_POLICY = 'game-owned-result-v7'.freeze
+    CURRENT_RESULT_POLICY = PLACEMENT_RESULT_POLICY
+    SELECTED_SMALL_POLICIES = [SELECTED_SMALL_RESULT_POLICY, PLACEMENT_RESULT_POLICY].freeze
+    ORDERED_POLICIES = [SCORE_ORDER_POLICY, RANKING_RESULT_POLICY, *SELECTED_SMALL_POLICIES].freeze
     RESULT_POLICIES = [RESULT_EXPORT_POLICY, DRAW_RESULT_POLICY, *ORDERED_POLICIES].freeze
     EXPORT_POLICIES = [SCORE_EXPORT_POLICY, *RESULT_POLICIES].freeze
     # Native history is a log of authenticated attempts, not only successful
@@ -55,7 +58,9 @@ module GameRoomTournaments
           replay.players.map { |name| Data.account(name).downcase }.sort == players.map { |p| p['account'] }.sort
         raise Publication::Invalid, :invalid_game_result
       end
-      outcome = if [RANKING_RESULT_POLICY, CURRENT_RESULT_POLICY].include?(result_policy)
+      outcome = if result_policy == PLACEMENT_RESULT_POLICY
+        game.tournament_placement_result(replay, options: options)
+      elsif [RANKING_RESULT_POLICY, SELECTED_SMALL_RESULT_POLICY].include?(result_policy)
         game.tournament_ranking_result(replay,options:options)
       elsif RESULT_POLICIES.include?(result_policy)
         game.tournament_export_result(replay, options: options)
@@ -73,7 +78,7 @@ module GameRoomTournaments
       score_order = nil
       unless result_policy.nil?
         if ORDERED_POLICIES.include?(result_policy)
-          small = if result_policy == CURRENT_RESULT_POLICY
+          small = if SELECTED_SMALL_POLICIES.include?(result_policy)
             game.tournament_selected_small_scores(replay, options: options)
           elsif result_policy == RANKING_RESULT_POLICY
             game.tournament_ranking_scores(replay, options: options)
@@ -84,7 +89,7 @@ module GameRoomTournaments
             raise Publication::Invalid, :invalid_game_result
           end
           scores, score_order = small.values_at(:scores, :order)
-          if result_policy == CURRENT_RESULT_POLICY
+          if SELECTED_SMALL_POLICIES.include?(result_policy)
             policy = game.tournament_small_point_policy(options: options)
             raise Publication::Invalid, :invalid_game_result if policy && (scores.nil? || score_order != policy[:order])
             raise Publication::Invalid, :invalid_game_result if !policy && scores
@@ -108,18 +113,23 @@ module GameRoomTournaments
         'scores' => scores && scores.to_h { |native, score| [mapping.fetch(native), score] },
         'event_count' => event_count}
       result['score_order'] = score_order if score_order
-      if result_policy == CURRENT_RESULT_POLICY && scores.nil? && !draw && mapping.size > 2
-        places = ranking_places(game: game, replay: replay, options: options, outcome: outcome, mapping: mapping)
+      if SELECTED_SMALL_POLICIES.include?(result_policy) && scores.nil? && !draw && mapping.size > 2
+        places = ranking_places(game: game, replay: replay, options: options, outcome: outcome, mapping: mapping,
+          result_policy: result_policy)
         result['places'] = places if places
       end
       Data.freeze_tree(Data.copy(result))
     end
 
     # Disabling numeric small points must not merge distinct finishing places.
-    # Use the existing game-owned ranking export only to project places; never
+    # Use the policy's game-owned ranking export only to project places; never
     # publish its numbers or use them as a cross-match small-point tie-break.
-    def self.ranking_places(game:, replay:, options:, outcome:, mapping:)
-      ranked = game.tournament_ranking_scores(replay, options: options)
+    def self.ranking_places(game:, replay:, options:, outcome:, mapping:, result_policy:)
+      ranked = if result_policy == PLACEMENT_RESULT_POLICY
+        game.tournament_placement_scores(replay, options: options)
+      else
+        game.tournament_ranking_scores(replay, options: options)
+      end
       unless ranked.is_a?(Hash) && ranked.keys.sort == [:order, :scores] && %w[higher lower].include?(ranked[:order])
         raise Publication::Invalid, :invalid_game_result
       end

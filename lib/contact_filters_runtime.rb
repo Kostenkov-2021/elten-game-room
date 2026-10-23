@@ -1,6 +1,7 @@
 require_relative "game_room_contacts"
 require_relative "game_room_clock"
 require_relative "notification_time"
+require_relative "invitation_identity"
 
 module GameRoomContactFiltersRuntime
   CACHE_LOCK = Mutex.new
@@ -34,11 +35,13 @@ module GameRoomContactFiltersRuntime
   def contact_notification_allowed?(notification, settings: normalized_settings)
     case notification.type.to_s
     when "game_room.invitation"
+      sender = GameRoomInvitationIdentity.notification_sender(notification, notification.metadata.to_h)
+      return false if sender.nil?
       tournament = notification.metadata.is_a?(Hash) && notification.metadata["tournament_match"] == true
-      return false unless invitation_sender_allowed?(notification.sender, tournament_match: tournament, settings: settings)
+      return false unless invitation_sender_allowed?(sender, tournament_match: tournament, settings: settings)
       case settings["invitation_notifications"]
       when "nobody" then false
-      when "contacts" then contacts_cache.include?(notification.sender)
+      when "contacts" then contacts_cache.include?(sender)
       else true
       end
     when GameRoomTableWatch::TYPE
@@ -94,7 +97,7 @@ module GameRoomContactFiltersRuntime
     presentation = map_notification(notification)
     return unless presentation
     notification_received(notification, presentation, deferred: true)
-    return if presentation.default_suppressed? || $donotdisturb == true
+    return if presentation.default_suppressed? || EltenAPI::UI.notifications_muted?
     event = {
       "func" => "notif", "alert" => presentation.alert, "sound" => presentation.sound,
       "id" => notification.id, "app_uuid" => notification.app_uuid, "type" => notification.type,

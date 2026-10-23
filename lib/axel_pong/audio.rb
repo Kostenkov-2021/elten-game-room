@@ -185,8 +185,17 @@ module GameRoomPong
 
     # First member of each team keeps the lower contact voice for every listener.
     # Do not derive identity from the observer, the current hitter or service.
-    def participant_pitch(snapshot, seat)
-      first_team_player?(snapshot, seat) ? DOUBLES_FIRST_PLAYER_PITCH : 1.0
+    def participant_pitch(snapshot, seat, viewer)
+      lower_voice?(snapshot,seat,viewer) ? DOUBLES_FIRST_PLAYER_PITCH : 1.0
+    end
+
+    def lower_voice?(snapshot,seat,viewer)
+      if snapshot['teams']&.length==4 && Preferences.read(@program)['doubles_sounds']=='personal' &&
+          court_side(snapshot,seat)==court_side(snapshot,viewer)
+        seat!=viewer
+      else
+        first_team_player?(snapshot,seat)
+      end
     end
 
     def first_team_player?(snapshot, seat)
@@ -240,7 +249,7 @@ module GameRoomPong
         pan, volume = spatial(paddle, x, court_side(snapshot, side) * 20, viewer_side)
         pan = 0 if side == viewer
         name = kind == 'step' ? (own ? 'pong_move' : 'pong_op_move') : (own ? 'pong_edge' : 'pong_op_edge')
-        name = 'pong_move_double' if kind == 'step' && first_team_player?(snapshot, side)
+        name = 'pong_move_double' if kind == 'step' && lower_voice?(snapshot, side, viewer)
         name = participant_sound_key(name, side)
         @movement_cue_sources[name] = side if kind == 'step' || !own
         volume = own ? OWN_MOVEMENT_LEVEL : OPPONENT_MOVEMENT_LEVEL if kind == 'step'
@@ -250,7 +259,7 @@ module GameRoomPong
         end
       when 'hit', 'serve'
         name = participant_sound_key(own ? 'pong_hit' : 'pong_op_hit', side)
-        pitch = participant_pitch(snapshot, side)
+        pitch = participant_pitch(snapshot, side, viewer)
         pan, volume = own ? [0, 1.0] : spatial(paddle, snapshot['p'][side], court_side(snapshot, side) * 20, viewer_side)
       when 'wall'
         name = 'pong_wall'
@@ -264,7 +273,7 @@ module GameRoomPong
       when 'shield_hit'
         name = "pong_#{own ? 'own' : 'op'}_shield_hit#{@rng.rand(10) + 1}"
         name = 'pong_shield_hit' unless @sounds[name]
-        pitch = participant_pitch(snapshot, side)
+        pitch = participant_pitch(snapshot, side, viewer)
         pan = panorama(x - paddle)
         volume = own ? 2.0 : OPPONENT_SHIELD_HIT_LEVEL
       when 'invisible'

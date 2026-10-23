@@ -3,8 +3,8 @@
   "id": "c24d98cc-9ccd-4d50-b801-459da324ff60",
   "name": "Power Games",
   "description": "Accessible multiplayer games for ELTEN users.",
-  "version": "2.0.5.4",
-  "build_id": "255",
+  "version": "2.0.5.5",
+  "build_id": "256",
   "EltenAPIVersion": "3.0.4",
   "main_language": "en",
   "supported_languages": ["en", "pl", "cs", "es", "ru"],
@@ -23,7 +23,7 @@
   },
   "required_assets": {
     "sounds": [
-      "connect", "disconnect", "chatmsg", "notice", "table_notice", "invitation_rejected", "conference_created", "buzzer", "buzzer2", "quiz_wrong_answer", "duck_challenge", "duck_question", "duck_correct", "duck_frozen",
+      "connect", "disconnect", "chatmsg", "notice", "table_notice", "invitation_rejected", "conference_created", "buzzer", "buzzer2", "quiz_wrong_answer", "duck_challenge", "duck_question", "duck_countdown", "duck_quack", "duck_correct", "duck_frozen",
       "duck_final_lap", "duck_shot", "duck_note_c", "duck_memory_bark", "duck_memory_bell", "duck_memory_drop", "duck_memory_clap", "duck_memory_zip",
       "duck_rhythm_f", "duck_rhythm_j", "war_open", "ding", "shuffle", "draw", "draw2",
       "farkle", "cht-roll-dice", "cht-bank", "cht-lost-points", "cht-cat-minus-8", "cht-cat-plus-8",
@@ -81,6 +81,7 @@
       "audio_ball_down",
       "audio_ball_prepare",
       "audio_ball_stopped",
+      "audio_ball_wrong_turn",
       "audio_ball_audiodisc_up",
       "audio_ball_audiodisc_center",
       "audio_ball_audiodisc_down",
@@ -192,8 +193,8 @@ class EltenGameRoom < Program
   extend GameRoomTableWatchRuntime
   extend GameRoomContactFiltersRuntime
   extend GameRoomAnalyticsRuntime
-  GAME_ROOM_VERSION = "2.0.5.4".freeze
-  GAME_ROOM_BUILD_ID = 255
+  GAME_ROOM_VERSION = "2.0.5.5".freeze
+  GAME_ROOM_BUILD_ID = 256
   GAME_ROOM_CAPABILITIES = ["invitations", "live_sessions", "live_session_stack"].freeze
   LOBBY_ACTIVITY_POLL_INTERVAL = 5.0
 
@@ -372,7 +373,7 @@ class EltenGameRoom < Program
       presentation = notification.presentation(
         title: _("Game invitation"),
         body: invitation_text % {
-          sender: metadata["sender"].to_s,
+          sender: GameRoomInvitationIdentity.notification_sender(notification, metadata).to_s,
           table: metadata["table_name"].to_s,
           game: game_label
         },
@@ -438,7 +439,7 @@ class EltenGameRoom < Program
   end
 
   def notification_action(action, notification)
-    if %w[open_tournament_matches open_tournament_standings open_tournament_phase_standings open_tournament_registration].include?(action.to_s)
+    if %w[open_tournament_matches open_tournament_standings open_tournament_phase_standings open_tournament_registration open_tournament_partner].include?(action.to_s)
       return open_tournament_notification(action.to_s,notification)
     end
     return open_new_table_notification(notification) if action.to_s == "open_new_table"
@@ -739,7 +740,7 @@ class EltenGameRoom < Program
 
     seen = @last_seen_lobby_activity_id
     repository = @table_activity
-    work.start do
+    GameRoomBackground.admit(work) do
       if seen == nil || repository.latest_global_id.to_i > seen.to_i
         repository.global_entries.to_a
       end
@@ -804,23 +805,32 @@ class EltenGameRoom < Program
     expected={'open_tournament_matches'=>GameRoomTournaments::TournamentStartNotice::TYPE,
       'open_tournament_standings'=>GameRoomTournaments::TournamentEventNotice::TYPES['finished'],
       'open_tournament_phase_standings'=>GameRoomTournaments::TournamentEventNotice::TYPES['phase_finished'],
-      'open_tournament_registration'=>GameRoomTournaments::TournamentEventNotice::TYPES['registration']}
+      'open_tournament_registration'=>GameRoomTournaments::TournamentEventNotice::TYPES['registration'],
+      'open_tournament_partner'=>GameRoomTournaments::TournamentEventNotice::TYPES['partnership']}
     return false unless notification.type.to_s==expected[action] && notification.app_uuid.to_s.downcase==self.class.server_app_uuid.to_s.downcase
     parser=action=='open_tournament_matches' ? GameRoomTournaments::TournamentStartNotice : GameRoomTournaments::TournamentEventNotice
     metadata=parser.metadata(notification.metadata.to_h)
     return false unless metadata['recipient']==Session.name.to_s.downcase &&
-      metadata['publication_ref']['author']==notification.sender.to_s.downcase &&
+      (action=='open_tournament_partner' || metadata['publication_ref']['author']==notification.sender.to_s.downcase) &&
       metadata['backend_identity']=="elten-tournaments:#{self.class.server_app_uuid}"
     initialize_services
     record_statistics_visit
     check_server_table_access
+    if action=='open_tournament_partner'
+      service=self.class.instance_variable_get(:@tournament_event_services)&.fetch('partnership')
+      raise GameRoomTournaments::ProposalNotice::Stale,'Partnership notices unavailable' unless service
+      EltenAPI::Tasks.run(title:_("Tournament partnership"),ui: :none,cancellable:false) do
+        service.inspect(metadata:metadata,sender:notification.sender)
+      end
+    end
     # Opening only selects a freshly loaded public view. Join/Play still have
     # their normal explicit confirmation and fresh authorization.
     show_tournaments(reference:metadata['publication_ref'],initial_action:{
-      'open_tournament_matches'=>:overview,'open_tournament_standings'=>:results,'open_tournament_phase_standings'=>:results}[action],
+      'open_tournament_matches'=>:overview,'open_tournament_standings'=>:results,'open_tournament_phase_standings'=>:results,
+      'open_tournament_partner'=>:partner}[action],
       initial_phase_id:metadata['phase_id'])
     true
-  rescue GameRoomTournaments::Publication::Invalid
+  rescue GameRoomTournaments::Publication::Invalid,GameRoomTournaments::ProposalNotice::Stale
     alert(_("This tournament notification is no longer available."))
     true
   end
@@ -1233,7 +1243,6 @@ class EltenGameRoom < Program
     end
     return if result == nil
 
-    alert(_("You are already at a table.")) if !result.created?
     if result.created?
       self.class.announce_new_public_table(result.table) unless privacy
       play_game_sound("connect")
@@ -1438,6 +1447,9 @@ class EltenGameRoom < Program
   def create_saved_game_continuation(saved, game, actor, allowed:)
     run_network_task(_("Preparing saved game")) do
       next unless allowed.call
+      current = @lobby.current_table_for(actor)
+      next unless allowed.call
+      next LobbyRepository::CreateResult.new(table: current, created: false) if current
       created = @lobby.create_table(name: saved["table_name"], game: saved["game"], owner: actor,
         game_options: saved["options"], private_table: saved["private"], resume_save_id: saved["id"],
         history_capacity: game.session_history_capacity(game.options_from_json(saved["options"])),
@@ -2025,6 +2037,22 @@ class EltenGameRoom < Program
     GameRoomTableVoiceScreen.new(program:self,transport:@transport,table:table).run
   end
   public :show_table_voice
+
+  def remember_table_voice(table)
+    return unless defined?(Conference)
+    require_relative 'lib/table_voice_membership'
+    (@table_voice_membership ||= GameRoomTableVoiceMembership.new(conference:Conference)).remember(table)
+  end
+
+  def toggle_conference_microphone
+    unless defined?(Conference) && Conference.opened? && Conference.channel&.id.to_i.positive?
+      speak(_("You are not connected to a voice conversation."))
+      return false
+    end
+    Conference.muted = !Conference.muted
+    speak(Conference.muted ? _("Microphone muted") : _("Microphone unmuted"))
+    true
+  end
 
   def waiting_computer_context(row, chat_context)
     chat_context.call.merge(owner: @lobby.owner_of(row),
@@ -3876,6 +3904,11 @@ class EltenGameRoom < Program
   end
 
   def forget_room_membership(row)
+    local=@table_layouts.to_h[row['__id']]&.voice_button&.voice_table || row
+    remember_table_voice(local)
+    if @table_voice_membership && !@table_voice_membership.depart(local)
+      alert(_("Could not disconnect the voice conversation. Open Conferences to leave it."))
+    end
     @room_membership_trackers&.delete(@lobby.table_id(row))
   end
 

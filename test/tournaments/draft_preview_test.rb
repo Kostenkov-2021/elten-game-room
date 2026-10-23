@@ -431,7 +431,7 @@ GameRoomGames::CATALOG.ids.each do |game_id|
       value = options.fetch(definition.key.to_s, definition.default)
       expected = case definition.kind.to_sym
       when :boolean then value ? 'Yes' : 'No'
-      when :integer then definition.summary_unit == :seconds ? "#{value} seconds" : value.to_s
+      when :integer then definition.summary_unit == :seconds ? "#{value} #{value == 1 ? 'second' : 'seconds'}" : value.to_s
       when :choice then definition.choices.find { |choice| choice.value.to_s == value.to_s }&.label.to_s
       when :multiple_choice
         labels = definition.choices.each_with_index.filter_map { |choice, index| choice.label if (value.to_i & (1 << index)) != 0 }

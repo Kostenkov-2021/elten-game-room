@@ -172,11 +172,12 @@ module GameRoomTournaments
       end
       rules = text(@organizer_notes.text)
       rules = ScoringText::DEFAULT if rules.strip.empty?
+      timezone = @timing.fetch('timezone', 'UTC')
       Publication.from_draft(draft: draft, registry: @registry, publication_key: 'setup-preflight', rules: rules,
-        registration_opens_at: opens, registration_closes_at: closes, timezone: 'UTC')
+        registration_opens_at: opens, registration_closes_at: closes, timezone: timezone)
       @submitted = true
       result = @publish_callback.call(draft: draft, rules: rules, registration_opens_at: opens,
-        registration_closes_at: closes, timezone: 'UTC')
+        registration_closes_at: closes, timezone: timezone)
       unless result && result['status'] == 'confirmed'
         @alert.call(text(_("Publication not confirmed. Check Operations before trying again.")))
         return nil

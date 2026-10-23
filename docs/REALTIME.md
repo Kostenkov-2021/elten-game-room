@@ -1,10 +1,13 @@
 # Real-time games
 
-Pong and Audio Ball have their own client lifecycle (`session_runner? false`).
-`Channel` and `EventChannel` share the Communications connection, queues,
-ping and delivery. The game client is responsible for physics, resetting its
-own fields and transition legality. LiveSessions stores the table, game start
-and durable outcomes.
+Pong and Audio Ball have their own client lifecycle for physics and input.
+They also use the shared `GameRoomSessionRunner` (`session_runner? true`) for
+durable model events and tournament presence; `tournament_execution_kind`
+identifies their separate real-time execution. The runner does not simulate
+the ball or run a second real-time bot loop. `Channel` and `EventChannel`
+share the Communications connection, queues, ping and delivery. The game
+client is responsible for physics, resetting its own fields and transition
+legality. LiveSessions stores the table, game start and durable outcomes.
 
 ## Action path and authority
 
@@ -46,6 +49,12 @@ synthesis is not a readiness barrier. After a point, the score schedule and
 the usual 2.7 s preparation period apply; a late announcement does not start
 another countdown. Network readiness is still required. Verification includes
 a synthesizer that never returns the final index, as well as interrupted speech.
+
+Automatic notices, including the serve warning, use `announce_progress` rather
+than direct speech. This applies the shared background-speech preference and
+keeps an enabled background notice from interrupting the foreground reader.
+Suppressing presentation never cancels the warning deadline or queues speech
+to be replayed on return.
 
 Agreed point presentation may precede the durable write. It cannot change the
 score by itself or repeat the effect after the later write. A connection pause

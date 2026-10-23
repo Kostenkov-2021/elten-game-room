@@ -173,7 +173,9 @@ class DuckSoundsTest
       @program.gain = 0.3
       @program.enabled = mode != :disabled
       @covered = mode == :covered
-      @program.class.settings = {'background_game_sounds' => 'all'} if @covered
+      # This case checks game effects. The independent background turn cue
+      # must not be mistaken for a game effect that should be muted here.
+      @program.class.settings = {'background_game_sounds' => 'all', 'background_turn_sound' => false} if @covered
       before, first = h.replay, h.events.length
       play_card(h, 'guided_missile')
       assert_equal(1, h.replay.history.count { |entry| entry.kind == :frozen })

@@ -90,6 +90,12 @@ module GameRoomTournaments
         @service.set_partner(tournament_id: values[0], account: values[1], partner: values[2], intent_id: values[3])
       end
     end
+    def partnership_action(id, action, partner, request_key, intent)
+      access(_("Saving tournament pair"), input: [id, action, partner, request_key, intent], writing: true) do |values|
+        @service.partnership_action(tournament_id: values[0], action: values[1], partner: values[2],
+          request_key: values[3], intent_id: values[4])
+      end
+    end
 
     def edit_tournament(tournament_id:, intent_id:, **attributes)
       access(_("Editing tournament"), input: attributes.transform_keys(&:to_s), writing: true) do |copy|

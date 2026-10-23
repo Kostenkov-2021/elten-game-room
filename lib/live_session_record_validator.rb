@@ -35,6 +35,7 @@ class GameRoomLiveSessionStore
     private
 
     def remember(record)
+      @voice=GameRoomTableVoice.after_departure(@voice,record)
       if record.packet['kind']=='room_voice'
         @voice=GameRoomTableVoice.transition(@voice,record,owner:record.sender)
       elsif record.packet['kind']=='room_state' && record.packet['data'].key?('voice')

@@ -1,5 +1,6 @@
 # encoding: UTF-8
 require_relative '../support/temporary_directory'
+require_relative '../support/owned_process_cleanup'
 require "tmpdir"
 require "json"
 require "digest"
@@ -908,19 +909,15 @@ class TournamentDraftsTest
   end
 
   def test_native_portable_data_path_survives_a_cwd_change
-    Open3.popen2e(RbConfig.ruby, File.expand_path(__FILE__), "--portable-path", @directory) do |input, output, waiter|
+    children = []
+    GameRoomTest::OwnedProcessCleanup.run(children) do
+      children << Open3.popen2e(RbConfig.ruby, File.expand_path(__FILE__), "--portable-path", @directory)
+      input, output, waiter = children.first
       input.close
-      begin
-        assert(waiter.join(20), "Proces natywnego data_path nie zakończył pracy")
-        message = output.read
-        assert(waiter.value.success?, message)
-        @assertions += JSON.parse(message).fetch("assertions")
-      ensure
-        if waiter.alive?
-          Process.kill("KILL", waiter.pid)
-          waiter.join
-        end
-      end
+      assert(waiter.join(20), "Proces natywnego data_path nie zakończył pracy")
+      message = output.read
+      assert(waiter.value.success?, message)
+      @assertions += JSON.parse(message).fetch("assertions")
     end
   end
 
@@ -1015,7 +1012,7 @@ class TournamentDraftsTest
 
   def test_separate_processes_share_the_stable_lock
     children = []
-    begin
+    GameRoomTest::OwnedProcessCleanup.run(children) do
       3.times do
         children << Open3.popen2e(RbConfig.ruby, File.expand_path(__FILE__), "--writer", @directory)
       end
@@ -1039,15 +1036,6 @@ class TournamentDraftsTest
       end
       equal(30, store.list.length)
       equal(30, store.list.map { |record| record["id"] }.uniq.length)
-    ensure
-      children.each do |input, output, waiter|
-        input.close unless input.closed?
-        if waiter.alive?
-          Process.kill("KILL", waiter.pid)
-          waiter.join
-        end
-        output.close unless output.closed?
-      end
     end
   end
 

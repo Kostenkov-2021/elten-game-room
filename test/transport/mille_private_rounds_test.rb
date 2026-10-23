@@ -87,6 +87,13 @@ h, runners = MillePrivateTest.create(options: options)
   end
   MillePrivateTest.assert_private(h)
   assert(h.view('Alice').pools.size == 1, 'previous round left native pools behind')
+  active_pools = h.view('Alice').pools.map(&:id)
+  h.users.each do |user|
+    store = h.transports.fetch(user).instance_variable_get(:@live_store)
+    room = store.instance_variable_get(:@rooms).fetch(h.table.fetch('__id'))
+    assert((room.verified_pools.keys - active_pools).empty?, 'fresh round retained obsolete reader validation cache')
+    assert(room.private_draws.keys.all? { |key| active_pools.include?(key[1]) }, 'fresh round retained obsolete reader draw cache')
+  end
 end
 assert(h.replay('Alice').finished? && h.replay('Alice').state[:round] > 1, 'private match did not cross a round boundary')
 runners.each_value(&:close)

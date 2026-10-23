@@ -83,7 +83,7 @@ module GameRoomOptionValues
       selected = selected_choices(definition, value).map { |choice| text(choice.label) }
       selected.empty? ? _("None") : selected.join(', ')
     when :integer
-      definition.summary_unit == :seconds ? (text(_("%{seconds} seconds")) % {seconds: value}) : value
+      definition.summary_unit == :seconds ? (text(n_("%{seconds} second", "%{seconds} seconds", value)) % {seconds: value}) : value
     else
       raise ArgumentError, "Unsupported game option type: #{definition.kind}"
     end

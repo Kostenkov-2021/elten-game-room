@@ -36,7 +36,7 @@ module GameRoomSync
 
     def update_session(session_id, discard_pending: false)
       @session_id = positive_identifier(session_id)
-      @transport.consume_game_change(@session_id) if discard_pending && @session_id > 0
+      consume_game_change if discard_pending && @session_id > 0
       self
     end
 
@@ -70,7 +70,7 @@ module GameRoomSync
       end
 
       if @session_id > 0
-        received_at = @transport.consume_game_change(@session_id)
+        received_at = consume_game_change
         if received_at != nil && received_at != false
           return Event.new(kind: :game_changed, session_id: @session_id, received_at: received_at)
         end
@@ -141,6 +141,14 @@ module GameRoomSync
     end
 
     private
+
+    def consume_game_change
+      if @transport.respond_to?(:consume_room_game_change)
+        @transport.consume_room_game_change(@table_id)
+      else
+        @transport.consume_game_change(@session_id)
+      end
+    end
 
     def now
       @clock.call.to_f

@@ -172,7 +172,7 @@ module GameRoomTournaments
         MatchOrder.players(candidate['matches'],match)
       end
       value=Data.copy({'tournament_id'=>source['tournament_id'],
-        'candidate'=>candidate.slice('publication_ref','schedule_id','publication_digest','roster_generation','timezone','windows','starts_at'),
+        'candidate'=>candidate.slice('publication_ref','schedule_id','publication_digest','roster_generation','timezone','windows','starts_at','daily_hours'),
         'match'=>match.slice('match_id','leg','players').merge('players'=>players)},max_bytes:262_144,max_nodes:16_384,max_depth:12)
       account!
       Data.freeze_tree(value)

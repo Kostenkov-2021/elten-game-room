@@ -19,13 +19,13 @@ module GameRoomContacts
       @lock.synchronize do
         collect
         if !@user.empty? && !@worker.closed? && !@worker.busy? && @clock.call >= @retry_at &&
-            (force || @loaded_at == nil || @clock.call - @loaded_at >= TTL)
-          @worker.start do
+            (force || @forced || @loaded_at == nil || @clock.call - @loaded_at >= TTL)
+          @forced = true if force
+          GameRoomBackground.admit(@worker) do
             values = @loader.call
             raise TypeError, "Invalid contact list" unless values.is_a?(Array)
             values.each_with_object({}) { |name, set| set[name.to_s.strip.downcase] = true unless name.to_s.strip.empty? }.freeze
           end
-          @forced = true if force
         end
         @forced ? nil : @contacts
       end

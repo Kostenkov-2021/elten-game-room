@@ -182,6 +182,12 @@ module GameRoomUI
 
     def update
       @game_room_program.send(:announce_volume_save_error) if @game_room_program&.respond_to?(:announce_volume_save_error, true)
+      if game_room_hotkeys_active? && @game_room_program&.respond_to?(:toggle_conference_microphone,true) &&
+          keyboard_binding_pressed?([0x4D,:control,:shift],first:true) &&
+          $activecontrols.to_a.reverse.find { |field| field.respond_to?(:game_room_hotkeys_active?) && field.game_room_hotkeys_active? }.equal?(self)
+        clear_game_room_key
+        @game_room_program.send(:toggle_conference_microphone)
+      end
       if game_room_tournament_shortcut? && game_room_hotkeys_active? && !game_room_background_help? &&
           keyboard_binding_pressed?([0x54,:control,:shift],first:true)
         open_my_tournaments
@@ -313,6 +319,7 @@ module GameRoomUI
       end
       global_tips.unshift(GameRoomContextHelp.shortcut_tip('Ctrl+Shift+T',_("My tournaments"))) if game_room_tournament_shortcut?
       global_tips.unshift(GameRoomContextHelp.shortcut_tip('Ctrl+T',_("Tournaments"))) if game_room_tournament_shortcut?
+      global_tips.unshift(GameRoomContextHelp.shortcut_tip('Ctrl+Shift+M',_("Mute or unmute the conference microphone"))) if @game_room_program&.respond_to?(:toggle_conference_microphone,true)
       items = GameRoomContextHelp.clean_tips(tips + form_tips + history_tips + global_tips)
       items = [_("No shortcuts are available on this screen.")] if items.empty?
       @game_room_help_open = true

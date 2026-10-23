@@ -93,10 +93,10 @@ module GameRoomAudioBall
       play_cue('stop', side, viewer)
     end
 
-    def goal(viewer:, winner:)
+    def goal(viewer:, winner:, reason: nil)
       return if @closed
       silence
-      @point_audio.goal(viewer: viewer, winner: winner)
+      @point_audio.goal(viewer: viewer, winner: winner, reason: reason)
     end
 
     def point(scores, sets:, set_finished:, winner:, viewer:, finished:, goal_at: nil)

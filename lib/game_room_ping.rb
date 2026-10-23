@@ -27,15 +27,16 @@ class GameRoomPing
   def request(owner)
     @worker.take if @owner == nil
     return false if @worker.busy?
-    @owner = owner
-    @started = @clock.call
-    @worker.start do
-      started = @clock.call
+    requested_at = @clock.call
+    admitted = GameRoomBackground.admit(@worker) do
+      probe_started = @clock.call
       response = @probe.call
-      elapsed = @clock.call - started
+      elapsed = @clock.call - probe_started
       raise 'Ping unavailable' if !response || !elapsed.finite? || elapsed < 0
       (elapsed * 1000).round
     end
+    @owner, @started = owner, requested_at if admitted
+    admitted
   end
 
   def poll(owner)

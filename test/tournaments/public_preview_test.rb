@@ -72,7 +72,7 @@ variants.each do |game_id, input_options|
         labels = definition.choices.filter_map { |choice| choice.label if value.include?(choice.value) }
         labels.empty? ? 'None' : labels.join(', ')
       else
-        definition.summary_unit == :seconds ? "#{value} seconds" : value.to_s
+        definition.summary_unit == :seconds ? "#{value} #{value == 1 ? 'second' : 'seconds'}" : value.to_s
       end
       assert(content.include?("#{label}: #{expected}"), "Brak etykiet opcji #{game_id}/#{definition.key}: #{expected}")
     end

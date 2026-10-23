@@ -18,11 +18,14 @@ module GameRoomPong
       @volumes = labels.to_h do |key, label|
         [key, ListBox.new((0..200).map { |n| "#{n}%" }, header: label, index: values[key], quiet: true)]
       end
-      @fields = [@automatic] + @volumes.values
+      @doubles = ListBox.new([_('By team position'),_('Keep your own sounds the same')],
+        header:_('Player sounds in doubles'),index:values['doubles_sounds']=='personal' ? 1 : 0,quiet:true)
+      @fields = [@automatic] + @volumes.values + [@doubles]
     end
 
     def values
-      Preferences.normalize(@volumes.to_h { |key, field| [key, field.index.to_i] }.merge('auto_return' => @automatic.checked))
+      Preferences.normalize(@volumes.to_h { |key, field| [key, field.index.to_i] }.merge(
+        'auto_return' => @automatic.checked,'doubles_sounds'=>@doubles.index==1 ? 'personal' : 'seats'))
     end
   end
 

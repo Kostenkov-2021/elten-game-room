@@ -3,24 +3,20 @@ require 'open3'
 require 'rbconfig'
 require 'timeout'
 require 'json'
+require_relative 'owned_process_cleanup'
 
 module TournamentOperationJournalProcesses
   def workers(actions)
     children = []
-    Timeout.timeout(30) do
-      actions.each do |action, argument|
-        children << Open3.popen2e(RbConfig.ruby, File.expand_path(__FILE__), action, @directory,
-          'Żaneta', 'local_test:D:/test/baza.json', argument)
+    GameRoomTest::OwnedProcessCleanup.run(children) do
+      Timeout.timeout(30) do
+        actions.each do |action, argument|
+          children << Open3.popen2e(RbConfig.ruby, File.expand_path(__FILE__), action, @directory,
+            'Żaneta', 'local_test:D:/test/baza.json', argument)
+        end
+        children.each { |_input, output, _waiter| equal("READY\n", output.gets) }
+        yield(children)
       end
-      children.each { |_input, output, _waiter| equal("READY\n", output.gets) }
-      yield(children)
-    end
-  ensure
-    children.each do |input, output, waiter|
-      input.close unless input.closed?
-      output.close unless output.closed?
-      Process.kill('KILL', waiter.pid) if waiter.alive?
-      waiter.join
     end
   end
 

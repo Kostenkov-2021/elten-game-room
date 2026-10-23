@@ -5,6 +5,7 @@ require_relative '../game_sound_output'
 module GameRoomAudioBall
   class PointAudio
     include GameRoomRealtime::ScoreAnnouncements
+    WRONG_TURN = 'audio_ball_wrong_turn'.freeze
 
     def initialize(program, clock: -> { Process.clock_gettime(Process::CLOCK_MONOTONIC) }, rng: Random.new,
       speaker: nil, speech_active: nil)
@@ -16,6 +17,7 @@ module GameRoomAudioBall
     def load
       return if @loaded
       ANNOUNCEMENTS.each { |name| load_sound(name, name) }
+      load_sound(WRONG_TURN, WRONG_TURN)
       refresh_preferences
       @loaded = true
     end
@@ -27,11 +29,15 @@ module GameRoomAudioBall
       load_sound(@goal_asset, @goal_asset) if @goal_asset && !@sounds[@goal_asset]
     end
 
-    def goal(viewer:, winner: nil)
+    def goal(viewer:, winner: nil, reason: nil)
       clear_announcements
       return unless presentation_enabled?
       @sounds.each { |name, sound| sound.pause unless ANNOUNCEMENTS.include?(name) }
-      play_goal_recordings(@goal_asset && @sounds[@goal_asset] ? @goal_asset : nil)
+      if reason == 'wrong_turn'
+        play_announcement(WRONG_TURN)
+      else
+        play_goal_recordings(@goal_asset && @sounds[@goal_asset] ? @goal_asset : nil)
+      end
     end
 
     def announce(text)

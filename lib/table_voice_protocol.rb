@@ -49,4 +49,15 @@ module GameRoomTableVoice
       {'head'=>record.message_id,'status'=>'none'}
     end
   end
+
+  # A creator's authenticated departure also withdraws that exact invitation.
+  # It does not close the native channel or force other guests to leave.
+  def after_departure(previous, record)
+    previous ||= empty
+    return previous unless previous && previous['status']=='ready' && record.packet['kind']=='room_activity' &&
+      record.packet.dig('data','activity_kind')=='left' &&
+      GameRoomParticipants.same?(record.sender,record.packet['actor']) &&
+      GameRoomParticipants.same?(record.sender,previous['creator'])
+    {'head'=>record.message_id,'status'=>'none'}
+  end
 end

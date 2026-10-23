@@ -5,7 +5,7 @@ require_relative "../../lib/game_simulation"
 
 module GameRoomTraining
   TrainingReport = Struct.new(:episodes, :wins, :draws, :unfinished, :average_actions, keyword_init: true)
-  TournamentReport = Struct.new(:ratings, :wins, :draws, :matches, :results, keyword_init: true)
+  TournamentReport = Struct.new(:ratings, :wins, :draws, :unfinished, :matches, :results, keyword_init: true)
 
   class PolicyTable
     def initialize(data = nil)
@@ -180,6 +180,7 @@ module GameRoomTraining
       elo = EloRatings.new
       wins = Hash.new(0)
       draws = 0
+      unfinished = 0
       results = []
       lineups.each do |lineup|
         names = lineup.fetch(:names).map(&:to_s)
@@ -195,7 +196,9 @@ module GameRoomTraining
           max_actions: @max_actions
         ).run(seed: lineup.fetch(:seed).to_i)
         results << { lineup: names, result: result }
-        if result.draw || !result.finished?
+        if !result.finished?
+          unfinished += 1
+        elsif result.draw
           draws += 1
           elo.record(names[0], names[1], 0.5) if names.length == 2
         else
@@ -211,6 +214,7 @@ module GameRoomTraining
         ratings: elo.ratings.dup,
         wins: wins,
         draws: draws,
+        unfinished: unfinished,
         matches: results.length,
         results: results
       )

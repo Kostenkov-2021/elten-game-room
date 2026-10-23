@@ -26,7 +26,9 @@ module GameRoomServerRandomRendering
         data.keys.all? { |key| key.is_a?(String) && key.match?(/\A[a-z]\z/) } &&
         data.values.all? { |value| value.is_a?(Integer) || (value.is_a?(String) && value.match?(/\A[a-z]+\z/)) } &&
         JSON.generate(data.merge('r' => (1 << 63) - 1)).bytesize <= 64
-    when 'cat_tail', 'monopoly_roll', 'first_server'
+    when 'first_server'
+      recipe.keys==['kind'] || (recipe.keys.sort==%w[kind players] && recipe['players']==4)
+    when 'cat_tail', 'monopoly_roll'
       recipe.keys == ['kind']
     when 'payload_seed'
       data = recipe['data']
@@ -58,7 +60,7 @@ module GameRoomServerRandomRendering
     when 'monopoly_roll'
       "#{random.rand(1..6)},#{random.rand(1..6)},#{seed}"
     when 'first_server'
-      random.rand(2).to_s
+      random.rand(recipe.fetch('players',2)).to_s
     end
   end
 end

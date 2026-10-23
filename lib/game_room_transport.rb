@@ -11,7 +11,6 @@ class GameRoomTransport
       presence_changed: -> { @presence_listener&.changed }, clock: clock, local_view: local_view)
     @pending_table_changes = {}
     @pending_game_changes = {}
-    @game_change_tables = {}
     @pending_game_starts = {}
     @pending_recoveries = {}
     @newly_joined = {}
@@ -319,9 +318,15 @@ class GameRoomTransport
 
   def consume_game_change(session_id)
     @mutex.synchronize do
-      @game_change_tables.delete(session_id.to_i)
-      @pending_game_changes.delete(session_id.to_i)
+      # Compatibility for ID-only adapters. Real screens know their room and
+      # use the bounded room signal below; game IDs are not globally unique.
+      matches = @pending_game_changes.select { |_id, change| change.first == session_id.to_i }
+      @pending_game_changes.delete(matches.keys.first)&.last if matches.one?
     end
+  end
+
+  def consume_room_game_change(table_id)
+    @mutex.synchronize { @pending_game_changes.delete(table_id.to_i)&.last }
   end
 
   def consume_game_start(table_id)
@@ -354,8 +359,11 @@ class GameRoomTransport
         @pending_table_changes[table_id.to_i] = true
       when :game
         if value.to_i.positive?
-          @pending_game_changes[value.to_i] ||= monotonic_time
-          @game_change_tables[value.to_i] = table_id.to_i
+          # A wake-up only requests a verified revision check, not a session
+          # switch. Retain one signal per room across rematches, including late
+          # historical/invalid hints; keep the earliest unconsumed timestamp.
+          previous = @pending_game_changes[table_id.to_i]
+          @pending_game_changes[table_id.to_i] = [value.to_i, previous ? previous.last : monotonic_time]
         end
       when :closed
         @pending_recoveries[table_id.to_i] = :closed
@@ -372,15 +380,10 @@ class GameRoomTransport
   end
 
   def prune_pending_rooms(retained)
-    [@pending_table_changes, @pending_game_starts, @pending_recoveries].each do |map|
+    [@pending_table_changes, @pending_game_changes, @pending_game_starts, @pending_recoveries].each do |map|
       map.delete_if { |id, _| !retained[id] }
     end
     @newly_joined.delete_if { |(id, _user), _| !retained[id] }
-    @game_change_tables.delete_if do |game_id, table_id|
-      next false if retained[table_id]
-      @pending_game_changes.delete(game_id)
-      true
-    end
   end
 
   def monotonic_time

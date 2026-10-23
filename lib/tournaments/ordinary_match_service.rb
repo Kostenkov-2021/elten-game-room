@@ -29,14 +29,16 @@ module GameRoomTournaments
     end
     Data = Publication::Data
     attr_reader :owner
-    def initialize(program:, registry:, lobby:, games:, transport:, table:, journal:, source:, user:, entry_guard:nil, changed:->(_reference){}, read_scope:->(&block){block.call})
+    def initialize(program:, registry:, lobby:, games:, transport:, table:, journal:, source:, user:, entry_guard:nil, changed:->(_reference){}, read_scope:->(&block){block.call}, completed_source:nil)
       @program, @registry, @lobby, @games, @transport = program, registry, lobby, games, transport
       @table, @journal, @source, @user = table, journal, source, user
       @entry_guard,@result_changed=entry_guard,changed
       @read_scope=read_scope
+      @completed_source=completed_source
       @owner = journal.owner
       @changed = false
       @bindings, @binding_usernames, @seen, @errors = {}, {}, {}, Queue.new
+      @result_jobs = {}
       @jobs, @lock, @closed = Queue.new, Mutex.new, false
       account!
     end
@@ -45,9 +47,9 @@ module GameRoomTournaments
       candidate, id, usernames = source!
       match = candidate.fetch('matches').find { |m| m['match_id'] == match_id && m['leg'] == leg }
       raise Blocked, :missing_match unless match
-      reject_voided_return!(candidate,id,match)
+      reject_voided_return!(candidate,id,match,allow_incomplete:false)
       documents=match_documents(candidate,id,match)
-      raise Blocked,:result_already_recorded if forfeit_document(candidate,id,match,rows:documents['forfeit'],result_rows:documents['result']) ||
+      raise Blocked,:result_already_recorded if forfeit_document(candidate,id,match,rows:documents['forfeit'],result_rows:documents['result'],allow_incomplete:false) ||
         read_result_document(candidate,id,match,rows:documents['result'])
       raise Blocked, :unsupported_match_players unless supported_match?(candidate,match)
       raise Blocked, :not_a_match_player unless match['players'].include?(@owner)
@@ -101,9 +103,9 @@ module GameRoomTournaments
       return {} unless row && row[0]['table']['__live_session_id']==table['__live_session_id']
       account!
       binding,candidate,id,match=row
-      reject_voided_return!(candidate,id,match)
+      reject_voided_return!(candidate,id,match,allow_incomplete:false)
       documents=match_documents(candidate,id,match)
-      raise Blocked,:result_already_recorded if forfeit_document(candidate,id,match,rows:documents['forfeit'],result_rows:documents['result']) ||
+      raise Blocked,:result_already_recorded if forfeit_document(candidate,id,match,rows:documents['forfeit'],result_rows:documents['result'],allow_incomplete:false) ||
         read_result_document(candidate,id,match,rows:documents['result'])
       raise Blocked,:not_a_match_player unless match['players'].include?(@owner) && table['owner'].to_s.downcase==@owner
       current,current_id=source!
@@ -140,9 +142,9 @@ module GameRoomTournaments
       candidate,id=source!
       match=candidate.fetch('matches').find{|row|row['match_id']==match_id && row['leg']==leg}
       raise Blocked,:missing_match unless match && supported_match?(candidate,match)
-      reject_voided_return!(candidate,id,match)
+      reject_voided_return!(candidate,id,match,allow_incomplete:false)
       documents=match_documents(candidate,id,match)
-      raise Blocked,:result_already_recorded if forfeit_document(candidate,id,match,rows:documents['forfeit'],result_rows:documents['result']) ||
+      raise Blocked,:result_already_recorded if forfeit_document(candidate,id,match,rows:documents['forfeit'],result_rows:documents['result'],allow_incomplete:false) ||
         read_result_document(candidate,id,match,rows:documents['result'])
       initial=initial_match_binding(candidate,id,match,rows:documents['binding'],creator_rows:documents['creator'])
       binding=initial && read_match_binding(candidate,id,match,nil,initial:initial)
@@ -159,11 +161,16 @@ module GameRoomTournaments
         return unless row[0]['table']['__live_session_id']==table['__live_session_id']
         return unless session['__id']==row[0]['session_id']
         key = [table['__id'], row[0]['match_id'], row[0]['leg']]
-        return if @seen[key]
-        raise Blocked, :result_queue_limit if @jobs.size >= 64
-        capture=events && OrdinaryMatchResults.capture(registry:@registry,binding:row[0],session:session,replay:replay,events:events)
-        @jobs << (capture ? row+[capture] : row)
-        @seen[key] = true
+        if @seen[key]
+          return unless queue_result_retry(@result_jobs[key])
+        else
+          raise Blocked, :result_queue_limit if @result_jobs.size >= 64
+          capture=events && OrdinaryMatchResults.capture(registry:@registry,binding:row[0],session:session,replay:replay,events:events)
+          job={key:key.freeze,row:(capture ? row+[capture] : row).freeze,queued:true,retryable:false}
+          @result_jobs[key]=job
+          @jobs << job
+          @seen[key] = true
+        end
       end
       true
     rescue Publication::Invalid=>error
@@ -171,23 +178,12 @@ module GameRoomTournaments
       false
     end
 
-    def result_view(include_match_status:false)
+    def result_view(include_match_status:false,allow_incomplete_forfeits:true)
       candidate, id = source!
       raise Blocked, :plan_too_large if candidate['matches'].size > ServerCapacity::MAX_MATCHES
       rows = ServerDocumentRows.read_keys(@table, result_document_keys(candidate,id), guard: method(:account!))
       grouped=rows.group_by{|row|row.fetch('operation_key')}
-      forfeits=candidate['matches'].to_h do |match|
-        [ [match['match_id'],match['leg']],forfeit_receipts(candidate,id,match,
-            rows:grouped[anchor(candidate,id,match,'forfeit')['operation_key']] || []) ]
-      end
-      ordered=candidate['matches'].to_h do |match|
-        key=[match['match_id'],match['leg']]
-        attempts=forfeits.fetch(key)
-        ordinary=ordinary_result_receipt(candidate,id,match,
-          rows:grouped[anchor(candidate,id,match,'result')['operation_key']] || [],
-          allow_incomplete:!attempts.empty?) if supported_match?(candidate,match)
-        [key,ordered_match_receipts(attempts,ordinary)]
-      end
+      ordered=ordered_result_receipts(candidate,id,grouped,allow_incomplete_forfeits:allow_incomplete_forfeits)
       effective_forfeits=ordered.transform_values do |attempts|
         first=attempts.first
         first && first['document']['kind']!='ordinary-match-result-v1' ? [first] : []
@@ -250,6 +246,27 @@ module GameRoomTournaments
       end
       result_summary(candidate, id, results, result_times, forfeitable, cancellable,
         include_match_status: include_match_status,forfeit_conflicts:forfeit_conflicts,unavailable:unavailable)
+    end
+
+    private def ordered_result_receipts(candidate,id,grouped,allow_incomplete_forfeits:)
+      forfeits=candidate['matches'].to_h do |match|
+        [[match['match_id'],match['leg']],forfeit_receipts(candidate,id,match,
+          rows:grouped[anchor(candidate,id,match,'forfeit')['operation_key']] || [])]
+      end
+      candidate['matches'].to_h do |match|
+        key=[match['match_id'],match['leg']]
+        forfeit_rows=grouped[anchor(candidate,id,match,'forfeit')['operation_key']] || []
+        attempts=forfeits.fetch(key)
+        ordinary=ordinary_result_receipt(candidate,id,match,
+          rows:grouped[anchor(candidate,id,match,'result')['operation_key']] || [],
+          allow_incomplete:!attempts.empty?) if supported_match?(candidate,match)
+        accepted=ordered_match_receipts(attempts,ordinary)
+        # A result list may omit an unfinished administrative upload, but
+        # retention cannot mistake it for proof of an abandoned fixture.
+        # An already complete result remains decisive despite later chunks.
+        forfeit_receipts(candidate,id,match,rows:forfeit_rows,allow_incomplete:false) if !allow_incomplete_forfeits && accepted.empty?
+        [key,accepted]
+      end
     end
 
     private def unfinished_result_status(candidate,id,match,binding,starts)
@@ -346,7 +363,14 @@ module GameRoomTournaments
       Data.freeze_tree(value)
     end
 
-    def take_error; @errors.pop(true); rescue ThreadError; nil; end
+    def take_error
+      # Opening Matches is an explicit retry opportunity, not a polling loop.
+      # Only a failed LOCAL retain is queued again, with its original capture.
+      @lock.synchronize { @result_jobs.each_value { |job| queue_result_retry(job) } unless @closed }
+      @errors.pop(true)
+    rescue ThreadError
+      nil
+    end
     def operations; account!; @journal.list; end
     def reconcile(id)
       account!
@@ -388,6 +412,40 @@ module GameRoomTournaments
       end).resume(id).tap do
         @result_changed.call(candidate.fetch('publication_ref')) if %w[forfeit result].include?(kind)
       end
+    rescue Publication::Invalid=>error
+      raise unless error.code==:missing_publication && @completed_source && record
+      reconcile_completed_result(record)
+    end
+
+    # Expiry cannot authorize another append, but must not discard the ACK of
+    # an exact result already stored in full. This fallback only reads and
+    # resolves the existing local journal; never resume a missing document part.
+    private def reconcile_completed_result(record)
+      document=StrictJson.parse(record.fetch('values').fetch('document_json'),max_nesting:12)
+      is_forfeit=document['kind']=='ordinary-match-forfeit-v3'
+      raise Publication::Invalid,:missing_publication unless is_forfeit || document['kind']=='ordinary-match-result-v1'
+      candidate,id=source!(reader:@completed_source)
+      match=candidate.fetch('matches').find{|row|row['match_id']==document['match_id'] && row['leg']==document['leg']}
+      raise Blocked,:source_changed unless match && document['publication_ref']==candidate['publication_ref'] &&
+        document.fetch('schedule_id',candidate['schedule_id'])==candidate['schedule_id']
+      author=is_forfeit ? candidate.fetch('publication_ref').fetch('author').downcase : @owner
+      raise Blocked,:not_a_match_player unless author==@owner && (is_forfeit || match['players'].include?(@owner))
+      expected=anchor(candidate,id,match,is_forfeit ? 'forfeit' : 'result')
+      digest=Digest::SHA256.hexdigest(JSON.generate(document)) if is_forfeit
+      ServerPlanArchive.new(table:@table,journal:@journal,user:-> {account!;@user.call},document_digest:digest,
+        verify:->(value,retained) do
+          next false unless retained==expected && value==document
+          if is_forfeit
+            verify_administrative_intent!(value,candidate,id,match,source:@completed_source)
+          else
+            current,current_id=source!(reader:@completed_source)
+            binding=read_match_binding(candidate,id,match,nil,stop_at:value['binding_digest'])
+            raise Blocked,:wrong_match_binding unless binding && valid_binding?(binding,candidate,match)
+            raise Blocked,:tournament_saved_game_disabled if binding.key?('continuation')
+            validate_bound_result!(value,match,binding)
+            current==candidate && current_id==id
+          end
+        end).reconcile(record.fetch('id'))
     end
     def close
       @lock.synchronize { return if @closed; @closed=true; @jobs << nil }
@@ -395,14 +453,14 @@ module GameRoomTournaments
     end
 
     # Public for deterministic tests of the queue consumer, never a game executor.
-    def collect(row)
+    def collect(row, pending: nil)
       binding, candidate, id, match, captured = row
       raise Blocked,:tournament_saved_game_disabled if binding.key?('continuation')
       # The runner already verified this terminal history. Retain its immutable
       # result locally before the first network read, so an outage cannot lose
       # the only completion callback. This grants no permission to publish:
       # the normal archive and recovery paths still revalidate the source.
-      result=captured && retain_result(captured,candidate,id,match)
+      result=captured && retain_observed_result(captured,row,pending)
       current, current_id = source!
       raise Blocked, :source_changed unless current == candidate && id == current_id
       documents=match_documents(candidate,id,match)
@@ -410,7 +468,7 @@ module GameRoomTournaments
       return unless read_match_binding(candidate,id,match,binding['creator'])==binding
       result ||= OrdinaryMatchResults.read(repository:@games,registry:@registry,transport:@transport,table:binding['table'],binding:binding)
       return unless result
-      result=retain_result(result,candidate,id,match) unless captured
+      result=retain_observed_result(result,row,pending) unless captured
       publish_document(result,anchor(candidate,id,match,'result')) do |document|
         fresh=captured || OrdinaryMatchResults.read(repository:@games,registry:@registry,transport:@transport,table:binding['table'],binding:binding)
         current,current_id=source!
@@ -420,6 +478,27 @@ module GameRoomTournaments
     end
 
     private
+    # Called under @lock. No recapture, journal access or network write here.
+    def queue_result_retry(job)
+      return false unless job && job[:retryable] && !job[:queued] && !@closed
+      job[:queued]=true
+      job[:retryable]=false
+      @jobs << job
+      true
+    end
+
+    def retain_observed_result(result,row,pending)
+      if pending
+        @lock.synchronize do
+          pending[:row]=(row.first(4)+[result]).freeze
+          pending[:retaining]=true
+        end
+      end
+      document=retain_result(result,*row.values_at(1,2,3))
+      @lock.synchronize { @result_jobs.delete(pending[:key]) } if pending
+      document
+    end
+
     def retain_result(result,candidate,id,match)
       account!
       document=Data.freeze_tree(ServerPlanDocument.copy_document(result.merge('publication_ref'=>candidate.fetch('publication_ref'))))
@@ -436,20 +515,33 @@ module GameRoomTournaments
       @thread = Thread.new do
         Thread.current.report_on_exception=false
         work = -> do
-          while (row=@jobs.pop)
+          while (job=@jobs.pop)
             break if @closed
+            failure=nil
+            stop=false
             begin
-              collect(row)
+              collect(job.fetch(:row),pending:job)
             rescue StandardError=>error
-              @errors << error if @errors.size<16
+              failure=error
               # A programming failure must not keep processing faulty work.
-              unless error.is_a?(Blocked) || error.is_a?(Publication::Invalid) || error.is_a?(IOError) ||
+              stop=!(error.is_a?(Blocked) || error.is_a?(Publication::Invalid) || error.is_a?(IOError) ||
                   error.is_a?(ServerPlanArchive::Unconfirmed) || error.is_a?(OperationJournal::Error) ||
-                  (defined?(EltenLink::Error) && error.is_a?(EltenLink::Error))
-                @lock.synchronize{@closed=true}
-                break
+                  (defined?(EltenLink::Error) && error.is_a?(EltenLink::Error)))
+            ensure
+              # Publish a retryable job only after this attempt is fully done.
+              # UI/runner may immediately requeue it when they read the error.
+              @lock.synchronize do
+                @closed=true if stop
+                if @result_jobs[job[:key]].equal?(job)
+                  job[:queued]=false
+                  job[:retryable]=!@closed && job[:retaining] && (failure.is_a?(IOError) ||
+                    failure.is_a?(OperationJournal::Error) && failure.code==:journal_io_error)
+                  @result_jobs.delete(job[:key]) unless job[:retryable]
+                end
               end
             end
+            @errors << failure if failure && @errors.size<16
+            break if stop
           end
         end
         runtime && defined?(Programs) ? Programs.with_runtime(runtime,&work) : work.call
@@ -457,9 +549,9 @@ module GameRoomTournaments
         @program.class.release(self) if @program.class.respond_to?(:release)
       end
     end
-    def source!
+    def source!(reader:@source)
       account!
-      source=@source.call
+      source=reader.call
       account!
       names=source['usernames'] && Data.freeze_tree(Data.copy(source['usernames'],max_bytes:131072,max_nodes:1024))
       [Data.freeze_tree(Data.copy(source.fetch('candidate').reject{|k,_|k=='observed_at'},max_bytes:262144,max_nodes:16384,max_depth:12)),source.fetch('tournament_id'),names]
@@ -565,7 +657,7 @@ module GameRoomTournaments
         binding['table'].is_a?(Hash) && binding['table']['owner'].is_a?(String) && Data.integer?(binding['table']['__id'],1) &&
         binding['table']['__live_session_id'].is_a?(String) && !binding['table']['__live_session_id'].empty?
       return false if binding.key?('entry_version') && binding['entry_version']!=ENTRY_VERSION
-      return false if binding.key?('result_policy') && ![GameResult::RANKING_RESULT_POLICY, GameResult::CURRENT_RESULT_POLICY].include?(binding['result_policy'])
+      return false if binding.key?('result_policy') && ![GameResult::RANKING_RESULT_POLICY, *GameResult::SELECTED_SMALL_POLICIES].include?(binding['result_policy'])
       if binding['entry_version']==ENTRY_VERSION
         marker=candidate.slice('publication_ref','schedule_id').merge(match.slice('match_id','leg'))
         return false unless binding['table']['tournament_match']==marker ||

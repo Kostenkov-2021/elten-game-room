@@ -125,7 +125,7 @@ end
 on_parallel_ui(app) do
   Thread.current[:event_test_native_update] = lambda do |_|
     assert(transport.instance_variable_get(:@pending_game_starts)[23] == 47, 'Start missed timer')
-    assert(transport.instance_variable_get(:@pending_game_changes).key?(47), 'Move missed timer')
+    assert(transport.instance_variable_get(:@pending_game_changes).key?(23), 'Room move wake-up missed timer')
     assert(transport.instance_variable_get(:@pending_table_changes)[23], 'Table missed timer')
     assert(transport.instance_variable_get(:@pending_recoveries)[23], 'Recovery missed timer')
   end

@@ -46,7 +46,8 @@ module AudioBallPointTest
         assert(GameRoomAudioBall::PointAudio.instance_method(method).owner == GameRoomRealtime::ScoreAnnouncements,
           "Audio Ball diverged from the shared #{method} implementation")
       end
-      expected = GameRoomAudioBall::Audio::ASSETS + GameRoomRealtime::ScoreAnnouncements::ANNOUNCEMENTS
+      expected = GameRoomAudioBall::Audio::ASSETS + GameRoomRealtime::ScoreAnnouncements::ANNOUNCEMENTS +
+        [GameRoomAudioBall::PointAudio::WRONG_TURN]
       assert(program.created.map(&:first) == expected, 'Point audio loaded paddle, crowd or echo assets / omitted a recording')
       assert(program.created.drop(GameRoomAudioBall::Audio::ASSETS.length).all? { |_, sample, loop| !sample && !loop }, 'Point audio must use non-looping host streams')
       audio.load
@@ -255,10 +256,32 @@ module AudioBallPointTest
     source = File.read(File.join(root, '__app.rb'), encoding: 'UTF-8')
     manifests = [JSON.parse(File.read(File.join(root, 'manifest.json'), encoding: 'UTF-8')),
       JSON.parse(source.split('=begin Elten3AppInfo', 2).last.split('=end Elten3AppInfo', 2).first)]
-    GameRoomRealtime::ScoreAnnouncements::ANNOUNCEMENTS.each do |name|
+    (GameRoomRealtime::ScoreAnnouncements::ANNOUNCEMENTS + [GameRoomAudioBall::PointAudio::WRONG_TURN]).each do |name|
       manifests.each { |manifest| assert(manifest.fetch('required_assets').fetch('sounds').count(name) == 1, "Missing/duplicated shared recording: #{name}") }
       path = File.join(root, 'Audio', "#{name}.opus")
       assert(File.binread(path, 128).include?('OpusHead'), "Shared Pong recording is not shipped as Opus: #{name}")
+    end
+  end
+end
+
+module AudioBallPointTest
+  check('wrong-turn preview replaces both ordinary goal recordings and keeps one durable score') do
+    %w[default audiodisc].each do |pack|
+      program = Program.new
+      program.define_singleton_method(:audio_ball_preferences) { {'sound_pack' => pack} }
+      spoken = []
+      audio = GameRoomAudioBall::Audio.new(program, clock: -> { program.now }, speaker: ->(text) { spoken << text })
+      audio.goal(viewer: 0, winner: 1, reason: 'wrong_turn')
+      assert(program.events.map(&:first) == ['audio_ball_wrong_turn'], 'Fault mixed with ordinary goal effects or voices')
+      program.now = 0.8
+      audio.point([0, 1], sets: [0, 0], set_finished: false, winner: 1, viewer: 0, finished: false, goal_at: 0.0)
+      assert(program.events.map(&:first) == ['audio_ball_wrong_turn'], 'Durable point repeated the fault or a normal goal')
+      [3.0, 3.5, 4.0].each { |now| program.now = now; audio.tick }
+      assert(program.events.map(&:first) == %w[audio_ball_wrong_turn pong_scores pong_number0 pong_number1],
+        'Fault changed the ordinary score announcement')
+      assert(spoken.empty?, 'Fault generated extra spoken commentary')
+      audio.close
+      assert(program.managed == program.released, 'Fault sound handle leaked on close')
     end
   end
 end

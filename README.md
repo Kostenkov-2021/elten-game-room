@@ -77,7 +77,11 @@ Dźwięki rozróżniają rozdanie, dobranie i odrzucenie kamienia, wyłożenie u
 
 D podczas odpowiedzi na cudzy kamień odczytuje kamień, którego dotyczy Pas, Chow, Pung, Kong lub Mahjong. Nie zmienia wyboru ani nie zatwierdza odpowiedzi. W pasjansie D nadal odczytuje współrzędne.
 
-W odczytuje wartość legalnej wygranej: fan albo han i fu oraz przyrost punktów. Bez legalnej wygranej nie szacuje wartości niepełnej ręki. Przed wygraną w Riichi pomija ukryte ura-dora, więc końcowa wartość może być wyższa. U odczytuje twoje wyłożone układy, Shift+U układy pozostałych graczy, a R numer rozdania, wiatry i bieżącą sytuację. W Riichi I odczytuje wskaźniki i kamienie dora, liczbę twoich dora, zgłoszenia Riichi, depozyty, honba oraz blokadę furiten. Te klawisze tylko odczytują informacje.
+W odczytuje wartość legalnej wygranej: fan albo han i fu oraz przyrost punktów. Bez legalnej wygranej nie podaje końcowej wartości ręki. Przed wygraną w Riichi pomija ukryte ura-dora, więc końcowa wartość może być wyższa. U odczytuje twoje wyłożone układy, Shift+U układy pozostałych graczy, a R numer rozdania, wiatry i bieżącą sytuację. W Riichi I odczytuje wskaźniki i kamienie dora, liczbę twoich dora, zgłoszenia Riichi, depozyty, honba oraz blokadę furiten. Te klawisze tylko odczytują informacje.
+
+W Hongkongu, Riichi i MCR klawisz W odczytuje też sumę podstawowych premii, które już masz: pungów smoków i punktowanych wiatrów oraz odpowiednich bonusów lub przyjętego zgłoszenia Riichi. Pungi na ręce liczą się, dopóki zachowasz je jako trójki. To nie jest wartość niepełnej ręki: większy układ może zastąpić podstawowe premie. W MCR kwiaty są podawane osobno i nie pomagają osiągnąć 8 fan; w Riichi widoczne dora również są osobno, bo wymagają yaku. Przy tworzeniu stołu opcja Podgląd podstawowej punktacji pod W ma domyślnie wartość Tak. Wybierz Nie, jeśli chcesz odczytywać tylko wartość legalnej wygranej. Ustawienie nie zmienia punktacji ani warunków wygranej.
+
+Każda odmiana ma osobne zestawienie punktacji: Hongkong podaje pełny katalog fanów i bonusów według wiatru, MCR wszystkie 81 pozycji pogrupowane według fanów, a Riichi yaku z wartością odkrytej i zakrytej ręki, yakumany oraz fu. Przy MCR podano też wykluczenia premii i dwa mieszane kongi za 6 fan. W pasjansie punktami są usunięte pary, nie fany.
 
 S odczytuje bieżące punkty wszystkich graczy. M podaje liczbę kamieni pozostałych do dobrania w murze. Te skróty tylko mówią: nie dobierają, nie odrzucają i nie pasują, ani nie ujawniają cudzych rąk. W pasjansie S odczytuje usunięte pary, a M pozostałe kamienie układu.
 
@@ -137,6 +141,8 @@ lub do niej zadzwonić.
 Przycisk „Utwórz rozmowę głosową” przy stole pozwala utworzyć kanał konferencji ELTEN-a. Wpisz nazwę, wybierz kanał publiczny lub ukryty i opcjonalnie ustaw hasło. Ukryty kanał nie pojawia się na zwykłej liście, ale sam ten wybór nie zastępuje hasła.
 
 Pozostali usłyszą krótkie zaproszenie, a przy stole pojawi się „Dołącz do rozmowy głosowej”. Po dołączeniu przycisk zmienia się na „Rozłącz rozmowę głosową”. Możesz nim wyjść z konferencji i później dołączyć ponownie. Gdy rozłącza się twórca, usuwa też zaproszenie przy stole; osoby, które już dołączyły, mogą nadal rozmawiać. Nic nie otwiera się samo w trakcie partii. Dołączenie do innej rozmowy wymaga potwierdzenia, jeśli jesteś już na konferencji. Twoje ustawienia mikrofonu i push-to-talk pozostają bez zmian.
+
+Po wyjściu ze stołu rozłączysz się także z jego konferencją. Ctrl+Shift+M wycisza lub włącza twój mikrofon w trwającej konferencji.
 
 ### Gospodarz, boty i drużyny
 
@@ -323,7 +329,7 @@ Power Games, także w widgecie, uruchom ELTEN-a ponownie.
 
 Opcjonalna lista „Znane języki” służy do uzupełniania brakujących tłumaczeń.
 Jeśli tekstu nie ma w głównym języku, program może sięgnąć po jeden
-z zaznaczonych języków, a ostatecznie po angielski. aby korzystać z programu.
+z zaznaczonych języków, a ostatecznie po angielski.
 
 Język pytań, kart i słownika możesz wybrać w ustawieniach gier, które
 udostępniają taką możliwość. Przy tworzeniu nowego stołu program proponuje
@@ -543,16 +549,15 @@ Opcje dołączenia, wypisania się i wyboru partnera pojawiają się wtedy, kied
 
 ### Lista uczestników
 
-Wybierz „Uczestnicy”, aby przejrzeć zapisane osoby i ich partnerów. Enter na osobie otwiera zwykłe menu użytkownika ELTEN-a. Ctrl+R odświeża listę.
+Wybierz „Uczestnicy”, aby przejrzeć zapisane osoby. W turnieju drużynowym u góry listy są drużyny, każda tylko raz, a niżej osoby bez partnera. Enter na drużynie otwiera listę jej członków; Enter na osobie — zwykłe menu użytkownika ELTEN-a. Escape wraca do tej samej drużyny, a Ctrl+R odświeża listę.
 
 Organizator ma w menu kontekstowym dodatkowe działania:
 
 - Ctrl+I — zaproś osoby z listy online i kontaktów. Spacją zaznaczasz osoby, a Enterem wysyłasz zaproszenia wszystkim zaznaczonym. Na liście nie ma już zapisanych ani wcześniej zaproszonych osób.
-- Ctrl+P — wybierz lub zmień partnera zaznaczonego uczestnika w turnieju par. Możesz też wybrać „Bez partnera”. Zmiana istniejących par wymaga potwierdzenia.
 - Delete — usuń zaznaczonego uczestnika po potwierdzeniu.
 - Ctrl+L — sprawdź zaproszone osoby i statusy „Oczekujące” lub „Odrzucono”. Ta lista nie służy do ponownego wysyłania zaproszeń.
 
-Zapraszanie wymaga otwartych zapisów; usuwanie uczestników i zmiana par są dostępne przed startem turnieju.
+Zapraszanie wymaga otwartych zapisów; uczestników można usuwać przed startem turnieju.
 
 ### Zapisy i wybór partnera
 
@@ -564,11 +569,13 @@ Możesz też wybrać „Odrzuć zaproszenie”. Nowe zaproszenia są ważne, dop
 
 W turnieju dla stałych par obie osoby najpierw zapisują się osobno. Następnie:
 
-1. Otwórz „Partner w drużynie” i wybierz drugiego uczestnika.
-2. Poproś tę osobę, żeby w tym samym miejscu wybrała Ciebie.
-3. Po wzajemnym wyborze para jest potwierdzona. Na ekranie partnera sprawdzisz też, czy nadal czekasz na akceptację.
+1. Otwórz „Partner w drużynie” i wybierz osobę, z którą chcesz grać.
+2. Ta osoba otrzyma propozycję partnerstwa. Po otwarciu może ją przyjąć albo odrzucić; te same działania znajdzie w „Partnerze w drużynie”.
+3. Po przyjęciu oboje otrzymacie potwierdzenie. Drużyna pojawi się na liście uczestników.
 
-Przed startem możesz zmienić wybór lub zrezygnować z partnera. Organizator także może ustawić pary. Nie da się przygotować spotkań drużynowych, dopóki część uczestników nie ma kompletnych par. Przez cały turniej grasz z tym samym partnerem, a wynik liczy się dla Was wspólnie.
+Możesz mieć jedną wysłaną propozycję. Wybranie innej osoby wymaga potwierdzenia anulowania poprzedniej. Jeśli macie już ustaloną drużynę, najpierw potwierdź jej rozwiązanie. Partner dowie się o tej zmianie.
+
+Przy rozpoczęciu turnieju program zachowuje uzgodnione pary, a pozostałe osoby łączy losowo. Organizator nie wybiera tych par. Jeśli bez partnera pozostanie nieparzysta liczba osób albo uczestników będzie za mało, otrzyma wyjaśnienie, dlaczego turniej nie może ruszyć. Po starcie drużyny pozostają stałe, a wynik liczy się dla Was wspólnie.
 
 Powiadomienie o rozpoczęciu turnieju otwiera jego mecze. Po zakończeniu fazy otrzymasz jeden komunikat z informacją o następnej, prowadzący do tabeli wyników zakończonej fazy. Po finale przychodzi już tylko powiadomienie o zakończeniu całego turnieju, ze zwycięzcą lub wspólnymi zwycięzcami. Otwiera ono końcową tabelę wyników. Dźwięki tych powiadomień podlegają zwykłym ustawieniom.
 

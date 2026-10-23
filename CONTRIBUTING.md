@@ -42,15 +42,23 @@ they are essential to reproducing the problem.
 
 ## Interface translations
 
-The only editable translation source for a language is its
-`locale/<LANG>.po` file, such as `PL.po`. We use the GetText standard, as ELTEN does.
+Interface translations use one editable `locale/<LANG>.po` file per language,
+such as `PL.po`. We use the Gettext standard, as ELTEN does.
 After changing English strings, run `ruby tools/translations.rb update`;
 after translating, run `ruby tools/translations.rb compile PL` and `check PL`.
-Polish rulebook fields and Polish changelogs are generated from PO and must not
-overwrite the translator's work. `locale/` contains only PO/MO files, the POT
-template and instructions; do not add JSON fragments. Scrabble/Krowa dictionaries,
-quiz questions and Taboo cards remain separate gameplay data.
-Dependencies and the exact workflow: `docs/TRANSLATIONS.md`.
+Translated changelogs and the older English-based rulebook fallback use PO;
+do not overwrite the translator's work. `locale/` contains only PO/MO files,
+the POT template and instructions; do not add JSON fragments.
+
+The complete rulebooks have their own wording and chapter layout in
+`tools/data/rulebooks/<LANG>/<game>.json`, currently for EN, PL, CS, ES and RU.
+Edit these files, including their `option_chapters` mappings, then run
+`ruby tools/compile-rulebooks.rb`. Do not edit their generated Ruby or duplicate
+their text in PO. Preserve creator-supplied rules and update all affected
+language editions as required by `AGENTS.md`.
+Scrabble/Krowa dictionaries, quiz questions and Taboo cards remain separate
+gameplay data. Dependencies and the exact workflow:
+[Interface translations](docs/TRANSLATIONS.md).
 
 ## New games
 

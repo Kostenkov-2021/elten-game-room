@@ -65,6 +65,7 @@ class GameRoomTableVoiceScreen
     return unless published && same_account?
     voice=published[:voice]
     if voice && voice['status']=='ready'
+      remember(voice)
       true
     else
       alert(_("The voice invitation was not confirmed. Try again shortly."))
@@ -87,6 +88,9 @@ class GameRoomTableVoiceScreen
   end
   def same_account?; GameRoomParticipants.same?(@actor,Session.name); end
   def alert(message); @program.send(:alert,GameRoomContent.utf8(message)); end
+  def remember(voice)
+    @program.send(:remember_table_voice,@table.merge('voice'=>voice)) if @program.respond_to?(:remember_table_voice,true)
+  end
   def switch_allowed?(target=nil)
     channel=@conference.channel if @conference.opened?
     return true unless channel && channel.id.to_i.positive? && channel.id != target
@@ -110,6 +114,7 @@ class GameRoomTableVoiceScreen
     return unless voice && voice['status']=='ready' && same_account?
     return unless confirmed || switch_allowed?(voice['channel_id'])
     success=@conference.join(voice.fetch('channel_id'),voice['password'].to_s.empty? ? nil : voice['password'])
+    remember(voice) if success
     unless success
       can_reset=GameRoomParticipants.same?(@actor,voice['creator']) || GameRoomParticipants.same?(@actor,@table['owner'])
       reset=JoinFailed.new(program:@program,can_reset:can_reset).run

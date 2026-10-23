@@ -27,6 +27,7 @@ module GameRoomTournaments
       return unless @owner.check
       snapshot = @workspace.load
       return unless snapshot && @owner.check
+      @attempted.delete_if { |_account, status| status == :confirmed }
       @members = snapshot['members'].select { |person| person['tournament_id'] == @publication['__id'] }
       @list.update_options(@members.map { |person| person['username'] }, keys: @members.map { |person| person['account'] })
       @partner.update_options([text(_("Without a partner yet"))] + @members.map { |person| person['username'] }, keys: [:without_partner] + @members.map { |person| person['account'] }) if @partner
@@ -62,6 +63,7 @@ module GameRoomTournaments
       return unless @confirm.call(text(_("Remove participant %{player}?")) % {player: person['username']}) && @owner.check
       @attempted[account] = true
       result = @workspace.remove_participant(@publication['__id'], account)
+      @attempted[account] = :confirmed if result && result['status'] == 'confirmed'
       @alert.call(text(result && result['status'] == 'confirmed' ? _("Participant removal confirmed.") : _("Participant removal not confirmed. Check Operations before trying again.")))
       refresh_members
     end

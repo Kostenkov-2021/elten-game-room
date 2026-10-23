@@ -403,6 +403,7 @@ check.call('PL and EN tool labels are native UTF-8 and never require a catalogue
   end
 end
 
+raise ArgumentError, 'No Duck lab tests match the requested filter' if checks.empty?
 report = {kind: 'targeted optional Duck lab tests', tests: checks.length,
   passed: checks.count { |entry| entry[:status] == 'PASS' },
   failures: checks.count { |entry| entry[:status] == 'FAIL' }, checks: checks,

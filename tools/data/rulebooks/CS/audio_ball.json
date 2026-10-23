@@ -8,7 +8,7 @@
       },
       "paragraphs": [
         {
-          "cs": "V Audio Ballu posíláš míč soupeři a podle zvuku vracejícího se míče volíš obranu. Úspěšně zachycený míč se u tebe zastaví, takže můžeš připravit vlastní úder. Když míč nezachytíš, získá soupeř bod. Hrají dva hráči; druhého člověka může nahradit bot."
+          "cs": "V Audio Ballu posíláš míč soupeři a podle zvuku vracejícího se míče volíš obranu. Úspěšně zachycený míč se u tebe zastaví, takže můžeš připravit vlastní úder. Když míč nezachytíš, získá soupeř bod. Běžně hrají dva hráči; druhého člověka může nahradit bot."
         },
         {
           "cs": "Hodí se sluchátka. Ve výchozím nastavení jsi na pravé straně: soupeřův míč slyšíš stále více vpravo, vlastní úder se vzdaluje doleva."
@@ -120,7 +120,27 @@
           "cs": "V nastavení stolu můžeš místo jednoho setu zvolit hru na dva nebo tři vítězné sety. Každý se dál hraje nejméně do 7 bodů s dvoubodovým rozdílem."
         },
         {
-          "cs": "Po skončení setu se body vynulují na 0:0. Za pět sekund začne další set a první podání přejde na druhého hráče. Kdo začínal první set, začíná tedy i třetí; soupeř začíná druhý a čtvrtý. Hraje se do potřebného počtu vyhraných setů."
+          "cs": "Ve dvou po skončení setu se body vynulují na 0:0. Za pět sekund začne další set a první podání přejde na druhého hráče. Kdo začínal první set, začíná tedy i třetí; soupeř začíná druhý a čtvrtý. Hraje se do potřebného počtu vyhraných setů."
+        }
+      ]
+    },
+    {
+      "id": "doubles",
+      "title": {
+        "cs": "Čtyřhra"
+      },
+      "paragraphs": [
+        {
+          "cs": "V nastavení stolu zvol Čtyřhru pro dva dvoučlenné týmy. S partnerem máte společné body i vyhrané sety."
+        },
+        {
+          "cs": "V úderech se střídáte. Po tvém úderu brání jeden soupeř, potom tvůj partner, druhý soupeř a znovu ty. Když jsi na řadě, zachyť míč, připrav ho šipkou vpravo nebo A a vyber úder."
+        },
+        {
+          "cs": "Když míč letí k tvému partnerovi, nemačkej klávesy obrany. Za takový stisk získají soupeři bod."
+        },
+        {
+          "cs": "První podávající se losuje ze všech čtyř hráčů. Po dvou bodech přejde podání na dalšího v pořadí úderů. Nový set začne hráč následující po tom, kdo zahajoval předchozí. Zvuky míče i nastavení poslechu zůstávají stejné jako ve dvou."
         }
       ]
     },
@@ -197,6 +217,7 @@
   "option_chapters": {
     "mode": "goal",
     "difficulty": "pace",
-    "sets_to_win": "sets"
+    "sets_to_win": "sets",
+    "team_size": "doubles"
   }
 }

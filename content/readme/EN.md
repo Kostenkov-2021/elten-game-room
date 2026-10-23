@@ -55,7 +55,11 @@ Sounds distinguish dealing, drawing and discarding a tile, declaring a set and e
 
 While responding to a tile, D reads the tile to which Pass, Chow, Pung, Kong or Mahjong applies. It does not change or submit your choice. In Solitaire, D still reads coordinates.
 
-W reads a legal winning hand value: fan or han and fu, and the points gained. It does not estimate an incomplete hand. Before a Riichi win it excludes hidden ura-dora, so the final value may be higher. U reads your exposed sets, Shift+U those of the other players, and R the hand number, winds and current situation. In Riichi, I reads dora indicators and tiles, your dora count, Riichi declarations, deposits, honba and your furiten restriction. These keys only read information.
+W reads a legal winning hand value: fan or han and fu, and the points gained. Without a legal win it does not give a final hand value. Before a Riichi win it excludes hidden ura-dora, so the final value may be higher. U reads your exposed sets, Shift+U those of the other players, and R the hand number, winds and current situation. In Riichi, I reads dora indicators and tiles, your dora count, Riichi declarations, deposits, honba and your furiten restriction. These keys only read information.
+
+In Hong Kong, Riichi and MCR, W also reads a subtotal of basic bonuses already present: dragon and scoring-wind triplets, plus the applicable bonus tiles or an accepted Riichi declaration. Concealed triplets count while you keep them together. This is not the value of an unfinished hand: whole-hand patterns may replace basic bonuses. In MCR, flowers are listed separately and do not help reach 8 fan; Riichi lists visible dora separately because dora require yaku. When creating a table, Basic scoring preview under W defaults to Yes; choose No to keep only the legal-win readout. The setting never changes scoring or permission to win.
+
+Each variant has its own scoring reference: Hong Kong lists every awarded fan and seat-wind bonus, MCR all 81 entries grouped by fan value, and Riichi the open/closed yaku values, yakuman and fu. MCR also explains exclusions and the 6-fan mixed-kong combination. Solitaire scores removed pairs rather than fan.
 
 Press S to hear the current points of every player. Press M to hear how many tiles remain in the wall for drawing. These are read-only announcements: they do not draw, discard or pass, and do not reveal other hands. In Solitaire, S reads removed pairs and M remaining layout tiles.
 
@@ -96,6 +100,8 @@ On the user list, Enter opens ELTEN's usual user menu. From there you can, for e
 Use the table's “Create voice conversation” button to create an ELTEN conference channel. Choose a name, public or hidden visibility and an optional password. A hidden channel stays off the ordinary channel list; hiding it does not replace password protection.
 
 The others hear a short invitation and get a “Join voice conversation” button at the table. Once you join, it changes to “Disconnect voice conversation”. You can leave the conference and join again later. When the creator disconnects, the table invitation is removed too; people who have already joined can keep talking. No dialog opens on its own during play. If you are already in another conference, switching requires confirmation. Your microphone and push-to-talk settings stay unchanged.
+
+Leaving a table also disconnects you from its conference. Ctrl+Shift+M mutes or unmutes your microphone in the current conference.
 
 ### The host and managing bots and teams
 
@@ -363,16 +369,15 @@ Joining, withdrawing and choosing a partner are offered when those actions are a
 
 ### Participant list
 
-Choose “Participants” to see registered players and their partners. Enter on a person opens ELTEN's usual user menu. Ctrl+R refreshes the list.
+Choose “Participants” to see the entrants. In team tournaments, each team appears once at the top, followed by people without partners. Enter on a team opens its members; Enter on a person opens ELTEN's usual user menu. Escape returns to the same team. Ctrl+R refreshes the list.
 
 The organiser has these additional context-menu actions:
 
 - Ctrl+I — invite people from the combined online and contacts list. Space selects people; Enter sends invitations to everyone selected. Registered and previously invited people are excluded.
-- Ctrl+P — choose or change the selected participant's partner in a pairs tournament, or choose “Without a partner”. Replacing existing pairs asks for confirmation.
 - Delete — remove the selected participant after confirmation.
 - Ctrl+L — view invited people with “Pending” or “Declined” status. This list does not resend invitations.
 
-Inviting requires open registration. Removing participants and changing pairs are available before the tournament starts.
+Inviting requires open registration. Participants can be removed before the tournament starts.
 
 ### Signing up and choosing a partner
 
@@ -384,11 +389,13 @@ You can also choose “Decline invitation”. New invitations remain valid while
 
 In a fixed-pair tournament, both players register individually first. Then:
 
-1. Open “Team partner” and choose another participant.
-2. Ask that player to choose you on the same screen.
-3. Once you have chosen each other, the pair is confirmed. The partner screen also tells you when you are still waiting for agreement.
+1. Open “Team partner” and choose the person you want to play with.
+2. They receive a partnership proposal and can accept or decline it. The same actions are available under “Team partner”.
+3. Once accepted, both of you receive confirmation and your team appears in Participants.
 
-Before the start, you can change or clear your choice. The organiser can assign partners too. Team fixtures cannot be prepared while some participants are still without partners. You keep the same partner throughout the tournament and share a team result.
+You can have one outgoing proposal. Choosing someone else asks you to cancel the previous one. To change an established partnership, first confirm that you want to dissolve it. Your partner is notified.
+
+At the start, the program keeps agreed pairs and randomly pairs the remaining entrants. The organiser cannot choose those partners. If an odd number remains without partners, or too few people have registered, the organiser gets a reason why the tournament cannot start. Once it starts, you keep the same partner and share a team result.
 
 The start notification opens the tournament matches. At the end of a phase, one notification names the next phase and opens the standings for the phase just completed. The final produces only the tournament completion notice, naming the winner or joint winners and opening the final standings. These sounds follow your usual notification settings.
 

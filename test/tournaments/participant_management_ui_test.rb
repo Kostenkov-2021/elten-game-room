@@ -14,8 +14,7 @@ T.script(lambda do |form|
   actions.index=actions.options.index('Leave tournament')
   assert(actions.index,'Withdrawal action missing before start')
   actions.trigger(:select)
-  preview.send(:request_withdrawal)
-  assert(calls == [11], 'Withdrawal must be sent at most once per preview')
+  assert(calls == [11], 'One selected withdrawal must send one callback')
   assert(!actions.options.include?('Leave tournament'),'Withdrawal remains visible after leaving')
   assert(T.field(form, 'Status').text.include?('Withdrawal confirmed.'), 'Missing withdrawal confirmation')
   form.cancel_button.trigger(:press)
@@ -34,4 +33,4 @@ end
       clock:-> {150},manage_participants: ->(*) { raise 'Unrequested management action' }, edit_tournament: ->(*) {}, delete_tournament: ->(*) {}).wait
   end
 end
-puts 'PASS withdrawal confirmation, duplicate guard and organizer-only management controls'
+puts 'PASS confirmed withdrawal hides its action and management remains organizer-only; membership epochs are covered by the native service test'

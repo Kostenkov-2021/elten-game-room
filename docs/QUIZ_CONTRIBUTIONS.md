@@ -70,6 +70,14 @@ not the normal draft library. Current fields are staged before an action; a
 failed cloud save leaves them editable and available locally. Successful cloud
 saves remove the local copy. Recovery uses the host's atomic `update_json` and
 does not replace a malformed existing file with an empty default.
+The set UUID is not a version identifier: it also contributes to the immutable
+submission digest. Recovery and in-memory unsaved edits distinguish branches by
+their baseline resource ID/name. A second branch is kept in the optional
+`branches` map of the same account entry; existing version-1 `drafts` entries
+remain readable without migration. Cleanup requires the selected branch's
+snapshot and content, not merely its set UUID. Deleting, submitting or saving
+another cloud branch must not erase unrelated local work, including edits kept
+only in memory after a disk failure. Read-only visits do not rewrite recovery.
 
 ## Message delivery and failure handling
 

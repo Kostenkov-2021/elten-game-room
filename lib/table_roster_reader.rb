@@ -26,8 +26,14 @@ class GameRoomTableDetailsReader
       say(_('No table selected.'))
       return false
     end
-    @request = [@generation, @id_for.call(snapshot).to_s]
-    @worker.start { @loader.call(snapshot) }
+    request = [@generation, @id_for.call(snapshot).to_s]
+    if GameRoomBackground.admit(@worker) { @loader.call(snapshot) }
+      @request = request
+      true
+    else
+      say(@unavailable.call)
+      false
+    end
   end
 
   def update

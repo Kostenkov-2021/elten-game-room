@@ -26,13 +26,15 @@ sandbox do |c|
   c.user = 'Second'
   assert_equal('confirmed', build.call.set_partner(id, 'Second', 'Third', 'self-pair')['status'])
   assert_equal([],build.call.load.fetch('pairs'),'Unconfirmed partner choice created a team')
-  assert_equal([{'tournament_id'=>id,'from'=>'second','to'=>'third'}],build.call.load['pair_requests'])
+  request=build.call.load['pair_requests'].first
+  assert_equal({'tournament_id'=>id,'from'=>'second','to'=>'third'},request.reject{|key,_|key=='key'})
+  assert(request['key'], 'The request must identify the exact proposal')
   c.user='Third'
   assert_equal('confirmed',build.call.set_partner(id,'Third','Second','confirm-pair')['status'])
   c.user = 'Fourth'
   stranger = build.call
   assert_equal(nil, stranger.set_partner(id, 'Second', 'RealOwner', 'forbidden-pair'))
-  assert_equal(:not_organizer, stranger.last_error.code)
+  assert_equal(:own_partnership_only, stranger.last_error.code)
   c.user = 'RealOwner'
   assert_equal('confirmed', build.call.set_partner(id, 'RealOwner', 'Fourth', 'organizer-pair')['status'])
   c.user='Fourth'
@@ -47,16 +49,27 @@ sandbox do |c|
   c.user = 'Second'
   assert_equal(first, build.call.shared_schedule(publication_ref: ref))
   c.user = 'RealOwner'
+  assert_equal('confirmed',build.call.set_partner(id,'RealOwner',nil,'dissolve-owner')['status'])
+  c.user='Third'
+  assert_equal('confirmed',build.call.set_partner(id,'Third',nil,'dissolve-third')['status'])
+  c.user='RealOwner'
   assert_equal('confirmed', build.call.set_partner(id, 'RealOwner', 'Third', 'change-pair-1')['status'])
-  assert_equal('confirmed',build.call.set_partner(id,'Third','RealOwner','organizer-confirm-new-pair')['status'])
+  c.user='Third'
+  assert_equal('confirmed',build.call.set_partner(id,'Third','RealOwner','consent-new-pair')['status'])
   assert_equal(:incomplete_pairs, build.call.shared_schedule(publication_ref: ref)[:reason])
+  c.user='Second'
   assert_equal('confirmed', build.call.set_partner(id, 'Second', 'Fourth', 'change-pair-2')['status'])
+  c.user='Fourth'
+  assert_equal('confirmed',build.call.set_partner(id,'Fourth','Second','accept-second')['status'])
+  c.user='RealOwner'
   changed = build.call.shared_schedule(publication_ref: ref)
   assert_equal('confirmed', changed['storage'])
   assert(changed['candidate']['roster_generation'] != first['candidate']['roster_generation'])
   assert_equal('confirmed', build.call.remove_participant(id, 'Fourth')['status'])
   assert_equal(3, build.call.load['members'].size)
-  assert_equal(:incomplete_pairs, build.call.shared_schedule(publication_ref: ref)[:reason])
+  blocked=build.call.shared_schedule(publication_ref: ref)
+  assert_equal(:too_few_players, blocked[:reason])
+  assert_equal({count:3,minimum:4},blocked[:details])
   c.user = 'Third'
   assert_equal('confirmed', build.call.withdraw(id)['status'])
   c.user = 'Second'
@@ -65,4 +78,4 @@ sandbox do |c|
   assert_equal(nil, too_late.withdraw(id))
   assert_equal(:tournament_started, too_late.last_error.code)
 end
-puts 'PASS server pairs: self-choice, organizer changes/removal, permissions, partner release, shared team plans and withdrawal deadline'
+puts 'PASS server pairs: mutual choice, organizer removal, permissions, partner release, shared team plans and withdrawal deadline'

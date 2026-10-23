@@ -6,6 +6,7 @@ require_relative 'operation_journal'
 require_relative 'schedule_candidate'
 require_relative 'fixed_team_schedule_candidate'
 require_relative 'public_invitation_operations'
+require_relative 'public_partnership_operations'
 
 module GameRoomTournaments
   # Synchroniczny przypadek użycia: wywołujący uruchamia go poza wątkiem UI.
@@ -40,13 +41,15 @@ module GameRoomTournaments
   # udawania pustej listy. Wyjątki programistyczne nie stają się rozłączeniem.
   class PublicService
     include PublicInvitationOperations
+    include PublicPartnershipOperations
     Data = Publication::Data
 
     class Error < StandardError
-      attr_reader :code
+      attr_reader :code, :details
 
-      def initialize(code)
+      def initialize(code, details = {})
         @code = code
+        @details = details.freeze
         super(code.to_s)
       end
     end
@@ -85,10 +88,15 @@ module GameRoomTournaments
       members=data['members'].map{|person|person['account']}
       author=original['__insertion_user'].downcase
       eligible=data['operations'].select{|operation|operation['status']=='confirmed'}.map{|operation|operation['account']}
+      row_settings = row && JSON.parse(row['settings_json'])
+      pair_game = row && @registry.build(row['game']).team_size(row_settings['game_options'], player_count: row_settings['players_per_match']) == 2
+      paired = data.fetch('pairs', []).flat_map { |pair| pair['accounts'] }.sort
       Data.freeze_tree({'publication'=>row,'members'=>data['members'],'pairs'=>data.fetch('pairs',[]),
         'pair_requests'=>data.fetch('pair_requests',[]),'people'=>(members+[author]).uniq,
         'usernames'=>RegistrationProjection.usernames(data['members']).merge(author=>original['__insertion_user']),
-        'senders'=>(eligible+[author]).uniq,'invitations'=>data.fetch('invitations',[])})
+        'senders'=>(eligible+[author]).uniq,'invitations'=>data.fetch('invitations',[]),
+        'needs_pair_completion'=>!!(pair_game && paired != members.sort),
+        'partner_changes'=>data.fetch('partner_changes',[])})
     end
 
     def publication(publication_ref:)
@@ -99,35 +107,9 @@ module GameRoomTournaments
       row
     end
 
-    def set_partner(tournament_id:, account:, partner:, intent_id:)
-      raise Error, :invalid_tournament_id unless Data.integer?(tournament_id, 1)
-      account = Data.account(account).downcase
-      partner = Data.account(partner).downcase unless partner.nil?
-      previous = boundary { @journal.find(kind: 'pairing', intent_id: intent_id) }
-      return reconcile_record(previous, snapshot) if previous && previous['status'] != 'prepared'
-      view = snapshot
-      data = view.fetch(:model).to_h
-      row = data['announcements'].find { |item| item['alias_ids'].include?(tournament_id) }
-      raise Error, :unknown_tournament unless row
-      unresolved_mutation!(row, view, %w[pairing], intent_id)
-      organizer = row['__insertion_user'].downcase == @journal.owner
-      raise Error, :not_organizer unless organizer || account == @journal.owner
-      before_tournament_start!(row)
-      settings = JSON.parse(row['settings_json'])
-      game = @registry.build(row['game'])
-      raise Error, :unsupported_role_family unless game.team_size(settings['game_options'], player_count: settings['players_per_match']) == 2
-      accounts = data['members'].select { |item| item['tournament_id'] == row['__id'] }.map { |item| item['account'] }
-      raise Error, :not_registered unless accounts.include?(account) && (partner.nil? || accounts.include?(partner))
-      raise Error, :invalid_partner if account == partner
-      links = (data['pairs'] || []).select { |item| item['tournament_id'] == row['__id'] }.flat_map { |item| a,b = item['accounts']; [[a,b],[b,a]] }.to_h
-      raise Error, :partner_unavailable if !organizer && partner && links[partner] && links[partner] != account
-      generation = RegistrationProjection.pairing_generation(accounts, links)
-      values = RegistrationProjection.join_values(tournament_id: row['__id'], operation_key: SecureRandom.uuid).merge(
-        'kind' => 'pairing', 'account' => account, 'partner' => partner, 'pairing_generation' => generation)
-      record = previous || boundary { @journal.prepare(kind: 'pairing', intent_id: intent_id, values: values) }
-      raise Error, :source_changed if record['values']['pairing_generation'] != generation
-      before_tournament_start!(row)
-      attempt(record)
+    def set_partner(tournament_id:, account:, partner:, intent_id:, expected_request_key: nil)
+      choose_partnership(tournament_id: tournament_id, account: account, partner: partner,
+        intent_id: intent_id, expected_request_key: expected_request_key)
     end
 
     def edit_tournament(tournament_id:, intent_id:, draft:, rules:, registration_opens_at:, registration_closes_at:, timezone:, expected_generation: nil)
@@ -155,6 +137,12 @@ module GameRoomTournaments
     # journal. They do not fabricate a result or modify an earlier join.
     def change_phase(tournament_id:, action:, intent_id:, expected_generation:)
       raise Error, :invalid_phase_action unless %w[open close start].include?(action)
+      if action == 'start'
+        row = snapshot.fetch(:model).to_h['announcements'].find { |item| item['alias_ids'].include?(tournament_id) }
+        raise Error, :source_changed unless row && RegistrationProjection.publication_generation(row) == expected_generation
+        before_tournament_start!(row)
+        complete_partnerships(tournament_id: tournament_id, starting: true)
+      end
       change_publication(tournament_id: tournament_id, intent_id: intent_id, kind: 'amendment', starting: action == 'start') do |row|
         raise Error, :source_changed unless RegistrationProjection.publication_generation(row) == expected_generation
         now=boundary{@clock.call}
@@ -274,9 +262,10 @@ module GameRoomTournaments
       end
     end
 
-    def server_schedule_source(publication_ref:, directory: nil)
+    def server_schedule_source(publication_ref:, directory: nil, evidence_only: false)
       boundary do
-        view = directory ? scoped_snapshot(publication_ref, directory.fetch(:announcements), directory.fetch(:registrations)) : publication_snapshot(publication_ref)
+        view = directory ? scoped_snapshot(publication_ref, directory.fetch(:announcements), directory.fetch(:registrations)) :
+          publication_snapshot(publication_ref, apply_retention: !evidence_only)
         observed_at = boundary { @clock.call }
         raise Error, :invalid_clock unless Data.integer?(observed_at)
         observed = ScheduleSource.build(projection: view.fetch(:model), publication_ref: publication_ref,
@@ -287,7 +276,10 @@ module GameRoomTournaments
         if game.team_size(settings['game_options'], player_count: settings['players_per_match']) == 2
           pairs = (view.fetch(:model).to_h['pairs'] || []).select { |pair| pair['tournament_id'] == row['__id'] }.map { |pair| pair['accounts'].sort }.sort
           accounts = observed.fetch(:members).map { |member| member['account'] }.sort
-          raise Publication::Invalid, :incomplete_pairs unless pairs.size >= 2 && pairs.flatten.sort == accounts
+          raise Publication::Invalid.new(:too_few_players, count: accounts.length, minimum: settings['players_per_match']) if accounts.length<settings['players_per_match']
+          unless pairs.size >= 2 && pairs.flatten.sort == accounts
+            raise Publication::Invalid.new(:incomplete_pairs, count: (accounts-pairs.flatten).length)
+          end
           membership = {'version' => 1, 'kind' => 'fixed-teams', 'units' => pairs.each_with_index.map { |pair, index| {'unit_id' => format('team-%03d', index + 1), 'accounts' => pair} }}
           candidate = FixedTeamScheduleCandidate.build(projection: view.fetch(:model), publication_ref: publication_ref,
             backend_identity: @backend_identity, observed_at: observed_at, membership: membership,
@@ -589,7 +581,7 @@ module GameRoomTournaments
       return record if status == 'unconfirmed'
 
       ids = operation ? operation['record_ids'] : validated_join_ids(view, values['operation_key'])
-      pairing_applied = if record['kind'] == 'pairing' && status == 'confirmed'
+      pairing_applied = if (['pairing'] + Partnerships::KINDS).include?(record['kind']) && status == 'confirmed'
         model.pairing_applied?(account: @journal.owner, operation_key: values['operation_key'])
       end
       resolve(record, status, key: values['operation_key'], ids: ids,
@@ -695,7 +687,7 @@ module GameRoomTournaments
     # Complete evidence for one selected publication, including every alias and
     # its registration diagnostics. Unrelated broken announcements do not belong
     # to this query scope. No diagnostics of the selected tournament are removed.
-    def publication_snapshot(reference)
+    def publication_snapshot(reference, apply_retention: true)
       key = ScheduleSource.reference(reference).fetch('publication_key')
       author = Data.account(reference.fetch('author'))
       announcements = boundary { @gateway.read_rows('tournament_announcements',
@@ -708,7 +700,8 @@ module GameRoomTournaments
         where: {'tournament_id' => {'in' => ids}}) }
       model = RegistrationProjection.build(announcements: announcements, registrations: registrations,
         registry: @registry, complete: true)
-      retain({model: model, announcements: announcements, registrations: registrations})
+      view={model: model, announcements: announcements, registrations: registrations}
+      apply_retention ? retain(view) : view
     end
 
     def scoped_snapshot(reference, announcements, registrations)

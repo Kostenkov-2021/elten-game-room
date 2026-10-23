@@ -187,8 +187,8 @@ module GameRoomTournaments
         value['cancelled_game']['binding_digest']==Digest::SHA256.hexdigest(JSON.generate(binding)) &&
         value['cancelled_game']['session_id']==binding['session_id']
     end
-    def forfeit_document(candidate,id,match,rows:nil,result_rows:nil)
-      attempts=forfeit_receipts(candidate,id,match,rows:rows)
+    def forfeit_document(candidate,id,match,rows:nil,result_rows:nil,allow_incomplete:true)
+      attempts=forfeit_receipts(candidate,id,match,rows:rows,allow_incomplete:allow_incomplete)
       return nil if attempts.empty?
       ordinary=ordinary_result_receipt(candidate,id,match,rows:result_rows,allow_incomplete:true)
       entry=ordered_match_receipts(attempts,ordinary).first
@@ -211,22 +211,31 @@ module GameRoomTournaments
       entry && entry.merge('document'=>document)
     end
 
-    def forfeit_receipts(candidate,id,match,rows:nil)
+    def forfeit_receipts(candidate,id,match,rows:nil,allow_incomplete:true)
       author=candidate.fetch('publication_ref').fetch('author').downcase
       key=anchor(candidate,id,match,'forfeit')
       rows ||= ServerDocumentRows.read(@table,where:{'operation_key'=>key['operation_key']},guard:method(:account!))
       account!
-      ServerDocumentRows.owned(rows,author).group_by { |row| row['document_digest'] }.filter_map do |_digest,attempt|
+      incomplete=false
+      receipts=ServerDocumentRows.owned(rows,author).group_by { |row| row['document_digest'] }.filter_map do |_digest,attempt|
         parts=ServerPlanDocument.canonical_rows(attempt,anchor:key,author:author)
         validate_forfeit_parts!(parts)
         # Only valid incomplete attempts are absent results. Broken payloads,
         # mixed parts, hashes and authenticated invalid receipts still fail.
-        next unless parts.first['part_index']==0 && parts.size==parts.first['part_count']+1
+        unless parts.first['part_index']==0 && parts.size==parts.first['part_count']+1
+          incomplete=true
+          next
+        end
         value=ServerPlanDocument.decode(parts,anchor:key,author:author)
         validate_forfeit!(value,candidate,match)
         {'document'=>value,'digest'=>parts.first['document_digest'],
           'completed_row_id'=>parts.map { |part| part['__id'] }.max,'time'=>document_time(parts)}
       end.sort_by { |entry| entry['completed_row_id'] }
+      # Incomplete chunks cannot settle a fixture, but a visible authenticated
+      # organizer intent must fence a new start until the archive is recovered.
+      # Reading results and resuming that exact intent remain non-blocking.
+      raise ServerPlanArchive::Unconfirmed,'Administrative result is incomplete' if receipts.empty? && incomplete && !allow_incomplete
+      receipts
     end
 
     def validate_forfeit_parts!(parts)

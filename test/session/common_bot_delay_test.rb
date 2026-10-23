@@ -45,4 +45,21 @@ gate.schedule_decision(session_id: 1, actor: "bot:1:1", revision: [1, 2], delay:
 assert(!gate.ready?(session_id: 1, actor: "bot:1:1"), "pause too short")
 clock = 5.0
 assert(gate.ready?(session_id: 1, actor: "bot:1:1"), "refresh restarted delay")
+
+# Complete authored editions do not append generic pacing text. An extension
+# using Base's fallback rules must still describe the shared one-second default.
+require_relative '../support/localization'
+fallback = GameRoomGames::Uno.new
+fallback.define_singleton_method(:localized_rule_sections) { nil }
+{
+  'en' => 'The default delay is one second.',
+  'pl' => 'Domyślnie ustawiona jest jedna sekunda.',
+  'cs' => 'Výchozí prodleva je jedna sekunda.',
+  'es' => 'La pausa predeterminada es de un segundo.',
+  'ru' => 'По умолчанию задержка составляет одну секунду.'
+}.each do |language, sentence|
+  GameRoomTestLocalization.use_language(language)
+  chapter = fallback.rule_book.sections.find { |section| section.id == :bot_pacing }
+  assert(chapter.paragraphs.first.end_with?(sentence), "fallback rules describe a different default #{language}")
+end
 puts "Common bot delay: #{games.length} game classes, defaults, range, replay and timer guard OK"

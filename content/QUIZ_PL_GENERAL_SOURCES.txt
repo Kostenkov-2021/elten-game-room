@@ -103,3 +103,19 @@ occupation question was also corrected following a report from Zuzler;
 its identifier, answer choices and category remain unchanged. The character's
 occupation is confirmed in the Katarzyna Bonda biography for Kryminalna Pila 2014.
 https://sppila.policja.gov.pl/download.php?id=15539&s=301
+
+Data version 16 adds five questions proposed by bratczyk96, after factual and
+language review, in the existing Kultura, Jezyk, Literatura and Zycie codzienne
+categories. No new category was introduced. The former 14,895 questions keep
+their IDs and ordering; three reported entries receive minimal wording edits:
+the Gerard Wilk question, spoken subtraction, and a uniform-term distractor.
+The set now contains 14,900 questions. Community contributions retain their
+individual attribution and do not acquire the PolQA/MAUPQA licence.
+The poem question uses the verified title "Maja malen'kaja ajczyna" rather than
+combining unverified song titles. Sources verify facts; their prose was not copied.
+https://vasminoh.school/wp-content/uploads/2023/08/kolazvarot-4-klas_compressed.pdf#page=110
+https://www.polskieradio.pl/377/8110/artykul/2353215,daj-dla-mamy-czyli-mowimy-w-gwarze-podlaskiej
+https://www.uniconf.ru/holding/candy_history/?id=329
+https://www.culture.ru/lectures/dictionaries/63552/klecka
+https://wsjp.pl/haslo/podglad/61965/lampas/5167419/pas
+https://wsjp.pl/haslo/podglad/74179/galon/5188437/tasma

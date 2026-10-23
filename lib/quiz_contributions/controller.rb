@@ -24,7 +24,7 @@ module GameRoomQuizContributions
       loop do
         local = task(_('Loading question drafts')) { @drafts.list }
         return unless local || !@unsaved.empty?
-        local = @unsaved.values + local.to_a.reject { |draft| @unsaved.key?(draft['id']) }
+        local = @unsaved.values + local.to_a.reject { |draft| @unsaved.key?(Drafts.branch_key(draft)) }
         cloud = task(_('Loading saved drafts')) { |token| @repository.list(token: token) }
         rows = local + cloud.to_a.reject do |ref|
           local.any? { |draft| draft['resource_id'] == ref['resource_id'] ||
@@ -106,8 +106,8 @@ module GameRoomQuizContributions
       task(_('Deleting draft')) do |token|
         @repository.delete(draft, token: token)
         unless draft['damaged']
-          @drafts.remove(draft['id'])
-          @unsaved.delete(draft['id'])
+          @drafts.remove(draft)
+          forget_unsaved(draft)
         end
         true
       end
@@ -204,14 +204,14 @@ module GameRoomQuizContributions
     end
 
     def persist(value)
-      @unsaved[value['id']] = Model.copy(value)
+      @unsaved[Drafts.branch_key(value)] = Model.copy(value)
       staged = task(_('Saving draft on this computer'), quiet: true) { @drafts.save(value) }
       return value unless staged
-      @unsaved.delete(value['id'])
+      forget_unsaved(value)
       saved = task(_('Saving draft on your account'),
         failure: _('The draft is saved only on this computer. You can keep editing or try saving it on your account again.')) do |token|
         result = @repository.save(staged, token: token)
-        @drafts.remove(staged['id'])
+        @drafts.remove(staged)
         result
       end
       saved || staged
@@ -237,12 +237,17 @@ module GameRoomQuizContributions
         @repository.record_delivery(packet['submission_id'], token: token)
         @delivery.remove_sender_copy(packet, token: token)
         @repository.delete(draft, token: token)
-        @drafts.remove(draft['id'])
-        @unsaved.delete(draft['id'])
+        @drafts.remove(draft)
+        forget_unsaved(draft)
         true
       end
       @views.notice(_('Sent to the author.')) if cleaned
       true
+    end
+
+    def forget_unsaved(value)
+      key = Drafts.branch_key(value)
+      @unsaved.delete(key) if @unsaved[key] && Drafts.same_version?(@unsaved[key], value)
     end
 
     def task(title, quiet: false, failure: nil)

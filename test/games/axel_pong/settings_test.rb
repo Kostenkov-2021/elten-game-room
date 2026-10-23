@@ -31,7 +31,7 @@ defaults = GameRoomPong::Preferences::DEFAULTS
 assert(GameRoomPong::Preferences.normalize(nil) == defaults, 'missing preference defaults')
 assert(GameRoomPong::Preferences.normalize('auto_return'=>'true', 'own_volume'=>-2,
   'opponent_volume'=>230, 'announcer_volume'=>'20') ==
-  {'auto_return'=>false, 'own_volume'=>0, 'opponent_volume'=>200, 'announcer_volume'=>100}, 'malformed preferences')
+  {'auto_return'=>false, 'own_volume'=>0, 'opponent_volume'=>200, 'announcer_volume'=>100,'doubles_sounds'=>'seats'}, 'malformed preferences')
 state = {'unrelated'=>'keep', 'pong'=>defaults.dup, 'table_watch_games'=>['uno']}
 reads, writes, network = 0, 0, 0
 app = EltenGameRoom.new
@@ -58,7 +58,7 @@ begin
       ['Your paddle volume', 'Opponent paddle volume', 'Announcer volume']
     driver = lambda do |form|
       check, *rest = form.fields
-      assert(form.fields.length == 6, 'unexpected local panel fields')
+      assert(form.fields.length == 7, 'unexpected local panel fields')
       native_checkbox.new(check.label, checked: check.checked).focus
       assert($spoken_messages.last.encoding == Encoding::UTF_8 && $spoken_messages.last.valid_encoding?, 'native checkbox mixed encoding')
       assert(rest.first(3).map(&:header) == expected_labels, 'panel language mismatch')
@@ -67,10 +67,12 @@ begin
       end
       check.checked = true
       rest[0].index, rest[1].index, rest[2].index = 75, 150, 40
+      assert(rest[3].options.length==2,'Missing doubles listening choice')
+      rest[3].index=1
       form.accept_button.trigger(:press)
     end
     app.send(:show_pong_settings)
-    wanted = {'auto_return'=>true, 'own_volume'=>75, 'opponent_volume'=>150, 'announcer_volume'=>40}
+    wanted = {'auto_return'=>true, 'own_volume'=>75, 'opponent_volume'=>150, 'announcer_volume'=>40,'doubles_sounds'=>'personal'}
     assert(app.send(:pong_preferences) == wanted && state['pong'] == wanted, 'quick panel not persisted')
     assert(state['unrelated'] == 'keep' && state['table_watch_games'] == ['uno'] && network.zero?, 'local panel altered unrelated data')
     driver = lambda do |form|

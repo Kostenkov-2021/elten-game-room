@@ -8,8 +8,9 @@ require 'rbconfig'
 def assert(value, message); raise message unless value; end
 repo = File.expand_path("../../..", __dir__)
 Dir.mktmpdir('taboo-generator-test-') do |scratch|
-  %w[tools lib content].each { |name| FileUtils.mkdir_p(File.join(scratch, name)) }
+  %w[tools/support lib content].each { |name| FileUtils.mkdir_p(File.join(scratch, name)) }
   FileUtils.cp(File.join(repo, 'tools/build-taboo-cards.rb'), File.join(scratch, 'tools/build-taboo-cards.rb'))
+  FileUtils.cp(File.join(repo, 'tools/support/output_set.rb'), File.join(scratch, 'tools/support/output_set.rb'))
   %w[game_content.rb game_room_localization.rb game_room_plural_rule.rb].each do |name|
     FileUtils.cp(File.join(repo, 'lib', name), File.join(scratch, 'lib', name))
   end
@@ -56,7 +57,7 @@ Dir.mktmpdir('taboo-generator-test-') do |scratch|
     output, status = run.call(prefix)
     assert(!status.success? && output.include?('Injected replacement failure'), 'Write failure was hidden')
     assert(fingerprint.call == before, 'Rollback left a partial bilingual pack')
-    assert(Dir.glob(File.join(scratch, 'content', '.taboo-*')).empty?, 'Successful rollback left temporary files')
+    assert(Dir.glob(File.join(scratch, 'content', '.game-room-output-*')).empty?, 'Successful rollback left temporary files')
   end
   output, status = run.call
   assert(status.success? && fingerprint.call.zip(before).all? { |a, b| a != b }, 'Successful complete rebuild failed')
@@ -74,7 +75,7 @@ Dir.mktmpdir('taboo-generator-test-') do |scratch|
     class << File
       alias_method :real_rename, :rename
       def rename(source, target)
-        if target == #{outputs[1].inspect} || File.basename(source).start_with?('.taboo-backup-')
+        if target == #{outputs[1].inspect} || File.basename(source).start_with?('.game-room-output-backup-')
           raise IOError, 'Injected rollback failure'
         end
         real_rename(source, target)
@@ -84,7 +85,7 @@ Dir.mktmpdir('taboo-generator-test-') do |scratch|
   output, status = run.call(prefix)
   assert(!status.success? && output.include?('Taboo output rollback failed:') && output.include?('Recovery files:'),
     'A failed rollback did not report recovery files')
-  backups = Dir.glob(File.join(scratch, 'content', '.taboo-backup-*'))
+  backups = Dir.glob(File.join(scratch, 'content', '.game-room-output-backup-*'))
   assert(backups.any? { |path| File.binread(path) == saved_first }, 'Failed rollback lost the original bytes on process exit')
 end
 puts 'PASS Taboo generator: both invalid languages, failures at second/third replacement, exact rollback, both packs load and recovery backup survives rollback failure'

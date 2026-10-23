@@ -34,8 +34,13 @@ module GameRoomTournaments
       account, target = @account, partner
       account, target = partner, account if partner && account == @owner.current.downcase
       result = @workspace.set_partner(@publication['__id'], account, target, 'organizer-pair:' + SecureRandom.uuid)
-      @alert.call(text(result && result['status'] == 'confirmed' && result.dig('evidence', 'pairing_applied') != false ?
-        _("Pair saved. Refresh to check the current partners.") : _("Pair not confirmed. Check Operations before trying again.")))
+      message = if result && result['status'] == 'confirmed'
+        result.dig('evidence', 'pairing_applied') == false ?
+          _("The tournament changed. Refresh its view before changing it again.") : _("Pair saved. Refresh to check the current partners.")
+      else
+        _("Pair not confirmed. Check Operations before trying again.")
+      end
+      @alert.call(text(message))
       finish
     end
   end

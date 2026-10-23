@@ -148,6 +148,17 @@ own cards only when those cards are available in that projection. Missing privat
 history is not evidence of a false claim. Ordered games retain their existing
 position proofs rather than treating reveal order as draw order.
 
+Snapshot cache lifetime follows the same evidence boundary on every account,
+not only on the host that deletes a retired native pool. Remove cached unordered
+draw values once their complete public reveals reconstruct them, and old-round
+values only where the existing fresh-deal boundary already skips them. Keep
+ordered current-round draws and unrevealed retained Taboo slots. A pool-state
+validation cache is redundant past that same fresh-deal boundary, or once its
+native remaining count is zero and every observed take is fully public.
+This local cleanup performs no pool enumeration
+or additional requests and must preserve unseen in-flight draws and replacement
+memberships. It does not change native pool retirement or the history limit.
+
 Rules depending on another player's hidden cards cannot be fully validated
 immediately. Trick games audit the disclosed round before recording its score.
 Local Poker opening-hand checks remain in place, but are not a server-side

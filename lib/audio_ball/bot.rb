@@ -8,7 +8,7 @@ module GameRoomAudioBall
     attr_reader :side
 
     def initialize(side, level: 1, rng: Random.new)
-      raise ArgumentError, 'side must be 0 or 1' unless side.is_a?(Integer) && (side == 0 || side == 1)
+      raise ArgumentError, 'Invalid player seat' unless side.is_a?(Integer) && side.between?(0,3)
       raise ArgumentError, 'level must be an integer from 1 to 5' unless Difficulty.valid?(level)
       @side = side
       @selected_lane = nil
@@ -31,7 +31,7 @@ module GameRoomAudioBall
       @elapsed += seconds
       if engine.phase == :flying && engine.receiver == @side
         return false if @attempted || @elapsed < REACTION_TIME[@level - 1]
-        endpoint = @side == 0 ? Engine::WIDTH : 0.0
+        endpoint = engine.team(@side) == 0 ? Engine::WIDTH : 0.0
         return false if (engine.position - endpoint).abs > @distance
         @attempted = true
         @selected_lane = @command

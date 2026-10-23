@@ -9,6 +9,7 @@ require_relative '../game_sounds'
 require_relative '../game_surfaces/specifications'
 require_relative '../realtime/progress'
 require_relative '../realtime/task_ui'
+require_relative '../realtime/table_control'
 require_relative 'challenge_audio'
 require_relative 'realtime_client'
 require_relative 'quiz_sounds'
@@ -21,6 +22,7 @@ module GameRoomDuckRacing
   # alive actions must not restart a local clock, draft or sound sequence.
   class Client
     using GameRoomLocalization::Translations
+    include GameRoomRealtime::TableControl
 
     INPUT_LIMIT = 32
     attr_reader :session_id
@@ -73,6 +75,7 @@ module GameRoomDuckRacing
         close_memory(@challenge[:id])
         clear_attempt
       end
+      update_session_pause(session['__frozen'] == true)
     end
 
     def before_wait(replay, viewer)
@@ -112,8 +115,10 @@ module GameRoomDuckRacing
       if playing? && !practicing? && !@technical_error
         close_practice
         if realtime?
-          ensure_realtime
-        else
+          # Native points already receive __frozen through table control.
+          # A pause is not an ended challenge: do not retire its identity.
+          ensure_realtime unless session_paused?
+        elsif !session_paused?
           @realtime.before_wait(nil, @viewer)
           ensure_attempt
         end
@@ -162,7 +167,7 @@ module GameRoomDuckRacing
           technical_failure(_('Too many challenge sounds are waiting to play. The challenge will be cancelled.')) if @challenge&.[](:id) == id
           return
         end
-        presentation = {id: id, audio: build_audio(clock_ms: -> { milliseconds }, memory: true, challenge_id: id)}
+        presentation = {id: id, audio: build_audio(clock_ms: -> { presentation_milliseconds }, memory: true, challenge_id: id)}
         @memory_presenters << presentation
       end
       feedback = event[:sound] == :memory ? ChallengePresentation.memory_feedback(event, before.players) : {}
@@ -173,7 +178,7 @@ module GameRoomDuckRacing
 
     def context_data
       return {} if @closed || !@binding
-      output = {'duck_host' => host?, 'duck_seat' => @seat, 'duck_ready' => @ready && !@technical_error && roster_matches?(@replay),
+      output = {'duck_host' => host?, 'duck_seat' => @seat, 'duck_ready' => @ready && !session_paused? && !@technical_error && roster_matches?(@replay),
         'duck_action' => copy(current_request)}
       if @transport
         # This is cached native metadata, not a request or a guessed create
@@ -257,6 +262,13 @@ module GameRoomDuckRacing
       begin
         @realtime&.tick # Finishing recordings progress even when !active?.
         advance_memory
+        if session_paused?
+          @ready = false
+          neutralize_input
+          update_view if @view_dirty
+          present_local_view unless background || covered?
+          return
+        end
         if @event_presentation_busy.call
           @ready = false
           neutralize_input
@@ -328,7 +340,7 @@ module GameRoomDuckRacing
     # A read or chat write must not discard a completed numeric edit, Simon
     # tone or readiness press; identity changes still clear the attempt.
     def local_input_during_operation?(surface)
-      !@closed && !@technical_error && @surface.equal?(surface) && surface_matches? &&
+      !@closed && !session_paused? && !@technical_error && @surface.equal?(surface) && surface_matches? &&
         roster_matches?(@replay) && participant? && !@event_presentation_busy.call
     end
 
@@ -587,7 +599,7 @@ module GameRoomDuckRacing
     end
 
     def prepare_local_input
-      return unless @preparation && !@closed && !@technical_error && !covered? &&
+      return unless @preparation && !@closed && !session_paused? && !@technical_error && !covered? &&
         roster_matches?(@replay) && surface_matches? && @surface.input_selected?(@form)
 
       # Native EditBox consumes characters before Form's timers run. Check
@@ -601,7 +613,7 @@ module GameRoomDuckRacing
     def advance_memory
       presentation = @memory_presenters.first
       return unless presentation
-      presentation[:audio].step(milliseconds)
+      presentation[:audio].step(presentation_milliseconds)
       unless presentation[:audio].busy?
         presentation[:audio].close
         @memory_presenters.shift
@@ -617,6 +629,7 @@ module GameRoomDuckRacing
     end
 
     def consume_input
+      return if session_paused?
       return unless participant? && @surface.respond_to?(:take_input) && surface_matches?
       unless @surface.input_active?(@form)
         # A native Tab focuses the new field before its first update. Keep
@@ -693,7 +706,7 @@ module GameRoomDuckRacing
     end
 
     def current_request
-      return if @event_presentation_busy.call
+      return if session_paused? || @event_presentation_busy.call
       return unless @challenge && participant? && roster_matches?(@replay)
       @cancel_request || @trace_request || @inputs.first || @pulse
     end
@@ -712,6 +725,7 @@ module GameRoomDuckRacing
         copy(@watch_view)
       end
       return unless view
+      view[:session_paused] = true if session_paused?
       view[:preparing] = true if @preparation || shared? && shared_preparation_pending?
       unless shared? || practicing?
         # Local expiry is not evidence that another client's attempt ended.
@@ -824,7 +838,28 @@ module GameRoomDuckRacing
     def copy(value); value.nil? ? nil : Marshal.load(Marshal.dump(value)); end
     def wire_input(value); value.to_h { |key, item| [key.to_s, item.is_a?(Symbol) ? item.to_s : item] }; end
     def same?(first, second); first.to_s.casecmp?(second.to_s); end
-    def milliseconds; (@clock.call * 1000).floor; end
+    # Keep the existing raw Progress/network clock. Only the active local
+    # attempt and its stimulus exclude a durable table pause. Accepted memory
+    # feedback belongs to the shared presentation queue and keeps raw time.
+    def presentation_milliseconds; (@clock.call * 1000).floor; end
+    def milliseconds; (@attempt_pause_started_ms || presentation_milliseconds) - @attempt_paused_ms.to_i; end
+
+    def session_pause_changed(paused, _elapsed)
+      now = presentation_milliseconds
+      if paused
+        @attempt_pause_started_ms = now
+      else
+        @attempt_paused_ms = @attempt_paused_ms.to_i + now - @attempt_pause_started_ms
+        @attempt_pause_started_ms = nil
+      end
+      [@audio, @preview_audio, @preparation_audio, @observation_audio].compact.each do |audio|
+        audio.set_paused(paused)
+      end
+      @ready = false if paused
+      @view_dirty = true
+      neutralize_input
+    end
+
     def elapsed_ms; [milliseconds - @origin_ms, 0].max; end
     def sequential_ms; [@session_time.call(@replay.state) - @replay.state[:round][:started_at], 0].max; end
     def covered?; @progress ? @progress.covered? : !@form; end

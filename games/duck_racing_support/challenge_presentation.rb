@@ -25,7 +25,7 @@ module GameRoomDuckRacing
       done = view[:finished] || own[:done] || own[:finished] || own[:phase] == :finished ||
         (view[:answered] && view[:answered][viewer])
       turn = current_turn(view)
-      enabled = participating && !done && !view[:preparing] && (turn.nil? || turn == viewer)
+      enabled = participating && !done && !view[:preparing] && !view[:session_paused] && (turn.nil? || turn == viewer)
       options, keys = list_options(kind, view)
       prompt = prompt(kind, view)
       digits = answer_digits(kind, view)
@@ -40,8 +40,9 @@ module GameRoomDuckRacing
         enabled: !!enabled,
         # A phase transition suppresses keys already held, but a normal score,
         # attempt or draft refresh preserves both input and the native field.
-        boundary: [kind, !!done, participating, turn, own[:phase], own[:level], own[:target_index], !!view[:preparing]],
+        boundary: [kind, !!done, participating, turn, own[:phase], own[:level], own[:target_index], !!view[:preparing], !!view[:session_paused]],
         preparing: !!view[:preparing],
+        session_paused: !!view[:session_paused],
         phase: own[:phase], playback_id: own[:playback_id], replays_left: own[:replays_left],
         auto_submit_length: digits,
         max_length: digits || 12
@@ -168,11 +169,12 @@ module GameRoomDuckRacing
         instruction = _('Ready. Waiting for: %{players}.') % {players: names}
       end
       instruction = _('You are watching.') unless participating
+      instruction = _('Game paused.') if view[:session_paused]
       message = !previous&.[](:practice) || previous.dig(:own, :ready) != ready ||
         ready && previous[:waiting] != view[:waiting] ? instruction : ''
       {name: text(description(kind).first), instruction: text(instruction), mode: :button,
         header: text(instruction), status: '', announcement: text(message), options: [], option_keys: [],
-        enabled: participating && !ready, boundary: [kind, :practice, participating, !!ready],
+        enabled: participating && !ready && !view[:session_paused], boundary: [kind, :practice, participating, !!ready, !!view[:session_paused]],
         practice: true, phase: :practice, preparing: false}
     end
 
@@ -307,6 +309,7 @@ module GameRoomDuckRacing
     end
 
     def phase_status(view, participating, done, turn, viewer)
+      return _('Game paused.') if view[:session_paused]
       return _('Challenge finished.') if view[:finished]
       return _('You are watching.') unless participating
       return _('Answer sent.') if done && %w[copy_number arithmetic race_question count_ducks].include?(view[:type])

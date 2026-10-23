@@ -6,17 +6,12 @@ module GameRoomTournaments
   class Standings
     Data = Publication::Data
     MATCH_POINTS = {'win' => 2, 'draw' => 1, 'loss' => 0}.freeze
-    def self.calculate(units:, results:, points: nil)
-      if points
-        unless points.is_a?(Hash) && points.keys.sort == %w[draw loss win] &&
-            points.values.all? { |value| value.is_a?(Integer) && value.between?(0, 1_000_000) ||
-              value.is_a?(Float) && value.finite? && value.between?(0, 1_000_000) }
-          raise Publication::Invalid, :invalid_points_policy
-        end
-        points = Data.freeze_tree(Data.copy(points))
-      end
+    # A current phase has at most 256 results. Win-series history spans several
+    # phases, but must retain the same identity, shape and aggregate byte budget.
+    def self.validated_results(units:, results:, max_results: 256)
       unless units.is_a?(Array) && units.size.between?(2, 256) && units.uniq.size == units.size &&
-          results.is_a?(Array) && results.size <= 256
+          max_results.is_a?(Integer) && max_results.between?(1, 4096) &&
+          results.is_a?(Array) && results.size <= max_results
         raise Publication::Invalid, :invalid_standings
       end
       units.each { |id| Data.text!(id, bytes: 256) }
@@ -60,6 +55,20 @@ module GameRoomTournaments
       end
       orders = rows.select { |result| result['scores'] }.map { |result| result.fetch('score_order', 'higher') }.uniq
       raise Publication::Invalid, :invalid_standings if orders.size > 1
+      rows
+    end
+
+    def self.calculate(units:, results:, points: nil)
+      if points
+        unless points.is_a?(Hash) && points.keys.sort == %w[draw loss win] &&
+            points.values.all? { |value| value.is_a?(Integer) && value.between?(0, 1_000_000) ||
+              value.is_a?(Float) && value.finite? && value.between?(0, 1_000_000) }
+          raise Publication::Invalid, :invalid_points_policy
+        end
+        points = Data.freeze_tree(Data.copy(points))
+      end
+      rows = validated_results(units: units, results: results)
+      orders = rows.select { |result| result['scores'] }.map { |result| result.fetch('score_order', 'higher') }.uniq
       explicit_order = rows.any? { |result| result.key?('score_order') } && orders.first
       table = units.sort.map do |unit|
         own = rows.select { |result| result['participants'].include?(unit) }

@@ -8,29 +8,34 @@ class GameRoomLiveSessionStore
       native = active_session(session.fetch('table_id'))
       raise GameRoomNetworkErrors::GamePaused, 'The private card connection is unavailable' unless native
       user = endpoint.user.to_s
-      boundary = events.rindex { |event| event['action'] == 'private_deal' } || 0
-      revealed = Hash.new { |all, id| all[id] = [] }
-      events.each do |event|
-        proof = event['__server_pool']
-        revealed[proof['draw_id']].concat(proof['values']) if proof && proof['operation'] == 'reveal'
-      end
-      revealed.each_value(&:uniq!)
-      own = {}
+      boundary = GameRoomPrivateCards.retain_unrevealed_draws?(session['game']) ? 0 :
+        (events.rindex { |event| event['action'] == 'private_deal' } || 0)
+      revealed, completed_pools = private_snapshot_evidence(events, expired_before: boundary)
+      own, obsolete = {}, {}
       events.each_with_index do |event, index|
         proof = event['__server_pool']
-        next unless proof && proof['operation'] == 'take' && proof['visibility'] != 'public' && same_user?(event['actor'], user)
+        next unless proof && proof['operation'] == 'take' && same_user?(event['actor'], user)
+        if proof['visibility'] == 'public'
+          obsolete[[proof['pool_id'], proof['draw_id']]] = true
+          next
+        end
         used = revealed[proof['draw_id']]
         # Slot-based exchanges need the original draw order on cold replay.
         # Such games retain this round's pools until the next fresh deal.
         if used.length == proof['count'] && !GameRoomPrivateCards.ordered?(session['game'])
           own[proof['draw_id']] = used
+          obsolete[[proof['pool_id'], proof['draw_id']]] = true
           next
         end
         # Earlier pools may already be retired. Reconstruct fully disclosed
         # unordered hands above, but never request a deleted historical pool.
-        next if index < boundary && !GameRoomPrivateCards.retain_unrevealed_draws?(session['game'])
+        if index < boundary
+          obsolete[[proof['pool_id'], proof['draw_id']]] = true
+          next
+        end
         own[proof['draw_id']] = private_draw_values(session['table_id'], native, proof, user)
       end
+      expire_private_snapshot_cache(session['table_id'], native, user, obsolete, completed_pools)
       session.merge('__private_viewer' => user, '__private_draws' => own)
     end
 
@@ -98,6 +103,44 @@ class GameRoomLiveSessionStore
     end
 
     private
+
+    def private_snapshot_evidence(events, expired_before: 0)
+      revealed = Hash.new { |all, id| all[id] = [] }
+      pools = {}
+      events.each_with_index do |event, index|
+        proof = event['__server_pool']
+        next unless proof
+        if proof['operation'] == 'reveal'
+          revealed[proof['draw_id']].concat(proof['values'])
+        elsif proof['operation'] == 'take'
+          pool = pools[proof['pool_id']] ||= {exhausted: false, past_round: false, draws: {}}
+          pool[:exhausted] ||= proof['remaining'].zero?
+          pool[:past_round] ||= index < expired_before
+          pool[:draws][proof['draw_id']] = proof
+        end
+      end
+      revealed.each_value(&:uniq!)
+      completed = pools.select do |_, pool|
+        pool[:past_round] || pool[:exhausted] && pool[:draws].all? do |id, proof|
+          proof['visibility'] == 'public' || revealed[id].length == proof['count']
+        end
+      end
+      [revealed, completed]
+    end
+
+    # Irreversible public evidence makes these local cache entries redundant.
+    # Never enumerate native pools or remove an unseen/pending draw; ordered
+    # current hands and Taboo's unrevealed historical slots retain their values.
+    def expire_private_snapshot_cache(table_id, native, user, obsolete, completed_pools)
+      @mutex.synchronize do
+        room = @rooms[table_id]
+        return unless room && @sessions[table_id].equal?(native)
+        room.private_draws.delete_if do |(account, pool, draw), _|
+          account == user.downcase && obsolete[[pool, draw]]
+        end
+        room.verified_pools.delete_if { |pool, _| completed_pools.key?(pool) }
+      end
+    end
 
     def private_draw_values(table_id, native, proof, user)
       key = [user.downcase, proof.fetch('pool_id'), proof.fetch('draw_id')]

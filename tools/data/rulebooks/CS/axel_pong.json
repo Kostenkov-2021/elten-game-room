@@ -167,6 +167,9 @@
           "cs": "- Hlasitost komentátora upraví hlasitost mluvených herních oznámení."
         },
         {
+          "cs": "- Zvuky hráčů ve čtyřhře mohou záviset na místě v týmu jako dosud. Volba Stále stejné vlastní zvuky zachová tvoje kroky a údery bez ohledu na místo; partner bude znít odlišně."
+        },
+        {
           "cs": "Pomocí Shift+E přepínáš zvuky bočních hran mezi šumem, tóny a vypnutím. Čím blíž k hraně pálka stojí, tím hlasitěji daný signál zní."
         }
       ]

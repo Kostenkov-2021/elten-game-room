@@ -29,13 +29,14 @@ module GameRoomTournaments
     end
     private_constant :Form
 
-    def initialize(program:, registry:, load:, join:, alert:, mode_label:, actor:, join_virtual: nil, overview: nil, withdraw: nil, manage_participants: nil, set_partner: nil, edit_tournament: nil, delete_tournament: nil, create: nil, recover: nil, mine: false, results:nil,phase:nil,invite:nil,decline_invitation:nil,reference:nil,initial_action:nil,clock: -> { Time.now.to_i })
+    def initialize(program:, registry:, load:, join:, alert:, mode_label:, actor:, join_virtual: nil, overview: nil, withdraw: nil, manage_participants: nil, set_partner: nil, partner_action: nil, edit_tournament: nil, delete_tournament: nil, create: nil, recover: nil, mine: false, results:nil,phase:nil,invite:nil,decline_invitation:nil,reference:nil,initial_action:nil,clock: -> { Time.now.to_i })
       @program, @registry, @load, @join, @alert = program, registry, load, join, alert
       @mode_label, @actor = mode_label, actor
       @join_virtual, @overview = join_virtual, overview
       @withdraw = withdraw
       @manage_participants = manage_participants
       @set_partner = set_partner
+      @partner_action = partner_action
       @edit_tournament, @delete_tournament = edit_tournament, delete_tournament
       @create, @recover, @mine = create, recover, mine
       @results,@phase=results,phase
@@ -138,7 +139,7 @@ module GameRoomTournaments
       return unless row
       dialog = PublicPreview.new(program: @program, registry: @registry, publication: row,
         snapshot: @snapshot, load: @load, join: @join, alert: @alert, mode_label: @mode_label, actor: @actor,
-        join_virtual: @join_virtual, overview: @overview, withdraw: @withdraw, manage_participants: @manage_participants, set_partner: @set_partner, edit_tournament: @edit_tournament, delete_tournament: @delete_tournament,initial_action:initial_action,
+        join_virtual: @join_virtual, overview: @overview, withdraw: @withdraw, manage_participants: @manage_participants, set_partner: @set_partner, partner_action: @partner_action, edit_tournament: @edit_tournament, delete_tournament: @delete_tournament,initial_action:initial_action,
         results:@results,phase:@phase,invite:@invite,decline_invitation:@decline_invitation,clock:@clock)
       initial_action ? dialog.perform(initial_action) : dialog.wait
       unless dialog.snapshot.equal?(@snapshot)

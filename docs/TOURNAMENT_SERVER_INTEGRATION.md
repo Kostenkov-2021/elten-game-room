@@ -61,6 +61,13 @@ empty document.
 
 ## Coordination through the existing API
 
+Editing publication metadata preserves existing concrete playing windows and
+their stored timezone. Opening and saving the optional dates dialog does not
+migrate them to unrestricted daily play. Its conditional retention control
+allows the organizer to explicitly remove them or replace them with daily
+hours; the two schedule models are mutually exclusive. New publications keep
+the existing optional-date and daily-hours flow.
+
 Active clients coordinate through authenticated append-only records. No custom
 Ruby code runs on ELTEN's server and no additional daemon is required for this
 workflow. Participants can coordinate an existing schedule while its organizer
@@ -196,15 +203,22 @@ acknowledgements and cold replay must use the same logical clock. New ordinary
 inputs remain blocked while paused. A client-supplied origin boundary is not a
 cryptographic attestation of when the request began.
 
-Games declare whether active play can continue after an elimination and expose
-their last fully scored checkpoint. The shared projection alone emits trusted
-elimination events; an ordinary action with the same name is not sufficient.
-Original seats and historical authors remain fixed, while active participants
-shrink. Final results append eliminated participants in reverse elimination
-order. Ctrl+F uses the same game-owned policy, with separate organizer authority,
-a read-only consequence preview and fresh validation at confirmation. An unknown
-checkpoint is not a zero score, and an uncertain write must reconcile before
-another decision is attempted.
+Games declare whether active play can continue after an automatic absence
+elimination and expose their last fully scored checkpoint. The shared projection
+alone emits trusted elimination events; an ordinary action with the same name
+is not sufficient. Original seats and historical authors remain fixed, while
+active participants shrink. Final results append eliminated participants in
+reverse elimination order. An unknown checkpoint is not a zero score.
+
+Manual Ctrl+F settlements use v3 receipts, complete place groups and the game's
+explicit small-point policy. They cannot interrupt active play. The organizer
+confirms an immutable consequence preview; confirmation and recovery validate
+its native-history boundary. Earlier receipt formats remain read-only.
+Incomplete authenticated administrative parts are not a result in the standings,
+but they fence creation/start, including entry recovery and a paired return leg.
+Only recovery of the exact organizer intent can finish that partial archive;
+it does not grant another client permission to start meanwhile. This preserves
+the cooperative, non-transactional limitation described above.
 
 The compact read-only history of previous phases retains each `schedule_id`
 and the knockout round's seeds and player count. Native phase lists need stable,
@@ -286,6 +300,14 @@ can manage teams. Ctrl+Shift+T provides own-tournament access only from the main
 lobby and the widget, without acquiring another application instance. Explicit
 Refresh and Check pending changes remain available after uncertain operations.
 
+Membership UI attempts latch before calling a write. A confirmed attempt may
+retire after a successful fresh read of the same publication; this lets a
+later registration epoch be joined, withdrawn or removed in the same window.
+Confirmation alone must not unlock a stale view after a failed refresh.
+Unconfirmed, attempted and conflicting writes keep their recovery guard.
+`PublicService` owns operation identity and registration-epoch idempotence;
+the view neither retries a write automatically nor fabricates membership.
+
 ## Abandoned tournament retention
 
 `TournamentRetention` derives expiry from authenticated server timestamps: 14
@@ -304,6 +326,13 @@ Immutable evidence remains available for reconciliation of past writes. A known
 expiry schedules one UI refresh, not a periodic network worker. Reads and normal
 entry checks use the same policy on every account. Failed or incomplete result
 reads must not be treated as an empty history proving abandonment.
+An authenticated partial administrative receipt keeps an otherwise unresolved
+fixture uncertain; it does not renew its progress timestamp. A complete valid
+result still takes precedence over a later unfinished upload. If completing an
+old upload makes its tournament expire, reconciliation may read the fresh
+unfiltered publication evidence only to confirm that exact, already complete
+result or sporting-phase document in the local journal. This read-only path never appends missing parts,
+revives the tournament or grants entry to another game.
 
 ## Capacity and verification
 

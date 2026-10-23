@@ -57,16 +57,23 @@ module GameRoomTableWatchRuntime
     table_watch_preferences_snapshot
     return if sharing
     return if receiver.user.empty? || @table_watch_loader&.busy?
-    return if !refresh && (@table_watch_loader || receiver.games != nil)
+    return if !refresh && @table_watch_loader
+    # A refused explicit refresh still owns a pending read, even when older
+    # preferences are cached. Do not report those as a fresh Settings result.
+    return if !refresh && receiver.games != nil && @table_watch_load_state != :loading
     @table_watch_loader&.close
     runtime = Programs.current_runtime if defined?(Programs) && Programs.respond_to?(:current_runtime)
     @table_watch_loader = GameRoomBackground::Work.new(runtime: runtime)
     @table_watch_load_state = :loading
     user = receiver.user
-    @table_watch_loader.start do
+    admitted = GameRoomBackground.admit(@table_watch_loader) do
       # Preferences need no timestamp. The receiver defers notifications until
       # the native clock is ready; a cold clock must not fail this one-off load.
       table_watch_repository.load(user)
+    end
+    unless admitted
+      @table_watch_loader.close
+      @table_watch_loader = nil
     end
   end
 

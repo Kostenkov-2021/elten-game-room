@@ -1,7 +1,7 @@
 # Maintenance tools
 
-The `tools/` directory contains 12 standalone tools. It is not part of the runtime or
-the installer. Run commands from the repository root.
+The `tools/` directory contains authoring commands and optional diagnostic tools.
+It is not part of the runtime or installer. Run commands from the repository root.
 
 | Tool | Purpose |
 | --- | --- |
@@ -14,11 +14,18 @@ the installer. Run commands from the repository root.
 | `export-quiz-text.rb` | Readable copies of Quiz questions in `docs/quiz-questions/`; `--check` makes no writes. |
 | `encode_audio.rb` | Encode an original recording to Opus; arguments: input, new output, optionally FFmpeg and FFprobe. [Profile](BUILDING.md). |
 | `generate-pong-echo.rb` | Generate Pong's echo effect from deterministic PCM to Opus. |
+| `prepare-duck-marimba.rb` | Prepare the approved marimba source as a short Duck Racing note; arguments: source, new output, optionally FFmpeg and FFprobe. It refuses to overwrite the output. |
 | `stage-release.rb` | The sole staging interface: runtime-file list, dependency verification and SHA-256 snapshot. [Procedure](BUILDING.md). |
 | `benchmark-runtime.rb` | Repeatable measurements of CPU, allocations, replay, views and bots. [Methodology](BENCHMARKS.md). |
 | `spades.rb` | Train and evaluate Spades bot profiles: `train` or `evaluate`. [Usage](BOT_TRAINING.md). |
 
 `support/` contains libraries shared by these commands and tests.
+Quiz, Taboo and Scrabble generators stage their full output sets before
+replacement. A later replacement failure restores the previous outputs; if
+restoration also fails, the error identifies retained recovery files. This is
+single-writer failure recovery, not a multi-file atomic transaction or protection
+against power loss. Failed audio publication removes only its own partial output,
+so a retry does not require deleting an invalid recording by hand.
 `training/` contains full-match simulation, training and strategy comparison
 outside the application. Configuration data and licenses stay alongside the tools.
 `rulebook_option_chapters.json` maps options to rulebook chapters;
@@ -32,3 +39,10 @@ Historical data-update tools, single-release audits, old comparison strategies
 and command aliases have been removed. Their history remains in Git.
 Do not rerun the historical question selection.
 Changing a generator does not authorize changes to its data or audio.
+
+Optional tools are separate from normal authoring: `duck-racing-lab.rb` is
+explicitly loaded into participating source runtimes for manual challenge
+selection. `uno_communications/` is an in-memory ordered-relay experiment, not
+an available native transport. `tournaments/` contains schema-export and
+administrator review-bundle commands; these do not deploy server changes.
+None is loaded by the application or included by the release allowlist.

@@ -2,7 +2,7 @@
 require_relative '../support/durable_save_cases'
 include DurableSaveCases
 
-%w[uuid native_room duplicate_uuid duplicate_key owner backend utf8 nesting manifest_duplicate manifest_nesting].each do |variant|
+%w[uuid native_room native_room_control native_room_long native_room_type duplicate_uuid duplicate_key owner backend utf8 nesting manifest_duplicate manifest_nesting].each do |variant|
   scenario("Uszkodzony lokalny intent #{variant} odrzucany bez naprawy") do |_root,h,store,service,_archive,command|
     operation = lost(command,h,store,service)
     document = DurableSaveFixture.read(store.path)
@@ -11,7 +11,10 @@ include DurableSaveCases
     case variant
     when 'uuid'
       record['id'] = record['values']['archive_id'] = operation['id'][0...-1]
-    when 'native_room' then record['values']['source']['native_room'] = '12345678'
+    when 'native_room' then record['values']['source']['native_room'] = ''
+    when 'native_room_control' then record['values']['source']['native_room'] = "room\nother"
+    when 'native_room_long' then record['values']['source']['native_room'] = 'x' * 257
+    when 'native_room_type' then record['values']['source']['native_room'] = 12345678
     when 'duplicate_uuid' then document['operations'] << record.dup
     when 'owner' then document['owner'] = 'bob'
     when 'backend' then document['backend_identity'] += ':inne'

@@ -154,6 +154,16 @@ module GameRoomGames
         tournament_export_small_scores(replay, options: options)
       end
 
+      # v7-only placement hooks. Defaults preserve each game's existing
+      # authoritative result; older receipt policies never call these hooks.
+      def tournament_placement_result(replay, options:)
+        tournament_ranking_result(replay, options: options)
+      end
+
+      def tournament_placement_scores(replay, options:)
+        tournament_ranking_scores(replay, options: options)
+      end
+
       # Opt-in for new tournament receipts. Legacy score hooks above are kept
       # unchanged so published results remain verifiable under their policy.
       def tournament_small_point_policy(options:); nil; end

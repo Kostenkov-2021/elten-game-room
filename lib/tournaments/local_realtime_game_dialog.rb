@@ -104,20 +104,20 @@ module GameRoomTournaments
         return if @blocked || @pending || @finished || !@context.current?(@lease)
         @changes&.take if input[:action] == :local_realtime_view
         @pending = input.freeze
-        started = @work.start do
+        start_work_when_admitted(@work) do
           value = @controller.perform(**input, selectors: @selectors)
           result = value[:local_game] || value[:realtime_surface]
           view = result && [:confirmed, :unknown].include?(result[:state]) ?
             @controller.perform(action: :local_realtime_view, selectors: @selectors)[:realtime_surface] : nil
           [result, view]
         end
-        raise 'Realtime worker refused an operation' unless started
       rescue Exception
         @pending = nil
         raise
       end
       def advance_entry
         return if @blocked || @finished || !@context.current?(@lease)
+        return unless admit_pending_work
         if @pending && (outcome = @work.take)
           value, error = outcome
           raise error, cause: error.cause if error

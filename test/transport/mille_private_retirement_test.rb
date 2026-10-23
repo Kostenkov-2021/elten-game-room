@@ -18,6 +18,13 @@ state = replay.state
 assert(state[:recycle_count] > 32, 'test did not exceed the lifetime pool limit')
 assert(h.view('Alice').pools.length <= 12, 'obsolete native pools accumulated')
 assert(state[:private_retired].length > 32, 'retired identities were not recorded')
+active_pools = h.view('Alice').pools.map(&:id)
+h.users.each do |user|
+  store = h.transports.fetch(user).instance_variable_get(:@live_store)
+  room = store.instance_variable_get(:@rooms).fetch(h.table.fetch('__id'))
+  assert(room.private_draws.keys.none? { |key| !active_pools.include?(key[1]) }, 'obsolete private draw cache accumulated on a reader')
+  assert((room.verified_pools.keys - active_pools).empty?, 'obsolete verified pool cache accumulated on a reader')
+end
 
 # A genuinely full set of pools with cards still held must stop explicitly,
 # without deleting anyone's hand or repeatedly requesting an impossible pool.

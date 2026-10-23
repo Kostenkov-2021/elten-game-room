@@ -210,6 +210,24 @@ Dir.mktmpdir('question-ui-') do |dir|
     pick.call(3), pick.call(1)])
   controller.edit(updated)
   assert(steps.empty? && repo.list.map { |ref| ref['id'] } == [other['id']], 'Delete draft removed unrelated data or left current draft')
+
+  # A cloud branch and local offline edits may share the same set UUID. Delete
+  # on the separately listed cloud row must preserve that local work.
+  remote = repo.save(other.merge('snapshot' => SecureRandom.uuid, 'description' => 'Another computer'))
+  local = drafts.save(other.merge('description' => 'Unsent edits from this computer'))
+  steps.concat([->(form) {
+    assert(form.fields.first.options.size == 2, 'Library hid a distinct branch of the same set')
+    form.fields.first.index = 1
+    menu = Menu.new
+    form.fields.first.context(menu, false)
+    menu.items.find { |item| item[3] == :del }.fetch(1).call
+  }, pick.call(1), ->(form) {
+    assert(repo.list.empty? && drafts.list == [local], 'Deleting a cloud row lost local edits of that set')
+    assert(form.fields.first.options.size == 1, 'Local recovery vanished from native library')
+    cancel.call(form)
+  }])
+  controller.creator
+  assert(steps.empty? && remote['id'] == local['id'], 'Same-set branch scenario did not finish')
 end
 Form.driver = nil
 puts "PASS question creator native controls: #{$assertions} checks"

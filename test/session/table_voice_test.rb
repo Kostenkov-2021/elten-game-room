@@ -4,6 +4,9 @@ include GameRoomTest::Assertions
 h=NativeRoomHarness.new(users:%w[Alice Bob])
 host,guest=h.transports.values_at('Alice','Bob')
 table=h.table
+h.as('Alice') { host.append_activity(table:table,actor:'Alice',kind:'joined',message:'') }
+assert_equal(GameRoomTableVoice.empty,h.as('Alice') {host.table_voice(table,force:true)},
+  'A room activity before the first conversation made the voice entry unavailable')
 claim=h.as('Alice') {host.change_table_voice(table,{'operation'=>'claim','previous'=>''},actor:'Alice')}
 assert_equal(true,claim[:accepted])
 lost=h.as('Bob') {guest.change_table_voice(table,{'operation'=>'claim','previous'=>''},actor:'Bob')}

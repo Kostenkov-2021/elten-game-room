@@ -88,7 +88,9 @@ module GameRoomTournaments
       value=creator_document(candidate,match,previous,@owner)
       publish_document(value,key) do |document|
         current,current_id=source!
+        reject_voided_return!(candidate,id,match,allow_incomplete:false)
         current==candidate && current_id==id && document==value &&
+          !forfeit_document(candidate,id,match,allow_incomplete:false) && !read_result_document(candidate,id,match) &&
           (!@entry_guard || !!@entry_guard.call(candidate,match,previous))
       end
       elected_creator(candidate,id,match,previous)
@@ -146,17 +148,10 @@ module GameRoomTournaments
       name=names[0,LobbyRepository::TABLE_NAME_MAX_LENGTH-suffix.length].rstrip+suffix
       marker=candidate.slice('publication_ref','schedule_id').merge(match.slice('match_id','leg'))
       room=current_room
-      if room
-        raise OrdinaryMatchService::Blocked,:already_at_another_table unless room['name']==name && room['game']==candidate['game_id'] && room['owner'].downcase==@owner && room['tournament_match']==marker
-      else
-        raise OrdinaryMatchService::Blocked,:creation_unconfirmed unless record['status']=='prepared' && @journal.claim(record['id'])
-        history_capacity=@registry.build(candidate['game_id']).session_history_capacity(prepared['options'])
-        made=@lobby.create_table(name:name,game:candidate['game_id'],owner:@user.call,
-          game_options:JSON.generate(prepared['options']),private_table:false,tournament_match:marker,
-          **(history_capacity ? {history_capacity: history_capacity} : {}))
-        raise OrdinaryMatchService::Blocked,:already_at_another_table unless made && made.created?
-        room=made.table
-      end
+      room ||= create_ordinary_room(candidate,id,match,previous,prepared,record,name,marker)
+      raise OrdinaryMatchService::Blocked,:already_at_another_table unless room && room['name']==name &&
+        room['game']==candidate['game_id'] && room['owner'].downcase==@owner && room['tournament_match']==marker &&
+        room['game_options']==JSON.generate(prepared['options'])
       account!
       raise OrdinaryMatchService::Blocked,:table_already_has_games unless @transport.game_sessions(room,force:true).empty?
       binding={'kind'=>'ordinary-match-binding-v1','entry_version'=>ENTRY_VERSION,'schedule_id'=>candidate['schedule_id'],
@@ -172,10 +167,11 @@ module GameRoomTournaments
       binding=previous ? document.fetch('binding') : document
       publish_document(document,key) do |value|
         fresh,fresh_id=source!
+        reject_voided_return!(candidate,id,match,allow_incomplete:false)
         fresh==candidate && fresh_id==id && value==document && valid_binding?(binding,candidate,match) &&
           elected_creator(candidate,id,match,previous)==@owner &&
           (!previous || !read_start_intent(candidate,id,match,previous)) &&
-          !forfeit_document(candidate,id,match) && !read_result_document(candidate,id,match) &&
+          !forfeit_document(candidate,id,match,allow_incomplete:false) && !read_result_document(candidate,id,match) &&
           (!@entry_guard || !!@entry_guard.call(candidate,match,previous))
       end
       pending=@journal.fetch(record['id'])
@@ -184,6 +180,26 @@ module GameRoomTournaments
           'native_session_id'=>room['__live_session_id']},expected_revision:pending['revision'])
       end
       Data.freeze_tree(ServerPlanDocument.copy_document(binding))
+    end
+
+    def create_ordinary_room(candidate,id,match,previous,prepared,record,name,marker)
+      history_capacity=@registry.build(candidate['game_id']).session_history_capacity(prepared['options'])
+      creation_guard = -> do
+        current,current_id=source!
+        raise OrdinaryMatchService::Blocked,:source_changed unless current==candidate && current_id==id
+        raise OrdinaryMatchService::Blocked,:source_changed if @entry_guard && !@entry_guard.call(candidate,match,previous)
+        raise OrdinaryMatchService::Blocked,:creation_unconfirmed unless record['status']=='prepared' && @journal.claim(record['id'])
+      end
+      made=@lobby.create_table(name:name,game:candidate['game_id'],owner:@user.call,
+        game_options:JSON.generate(prepared['options']),private_table:false,tournament_match:marker,
+        creation_guard:creation_guard,**(history_capacity ? {history_capacity: history_capacity} : {}))
+      unless made && made.created?
+        raise OrdinaryMatchService::Blocked,:already_at_another_table
+      end
+      current,current_id=source!
+      raise OrdinaryMatchService::Blocked,:source_changed unless current==candidate && current_id==id
+      raise OrdinaryMatchService::Blocked,:source_changed if @entry_guard && !@entry_guard.call(candidate,match,previous)
+      made.table
     end
 
     def read_start_intent(candidate,id,match,binding,rows:nil)
@@ -200,9 +216,10 @@ module GameRoomTournaments
         'binding_digest'=>binding_digest(binding),'session_id'=>binding['session_id']}
       publish_document(document,key) do |value|
         current,current_id=source!
+        reject_voided_return!(candidate,id,match,allow_incomplete:false)
         current==candidate && current_id==id && value==document &&
           read_match_binding(candidate,id,match,nil)==binding &&
-          !forfeit_document(candidate,id,match) && !read_result_document(candidate,id,match)
+          !forfeit_document(candidate,id,match,allow_incomplete:false) && !read_result_document(candidate,id,match)
       end
     end
 
@@ -246,6 +263,13 @@ module GameRoomTournaments
       end
       ServerPlanArchive.new(table:@table,journal:@journal,user:-> {account!;@user.call},verify:->(value,retained) do
         current,current_id=source!
+        # A confirmed entry is read-only evidence, not a request to launch
+        # another game. Unfinished entries still need the fresh settlement
+        # fence, including an uncertain all-zero decision on the return leg.
+        settlement_open=record['status']=='confirmed' || begin
+          reject_voided_return!(candidate,id,match,allow_incomplete:false)
+          !forfeit_document(candidate,id,match,allow_incomplete:false) && !read_result_document(candidate,id,match)
+        end
         valid=case kind
         when 'ordinary-match-creator-v1' then value==creator_document(candidate,match,previous,@owner)
         when 'ordinary-match-start-v1' then value==document
@@ -254,7 +278,7 @@ module GameRoomTournaments
           valid_binding?(binding,candidate,match) && binding['creator']==@owner && elected_creator(candidate,id,match,previous)==@owner &&
             (!previous || !read_start_intent(candidate,id,match,previous))
         end
-        retained==expected && current==candidate && current_id==id && value==document && valid
+        retained==expected && current==candidate && current_id==id && value==document && valid && settlement_open
       end).resume(record['id'])
     end
   end

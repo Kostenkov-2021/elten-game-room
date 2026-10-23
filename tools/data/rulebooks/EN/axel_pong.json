@@ -167,6 +167,9 @@
           "en": "- Announcer volume adjusts the game's recorded announcements."
         },
         {
+          "en": "- Player sounds in doubles lets you choose how footsteps and hits sound. By team position keeps the existing voices. Choose Keep your own sounds the same for a consistent own voice and a contrasting partner, whichever seat you occupy."
+        },
+        {
           "en": "Shift+E cycles the side-wall cues through noise, tones and off. Each wall's cue becomes louder as your paddle approaches it."
         }
       ]

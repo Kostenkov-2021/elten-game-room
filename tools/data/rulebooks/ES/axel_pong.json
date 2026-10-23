@@ -167,6 +167,9 @@
           "es": "- El volumen de la voz ajusta los anuncios hablados del juego."
         },
         {
+          "es": "- Sonidos de los jugadores en dobles permite mantener las voces según la posición en el equipo o elegir Mantener tus propios sonidos. Con esta última opción, tus pasos y golpes suenan siempre igual y los de tu compañero se distinguen, estés donde estés."
+        },
+        {
           "es": "Además, Shift+E alterna entre ruido, tonos y silencio para las señales de los bordes laterales. La señal de cada borde aumenta de volumen cuanto más cerca está tu paleta."
         }
       ]

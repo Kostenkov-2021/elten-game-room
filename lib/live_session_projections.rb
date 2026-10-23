@@ -252,8 +252,11 @@ class GameRoomLiveSessionStore
     # overlapping option dialogs cannot overwrite each other or a newer game.
     def project_room_records(table_id, row, records: records_for(table_id))
       current_game_id, changes = 0, []
+      voice_ledger = nil
       records.each do |record|
         case record.packet["kind"].to_s
+        when 'room_activity'
+          row['voice']=GameRoomTableVoice.after_departure(row['voice'],record)
         when "room_created"
           data = record.packet["data"].to_h
           row.merge!(data)
@@ -268,7 +271,8 @@ class GameRoomLiveSessionStore
         when "game_started"
           current_game_id = record.packet.dig("data", "session_id").to_i
         when "room_voice"
-          row['voice'] = GameRoomTableVoice.transition(row['voice'],record,owner:control_ledger(table_id).owner_at(record.sequence))
+          voice_ledger ||= control_ledger(table_id)
+          row['voice'] = GameRoomTableVoice.transition(row['voice'],record,owner:voice_ledger.owner_at(record.sequence))
         when GameRoomTableControl::KIND
           data = record.packet['data']
           if data['session_id'] == current_game_id && data['players']

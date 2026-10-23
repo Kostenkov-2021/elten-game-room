@@ -35,8 +35,13 @@ module PrivateCardGamesTest
       state.reject { |key, value| key.to_s.start_with?('private_') || key == :hands || value.equal?(state[:hands]) }.
         merge(hand_counts: state[:hands].transform_values(&:size))
     end
-    differences = public_states.first.keys.select { |key| public_states.map { |state| state[key] }.uniq.size > 1 }
-    assert(differences.empty?, "#{h.game.id}: public state diverged #{differences.to_h { |key| [key, public_states.map { |state| state[key] }] }.inspect}")
+    return if public_states.uniq.size == 1
+
+    differences = public_states.flat_map(&:keys).uniq.filter_map do |key|
+      values = public_states.map { |state| [state.key?(key), state[key]] }
+      [key, values] if values.uniq.size > 1
+    end.to_h
+    assert(false, "#{h.game.id}: public state diverged #{differences.inspect}")
   end
 
   def submit(h, runners, user, selection)

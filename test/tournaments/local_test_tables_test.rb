@@ -1,5 +1,6 @@
 # encoding: UTF-8
 require_relative '../support/temporary_directory'
+require_relative '../support/owned_process_cleanup'
 require "tmpdir"
 require "json"
 require "fileutils"
@@ -398,16 +399,11 @@ class TournamentLocalTestTablesTest
   def workers(count, code)
     source = File.expand_path("../../lib/tournaments/local_test_tables.rb", __dir__)
     children = []
-    Timeout.timeout(30) do
-      count.times { |index| children << Open3.popen2e(RbConfig.ruby, "-r", source, "-e", code, @directory, "Test-#{index}") }
-      yield(children)
-    end
-  ensure
-    children.each do |input, output, waiter|
-      input.close unless input.closed?
-      output.close unless output.closed?
-      Process.kill("KILL", waiter.pid) if waiter.alive?
-      waiter.join
+    GameRoomTest::OwnedProcessCleanup.run(children) do
+      Timeout.timeout(30) do
+        count.times { |index| children << Open3.popen2e(RbConfig.ruby, "-r", source, "-e", code, @directory, "Test-#{index}") }
+        yield(children)
+      end
     end
   end
 
@@ -613,4 +609,4 @@ class TournamentLocalTestTablesTest
   end
 end
 
-TournamentLocalTestTablesTest.new.run
+TournamentLocalTestTablesTest.new.run if $PROGRAM_NAME == __FILE__

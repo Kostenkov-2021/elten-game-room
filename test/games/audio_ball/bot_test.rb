@@ -229,7 +229,7 @@ module AudioBallBotTest
       puts "Defense successes per 400 flights: #{counts.join(', ')}"
     end
     test('invalid bot configuration and time cannot poison a later decision') do
-      [nil, -1, 2, '0', 0.0, true].each do |side|
+      [nil, -1, 4, '0', 0.0, true].each do |side|
         begin
           GameRoomAudioBall::Bot.new(side, level: 1)
           assert(false, 'invalid bot side accepted')

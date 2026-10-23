@@ -2,6 +2,7 @@
 require_relative 'ui_dialogs'
 require_relative 'tournament_datetime_field'
 require_relative 'tournament_timing'
+require_relative 'playing_days'
 
 module GameRoomTournaments
   class TournamentDatesEditor < Dialogs::Window
@@ -9,9 +10,12 @@ module GameRoomTournaments
 
     def self.values(publication)
       return {'opens'=>nil,'closes'=>0,'starts'=>0,'deadline'=>0,'windows'=>[]} unless publication
+      schedule=TournamentTiming.schedule(publication)
       values={'opens'=>publication['registration_opens_at'],'closes'=>publication['registration_closes_at'],
-        'starts'=>TournamentTiming.starts_at(publication) || 0,'deadline'=>TournamentTiming.deadline_at(publication) || 0,'windows'=>[]}
-      hours=TournamentTiming.schedule(publication)['daily_hours']
+        'starts'=>TournamentTiming.starts_at(publication) || 0,'deadline'=>TournamentTiming.deadline_at(publication) || 0,
+        'windows'=>Publication::Data.copy(schedule.fetch('windows'))}
+      values['timezone']=publication.fetch('timezone') unless values['windows'].empty?
+      hours=schedule['daily_hours']
       values['daily_hours']=Publication::Data.copy(hours) if hours
       values
     end
@@ -39,6 +43,13 @@ module GameRoomTournaments
       end
       hours=@values['daily_hours']
       @limited=CheckBox.new(text(_("Limit playing hours")),checked:!hours.nil?)
+      if !@values['windows'].empty?
+        @keep_windows=CheckBox.new(text(_("Keep existing playing windows")),checked:true)
+        intervals=PlayingDays.local_intervals(@values['windows'],timezone:@values.fetch('timezone','UTC'))
+        description=intervals.map{|first,last|"#{first.strftime('%Y-%m-%d %H:%M')} – #{last.strftime('%Y-%m-%d %H:%M')}"}.join("\n")
+        @windows_description=readonly(_("Playing windows"),
+          _("Playing windows are shown in your local time zone; stored times use UTC.")+"\n"+description)
+      end
       @daily_start=time_field(hours && hours['start'] || '18:00',_("Daily start time"))
       @daily_end=time_field(hours && hours['end'] || '22:00',_("Daily end time"))
       @offsets=(-720..840).step(15).to_a
@@ -51,10 +62,12 @@ module GameRoomTournaments
       fields=[introduction,@opening,*@open_date.fields]
       @dates.each{|key,part|fields.concat([@scheduled[key],*part.fields])}
       @hour_fields=[*@daily_start.fields,*@daily_end.fields,@zone,@hours_help]
-      make_form(fields+[@limited,*@hour_fields,save,back],cancel:back)
+      make_form(fields+[@keep_windows,@windows_description,@limited,*@hour_fields,save,back].compact,cancel:back)
       @form.accept_button=save
       @opening.on(:move){interaction(focus:false){update_visibility}}
-      [*@scheduled.values,@limited].each{|control|control.on(:change){interaction(focus:false){update_visibility}}}
+      @scheduled.values.each{|control|control.on(:change){interaction(focus:false){update_visibility}}}
+      @limited.on(:change){interaction(focus:false){@keep_windows.checked=false if @limited.checked && @keep_windows; update_visibility}}
+      @keep_windows&.on(:change){interaction(focus:false){@limited.checked=false if @keep_windows.checked; update_visibility}}
       update_visibility
     end
 
@@ -62,6 +75,9 @@ module GameRoomTournaments
       @open_date.fields.each{|field|@opening.index==1 ? @form.show(field) : @form.hide(field)}
       @dates.each{|key,part|part.fields.each{|field|@scheduled[key].checked ? @form.show(field) : @form.hide(field)}}
       @hour_fields.each{|field|@limited.checked ? @form.show(field) : @form.hide(field)}
+      if @windows_description
+        @keep_windows.checked ? @form.show(@windows_description) : @form.hide(@windows_description)
+      end
     end
 
     def time_field(value,label)
@@ -70,7 +86,7 @@ module GameRoomTournaments
     end
 
     def save_dates
-      values=@values.merge('windows'=>[],'opens'=>case @opening.index
+      values=@values.merge('windows'=>(@keep_windows&.checked ? @values['windows'] : []),'opens'=>case @opening.index
         when 0 then nil
         when 1 then LocalRegistrationTime.convert(@open_date.date,@open_date.time)
         else 0
@@ -79,12 +95,13 @@ module GameRoomTournaments
         values[key]=@scheduled[key].checked ? LocalRegistrationTime.convert(part.date,part.time) : 0
       end
       values.delete('daily_hours')
+      values.delete('timezone') if values['windows'].empty?
       values['daily_hours']={'start'=>@daily_start.time,'end'=>@daily_end.time,'utc_offset_minutes'=>@offsets.fetch(@zone.index)} if @limited.checked
       row={'schema_version'=>2,'registration_opens_at'=>values['opens'] || @clock.call,'registration_closes_at'=>values['closes']}
       if values['starts']>0 && values['deadline']>0 && values['deadline']<values['starts']
         raise Publication::Invalid,:deadline_before_start
       end
-      schedule={'windows'=>[],'starts_at'=>values['starts'],'deadline_at'=>values['deadline']}
+      schedule={'windows'=>values['windows'],'starts_at'=>values['starts'],'deadline_at'=>values['deadline']}
       schedule['daily_hours']=values['daily_hours'] if values['daily_hours']
       TournamentTiming.validate!(row,schedule)
       finish(values)

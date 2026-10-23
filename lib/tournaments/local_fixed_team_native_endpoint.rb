@@ -178,9 +178,12 @@ module GameRoomTournaments
       end
       def stack_read(after:, limit:, **_options)
         @endpoint.core(id) do |core|
-          entries = core['entries'].select { |row| row['seq'] > after }.take(limit)
-          cursor = entries.last ? entries.last['seq'] : after
-          @endpoint.detached({'entries' => entries, 'cursor' => cursor, 'has_more' => cursor < core['last_seq']})
+          gap = {'from' => after + 1, 'to' => core['trimmed_through']} if after < core['trimmed_through']
+          start = [after, core['trimmed_through']].max
+          entries = core['entries'].select { |row| row['seq'] > start }.take(limit)
+          cursor = entries.last ? entries.last['seq'] : start
+          @endpoint.detached({'session_id' => id, 'entries' => entries, 'cursor' => cursor,
+            'through' => core['last_seq'], 'has_more' => cursor < core['last_seq'], 'gap' => gap})
         end
       end
       def stack_push(packet, message_id:)

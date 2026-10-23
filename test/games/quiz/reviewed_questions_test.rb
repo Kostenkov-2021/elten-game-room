@@ -33,6 +33,45 @@ end
 # Reviewed source decisions: preserve wording except for approved minimal
 # choice-list edits, corrected keys, distinct distractors and the Polsat negation.
 reviewed_general = {
+  # Reports from Zuzler and Paulinux: grammar, a giveaway qualifier and a
+  # subtraction sign that may be silent when punctuation speech is disabled.
+  'polqa_01372' => {
+    'prompt' => 'Jaką dziedzinę sztuki uprawiał Gerard Wilk?',
+    'correct' => 'taniec', 'wrong' => ['rzeźbę', 'malarstwo', 'śpiew']
+  },
+  'polqa_02589' => {
+    'prompt' => 'Ile to jest 45 minus 15?',
+    'correct' => '30', 'wrong' => ['20', '25', '35']
+  },
+  'polqa_03507' => {
+    'prompt' => 'Jak nazywają się boczne pasy na mundurowych spodniach?',
+    'correct' => 'lampasy', 'wrong' => ['epolety', 'galony', 'szamerunki']
+  },
+  'community_b96_20261023_01' => {
+    'category' => 'Kultura', 'author' => 'bratczyk96',
+    'prompt' => 'Który teleturniej prowadził Hubert Urbański w Polsacie, zanim został gospodarzem „Milionerów”?',
+    'correct' => 'Piramida', 'wrong' => ['Rekiny kart', '100% dla stu', 'Magia liter']
+  },
+  'community_b96_20261023_02' => {
+    'category' => 'Język', 'author' => 'bratczyk96',
+    'prompt' => 'Z którym regionem Polski kojarzy się używanie formy „daj dla mnie” zamiast „daj mi”?',
+    'correct' => 'Z Podlasiem', 'wrong' => ['Ze Śląskiem', 'Z Podkarpaciem', 'Z Małopolską']
+  },
+  'community_b96_20261023_03' => {
+    'category' => 'Literatura', 'author' => 'bratczyk96',
+    'prompt' => 'Kto napisał wiersz „Maja maleńkaja ajczyna”, opowiadający o rodzinnej Białostocczyźnie?',
+    'correct' => 'Wiktor Szwed', 'wrong' => ['Mira Łuksza', 'Barbara Goralczuk', 'Janka Kupała']
+  },
+  'community_b96_20261023_04' => {
+    'category' => 'Życie codzienne', 'author' => 'bratczyk96',
+    'prompt' => 'Jak nazywa się czekolada z wizerunkiem dziewczynki w chustce, produkowana przez rosyjską fabrykę Krasnyj Oktiabr?',
+    'correct' => 'Alionka', 'wrong' => ['Babajewski', 'Spartak', 'Komunarka']
+  },
+  'community_b96_20261023_05' => {
+    'category' => 'Język', 'author' => 'bratczyk96',
+    'prompt' => 'Kliocki to rosyjska nazwa jakiej potrawy?',
+    'correct' => 'Klusek', 'wrong' => ['Ciasta', 'Wędliny', 'Zupy']
+  },
   'polqa_00006' => {
     'source_dataset' => 'PolQA', 'category' => 'Geografia',
     'prompt' => 'W którym państwie leży Bombaj?',

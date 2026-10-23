@@ -202,7 +202,7 @@ class GameRoomSavedGameSaveIntent < GameRoomTournaments::OperationJournal
     end
     source, boundary, prefix = values.values_at('source','boundary','prefix')
     unless source.is_a?(Hash) && source.keys.sort == %w[game native_room session_id table_id] &&
-        integer?(source['table_id'],1) && integer?(source['session_id'],1) && uuid?(source['native_room']) &&
+        integer?(source['table_id'],1) && integer?(source['session_id'],1) && bounded_text?(source['native_room'],256) &&
         bounded_text?(source['game'],64) && source['game'] == meta['game']
       raise Invalid, :invalid_source
     end

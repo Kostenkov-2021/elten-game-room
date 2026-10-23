@@ -2,6 +2,7 @@ require_relative 'game_event_presentation'
 require_relative 'presentation_replay'
 require_relative 'game_background_policy'
 require_relative 'game_sounds'
+require_relative 'game_snapshot'
 
 # UI-owned presentation state shared by visible and covered sessions. The
 # worker hands over copied replays; this object never touches a form or input.
@@ -58,6 +59,8 @@ class GameRoomEventPresenter
     end
     @presentation_session_id = id
     @decision_presentation_started = false
+    @required_decision_key = @decision_replay = @decision_boundary = nil
+    @decision_pending = false
     true
   end
 
@@ -82,15 +85,22 @@ class GameRoomEventPresenter
     # Alert only for a decision still pending in the latest state, once per
     # batch; a delayed sound sequence must not announce an obsolete turn.
     decision_key = @game.call.required_decision_key(replay, @viewer.call)
-    decision_new = !@decision_presentation_started || event_replays.values.any? do |before, after|
+    decision_new = !@decision_presentation_started || decision_key != @required_decision_key || event_replays.values.any? do |before, after|
       decision_key && @game.call.required_decision_key(after, @viewer.call) == decision_key &&
         @game.call.required_decision_key(before, @viewer.call) != decision_key
     end
+    # A native seat change can alter the pending decision without a new game
+    # event. Retain a still-pending alert, but use the latest owned replay when
+    # the existing sequence finishes, not the controller captured by its start.
+    @decision_pending = decision_key && (decision_new || @decision_pending)
+    @required_decision_key = GameRoomSnapshot.copy(decision_key)
+    @decision_replay = replay
     @decision_presentation_started = true
     decision_boundary = @decision_boundary = [@presentation_session_id, newest_id]
     present_decision = lambda do
-      if decision_new && decision_boundary == @decision_boundary
-        present_required_decision(nil, replay)
+      if @decision_pending && decision_boundary == @decision_boundary
+        @decision_pending = false
+        present_required_decision(nil, @decision_replay)
       end
     end
     if !new_events.empty? && @game.call.respond_to?(:serial_event_presentation?) && @game.call.serial_event_presentation?
@@ -105,7 +115,10 @@ class GameRoomEventPresenter
       if @event_presentation != nil
         finish = -> do
           present_decision.call if event_id == newest_id
-          present_turn_transition(turn_entry, after_replay)
+          # Preserve earlier historical transitions, but the last pending turn
+          # must follow a control-only roster refresh at the same event boundary.
+          turn_replay = event_id == newest_id && decision_boundary == @decision_boundary ? @decision_replay : after_replay
+          present_turn_transition(turn_entry, turn_replay)
           present_game_result(after_replay, signal_received_at) if event_id == newest_id
         end
         stages = @game.call.event_presentation_stages(event, @repository.call, before_replay, after_replay, @viewer.call)
@@ -186,6 +199,9 @@ class GameRoomEventPresenter
   def present_initial_decision(replay)
     return if @decision_presentation_started
     @decision_presentation_started = true
+    @required_decision_key = GameRoomSnapshot.copy(@game.call.required_decision_key(replay, @viewer.call))
+    @decision_replay = replay
+    @decision_pending = false
     present_required_decision(nil, replay)
   end
 

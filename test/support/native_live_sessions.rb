@@ -43,7 +43,7 @@ class NativeLiveSessionsBroker
   Core = Struct.new(
     :id, :metadata, :discovery_metadata, :capacity, :owner, :participants,
     :entries, :views, :closed, :last_seq, :trimmed_through, :stack_entries,
-    :stack_entry_bytes, :mutex, :dedup, :visibility, :invitations,
+    :stack_entry_bytes, :mutex, :dedup, :visibility, :invitations, :creator,
     keyword_init: true
   )
 
@@ -100,6 +100,7 @@ class NativeLiveSessionsBroker
         discovery_metadata: discovery_metadata,
         capacity: capacity,
         owner: @user,
+        creator: @user,
         participants: {},
         entries: [],
         views: [],
@@ -115,7 +116,7 @@ class NativeLiveSessionsBroker
     def discover_sessions(sources: [:created, :invited, :public], **_options)
       items = @broker.cores.values.reject(&:closed).select do |core|
         (sources.include?(:public) && core.visibility == :public) ||
-          (sources.include?(:created) && core.owner.casecmp(@user) == 0) ||
+          (sources.include?(:created) && core.creator.casecmp(@user) == 0) ||
           (sources.include?(:invited) && core.invitations[@user.downcase].to_i > Time.now.to_i)
       end.map { |core| Discovery.new(self, core) }
       Page.new(items: items, next_cursor: nil)
@@ -189,6 +190,10 @@ class NativeLiveSessionsBroker
 
     def limits; {"discovery_refresh" => true}; end
     def state; @core.closed ? :closed : :open; end
+    def participants
+      return nil unless @visibility == :public
+      @core.participants.values.map { |person| {'id' => person.id, 'user' => person.user} }
+    end
 
     def refresh(timeout: 45)
       @discovery_metadata = @core.discovery_metadata
@@ -316,25 +321,25 @@ class NativeLiveSessionsBroker
       raise EltenAPI::LiveSessions::TimeoutError, "before push" if fault == :before
       raise fault if fault.is_a?(Exception)
       key = [user, message_id]
-      previous = @core.dedup[key]
-      return { "entry" => { "seq" => previous }, "stack" => stack_state } if previous
-
       @core.mutex.synchronize do
-      raise EltenAPI::LiveSessions::StackFull if @core.entries.length >= @core.stack_entries
-      raise EltenAPI::LiveSessions::StackPacketTooLarge if JSON.generate(packet).bytesize > @core.stack_entry_bytes
-      sequence = @core.last_seq + 1
-      created_at = Time.now.to_i
-      entry = {
-        "seq" => sequence,
-        "message_id" => message_id,
-        "sender" => { "user" => @endpoint.user },
-        "sender_id" => @core.participants.fetch(@endpoint.user.downcase).id,
-        "packet" => packet,
-        "created_at" => created_at
-      }
-      @core.entries << entry
-      @core.last_seq = sequence
-      @core.dedup[key] = sequence
+        previous = @core.dedup[key]
+        return { "entry" => { "seq" => previous }, "stack" => stack_state } if previous
+
+        raise EltenAPI::LiveSessions::StackFull if @core.entries.length >= @core.stack_entries
+        raise EltenAPI::LiveSessions::StackPacketTooLarge if JSON.generate(packet).bytesize > @core.stack_entry_bytes
+        sequence = @core.last_seq + 1
+        created_at = Time.now.to_i
+        entry = {
+          "seq" => sequence,
+          "message_id" => message_id,
+          "sender" => { "user" => @endpoint.user },
+          "sender_id" => @core.participants.fetch(@endpoint.user.downcase).id,
+          "packet" => packet,
+          "created_at" => created_at
+        }
+        @core.entries << entry
+        @core.last_seq = sequence
+        @core.dedup[key] = sequence
       end
       @endpoint.broker.deliver if @endpoint.broker.automatic_delivery
       raise EltenAPI::LiveSessions::TimeoutError, "after push" if fault == :after
@@ -346,11 +351,13 @@ class NativeLiveSessionsBroker
       raise EltenAPI::LiveSessions::SessionClosed if closed?
       fault, @fail_next_read = @fail_next_read, nil
       raise fault if fault
-      gap = { "from" => after + 1, "to" => @core.trimmed_through } if after < @core.trimmed_through
-      after = [after, @core.trimmed_through].max
-      entries = @core.entries.select { |entry| entry["seq"] > after.to_i }.first(limit)
-      cursor = entries.empty? ? after.to_i : entries.last["seq"]
-      { "entries" => entries, "cursor" => cursor, "has_more" => @core.entries.any? { |entry| entry["seq"] > cursor }, "gap" => gap, "through" => @core.last_seq }
+      @core.mutex.synchronize do
+        gap = { "from" => after + 1, "to" => @core.trimmed_through } if after < @core.trimmed_through
+        after = [after, @core.trimmed_through].max
+        entries = @core.entries.select { |entry| entry["seq"] > after.to_i }.first(limit)
+        cursor = entries.empty? ? after.to_i : entries.last["seq"]
+        { "session_id" => id, "entries" => entries, "cursor" => cursor, "has_more" => @core.entries.any? { |entry| entry["seq"] > cursor }, "gap" => gap, "through" => @core.last_seq }
+      end
     end
 
     # Native random metadata is outside the participant-controlled packet.
@@ -481,9 +488,9 @@ module EltenLink
   class Error < StandardError
     attr_reader :code
 
-    def initialize(code)
-      @code = code
-      super(code)
+    def initialize(message, code: nil)
+      @code = code || message
+      super(message)
     end
   end
 

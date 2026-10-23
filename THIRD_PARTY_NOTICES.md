@@ -172,6 +172,17 @@ and conversion notice when distributing these assets.
 
 ### Audio Ball
 
+`Audio/audio_ball_wrong_turn.opus` — [Hit on metal - 1](https://freesound.org/s/190022/)
+by **Aiwha**, licensed under
+[CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
+The user supplied the high-quality Ogg preview and license notice on
+23 October 2026. The complete stereo recording was converted with
+`tools/encode_audio.rb` to Ogg Opus, 144 kb/s VBR, 48 kHz, 20 ms frames,
+audio mode and complexity 10. Its level, channels and metadata were preserved;
+no trimming or normalization was applied. It replaces the normal goal
+recordings for a doubles wrong-turn fault. The original remains outside
+the application. The local license text is `LICENSES/CC-BY-4.0.txt`.
+
 The preparation sound, `Audio/audio_ball_prepare.opus`, comes from
 “auto real older car door close rattly.wav”, **kyles**,
 https://freesound.org/s/452549/, licensed under **CC0 1.0**,

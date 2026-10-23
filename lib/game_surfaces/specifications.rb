@@ -124,7 +124,7 @@ module GameSurfaces
     keyword_init: true
   )
 
-  AudioBallSpec = Struct.new(:game_id, :header, :players, :viewer, :scores, :sets, :set_number, :finished, keyword_init: true)
+  AudioBallSpec = Struct.new(:game_id, :header, :players, :viewer, :scores, :sets, :set_number, :finished, :teams, :score_labels, keyword_init: true)
 
   Command = Struct.new(:id, :label, :enabled, :payload, keyword_init: true)
 

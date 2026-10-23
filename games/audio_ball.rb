@@ -2,6 +2,7 @@
 require_relative 'base'
 require_relative '../lib/audio_ball/difficulty'
 require_relative '../lib/audio_ball/sound_pack'
+require_relative '../lib/audio_ball/rotation'
 require_relative '../lib/realtime/p2p_options'
 
 require_relative "../lib/game_room_localization"
@@ -21,11 +22,11 @@ module GameRoomGames
     POINTS_TO_WIN = 7
     SET_BREAK = 5
 
-    def notification_option_keys(_options); %w[difficulty sets_to_win]; end
+    def notification_option_keys(_options); %w[team_size difficulty sets_to_win]; end
     def notification_variant(options)
       count = options['sets_to_win']
       sets = n_('first to %{count} set', 'first to %{count} sets', count) % {count: count} if count.is_a?(Integer) && count.between?(1, 3)
-      [notification_choice(options, 'difficulty'), sets].compact.join(', ')
+      [options['team_size']==2 ? _('Doubles') : nil, notification_choice(options, 'difficulty'), sets].compact.join(', ')
     end
 
     def id; 'audio_ball'; end
@@ -35,6 +36,8 @@ module GameRoomGames
       _("Listen to the incoming ball, choose the right defence and return it with a shot of your own.")
     end
     def audio_game?; true; end
+    def maximum_players; 4; end
+    def team_size(options,player_count:); normalize_options(options)['team_size']; end
     def supports_bots?; true; end
     def supports_bot_move_delay?; false; end
     # The session runner persists agreed points, never advances ball physics.
@@ -72,6 +75,8 @@ module GameRoomGames
 
     def option_definitions
       [
+        OptionDefinition.new(key:'team_size',label:_('Match type'),kind: :choice,default:0,
+          choices:[OptionChoice.new(value:0,label:_('Single')),OptionChoice.new(value:2,label:_('Doubles'))]),
         OptionDefinition.new(key: 'mode', label: _('Game mode'), kind: :choice, default: 'classic',
           choices: [OptionChoice.new(value: 'classic', label: _('Classic'))]),
         OptionDefinition.new(key: 'difficulty', label: _('Difficulty and ball speed'), kind: :choice, default: GameRoomAudioBall::Difficulty::DEFAULT,
@@ -91,19 +96,24 @@ module GameRoomGames
       state = { options: options_from_json(session['options']), owner: owner,
         scores: [0, 0], sets: [0, 0], set_number: 1, rally: 0,
         first_server: nil, server: nil, last_point: nil, set_resume_at: nil }
+      assignment=team_assignment(state[:options],players:players)
+      teams=assignment ? assignment.seats : [0,1]
+      labels=score_labels(state[:options],players)
+      units=assignment ? assignment.team_ids : players
       accepted = []
       history = [starting_history(players)]
       winner = nil
       events.each do |event|
         break if winner
         author = event['__insertion_user'] || repository.actor_of(event, session)
-        next unless valid_roster?(players) && same_user?(author, event['__authority_user'] || owner)
+        next unless valid_roster?(players,state[:options]) && same_user?(author, event['__authority_user'] || owner)
         value = event['value']
         next unless value.is_a?(String) && value.length <= 64
         case event['action']
         when 'audio_ball_start'
-          next unless GameRoomServerRandom.valid_recipe_event?(event, kind: 'first_server')
-          next unless state[:first_server] == nil && /\A[01]\z/.match?(value)
+          recipe_fields=players.length==4 ? {players:4} : {}
+          next unless GameRoomServerRandom.valid_recipe_event?(event, kind: 'first_server',**recipe_fields)
+          next unless state[:first_server] == nil && /\A[0-3]\z/.match?(value) && value.to_i<players.length
           state[:first_server] = value.to_i
           accepted << event
         when 'audio_ball_point'
@@ -118,24 +128,26 @@ module GameRoomGames
           accepted << event
           event_id = repository.event_id(event)
           if match[2]
-            history << HistoryEntry.new(key: "timeout:#{event_id}", event_id: event_id, actor: players[1 - side], kind: :move,
-              text: _('%{player} did not hit the ball in time. The opponent receives a point.') % { player: participant_name(players[1 - side]) })
+            history << HistoryEntry.new(key: "timeout:#{event_id}", event_id: event_id, actor: units[1 - side], kind: :move,
+              text: _('%{player} did not hit the ball in time. The opponent receives a point.') % { player: labels[1 - side] })
           end
-          history << HistoryEntry.new(key: "point:#{event_id}", event_id: event_id, actor: players[side], kind: :move,
+          history << HistoryEntry.new(key: "point:#{event_id}", event_id: event_id, actor: units[side], kind: :move,
             text: _('%{player} scores. %{first}: %{one}; %{second}: %{two}.') % {
-              player: participant_name(players[side]), first: participant_name(players[0]), one: state[:scores][0],
-              second: participant_name(players[1]), two: state[:scores][1] })
+              player: labels[side], first: labels[0], one: state[:scores][0],
+              second: labels[1], two: state[:scores][1] })
           if state[:scores][side] >= POINTS_TO_WIN && state[:scores][side] - state[:scores][1 - side] >= 2
             state[:sets][side] += 1
             state[:last_point][:set_finished] = true
-            history << HistoryEntry.new(key: "set:#{event_id}", event_id: event_id, actor: players[side], kind: :set,
+            history << HistoryEntry.new(key: "set:#{event_id}", event_id: event_id, actor: units[side], kind: :set,
               text: _('%{player} wins set %{set}. Sets: %{first}: %{one}; %{second}: %{two}.') % {
-                player: participant_name(players[side]), set: state[:set_number], first: participant_name(players[0]),
-                one: state[:sets][0], second: participant_name(players[1]), two: state[:sets][1] })
+                player: labels[side], set: state[:set_number], first: labels[0],
+                one: state[:sets][0], second: labels[1], two: state[:sets][1] })
             if state[:sets][side] >= state[:options]['sets_to_win']
-              winner = players[side]
+              winner = units[side]
               state[:last_point][:match_finished] = true
-              history << result_history(event_id: event_id, winner: winner)
+              result=result_history(event_id: event_id, winner: winner)
+              result.text=_('%{player} won the game.')%{player:labels[side]} if assignment
+              history << result
             else
               state[:set_number] += 1
               state[:scores] = [0, 0]
@@ -144,7 +156,7 @@ module GameRoomGames
           end
         end
       end
-      state[:server] = (state[:first_server] + state[:set_number] - 1 + state[:scores].sum / 2) % 2 unless state[:first_server] == nil
+      state[:server] = GameRoomAudioBall::Rotation.seat(teams,state[:first_server],state[:set_number]-1+state[:scores].sum/2) unless state[:first_server] == nil
       state[:owner] = session['__table_owner'] || owner
       Replay.new(board: nil, players: players, current_player: nil, winner: winner, draw: false,
         accepted_events: accepted, history: history, state: state)
@@ -152,13 +164,14 @@ module GameRoomGames
 
     def action_for(selection, replay, actor, context: nil)
       return [:finished, nil] if replay.finished?
-      return [:invalid, nil] unless valid_roster?(replay.players) && owner_authority?(replay, actor, context)
+      return [:invalid, nil] unless valid_roster?(replay.players,replay.state[:options]) && owner_authority?(replay, actor, context)
       return [:invalid, nil] unless selection['kind'] == 'command'
       if selection['action'] == 'audio_ball_start' && replay.state[:first_server] == nil && context.random_source
         if context.server_random
-          return [:ok, ActionPlan.new(events: [GameRoomServerRandom.recipe_command(action: 'audio_ball_start', kind: 'first_server')])]
+          fields=replay.players.length==4 ? {players:4} : {}
+          return [:ok, ActionPlan.new(events: [GameRoomServerRandom.recipe_command(action: 'audio_ball_start', kind: 'first_server',**fields)])]
         end
-        first_server = context.random_source.roll(count: 1, sides: 2).values.first - 1
+        first_server = context.random_source.roll(count: 1, sides: replay.players.length).values.first - 1
         return [:ok, event_plan('audio_ball_start', first_server)]
       end
       if selection['action'] == 'audio_ball_point' && replay.state[:first_server] != nil
@@ -171,7 +184,7 @@ module GameRoomGames
     end
 
     def automatic_action(replay, actor, context: nil)
-      return nil if replay.finished? || !valid_roster?(replay.players) || !owner_authority?(replay, actor, context)
+      return nil if replay.finished? || !valid_roster?(replay.players,replay.state[:options]) || !owner_authority?(replay, actor, context)
       return { 'kind' => 'command', 'action' => 'audio_ball_start' } if replay.state[:first_server] == nil
       return nil unless set_ready?(replay.state, context.now)
       point = context.local_data&.[]('audio_ball_point')
@@ -183,13 +196,32 @@ module GameRoomGames
       automatic_action(replay, actor, context: context) != nil
     end
 
-    def options_error(_options, player_count: nil)
-      _('Audio Ball requires exactly two players.') if player_count != nil && player_count != 2
+    def options_error(options, player_count: nil)
+      doubles=normalize_options(options)['team_size']==2
+      if player_count && player_count!=(doubles ? 4 : 2)
+        return doubles ? _('Doubles requires exactly four players.') : _('Audio Ball requires exactly two players.')
+      end
+      seats=options.to_h[GameRoomTeams::OPTION_KEY]
+      if doubles && seats && (!seats.is_a?(Array) || seats.size!=4 || seats.count(0)!=2 || seats.count(1)!=2)
+        _('Doubles requires two teams of two players.')
+      end
+    end
+
+    def score_labels(options,players)
+      assignment=team_assignment(options,players:players)
+      assignment ? assignment.team_ids.map { |id| assignment.members_for(id).map { |p| participant_name(p) }.join(', ') } : players.map { |p| participant_name(p) }
+    end
+
+    def result_text(replay)
+      assignment=team_assignment(replay.state[:options],players:replay.players)
+      return super unless assignment && replay.winner
+      _('%{player} won the game.')%{player:score_labels(replay.state[:options],replay.players)[assignment.team_ids.index(replay.winner)]}
     end
 
     def participant_scores(replay)
       scores = replay.state[replay.state[:options]['sets_to_win'] > 1 ? :sets : :scores]
-      replay.players.each_with_index.to_h { |player, index| [player, scores[index]] }
+      assignment=team_assignment(replay.state[:options],players:replay.players)
+      replay.players.each_with_index.to_h { |player, index| [player, scores[assignment ? assignment.team_index_for(player) : index]] }
     end
 
     # Public accepted rallies survive the per-set score reset. Export all
@@ -203,7 +235,8 @@ module GameRoomGames
         raise Base::Tournaments::InvalidResult, 'Invalid accepted rally' unless side
         scores[side[1].to_i] += 1
       end
-      {scores: replay.players.each_with_index.to_h { |player, index| [player, scores[index]] }, order: 'higher'}
+      assignment=team_assignment(options,players:replay.players)
+      {scores: replay.players.each_with_index.to_h { |player, index| [player, scores[assignment ? assignment.team_index_for(player) : index]] }, order: 'higher'}
     end
 
     def tournament_selected_small_scores(replay, options:)
@@ -213,7 +246,9 @@ module GameRoomGames
     def surface_spec(replay, viewer)
       GameSurfaces::AudioBallSpec.new(game_id: id, header: _('Audio Ball playfield'),
         players: replay.players.map { |player| participant_name(player) }, viewer: player_index(replay.players, viewer),
-        scores: replay.state[:scores], sets: replay.state[:sets], set_number: replay.state[:set_number], finished: replay.finished?)
+        scores: replay.state[:scores], sets: replay.state[:sets], set_number: replay.state[:set_number], finished: replay.finished?,
+        teams:team_assignment(replay.state[:options],players:replay.players)&.seats,
+        score_labels:score_labels(replay.state[:options],replay.players))
     end
 
     def custom_game_shortcuts(replay, viewer)
@@ -246,8 +281,8 @@ module GameRoomGames
       /\A#{rally}:([01])(:timeout)?\z/.match(value) if value.is_a?(String) && value.length <= 64
     end
 
-    def valid_roster?(players)
-      players.length == 2 && GameRoomParticipants.unique(players).length == 2
+    def valid_roster?(players, options = default_options)
+      GameRoomParticipants.unique(players).length==players.length && options_error(options,player_count:players.length).nil?
     end
 
     def owner_authority?(replay, actor, context)

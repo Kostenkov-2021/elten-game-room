@@ -1,4 +1,5 @@
 require_relative 'host_source'
+require_relative 'host_session'
 host = EltenTestHost.root
 %w[
   ri/__ri eapi/structs eapi/keyboard eapi/speech eltenlink/__eltenlink

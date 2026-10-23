@@ -111,7 +111,9 @@ class GameRoomLiveSessionStore
         end
         return unless job
         id, (native, _) = job
-        @discovery_work.start { publish_discovery(id, expected_session: native) }
+        unless GameRoomBackground.admit(@discovery_work) { publish_discovery(id, expected_session: native) }
+          queue_discovery_publication(id)
+        end
       ensure
         @discovery_work_lock.unlock
       end

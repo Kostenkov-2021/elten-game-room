@@ -19,16 +19,23 @@ module DuckChallengeAudioTest
     def opened?; !closed?; end
     def closed?; @closes > 0; end
     def length; @duration_ms / 1000.0; end
-    def position=(value); @seeks << value; @position = value; end
+    def position=(value)
+      was_playing = playing?
+      @seeks << value
+      @position = value
+      # Seeking a stopped native channel does not start it. A paused stream
+      # retains its position until play resumes; active seeks reset its origin.
+      @started = was_playing ? @program.now_ms : nil
+    end
     def position
       return 0.0 if @early_stop
-      return @position.to_f unless @started
-      [(@program.now_ms - @started) / 1000.0 * @frequency / 48_000, length].min
+      return @position.to_f unless @started && !@paused
+      [@position.to_f + (@program.now_ms - @started) / 1000.0 * @frequency / 48_000, length].min
     end
     def playing?
       raise 'Broken audio device' if @broken
       !closed? && @started && !@paused && !@early_stop &&
-        (@looped || @stalled || @program.now_ms - @started < @duration_ms * 48_000 / @frequency)
+        (@looped || @stalled || position < length)
     end
     def finished?; closed? || @early_stop || @started && !@paused && !playing?; end
     def play
@@ -37,7 +44,10 @@ module DuckChallengeAudioTest
       @plays += 1
       @program.events << {at: @started, frequency: @frequency, volume: @volume, pan: @pan, sound: self, asset: @asset}
     end
-    def pause; @paused = true; end
+    def pause
+      @position = position
+      @paused = true
+    end
     def close; @closes += 1; @paused = true; end
   end
 

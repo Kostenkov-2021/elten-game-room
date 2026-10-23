@@ -7,11 +7,13 @@ offers four seats or three-seat sanma. Human accounts can fill some seats;
 ordinary game bots fill the remaining seats explicitly. A two-human game must
 not silently change a four-seat ruleset into an invented two-seat variant.
 
-The components live in `games/mahjong_support/`. `games/mahjong.rb` now provides
+The components live in `games/mahjong_support/`. `games/mahjong.rb` provides
 the common facade and selects the adapter from the recorded variant. The
-testing branch registers one Mahjong catalog entry. An unsigned local-test
-installer is built on Power Games 2.0.5; it is not a published release or live
-multi-client acceptance.
+maintained catalog has one Mahjong entry. Ordinary table variants use the
+shared executor, bots and saved games; tournament variants use private hands.
+The [LiveSessions integration](#current-livesessions-integration) and
+[history budget](#native-history-budget) below describe their transport limits.
+Catalog inclusion is not certification of every official scoring profile.
 
 ## Shared tiles and hand interpretation
 
@@ -92,9 +94,9 @@ announcement shortcut path, with no mutation or private-hand disclosure.
 `RiichiScoring` distinguishes yaku from dora, exposed and concealed sets,
 winning waits and fu. `Payments` settles ron/tsumo, limits, honba, exhaustive
 draws and sanma tsumo loss without the absent player's payment. The selected
-fu and kiriage defaults follow the EMA 2025 direction; complete rule-context
-validation, liability and round progression remain incomplete. `RiichiState`
-and `TableRound` now coordinate declarations, deposits and persistent facts.
+fu and kiriage defaults follow the EMA 2025 direction; liability and complete
+profile conformance are not claimed. `RiichiState` and `TableRound` coordinate
+declarations, deposits and persistent facts; `MatchState` handles progression.
 The scorer alone must not be treated as a complete Riichi game.
 
 `HongKongScoring` uses an explicit Clear Chapter profile with a three-fan
@@ -104,7 +106,7 @@ the remaining wall's back, without a reserved dead wall. This wall convention
 is also used by Mahjong Planet; it differs from the reserved-wall setup in
 the Mahjong 4 Friends guide. The scoring/bonus conventions remain explicitly
 those implemented here; this is not a claim to reproduce either platform's
-entire preset. Final special-hand/bonus audit and player documentation remain.
+entire preset. The implemented profile still needs independent conformance review.
 
 `MCRPatterns` detects candidate fan with their set identities. **Candidates
 must not be summed into a score.** `MCRScoring` enumerates winning placements
@@ -112,7 +114,7 @@ and selects compatible facts through `MCRPolicy` and `MCRCombination`.
 The explicit profile follows the WMO English first edition distributed as
 Mahjong_Rule_2013.pdf, with the EMA September 2012 kong clarification.
 Independent negative-case and full rule-profile validation remain necessary
-before catalog release; online calculators can use different conventions.
+before claiming full conformance; online calculators can use different conventions.
 Chicken Hand is determined only after final combination; flower points never
 establish the eight-point minimum. `Payments.mcr` requires at least eight
 non-flower points, but does not establish how those points were earned.
@@ -132,8 +134,8 @@ Other higher fan can still suppress a fact preserved by that one scoped rule.
 `TileFlow` adds immutable concealed ownership, live-wall draws, discards and
 the all-pass transition for three/four seats. It accepts explicitly prepared
 hands and a live wall: reserved tiles, initial dealing, bonus replacement and
-variant-specific wall policies remain the responsibility of the future rules
-adapter. Its observations expose only the viewer's own concealed hand, public
+variant-specific wall policies belong to the variant adapters. Its observations
+expose only the viewer's own concealed hand, public
 discards and counts. Actions require the current seat, phase and generation.
 It transfers chow/pung/kong physical tiles into immutable public sets, then
 requires a discard or kong replacement as appropriate. Historical discards
@@ -187,8 +189,8 @@ retains its separately documented payment profile. Post-riichi concealed
 kongs require the drawn fourth tile, unchanged physical waits and every hand
 interpretation, including hypothetical fifth-copy interpretations. The
 analysis-only `Hand.virtual_win_forms` never authorizes a physical winning hand.
-It does not yet implement per-profile concealed kong robbery exceptions,
-liability or match/round/dealer progression. It is not a
+It does not yet implement per-profile concealed kong robbery exceptions or
+liability. Match/round/dealer progression belongs to `MatchState`. This is not a
 claim of full EMA/WRC conformance.
 
 `TableEvents` maps shared native selections to strictly validated compact
@@ -324,9 +326,9 @@ unlimited dealer repetitions. Native transport tests cover default/requested
 budgets and cleanup after a smaller server grant. This is not live Mahjong
 match acceptance.
 
-## Test delivery and remaining validation
+## Integration and remaining validation
 
-The local test installer includes all four variants, conditional options,
+The maintained catalog and release-content list include all four variants, conditional options,
 ordinary bots, full-match transitions, saved-game integration and shared native
 surfaces. Rules and player guides are authored in EN/PL/CS/ES/RU; the single
 authoritative book is `tools/data/rulebooks/<LANG>/mahjong.json`. Internal
@@ -336,11 +338,10 @@ have been checked. No independent beginner/listening review is implied.
 
 Further profile work includes HK preset audit, advanced Riichi contexts,
 concealed-kong robbery exceptions, match-end conventions and independent MCR
-pattern/exclusion certification. This test implementation must not be called
-complete conformance to every official ruleset. Live acceptance still requires
-real human play on separate clients; local broker tests do not establish it.
-Keep the existing save/reconnect/private-phase guards. Do not upload or amend
-the separate tournament pull request for this work.
+pattern/exclusion certification. Do not claim complete conformance to every
+official ruleset. Local broker checks do not establish live acceptance or
+listening quality; record real-account trials and their limits separately.
+Keep the existing save/reconnect/private-phase guards.
 
 ## Information shortcuts
 
@@ -384,3 +385,29 @@ No private tile identity is encoded in audio and no audio loop is added.
 - [Hong Kong no-reserved-wall convention](https://mahjong-planet.com/rules/hong-kong/). Its scoring preset differs from the one selected here.
 
 Targeted checks: `ruby test/run.rb test/games/mahjong`.
+
+
+## Basic scoring progress under W
+
+The optional `fan_progress` table setting defaults to yes in HK, MCR and Riichi.
+W uses the exact legal-win readout when available; otherwise it reads a concise
+subtotal from owned dragon/wind triplets and accepted bonus facts. MCR also
+recognizes 2/3/4 concealed pungs for 2/16/64 fan, replacing smaller awards. Concealed
+triplets are counted only while retained, and no future tile, closed-hand win,
+complete-hand pattern or speculative payment is inferred. This subtotal is not
+an additive breakdown of the final score: complete-hand exclusion rules remain
+in the actual scorer. MCR flowers never enter its qualifying subtotal; Riichi
+visible dora are separate and cannot supply yaku. HK no-bonus fan is omitted while the hand is incomplete. Spectators receive no W shortcut.
+Disabling the setting restores the previous exact-win-only output and does not
+change any legal action, event, score, bot or result. This is a table setting,
+not a private preference; all participants use the same configured readout.
+
+
+## Accepted score explanation
+
+The finished-hand value lists only selected scorer components, with their actual
+awarded values and localized descriptions from the existing rulebook. It does
+not rescore the hand or list excluded candidates. MCR explicitly separates the
+qualifying hand fan, flower extras and their payment total. The completed hand
+and explanation remain public to participants and observers; no unfinished
+opponent concealed tiles are revealed.

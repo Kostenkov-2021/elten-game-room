@@ -1,0 +1,1239 @@
+{
+  "seed": 1,
+  "options": {
+    "content_language_id": "en",
+    "content_set_id": "scrabble.words.en",
+    "invalid_word": "2",
+    "thinking_time": 0,
+    "content_pack_id": "scrabble.words.en.v1",
+    "content_pack_version": 1,
+    "content_pack_checksum": "edb7561e4c68a59fe384d604727f5b11b4ae3aeff80604f7033e985be0619c4d"
+  },
+  "moves": [
+    {
+      "actor": "Alice",
+      "selection": {
+        "action": "deal"
+      }
+    },
+    {
+      "actor": "Carol",
+      "selection": {
+        "action": "place",
+        "placements": [
+          [
+            51,
+            108,
+            "m"
+          ],
+          [
+            44,
+            109,
+            "i"
+          ],
+          [
+            32,
+            110,
+            "g"
+          ],
+          [
+            31,
+            111,
+            "g"
+          ],
+          [
+            78,
+            112,
+            "s"
+          ]
+        ]
+      }
+    },
+    {
+      "actor": "Dorota",
+      "selection": {
+        "action": "place",
+        "placements": [
+          [
+            35,
+            49,
+            "h"
+          ],
+          [
+            19,
+            64,
+            "e"
+          ],
+          [
+            73,
+            79,
+            "r"
+          ],
+          [
+            62,
+            94,
+            "o"
+          ],
+          [
+            97,
+            124,
+            "z"
+          ],
+          [
+            27,
+            139,
+            "e"
+          ]
+        ]
+      }
+    },
+    {
+      "actor": "Alice",
+      "selection": {
+        "action": "place",
+        "placements": [
+          [
+            93,
+            45,
+            "w"
+          ],
+          [
+            17,
+            46,
+            "e"
+          ],
+          [
+            36,
+            47,
+            "i"
+          ],
+          [
+            33,
+            48,
+            "g"
+          ],
+          [
+            80,
+            50,
+            "t"
+          ]
+        ]
+      }
+    },
+    {
+      "actor": "Bob",
+      "selection": {
+        "action": "place",
+        "placements": [
+          [
+            82,
+            138,
+            "t"
+          ],
+          [
+            39,
+            153,
+            "i"
+          ],
+          [
+            52,
+            168,
+            "m"
+          ],
+          [
+            65,
+            183,
+            "o"
+          ],
+          [
+            56,
+            198,
+            "n"
+          ]
+        ]
+      }
+    },
+    {
+      "actor": "Carol",
+      "selection": {
+        "action": "place",
+        "placements": [
+          [
+            10,
+            52,
+            "b"
+          ],
+          [
+            2,
+            67,
+            "a"
+          ],
+          [
+            99,
+            82,
+            "c"
+          ],
+          [
+            46,
+            97,
+            "k"
+          ],
+          [
+            67,
+            127,
+            "p"
+          ],
+          [
+            38,
+            142,
+            "i"
+          ],
+          [
+            54,
+            157,
+            "n"
+          ]
+        ]
+      }
+    },
+    {
+      "actor": "Dorota",
+      "selection": {
+        "action": "place",
+        "placements": [
+          [
+            59,
+            53,
+            "o"
+          ],
+          [
+            94,
+            54,
+            "x"
+          ],
+          [
+            40,
+            55,
+            "i"
+          ],
+          [
+            48,
+            56,
+            "l"
+          ],
+          [
+            95,
+            57,
+            "y"
+          ]
+        ]
+      }
+    },
+    {
+      "actor": "Alice",
+      "selection": {
+        "action": "place",
+        "placements": [
+          [
+            53,
+            150,
+            "n"
+          ],
+          [
+            86,
+            151,
+            "u"
+          ],
+          [
+            15,
+            152,
+            "d"
+          ],
+          [
+            77,
+            154,
+            "s"
+          ],
+          [
+            84,
+            155,
+            "t"
+          ]
+        ]
+      }
+    },
+    {
+      "actor": "Bob",
+      "selection": {
+        "action": "place",
+        "placements": [
+          [
+            69,
+            136,
+            "q"
+          ],
+          [
+            41,
+            166,
+            "i"
+          ],
+          [
+            83,
+            181,
+            "t"
+          ],
+          [
+            26,
+            196,
+            "e"
+          ]
+        ]
+      }
+    },
+    {
+      "actor": "Carol",
+      "selection": {
+        "action": "place",
+        "placements": [
+          [
+            98,
+            38,
+            "m"
+          ],
+          [
+            24,
+            39,
+            "e"
+          ],
+          [
+            49,
+            40,
+            "l"
+          ],
+          [
+            4,
+            41,
+            "a"
+          ],
+          [
+            55,
+            42,
+            "n"
+          ],
+          [
+            43,
+            43,
+            "i"
+          ],
+          [
+            58,
+            44,
+            "n"
+          ]
+        ]
+      }
+    },
+    {
+      "actor": "Dorota",
+      "selection": {
+        "action": "place",
+        "placements": [
+          [
+            30,
+            2,
+            "f"
+          ],
+          [
+            23,
+            17,
+            "e"
+          ],
+          [
+            74,
+            32,
+            "r"
+          ],
+          [
+            3,
+            62,
+            "a"
+          ],
+          [
+            21,
+            77,
+            "e"
+          ]
+        ]
+      }
+    },
+    {
+      "actor": "Alice",
+      "selection": {
+        "action": "place",
+        "placements": [
+          [
+            66,
+            0,
+            "o"
+          ],
+          [
+            89,
+            15,
+            "u"
+          ],
+          [
+            81,
+            30,
+            "t"
+          ],
+          [
+            34,
+            60,
+            "h"
+          ],
+          [
+            42,
+            75,
+            "i"
+          ],
+          [
+            70,
+            90,
+            "r"
+          ],
+          [
+            47,
+            105,
+            "l"
+          ]
+        ]
+      }
+    },
+    {
+      "actor": "Bob",
+      "selection": {
+        "action": "place",
+        "placements": [
+          [
+            8,
+            158,
+            "a"
+          ],
+          [
+            91,
+            173,
+            "v"
+          ],
+          [
+            60,
+            188,
+            "o"
+          ],
+          [
+            92,
+            203,
+            "w"
+          ]
+        ]
+      }
+    },
+    {
+      "actor": "Carol",
+      "selection": {
+        "action": "place",
+        "placements": [
+          [
+            57,
+            1,
+            "n"
+          ]
+        ]
+      }
+    },
+    {
+      "actor": "Carol",
+      "selection": {
+        "action": "place",
+        "placements": [
+          [
+            57,
+            1,
+            "n"
+          ]
+        ]
+      }
+    },
+    {
+      "actor": "Carol",
+      "selection": {
+        "action": "place",
+        "placements": [
+          [
+            57,
+            1,
+            "n"
+          ]
+        ]
+      }
+    },
+    {
+      "actor": "Carol",
+      "selection": {
+        "action": "place",
+        "placements": [
+          [
+            57,
+            1,
+            "n"
+          ]
+        ]
+      }
+    },
+    {
+      "actor": "Carol",
+      "selection": {
+        "action": "place",
+        "placements": [
+          [
+            57,
+            1,
+            "n"
+          ]
+        ]
+      }
+    },
+    {
+      "actor": "Carol",
+      "selection": {
+        "action": "place",
+        "placements": [
+          [
+            57,
+            1,
+            "n"
+          ]
+        ]
+      }
+    },
+    {
+      "actor": "Carol",
+      "selection": {
+        "action": "place",
+        "placements": [
+          [
+            57,
+            1,
+            "n"
+          ]
+        ]
+      }
+    },
+    {
+      "actor": "Carol",
+      "selection": {
+        "action": "place",
+        "placements": [
+          [
+            57,
+            1,
+            "n"
+          ]
+        ]
+      }
+    },
+    {
+      "actor": "Carol",
+      "selection": {
+        "action": "place",
+        "placements": [
+          [
+            57,
+            1,
+            "n"
+          ]
+        ]
+      }
+    },
+    {
+      "actor": "Carol",
+      "selection": {
+        "action": "place",
+        "placements": [
+          [
+            57,
+            1,
+            "n"
+          ]
+        ]
+      }
+    },
+    {
+      "actor": "Carol",
+      "selection": {
+        "action": "place",
+        "placements": [
+          [
+            57,
+            1,
+            "n"
+          ]
+        ]
+      }
+    },
+    {
+      "actor": "Carol",
+      "selection": {
+        "action": "place",
+        "placements": [
+          [
+            57,
+            1,
+            "n"
+          ]
+        ]
+      }
+    },
+    {
+      "actor": "Carol",
+      "selection": {
+        "action": "place",
+        "placements": [
+          [
+            57,
+            1,
+            "n"
+          ]
+        ]
+      }
+    },
+    {
+      "actor": "Carol",
+      "selection": {
+        "action": "place",
+        "placements": [
+          [
+            57,
+            1,
+            "n"
+          ]
+        ]
+      }
+    },
+    {
+      "actor": "Carol",
+      "selection": {
+        "action": "place",
+        "placements": [
+          [
+            57,
+            1,
+            "n"
+          ]
+        ]
+      }
+    },
+    {
+      "actor": "Carol",
+      "selection": {
+        "action": "place",
+        "placements": [
+          [
+            57,
+            1,
+            "n"
+          ]
+        ]
+      }
+    },
+    {
+      "actor": "Carol",
+      "selection": {
+        "action": "place",
+        "placements": [
+          [
+            57,
+            1,
+            "n"
+          ]
+        ]
+      }
+    },
+    {
+      "actor": "Carol",
+      "selection": {
+        "action": "place",
+        "placements": [
+          [
+            57,
+            1,
+            "n"
+          ]
+        ]
+      }
+    },
+    {
+      "actor": "Carol",
+      "selection": {
+        "action": "pass"
+      }
+    },
+    {
+      "actor": "Dorota",
+      "selection": {
+        "action": "pass"
+      }
+    },
+    {
+      "actor": "Alice",
+      "selection": {
+        "action": "place",
+        "placements": [
+          [
+            11,
+            1,
+            "c"
+          ]
+        ]
+      }
+    },
+    {
+      "actor": "Alice",
+      "selection": {
+        "action": "place",
+        "placements": [
+          [
+            11,
+            1,
+            "c"
+          ]
+        ]
+      }
+    },
+    {
+      "actor": "Alice",
+      "selection": {
+        "action": "place",
+        "placements": [
+          [
+            11,
+            1,
+            "c"
+          ]
+        ]
+      }
+    },
+    {
+      "actor": "Alice",
+      "selection": {
+        "action": "place",
+        "placements": [
+          [
+            11,
+            1,
+            "c"
+          ]
+        ]
+      }
+    },
+    {
+      "actor": "Alice",
+      "selection": {
+        "action": "place",
+        "placements": [
+          [
+            11,
+            1,
+            "c"
+          ]
+        ]
+      }
+    },
+    {
+      "actor": "Alice",
+      "selection": {
+        "action": "place",
+        "placements": [
+          [
+            11,
+            1,
+            "c"
+          ]
+        ]
+      }
+    },
+    {
+      "actor": "Alice",
+      "selection": {
+        "action": "place",
+        "placements": [
+          [
+            11,
+            1,
+            "c"
+          ]
+        ]
+      }
+    },
+    {
+      "actor": "Alice",
+      "selection": {
+        "action": "place",
+        "placements": [
+          [
+            11,
+            1,
+            "c"
+          ]
+        ]
+      }
+    },
+    {
+      "actor": "Alice",
+      "selection": {
+        "action": "place",
+        "placements": [
+          [
+            11,
+            1,
+            "c"
+          ]
+        ]
+      }
+    },
+    {
+      "actor": "Alice",
+      "selection": {
+        "action": "place",
+        "placements": [
+          [
+            11,
+            1,
+            "c"
+          ]
+        ]
+      }
+    },
+    {
+      "actor": "Alice",
+      "selection": {
+        "action": "place",
+        "placements": [
+          [
+            11,
+            1,
+            "c"
+          ]
+        ]
+      }
+    },
+    {
+      "actor": "Alice",
+      "selection": {
+        "action": "place",
+        "placements": [
+          [
+            11,
+            1,
+            "c"
+          ]
+        ]
+      }
+    },
+    {
+      "actor": "Alice",
+      "selection": {
+        "action": "place",
+        "placements": [
+          [
+            11,
+            1,
+            "c"
+          ]
+        ]
+      }
+    },
+    {
+      "actor": "Alice",
+      "selection": {
+        "action": "place",
+        "placements": [
+          [
+            11,
+            1,
+            "c"
+          ]
+        ]
+      }
+    },
+    {
+      "actor": "Alice",
+      "selection": {
+        "action": "place",
+        "placements": [
+          [
+            11,
+            1,
+            "c"
+          ]
+        ]
+      }
+    },
+    {
+      "actor": "Alice",
+      "selection": {
+        "action": "place",
+        "placements": [
+          [
+            11,
+            1,
+            "c"
+          ]
+        ]
+      }
+    },
+    {
+      "actor": "Alice",
+      "selection": {
+        "action": "place",
+        "placements": [
+          [
+            11,
+            1,
+            "c"
+          ]
+        ]
+      }
+    },
+    {
+      "actor": "Alice",
+      "selection": {
+        "action": "place",
+        "placements": [
+          [
+            11,
+            1,
+            "c"
+          ]
+        ]
+      }
+    },
+    {
+      "actor": "Alice",
+      "selection": {
+        "action": "place",
+        "placements": [
+          [
+            11,
+            1,
+            "c"
+          ]
+        ]
+      }
+    },
+    {
+      "actor": "Alice",
+      "selection": {
+        "action": "place",
+        "placements": [
+          [
+            11,
+            1,
+            "c"
+          ]
+        ]
+      }
+    },
+    {
+      "actor": "Alice",
+      "selection": {
+        "action": "place",
+        "placements": [
+          [
+            11,
+            1,
+            "c"
+          ]
+        ]
+      }
+    },
+    {
+      "actor": "Alice",
+      "selection": {
+        "action": "place",
+        "placements": [
+          [
+            11,
+            1,
+            "c"
+          ]
+        ]
+      }
+    },
+    {
+      "actor": "Alice",
+      "selection": {
+        "action": "place",
+        "placements": [
+          [
+            11,
+            1,
+            "c"
+          ]
+        ]
+      }
+    },
+    {
+      "actor": "Alice",
+      "selection": {
+        "action": "place",
+        "placements": [
+          [
+            11,
+            1,
+            "c"
+          ]
+        ]
+      }
+    },
+    {
+      "actor": "Alice",
+      "selection": {
+        "action": "place",
+        "placements": [
+          [
+            11,
+            1,
+            "c"
+          ]
+        ]
+      }
+    },
+    {
+      "actor": "Alice",
+      "selection": {
+        "action": "place",
+        "placements": [
+          [
+            11,
+            1,
+            "c"
+          ]
+        ]
+      }
+    },
+    {
+      "actor": "Alice",
+      "selection": {
+        "action": "place",
+        "placements": [
+          [
+            11,
+            1,
+            "c"
+          ]
+        ]
+      }
+    },
+    {
+      "actor": "Alice",
+      "selection": {
+        "action": "place",
+        "placements": [
+          [
+            11,
+            1,
+            "c"
+          ]
+        ]
+      }
+    },
+    {
+      "actor": "Alice",
+      "selection": {
+        "action": "place",
+        "placements": [
+          [
+            11,
+            1,
+            "c"
+          ]
+        ]
+      }
+    },
+    {
+      "actor": "Alice",
+      "selection": {
+        "action": "place",
+        "placements": [
+          [
+            11,
+            1,
+            "c"
+          ]
+        ]
+      }
+    },
+    {
+      "actor": "Alice",
+      "selection": {
+        "action": "place",
+        "placements": [
+          [
+            11,
+            1,
+            "c"
+          ]
+        ]
+      }
+    },
+    {
+      "actor": "Alice",
+      "selection": {
+        "action": "place",
+        "placements": [
+          [
+            11,
+            1,
+            "c"
+          ]
+        ]
+      }
+    },
+    {
+      "actor": "Alice",
+      "selection": {
+        "action": "place",
+        "placements": [
+          [
+            11,
+            1,
+            "c"
+          ]
+        ]
+      }
+    },
+    {
+      "actor": "Alice",
+      "selection": {
+        "action": "place",
+        "placements": [
+          [
+            11,
+            1,
+            "c"
+          ]
+        ]
+      }
+    },
+    {
+      "actor": "Alice",
+      "selection": {
+        "action": "place",
+        "placements": [
+          [
+            11,
+            1,
+            "c"
+          ]
+        ]
+      }
+    },
+    {
+      "actor": "Alice",
+      "selection": {
+        "action": "place",
+        "placements": [
+          [
+            11,
+            1,
+            "c"
+          ]
+        ]
+      }
+    },
+    {
+      "actor": "Alice",
+      "selection": {
+        "action": "pass"
+      }
+    },
+    {
+      "actor": "Bob",
+      "selection": {
+        "action": "pass"
+      }
+    },
+    {
+      "actor": "Carol",
+      "selection": {
+        "action": "pass"
+      }
+    },
+    {
+      "actor": "Dorota",
+      "selection": {
+        "action": "pass"
+      }
+    },
+    {
+      "actor": "Alice",
+      "selection": {
+        "action": "pass"
+      }
+    },
+    {
+      "actor": "Bob",
+      "selection": {
+        "action": "pass"
+      }
+    },
+    {
+      "actor": "Carol",
+      "selection": {
+        "action": "pass"
+      }
+    },
+    {
+      "actor": "Dorota",
+      "selection": {
+        "action": "pass"
+      }
+    },
+    {
+      "actor": "Alice",
+      "selection": {
+        "action": "pass"
+      }
+    },
+    {
+      "actor": "Bob",
+      "selection": {
+        "action": "pass"
+      }
+    }
+  ],
+  "event_count": 231,
+  "wire_sha256": "0c11d183748326b6e4a7c2b112c02e1b956889950fbdcd77c6fe4a3c84a46a59",
+  "scores": {
+    "Alice": 75,
+    "Bob": 79,
+    "Carol": 77,
+    "Dorota": 79
+  },
+  "actual_leaders": [
+    "Bob",
+    "Dorota"
+  ],
+  "exported": {
+    "draw": true,
+    "event_count": 231,
+    "participants": [
+      "alice",
+      "bob",
+      "carol",
+      "dorota"
+    ],
+    "scores": null,
+    "winners": []
+  }
+}

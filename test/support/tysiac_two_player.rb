@@ -3,13 +3,6 @@ require_relative "new_games_fixture"
 require_relative "elten_array_shuffle"
 require_relative "../../games/tysiac"
 
-module GameSurfaces
-  unless const_defined?(:QuestionSpec)
-
-
-  end
-end
-
 class TwoPlayerTysiacFixture
   attr_reader :game, :session, :repository, :events, :players
 

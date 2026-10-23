@@ -15,6 +15,7 @@ class DuckNativeNumericRefreshContractTest
     end
     cases += [
       ['unrelated native edit preserves a partial number', -> { partial_number }],
+      ['durable pause preserves and locks the native edit', -> { paused_number }],
       ['blur still discards unconsumed commands', -> { discarded_after(:blur) }],
       ['covered fields still discard unconsumed commands', -> { discarded_after(:covered) }],
       ['new challenge rejects the previous field', -> { discarded_after(:challenge) }],
@@ -145,6 +146,40 @@ class DuckNativeNumericRefreshContractTest
     frame(@answer[1..])
     2.times { frame }
     assert_equal(@answer, request.dig('trace', 'actions').last.dig('input', 'value'))
+  end
+
+  def paused_number
+    setup_ready
+    frame(@answer[0])
+    field = @surface.fields.first
+    selection = [field.index, field.check]
+    elapsed = @client.send(:elapsed_ms)
+    @client.update_table_control({'__players' => @replay.players,
+      '__table_owner' => 'Alice', '__control_epoch' => 'initial', '__frozen' => true})
+    @client.before_wait(@replay, @viewer)
+    refresh
+    frame('9')
+    assert(field.equal?(@surface.fields.first))
+    assert_equal(@answer[0], field.text, 'The paused native edit accepted a digit')
+    assert_equal(selection, [field.index, field.check])
+    assert((field.flags & EditBox::Flags::ReadOnly) != 0)
+    @program.now_ms += 25_000
+    3.times { frame }
+    assert_equal(elapsed, @client.send(:elapsed_ms))
+    assert_equal(nil, request)
+    assert_equal([], @surface.instance_variable_get(:@pending))
+    @client.update_table_control({'__players' => @replay.players,
+      '__table_owner' => 'Alice', '__control_epoch' => 'initial', '__frozen' => false})
+    @client.before_wait(@replay, @viewer)
+    refresh
+    assert(field.equal?(@surface.fields.first))
+    assert_equal(0, field.flags & EditBox::Flags::ReadOnly)
+    assert_equal(@answer[0], field.text)
+    frame(@answer[1..])
+    3.times { frame }
+    assert_equal(@answer, request.dig('trace', 'actions').last.dig('input', 'value'))
+    assert(request.fetch('trace').fetch('finished_at') < 25_000,
+      'The resumed native edit included paused wall time')
   end
 
   def discarded_after(boundary)

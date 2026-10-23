@@ -70,6 +70,7 @@ class InvitationRepository
     @sender_allowed = sender_allowed
     @sent_invitations = SENT
     @responses = {}
+    @response_expirations = {}
   end
 
   # Reserve a duplicate key only for an invitation that was actually sent.
@@ -129,6 +130,7 @@ class InvitationRepository
   def pending_for(recipient, tables:, now: GameRoomClock.now.to_i)
     user = @current_user.call.to_s
     return [] unless user.empty? || same_user?(user, recipient)
+    prune_responses(now)
     table_by_id = tables.to_a.each_with_object({}) do |table, result|
       id = row_id(table)
       result[id] = table if id > 0 && %w[waiting playing].include?(table["status"].to_s)
@@ -164,6 +166,7 @@ class InvitationRepository
     raise ArgumentError, "Invitation belongs to another user" unless user.empty? || same_user?(user, clean_recipient)
     raise ArgumentError, "Invalid invitation response" if !RESPONSES.include?(clean_response)
 
+    prune_responses(now)
     key = GameRoomInvitationIdentity.key(row)
     return @responses[key] if @responses.key?(key)
 
@@ -179,10 +182,24 @@ class InvitationRepository
       outbox = @response_outbox ||= InvitationResponseOutbox.default
       decision["response"] = outbox.submit(row, clean_response, &@response_sender)
     end
+    if row["expires_at"].to_i.positive?
+      @response_expirations[key] = [row["expires_at"].to_i, now.to_i + InvitationResponseOutbox::TTL].max
+    end
     return @responses[key] = decision
   end
 
   private
+
+  # Keep the immutable choice while the invitation can still appear, and at
+  # least through the independent outbox's delivery horizon. Legacy invitations
+  # without a finite expiry cannot safely be retired by a guessed item limit.
+  def prune_responses(now)
+    @response_expirations.delete_if do |key, expires|
+      expired = expires <= now.to_i
+      @responses.delete(key) if expired
+      expired
+    end
+  end
 
   def row_id(row)
     return 0 if row == nil

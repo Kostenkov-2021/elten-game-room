@@ -2,6 +2,7 @@
 require_relative 'publication'
 require_relative 'local_registration_time'
 require_relative 'registration_invitations'
+require_relative 'partnerships'
 
 module GameRoomTournaments
   # Projekcja dopisywanych join. Nie wykonuje sieci ani nie wymaga organizatora online.
@@ -77,7 +78,7 @@ module GameRoomTournaments
         values.map { |rows| rows.min_by { |row| row['__id'] } }.group_by { |row| row['canonical_tournament_id'] }
       Data.freeze_tree(@activity)
       Data.freeze_tree(@versions)
-      @pairing_ids = accepted.select { |row| row['kind'] == 'pairing' }.map { |row| row['canonical_tournament_id'] }.uniq.freeze
+      @pairing_ids = accepted.select { |row| (['pairing'] + Partnerships::KINDS).include?(row['kind']) }.map { |row| row['canonical_tournament_id'] }.uniq.freeze
       data = { 'announcements' => published,
         'members' => members(accepted), 'operations' => operations,
         'diagnostics' => { 'announcements' => publications['diagnostics'],
@@ -85,11 +86,15 @@ module GameRoomTournaments
       invitations = RegistrationInvitations.project(accepted)
       data['invitations'] = invitations unless invitations.empty?
       @applied_pairings = {}
+      @partnership_states = {}
       unless @pairing_ids.empty?
         @pair_requests=[]
+        @partner_changes=[]
         data['pairs'] = pairs(accepted)
         data['pair_requests']=@pair_requests
+        data['partner_changes']=@partner_changes unless @partner_changes.empty?
       end
+      Data.freeze_tree(@partnership_states)
       @applied_pairings.freeze
       @data = Data.freeze_tree(data)
       @by_id.freeze
@@ -121,6 +126,15 @@ module GameRoomTournaments
       @pairing_ids.include?(id)
     end
 
+    def partnership_state(id)
+      return @partnership_states[id] if @partnership_states.key?(id)
+      ledger = Partnerships.new
+      @data.fetch('members').select { |member| member['tournament_id'] == id }.each do |member|
+        ledger.apply({'kind'=>'join', '__insertion_user'=>member['account'], '__id'=>member['registration_id']}, organizer: false)
+      end
+      ledger.state
+    end
+
     # An authenticated insert can be obsolete by the time it is projected.
     # Preserve its write confirmation, but distinguish it from an applied
     # choice. Later pair changes must not rewrite this historical outcome.
@@ -148,7 +162,7 @@ module GameRoomTournaments
     def with_retained_announcements(rows)
       ids = rows.to_h { |row| [row.fetch('__id'), true] }
       data = @data.merge('announcements' => rows)
-      %w[members pairs pair_requests invitations].each do |key|
+      %w[members pairs pair_requests partner_changes invitations].each do |key|
         data[key] = data[key].select { |row| ids[row['tournament_id']] } if data[key]
       end
       copy = dup
@@ -160,7 +174,7 @@ module GameRoomTournaments
 
     def decode(row)
       metadata = Data.metadata(row)
-      raise Invalid, :unsupported_kind unless %w[join withdrawal removal pairing amendment cancellation invitation invite_declined].include?(row['kind'])
+      raise Invalid, :unsupported_kind unless (%w[join withdrawal removal pairing amendment cancellation invitation invite_declined] + Partnerships::KINDS).include?(row['kind'])
       values = self.class.join_values(tournament_id: row['tournament_id'], operation_key: row['operation_key']).merge('kind' => row['kind'])
       tournament = @by_id[row['tournament_id']]
       raise Invalid, :unknown_tournament unless tournament
@@ -183,6 +197,15 @@ module GameRoomTournaments
         end
         Data.key!(row['pairing_generation'])
         values['pairing_generation'] = row['pairing_generation']
+      end
+      if Partnerships::KINDS.include?(row['kind'])
+        values['account'] = Data.account(row['account']).downcase
+        values['partner'] = row['partner'].nil? ? nil : Data.account(row['partner']).downcase
+        raise Invalid, :not_participant unless metadata['__insertion_user'].downcase == values['account']
+        raise Invalid, :invalid_partner if values['account'] == values['partner'] || (row['kind'] == 'pair_draw' && values['partner'])
+        Data.key!(row['pairing_generation'])
+        values['pairing_generation'] = row['pairing_generation']
+        values['amendment_json'] = JSON.generate(Partnerships.body(row))
       end
       if %w[amendment cancellation].include?(row['kind'])
         raise Invalid, :not_organizer unless metadata['__insertion_user'].downcase == tournament['__insertion_user'].downcase
@@ -217,7 +240,9 @@ module GameRoomTournaments
             @applied_changes.include?(row['__id'])
           elsif %w[invitation invite_declined].include?(row['kind'])
             TournamentTiming.registration_open?(tournament,time) && !TournamentTiming.started?(tournament,time) && !cancelled_at?(row)
-          elsif %w[withdrawal removal pairing].include?(row['kind'])
+          elsif row['kind'] == 'pair_draw'
+            !cancelled_at?(row) && time >= tournament['__insertion_time']
+          elsif %w[withdrawal removal pairing partnership].include?(row['kind'])
             (TournamentTiming.registration_open?(tournament,time) || creator || TournamentTiming.registration_closed?(tournament,time)) && !TournamentTiming.started?(tournament,time) && !cancelled_at?(row)
           else
             (TournamentTiming.registration_open?(tournament,time) || creator) && !TournamentTiming.registration_closed?(tournament,time) && !cancelled_at?(row)
@@ -254,37 +279,20 @@ module GameRoomTournaments
 
     def pairs(accepted)
       accepted.group_by { |row| row['canonical_tournament_id'] }.flat_map do |id, rows|
-        active, links, requests = {}, {}, {}
+        ledger = Partnerships.new
         rows.sort_by { |row| [row['__insertion_time'], row['__id']] }.each do |row|
-          account = row['kind'] == 'removal' || row['kind'] == 'pairing' ? row['account'] : row['__insertion_user'].downcase
-          case row['kind']
-          when 'join' then active[account] = true
-          when 'withdrawal', 'removal'
-            active.delete(account)
-            links.delete(links.delete(account))
-            requests.delete_if{|from,to|from==account || to==account}
-          when 'pairing'
-            current = self.class.pairing_generation(active.keys, links)
-            next unless current == row['pairing_generation'] && active[account] && (row['partner'].nil? || active[row['partner']])
-            partner = row['partner']
-            organizer = row['__insertion_user'].downcase == @by_id[id]['__insertion_user'].downcase
-            next if !organizer && partner && links[partner] && links[partner] != account
-            @applied_pairings[row['__id']] = true
-            links.delete(links.delete(account))
-            requests.delete(account)
-            if partner && (organizer && row['__insertion_user'].downcase!=account || requests[partner]==account)
-              links.delete(links.delete(partner))
-              links[account], links[partner] = partner, account
-              requests.delete_if{|from,to|[account,partner].include?(from) || [account,partner].include?(to)}
-            elsif partner
-              requests[account]=partner
-            else
-              requests.delete_if{|_,to|to==account}
-            end
-          end
+          ledger.apply(row, organizer: row['__insertion_user'].downcase == @by_id[id]['__insertion_user'].downcase)
         end
-        requests.each{|from,to|@pair_requests<<{'tournament_id'=>id,'from'=>from,'to'=>to}}
-        links.select { |a, b| a < b }.map { |a, b| {'tournament_id' => id, 'accounts' => [a, b]} }
+        ledger.applied.each { |row_id| @applied_pairings[row_id] = true }
+        state = ledger.state
+        @partnership_states[id] = state
+        ledger.requests.each do |from, request|
+          value = {'tournament_id'=>id, 'from'=>from, 'to'=>request['to']}
+          value['key'] = request['key'] if state['modern']
+          @pair_requests << value
+        end
+        ledger.changes.each { |change| @partner_changes << change.merge('tournament_id'=>id) }
+        ledger.links.select { |a, b| a < b }.map { |a, b| {'tournament_id' => id, 'accounts' => [a, b]} }
       end.sort_by { |row| [row['tournament_id'], row['accounts']] }
     end
 

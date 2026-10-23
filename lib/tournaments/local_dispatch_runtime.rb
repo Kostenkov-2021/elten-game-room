@@ -36,10 +36,11 @@ module GameRoomTournaments
         true
       end
       if start
-        @work.start do
+        admitted = GameRoomBackground.admit(@work) do
           renewed = refresh && @dispatcher.refresh_availability(intent_id: @intent)
           renewed && renewed[:state] != :confirmed ? renewed : @dispatcher.advance(intent_id: @intent)
         end
+        @lock.synchronize { @dirty = true unless @closed || @failed } unless admitted
       end
       outcome && @last
     end

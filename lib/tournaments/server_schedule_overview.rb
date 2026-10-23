@@ -115,10 +115,17 @@ module GameRoomTournaments
         @standings_list.update_options([],keys:[])
         message = case result[:reason]
         when :registration_open then _("Registration is still open. Matches and groups will be created after it closes.")
-        when :incomplete_pairs then _("Some participants still need partners. Complete the pairs before creating matches.")
+        when :incomplete_pairs
+          _("Cannot start: unpaired participants: %{count}. An even number is required.")
+        when :too_few_players
+          _("Cannot start: %{count} participants registered; at least %{minimum} are required.")
         else _("Plan operation blocked: %{reason}")
         end
-        @details.set_text(text(message) % {reason: result[:reason]})
+        values=(result[:details] || {}).transform_keys(&:to_sym)
+        # Older adapters may only provide a reason; do not invent a count.
+        message=_("There are not enough participants to start this tournament.") if result[:reason]==:too_few_players && !values[:minimum]
+        message=_("Some participants still need partners. Complete the pairs before creating matches.") if result[:reason]==:incomplete_pairs && !values[:count]
+        @details.set_text(text(message) % values.merge(reason: result[:reason]))
         return
       end
       storage = result.fetch('storage')

@@ -52,6 +52,10 @@
 - The history validator is pure: it indexes only earlier accepted game
   starts. When ordered records change, it validates history again; do not
   treat a rejected or later start as authorization for a move.
+  Before ingesting a blocking native stack page, validate its session, ordered
+  positions/trim gap, cursor, through and Boolean completion. A malformed page
+  must raise the existing transient read error, not publish a partial success
+  or advance past unseen entries. Detached adapters use the same page contract.
 - Inactive-table retention must not remove an active session, an operation
   in progress or an unreconciled write. At callbacks and when publishing
   validation, check session/collection identity under the lock: a repeated
@@ -84,13 +88,22 @@
 - Importing test helpers must not execute other tests' scenarios. Binary
   aggregates isolate scenarios, and reports must not count their children
   again as independent additional coverage. Preserve initial failures separately.
+  The owned-worker cleanup regression has two explicit test-subject imports,
+  not shared fixtures: it exercises the actual guarded parent methods.
+  Keep its exact isolation-check allowlist and definition-only import regression;
+  do not permit arbitrary guarded test imports or automatic scenario execution.
+  Owned-process cleanup scopes capture their own body's failure explicitly;
+  an unrelated caller's ambient `$!` is not proof that this body failed.
 
 ## Working practices
 
-- Tournament result policy v6 uses explicit game-owned small-point support;
+- Tournament result policies v6 and later use explicit game-owned small-point support;
   the base policy is disabled. Keep finishing places separate from numeric
   small-point exports, and preserve all earlier policies when verifying old
   receipts. A team is one unit. Do not turn missing scores into zeros.
+  v7 adds game-owned placement hooks for newly bound matches only. Keep v1-v6
+  exports unchanged, including unfinished old bindings; never migrate them
+  silently or enable numeric small points merely to distinguish finishing places.
 - New organizer settlements use v3 receipts and complete place groups outside
   active play only. A waiting table is not a start; unavailable native history
   is not proof of an unstarted match. All-zero is a resolved fixture, not a
@@ -144,6 +157,12 @@
   Availability or opening a notice is not participant consent. Retain a copied
   canonical result intent before network reads; saved continuations and result
   hashes must use the same canonical binding. Preserve uncertain operation keys.
+  A temporary failure before local result retention must keep the original
+  captured receipt in the bounded worker backlog. Retry only that local handoff
+  on the next terminal observation or Matches entry, never recapture later
+  evidence or blindly resend a network write. Finalize a failed attempt under
+  the queue lock before publishing its error; a requeued job must stay counted.
+  Corrupt journals, journal capacity limits and programmer failures are not retried.
   Ordered append-only creator claims are not atomic transactions or anti-cheat.
   Play creates/reuses one ordinary table and sends normal five-minute table
   invitations, accepted through the existing picker, notifications and Ctrl+J.
@@ -501,6 +520,13 @@ Procedure: `docs/BUILDING.md`. Preserve licensing and attribution.
   or on the shared widget object. Core must set the scene context and
   finalize its lifecycle. Regression: `test/room/widget_scene_navigation_test.rb`
   — including another window and return.
+- Explicit ordinary table creation requests a new table. Do not silently
+  substitute an existing visit, scan other connections or restore an account-wide
+  creation lock/fence: the maintainer removed that mechanism on 23 October 2026.
+  The single-program-window guard is separate and remains enabled. Saved-game
+  continuation and tournament entry retain their own exact-identity checks;
+  neither may repurpose an unrelated table. Tournament create claims still run
+  after local payload validation, immediately before the native request.
 - `DiscoveredSession` is tied to the connection that discovered the table.
   A row passed by the widget or a notification must not lend that connection
   to the new game window: joining resolves the ID in its own LiveSessions

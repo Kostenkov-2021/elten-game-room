@@ -32,7 +32,7 @@ def check_options(registry, view, id, options)
       end
       choices.empty? ? 'None' : choices.join(', ')
     else
-      definition.summary_unit == :seconds ? "#{value} seconds" : value.to_s
+      definition.summary_unit == :seconds ? "#{value} #{value == 1 ? 'second' : 'seconds'}" : value.to_s
     end
     label = GameRoomContent.utf8(definition.summary_label || definition.label)
     assert(description.include?("#{label}: #{expected}"), "Incorrect #{id}/#{definition.key}: #{description}")

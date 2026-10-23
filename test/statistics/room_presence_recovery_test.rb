@@ -16,7 +16,8 @@ class PresenceOfflineClient
   def e_json_request(method, path, params, cancellation_token:, &callback)
     raise "Presence mutated its shared native session" unless method == "GET" && path.include?("/stack?")
     @requests << {token: cancellation_token, callback: callback, path: path}
-    callback.call(JSON.generate("success" => true, "data" => {"entries" => [], "cursor" => 0, "has_more" => false}), nil) unless @hold
+    callback.call(JSON.generate("success" => true, "data" => {"session_id" => "native-presence-room",
+      "entries" => [], "cursor" => 0, "through" => 0, "has_more" => false}), nil) unless @hold
   end
 end
 

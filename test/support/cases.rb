@@ -7,12 +7,17 @@ module GameRoomTest
     def initialize; @cleanups = []; end
 
     def run(name)
+      body_failed = false
       begin
         yield self
+      rescue Exception
+        # Track this body, not $!, which may belong to a caller's rescue.
+        # Preserve every original exception, including non-StandardError exits.
+        body_failed = true
+        raise
       ensure
-        original = $!
         cleanup_error = cleanup_all
-        raise cleanup_error if cleanup_error && !original
+        raise cleanup_error if cleanup_error && !body_failed
       end
       puts "PASS #{name}"
     rescue StandardError => error

@@ -17,6 +17,17 @@ module GameRoomGames
     NONCE_PATTERN = /\A[0-9a-f]{32}\z/
     DIGEST_PATTERN = /\A[A-Za-z0-9+\/]{43}=\z/
 
+    def tournament_placement_result(replay, options:)
+      result = super
+      counts = tournament_placement_scores(replay, options: options).fetch(:scores)
+      most = counts.values.max
+      result.merge(winners: replay.players.select { |player| counts.fetch(player) == most }, draw: false)
+    end
+
+    def tournament_placement_scores(replay, options:)
+      {scores: replay.players.to_h { |player| [player, total(replay.state, player)] }, order: 'higher'}
+    end
+
     def event_sound_cues(event:, before_replay:, after_replay:, history:, viewer:, random_variant:)
       kinds = history.map(&:kind)
       return "play2" if kinds.include?(:commit)

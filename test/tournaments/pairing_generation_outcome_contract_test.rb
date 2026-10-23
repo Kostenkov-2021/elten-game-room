@@ -23,25 +23,27 @@ sandbox do |context|
   pair.call('Gamma', 'Delta', 'second-request')
   first_confirmation = nil
   context.before_insert = lambda do |table, row|
-    next unless table == REG && row['kind'] == 'pairing' && row['account'] == 'delta'
+    next unless table == REG && row['kind'] == 'partnership' && row['account'] == 'delta'
     context.before_insert = nil
+    pair.call('Gamma', nil, 'cancel-second-request')
     first_confirmation = pair.call('Beta', 'Alpha', 'first-confirmation')
     context.actor = 'Delta'
   end
   second_confirmation = pair.call('Delta', 'Gamma', 'second-confirmation')
-  # Both writes are durable. Only the first passed the historical pairing
-  # generation; a successful insert is not a successful partner selection.
+  # Both writes are durable. The cancelled request makes the second acceptance
+  # obsolete; an unrelated Alpha/Beta decision must not be invalidated.
   assert_equal('confirmed', second_confirmation['status'])
   assert_equal([%w[alpha beta]], service.call.list['pairs'].map { |row| row['accounts'] })
   assert_equal(false, second_confirmation.dig('evidence', 'pairing_applied'),
     'A stale partner selection must not be reported as applied')
   assert_equal(true, first_confirmation.dig('evidence', 'pairing_applied'))
-  assert(service.call.list['pair_requests'].any? { |row| row['from'] == 'gamma' && row['to'] == 'delta' })
+  assert(service.call.list['pair_requests'].none? { |row| row['from'] == 'gamma' && row['to'] == 'delta' })
   inserts = context.inserts.size
   retry_result = pair.call('Delta', 'Gamma', 'second-confirmation')
   assert_equal(second_confirmation['id'], retry_result['id'])
   assert_equal(false, retry_result.dig('evidence', 'pairing_applied'))
   assert_equal(inserts, context.inserts.size, 'Readback of the old intent must not submit a fresh choice')
+  pair.call('Gamma', 'Delta', 'second-request-after-refresh')
   new_choice = pair.call('Delta', 'Gamma', 'second-confirmation-after-refresh')
   assert_equal(true, new_choice.dig('evidence', 'pairing_applied'))
   assert_equal([%w[alpha beta], %w[delta gamma]], service.call.list['pairs'].map { |row| row['accounts'] })

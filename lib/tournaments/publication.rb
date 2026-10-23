@@ -21,9 +21,10 @@ module GameRoomTournaments
     MAX_INTEGER = (2**63) - 1
 
     class Invalid < ArgumentError
-      attr_reader :code
-      def initialize(code)
+      attr_reader :code, :details
+      def initialize(code, **details)
         @code = code
+        @details = details.freeze
         super(code.to_s)
       end
     end

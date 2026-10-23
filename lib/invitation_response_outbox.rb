@@ -61,11 +61,12 @@ class InvitationResponseOutbox
       return if @worker.busy? || @worker.closed?
       job = @jobs.values.find { |item| item[:state] == :pending && item[:next_at] <= @clock.call }
       return unless job
-      job[:state] = :sending
-      @active = job
-      @worker.start do
+      started = GameRoomBackground.admit(@worker) do
         job[:send].call(job[:row], job[:response]) if @current_user.call.to_s.casecmp?(job[:user]) && @clock.call < job[:expires]
       end
+      return unless started
+      job[:state] = :sending
+      @active = job
     end
   end
 

@@ -190,6 +190,35 @@ module GameRoomGames
       row && GameRoomKrowa::DailyAssignment.open(date, row["assignment"])
     end
 
+    # The date browser needs many historical answers at once. Restrict the
+    # existing table query to those past days, preserving the earliest native
+    # row per day even when duplicate assignments fill more than one page.
+    def daily_words(date_ids, today:)
+      current = normalized_date(today)
+      return {} unless current && available?
+
+      dates = Array(date_ids).filter_map { |value| normalized_date(value) }.uniq.select { |date| date < current }
+      by_key = dates.to_h { |date| [date_key(date), date] }
+      first_rows = {}
+      by_key.keys.each_slice(100) do |keys|
+        offset = 0
+        loop do
+          page = daily_assignments_table.select(where: {"day_key" => {"in" => keys}},
+            order: [["__id", "asc"]], limit: 500, offset: offset).to_a
+          page.each do |row|
+            key = row["day_key"].to_i
+            first_rows[key] ||= row if by_key.key?(key)
+          end
+          offset += page.length
+          break if keys.all? { |key| first_rows.key?(key) } || page.length < 500
+        end
+      end
+      first_rows.to_h do |key, row|
+        date = by_key.fetch(key)
+        [date, GameRoomKrowa::DailyAssignment.open(date, row["assignment"])]
+      end
+    end
+
     # Returns :published, :unchanged or :unavailable.
     def publish_word(word, attempts)
       normalized = normalized_ranked_word(word)

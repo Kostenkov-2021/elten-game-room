@@ -34,11 +34,11 @@ module GameRoomTournaments
       end
     end
 
-    def send_tournament_event(kind:,publication_ref:,recipient:nil,phase_id:nil,invitation_key:nil)
+    def send_tournament_event(kind:,publication_ref:,recipient:nil,phase_id:nil,invitation_key:nil,change_key:nil,change_index:nil)
       service=@tournament_event_services&.fetch(kind)
       raise ProposalNotice::Unavailable,'Tournament notices are not connected' unless service
       account=Publication::Data.account(Session.name).downcase
-      service.notices(publication_ref:publication_ref,recipient:recipient,phase_id:phase_id,addressed:true,invitation_key:invitation_key).map do |notice,delivery_name|
+      service.notices(publication_ref:publication_ref,recipient:recipient,phase_id:phase_id,addressed:true,invitation_key:invitation_key,change_key:change_key,change_index:change_index).map do |notice,delivery_name|
         identity=[account,notice['backend_identity']]
         identity << notice['publication_ref'] if notice['version']==2
         scope=Digest::SHA256.hexdigest(JSON.generate(identity))
@@ -109,8 +109,23 @@ module GameRoomTournaments
       same_app=notification.app_uuid.to_s.downcase==server_app_uuid.to_s.downcase
       valid=same_app && cached && cached[0]['metadata']==notice && cached[1]==notification.sender.to_s.downcase && service&.presentable?(cached[0])
       description=service&.description(metadata:notice,sender:notification.sender) if same_app
+      description ||= cached[0].slice('title','game') if kind=='partnership' && valid
       return notification.presentation(title:_("Tournament"),body:_("This tournament notification is no longer available."),sound:nil).suppress_default! unless description
-      if kind=='registration'
+      if kind=='partnership'
+        title=_("Tournament partnership")
+        change=cached[0].fetch('change')
+        peer=change['from']==notice['recipient'] ? change['to_name'] : change['from_name']
+        template=case change['kind']
+        when 'requested' then _("%{player} invites you to be partners in %{name}.")
+        when 'cancelled' then _("%{player}'s partner invitation in %{name} was cancelled.")
+        when 'declined' then _("%{player} declined your partner invitation in %{name}.")
+        when 'dissolved' then _("Your partnership with %{player} in %{name} has ended.")
+        when 'assigned' then _("Your drawn partner in %{name}: %{player}.")
+        else _("Your partner in %{name}: %{player}.")
+        end
+        body=GameRoomContent.utf8(template)%{player:peer,name:description['title']}
+        action=:open_tournament_partner
+      elsif kind=='registration'
         title=_("Tournament invitation")
         body=GameRoomContent.utf8(_("%{sender} invites you to register for %{name} (%{game})."))%{
           sender:notification.sender,name:description['title'],game:@tournament_start_registry.name(description['game'])}

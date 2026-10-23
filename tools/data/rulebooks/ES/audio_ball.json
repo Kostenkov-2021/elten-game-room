@@ -8,7 +8,7 @@
       },
       "paragraphs": [
         {
-          "es": "Audio Ball es un duelo de reflejos y oído. Envías una pelota al rival y, cuando vuelve, eliges la defensa que corresponde a su sonido. Si la detienes, queda en tu poder hasta que prepares otro golpe. Si se te escapa, el rival suma un punto. Juegan dos personas, aunque también puedes enfrentarte a un bot."
+          "es": "Audio Ball es un duelo de reflejos y oído. Envías una pelota al rival y, cuando vuelve, eliges la defensa que corresponde a su sonido. Si la detienes, queda en tu poder hasta que prepares otro golpe. Si se te escapa, el rival suma un punto. Por defecto juegan dos personas, aunque también puedes enfrentarte a un bot."
         },
         {
           "es": "Conviene jugar con auriculares. Con la orientación inicial, estás a la derecha: la pelota que recibes se oye cada vez más a tu derecha; la que envías se aleja hacia la izquierda."
@@ -120,7 +120,27 @@
           "es": "Los ajustes de la mesa permiten exigir dos o tres sets ganados, en lugar de uno, para ganar el partido. Cada set sigue jugándose a 7 puntos con dos de ventaja."
         },
         {
-          "es": "Al terminar un set, el marcador de puntos vuelve a 0:0. El siguiente empieza cinco segundos después y cambia la persona que saca primero. Quien abre el primer set también abre el tercero; el rival abre el segundo y el cuarto. El partido termina al alcanzar el número de sets ganados que se haya elegido."
+          "es": "En individuales, al terminar un set, el marcador de puntos vuelve a 0:0. El siguiente empieza cinco segundos después y cambia la persona que saca primero. Quien abre el primer set también abre el tercero; el rival abre el segundo y el cuarto. El partido termina al alcanzar el número de sets ganados que se haya elegido."
+        }
+      ]
+    },
+    {
+      "id": "doubles",
+      "title": {
+        "es": "Dobles"
+      },
+      "paragraphs": [
+        {
+          "es": "Elige Dobles en los ajustes de la mesa para jugar en dos equipos de dos. Tú y tu compañero compartís puntos y sets ganados."
+        },
+        {
+          "es": "Los compañeros se alternan al devolver la pelota. Después de tu golpe defiende un rival; luego juegan tu compañero, el otro rival y tú de nuevo. En tu turno, detén la pelota, prepárala con flecha derecha o A y elige un golpe."
+        },
+        {
+          "es": "No pulses una tecla de defensa mientras la pelota va hacia tu compañero. Si lo haces, el equipo rival gana un punto."
+        },
+        {
+          "es": "Se sortea el primer sacador entre los cuatro jugadores. Cada dos puntos, el saque pasa al siguiente en el orden de los golpes. Cada set nuevo lo abre la persona que sigue a quien abrió el anterior. Los sonidos de la pelota y los ajustes de escucha funcionan como en individuales."
         }
       ]
     },
@@ -197,6 +217,7 @@
   "option_chapters": {
     "mode": "goal",
     "difficulty": "pace",
-    "sets_to_win": "sets"
+    "sets_to_win": "sets",
+    "team_size": "doubles"
   }
 }

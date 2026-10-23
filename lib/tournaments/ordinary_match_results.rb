@@ -55,7 +55,7 @@ module GameRoomTournaments
       summary = GameResult.from_replay(game: game, replay: replay, players: players, options: options,
         event_count: events.size, events: events, result_policy: binding.fetch('result_policy', GameResult::RANKING_RESULT_POLICY))
       summary = GameResult.with_eliminations(summary, groups)
-      if binding['result_policy'] == GameResult::CURRENT_RESULT_POLICY
+      if GameResult::SELECTED_SMALL_POLICIES.include?(binding['result_policy'])
         summary = GameResult.with_technical_forfeits(summary, groups.flatten.sort, game: game, options: options)
       end
       Publication::Data.freeze_tree({'kind' => 'ordinary-match-result-v1', 'binding_digest' => Digest::SHA256.hexdigest(JSON.generate(binding)),
@@ -84,7 +84,7 @@ module GameRoomTournaments
       raise Publication::Invalid, :wrong_bound_session unless outcome.dig('decision', 'mode') == 'terminal'
       summary = outcome.fetch('summary')
       # Preserve the already published two-seat automatic result shape.
-      if binding['result_policy'] == GameResult::CURRENT_RESULT_POLICY
+      if GameResult::SELECTED_SMALL_POLICIES.include?(binding['result_policy'])
         if accounts.size>2 && summary['scores'].nil?
           summary=summary.merge(GameResult.selected_small_scores(game:game,replay:replay,options:options,players:players))
         end

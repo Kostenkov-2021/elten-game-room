@@ -55,7 +55,11 @@ Zvuky rozlišují rozdání, dobrání a odhození kamene, vyložení sestavy a 
 
 Při odpovědi na kámen klávesa D přečte kámen, kterého se týká Pas, Chow, Pung, Kong nebo Mahjong. Nezmění ani nepotvrdí volbu. V pasiánsu D dál čte souřadnice.
 
-W přečte hodnotu platné výhry: fan nebo han a fu a získané body. Neodhaduje neúplnou ruku. Před výhrou v riichi nezahrnuje skryté ura-dora, takže konečná hodnota může být vyšší. U čte tvé vyložené sestavy, Shift+U sestavy ostatních a R číslo rozdání, větry a aktuální situaci. V riichi I čte ukazatele a kameny dora, počet tvých dora, hlášení riichi, vklady, honba a tvé omezení furiten. Tyto klávesy pouze čtou informace.
+W přečte hodnotu platné výhry: fan nebo han a fu a získané body. Bez platné výhry neuvádí konečnou hodnotu ruky. Před výhrou v riichi nezahrnuje skryté ura-dora, takže konečná hodnota může být vyšší. U čte tvé vyložené sestavy, Shift+U sestavy ostatních a R číslo rozdání, větry a aktuální situaci. V riichi I čte ukazatele a kameny dora, počet tvých dora, hlášení riichi, vklady, honba a tvé omezení furiten. Tyto klávesy pouze čtou informace.
+
+V Hongkongu, Riichi a MCR klávesa W přečte také součet základních bonusů, které už máš: pungy draků a bodovaných větrů, příslušné bonusové kameny nebo přijaté vyhlášení Riichi. Skryté trojice se počítají, dokud je ponecháš pohromadě. Nejde o hodnotu nedokončené ruky: vzory celé ruky mohou základní bonusy nahradit. MCR uvádí květiny zvlášť, protože nepomáhají dosáhnout 8 fan; Riichi uvádí zvlášť viditelné dora, které vyžadují jaku. Při vytváření stolu je Základní bodový přehled pod W nastaven na Ano. Zvol Ne, pokud chceš pouze hodnotu platné výhry. Nastavení nemění bodování ani podmínky výhry.
+
+Každá varianta má vlastní přehled bodování: Hongkong uvádí všechny přiznávané fan a bonusy podle větru, MCR všech 81 položek podle hodnoty a Riichi hodnoty otevřených i zavřených jaku, yakumany a fu. MCR vysvětluje také výluky a smíšené kongy za 6 fan. V pasijánsu se počítají odstraněné páry, ne fan.
 
 S přečte průběžné body všech hráčů. M počet kamenů zbývajících k dobrání ve zdi. Jde jen o oznámení: nedobírají, neodhazují, nedávají pas ani neodhalují cizí ruce. V solitaire S čte odebrané páry a M zbývající kameny rozložení.
 
@@ -96,6 +100,8 @@ Enter v seznamu uživatelů otevře běžné uživatelské menu ELTENu. Odtud m�
 Tlačítkem „Vytvořit hlasový hovor“ u stolu vytvoříte konferenční kanál ELTENu. Zadejte název, zvolte veřejný nebo skrytý kanál a případně heslo. Skrytý kanál není v běžném seznamu, ale samotné skrytí nenahrazuje ochranu heslem.
 
 Ostatní uslyší krátkou pozvánku a u stolu najdou „Připojit se k hlasovému hovoru“. Po připojení se tlačítko změní na „Odpojit hlasový hovor“. Můžete konferenci opustit a později se znovu připojit. Když se odpojí tvůrce, zmizí i pozvánka u stolu; lidé, kteří se už připojili, mohou dál hovořit. Během hry se samo neotevře žádné okno. Pokud už jste v jiné konferenci, přechod musíte potvrdit. Nastavení mikrofonu a push-to-talk se nemění.
+
+Když opustíte stůl, odpojíte se také od jeho konference. Ctrl+Shift+M ztlumí nebo zapne váš mikrofon v probíhající konferenci.
 
 ### Hostitel a správa botů a týmů
 
@@ -363,16 +369,15 @@ Přihlášení, odhlášení a výběr spoluhráče se nabízejí tehdy, když j
 
 ### Seznam účastníků
 
-V položce „Účastníci“ najdete přihlášené hráče i jejich spoluhráče. Enter na osobě otevře běžnou nabídku uživatele ELTENu. Ctrl+R seznam obnoví.
+V položce „Účastníci“ najdete přihlášené hráče. V týmovém turnaji jsou nahoře týmy, každý jen jednou, a pod nimi lidé bez spoluhráče. Enter na týmu otevře jeho členy; Enter na osobě otevře běžnou nabídku uživatele ELTENu. Escape vás vrátí ke stejnému týmu. Ctrl+R seznam obnoví.
 
 Pořadatel má v kontextové nabídce další akce:
 
 - Ctrl+I — pozvat osoby ze společného seznamu online uživatelů a kontaktů. Mezerník osoby označí, Enter odešle pozvánky všem označeným. Přihlášení a dříve pozvaní se nezobrazují.
-- Ctrl+P — vybrat nebo změnit spoluhráče označeného účastníka v turnaji dvojic, případně zvolit „Bez spoluhráče“. Změnu existujících dvojic je třeba potvrdit.
 - Delete — po potvrzení odebrat označeného účastníka.
 - Ctrl+L — zobrazit pozvané osoby se stavem „Čeká se“ nebo „Odmítnuto“. Tento seznam neslouží k opětovnému odesílání pozvánek.
 
-Zvát lze při otevřených přihláškách. Odebírat účastníky a měnit dvojice lze před zahájením turnaje.
+Zvát lze při otevřených přihláškách. Účastníky lze odebírat před zahájením turnaje.
 
 Novou pozvánku lze odmítnout v akcích turnaje. Platí, dokud jsou přihlášky otevřené, bez samostatné lhůty ve dnech. Stejnou osobu nelze pozvat znovu, ani po odmítnutí. Odmítnutí nebrání samostatnému přihlášení.
 
@@ -382,13 +387,15 @@ Přihlaste se volbou „Přihlásit se do turnaje“. Pokud není dostupná, pod
 
 Pořadatel vám může poslat pozvánku do turnaje. Otevře seznam jeho akcí; přihlásíte se až volbou „Přihlásit se do turnaje“. Nejde o pozvánku ke konkrétnímu zápasu.
 
-V turnaji stálých dvojic se nejprve přihlásí každý hráč sám. Potom:
+V turnaji stálých dvojic se každý hráč nejprve přihlásí sám. Potom:
 
-1. Otevřete „Spoluhráč v týmu“ a vyberte jiného účastníka.
-2. Požádejte ho, aby si na stejné obrazovce vybral vás.
-3. Jakmile se vyberete navzájem, je dvojice potvrzená. Na obrazovce spoluhráče také zjistíte, zda ještě čekáte na souhlas.
+1. Otevřete „Spoluhráč v týmu“ a vyberte, s kým chcete hrát.
+2. Vybraný člověk dostane nabídku partnerství a může ji přijmout nebo odmítnout. Tyto volby najde také v položce „Spoluhráč v týmu“.
+3. Po přijetí dostanete oba potvrzení a váš tým se objeví mezi účastníky.
 
-Před začátkem můžete svůj výběr změnit nebo zrušit. Dvojice může sestavit i pořadatel. Týmové zápasy nelze připravit, dokud některým účastníkům chybí spoluhráč. Po celý turnaj zůstáváte ve stejné dvojici a výsledek se vám počítá společně.
+Odeslanou můžete mít jednu nabídku. Při výběru jiné osoby potvrdíte zrušení předchozí. Pokud už máte dohodnutou dvojici, nejprve potvrďte její rozpuštění. Spoluhráč o změně dostane zprávu.
+
+Při zahájení turnaje program ponechá dohodnuté dvojice a zbývající hráče spáruje náhodně. Pořadatel jejich partnery nevybírá. Pokud zbude lichý počet lidí bez spoluhráče nebo je účastníků málo, dozví se, proč nelze začít. Po zahájení zůstávají dvojice stejné a výsledek se počítá společně.
 
 Oznámení o zahájení turnaje otevře jeho zápasy. Po dokončení fáze přijde jedno oznámení s názvem následující fáze; otevře tabulku výsledků právě dokončené fáze. Po finále přijde pouze oznámení o konci celého turnaje se jménem vítěze nebo společných vítězů a odkazem na konečnou tabulku. Zvuky se řídí běžným nastavením oznámení.
 
