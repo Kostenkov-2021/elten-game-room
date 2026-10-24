@@ -42,7 +42,9 @@ GameRoomGames::CATALOG.ids.each do |id|
       assert_equal(event_ids.sort.uniq, event_ids, "#{id}: duplicated or unordered records")
       assert_equal(players, packet.room.game_participants, "#{id}: copied room lost its participants")
       copy = GameRoomSnapshot.copy(packet)
-      copy.snapshot.events.clear
+      assert(copy.snapshot.events.frozen?, "#{id}: the shared log is mutable")
+      assert(copy.snapshot.events.all?(&:frozen?), "#{id}: a shared log entry is mutable")
+      assert_raises(FrozenError) { copy.snapshot.events.clear }
       copy.room.members.clear
       assert_equal(expected.events, packet.snapshot.events, "#{id}: consumer owns the worker's log")
       assert_equal(players, packet.room.members, "#{id}: consumer owns the worker's membership")

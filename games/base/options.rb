@@ -104,6 +104,13 @@ module GameRoomGames
         normalize_options(values)
       end
 
+      # Published tournament options already belong to a fixed match identity.
+      # New-game defaults must not silently upgrade that accepted document.
+      def game_start_options(values, players:, fixed: false)
+        options = fixed ? normalize_options(values) : new_game_options(values)
+        options_for_team_roster(options, players: players)
+      end
+
       # Games declare dependencies between options, while the shared table
       # configuration form owns hiding and showing the corresponding controls.
       # A hash requires every named option to match. A callable can express a

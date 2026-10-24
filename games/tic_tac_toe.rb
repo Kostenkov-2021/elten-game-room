@@ -163,7 +163,7 @@ module GameRoomGames
     end
 
     def automatic_action_due?(replay,actor,context:nil)
-      !automatic_action(replay,actor,context:context).nil?
+      !!(replay.state&.[](:opening_pending) && same_user?(actor,replay.players.first))
     end
 
     def surface_spec(replay, viewer)

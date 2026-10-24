@@ -26,7 +26,7 @@ scenario('R1: stary nil, reentry i późniejszy błąd walidacji PRZED prepare')
   error = save(command, h, a)
   assert(error.equal?(original), 'Błąd walidacji nie dotarł do wywołującego')
   assert(nested_error.is_a?(Intent::Pending) && rejected_without_boundary, 'R1: drugi zapis wszedł między odczyt a freeze')
-  assert(service.state['uploads'] == 0 && a.list.empty? && !frozen?(h) && !h.core.closed,
+  assert(service.state['uploads'] == 0 && a.list.empty? && !game_frozen?(h) && !h.core.closed,
     'R1: walidacja przed prepare pozostawiła wysłane archiwum bez ochrony')
   boundaries = h.core.entries.select { |entry| entry.dig('packet', 'kind') == 'game_boundary' }
   assert(boundaries.map { |entry| entry.dig('packet', 'data', 'frozen') } == [true, false], 'Nie oddano wyłącznie własnej granicy')

@@ -24,7 +24,7 @@ if label == 'A'
   error = save(command, h, store)
   DurableSaveFixture.save_room(root, h)
   record = store.list.fetch(0)
-  result = {'pid'=>Process.pid, 'error'=>error.class.name, 'frozen'=>frozen?(h), 'status'=>record['status'],
+  result = {'pid'=>Process.pid, 'error'=>error.class.name, 'frozen'=>game_frozen?(h), 'status'=>record['status'],
     'id'=>record['id'], 'receipt'=>record.dig('values', 'boundary'), 'uploads'=>service.state['uploads']}
 else
   entries = Marshal.load(Marshal.dump(h.core.entries))

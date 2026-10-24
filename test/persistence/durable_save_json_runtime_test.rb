@@ -33,7 +33,7 @@ scenario('Ścisły manifest intentu nie ufa samej opcji parsera') do |root,h,sto
   Thread.current[:durable_save_legacy_json] = true
   error = caught { archive.reconcile(intent: store, id: operation['id'], game: h.game) }
   assert(error.is_a?(Intent::Corrupt), "RED: intent przyjął manifest z duplikatem przy innym parserze: #{error.inspect}")
-  assert(File.binread(store.path) == before && service.state['uploads'] == 1 && frozen?(h), 'Zmodyfikowano dowód po odmowie')
+  assert(File.binread(store.path) == before && service.state['uploads'] == 1 && game_frozen?(h), 'Zmodyfikowano dowód po odmowie')
 ensure
   Thread.current[:durable_save_legacy_json] = false
 end
@@ -46,7 +46,7 @@ scenario('Niebezpieczny runtime odmawia otwarcia i uzgodnienia, bez liberalnego 
   assert(error.is_a?(Intent::Error) && error.code == :incompatible_runtime, 'Otwarto dziennik niebezpiecznym parserem')
   error = caught { archive.reconcile(intent: store, id: operation['id'], game: h.game) }
   assert(error.is_a?(GameRoomTournaments::StrictJson::IncompatibleRuntime), 'Uzgodniono pomimo nieskutecznej ochrony JSON')
-  assert(File.binread(store.path) == before && service.state['uploads'] == 1 && frozen?(h), 'Niebezpieczny runtime zmienił dane')
+  assert(File.binread(store.path) == before && service.state['uploads'] == 1 && game_frozen?(h), 'Niebezpieczny runtime zmienił dane')
 ensure
   Thread.current[:durable_save_legacy_json] = false
 end

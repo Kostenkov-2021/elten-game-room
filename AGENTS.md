@@ -72,6 +72,10 @@
   The editor must retain game-normalized non-control metadata, such as pool
   versions and team seats. Recompute derived content-pack identity from the
   selected language/set; do not merge arbitrary unnormalized input.
+- Use `game_start_options(..., fixed: true)` when checking or starting an
+  already bound tournament match. Its published options and identity must
+  not be upgraded through `new_game_options`; ordinary starts still use
+  the current new-game defaults.
 - Realtime clients reset their own fields; shared code manages channel
   lifetime, ping and announcement sequencing, not shared physics. Test player
   replacement, a spectator acting as host, stale-channel closure and ping re-registration.

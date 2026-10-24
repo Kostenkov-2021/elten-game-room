@@ -28,7 +28,7 @@ File.singleton_class.prepend(DurableSaveRenameFailure)
     operation = store.list.fetch(0)
     expected = status == 'attempted' && after ? 'attempted' : 'prepared'
     assert(operation['status'] == expected, 'Niezgodny stan utrwalony')
-    assert(frozen?(h) == (status == 'attempted'), 'Nieprawidłowy zakres zachowania freeze')
+    assert(game_frozen?(h) == (status == 'attempted'), 'Nieprawidłowy zakres zachowania freeze')
     before = File.binread(store.path)
     2.times do
       assert(save(command,h,store).is_a?(Intent::Pending), 'Retry prepared/attempted udzieliło wysyłki')

@@ -7,7 +7,7 @@ scenario('ProgramError po zapisie zachowuje obiekt/cause, attempted i freeze') d
   service.failure = original
   error = save(command,h,store)
   assert(error.equal?(original) && error.cause.equal?(cause), "Przebrano błąd programu: #{error.inspect}")
-  assert(service.state['uploads'] == 1 && frozen?(h) && !h.core.closed, 'Naruszono niepewny zapis')
+  assert(service.state['uploads'] == 1 && game_frozen?(h) && !h.core.closed, 'Naruszono niepewny zapis')
   assert(%w[attempted uncertain].include?(store.list.fetch(0)['status']), 'Błąd programu potwierdzono automatycznie')
 end
 scenario('Zmiana konta po błędzie I/O zatrzaskuje się bez zasłonięcia ProgramError') do |root,h,store,service,archive,command|
@@ -24,5 +24,5 @@ scenario('Zmiana konta po błędzie I/O zatrzaskuje się bez zasłonięcia Progr
   Thread.current[:game_room_test_user] = 'Alice'
   assert(error.equal?(original), "Zmiana konta zasłoniła ProgramError: #{error.inspect}")
   assert(caught { store.list }.is_a?(Intent::ContextChanged), 'Powrót konta odblokował zatrzaśniętą operację')
-  assert(service.state['uploads'] == 1 && frozen?(h) && !h.core.closed, 'Zmieniono niepewny zapis')
+  assert(service.state['uploads'] == 1 && game_frozen?(h) && !h.core.closed, 'Zmieniono niepewny zapis')
 end
