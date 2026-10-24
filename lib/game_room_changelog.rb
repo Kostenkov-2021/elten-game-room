@@ -579,6 +579,18 @@ module GameRoomChangelog
         "Improved responsiveness and recovery during simultaneous actions, background play, invitations and saved-game operations. Reduced repeated work in game updates, tournament lists and leaderboards.",
         "Added five Polish general-knowledge questions proposed by bratczyk96 and corrected several reported questions. Thank you!"
       ].freeze
+    ).freeze,
+    Entry.new(
+      version: "2.0.5.6",
+      build: 257,
+      changes: [
+        "Improved responsiveness in longer Mahjong games. Successive hands should no longer cause the same growing slowdown, particularly in Hong Kong.",
+        "Fixed UNO rounds ending with a Draw Two or Wild Draw Four. The opponent draws the penalty cards, which count towards the score, and the player who emptied their hand no longer has to draw to finish the round.",
+        "Four of a kind in Yahtzee now scores at least 15 points.",
+        "New Tic Tac Toe games randomly choose who starts. The starting player uses X.",
+        "In singles, Audio Ball announces only who serves. In doubles, it still announces both the server and the receiver.",
+        "Fixed an error when confirming a tournament start again."
+      ].freeze
     ).freeze
   ].freeze
 

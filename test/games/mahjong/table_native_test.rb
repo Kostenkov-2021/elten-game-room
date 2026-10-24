@@ -4,12 +4,12 @@ require_relative '../../support/mahjong_round'
 require_relative '../../support/mahjong_added_kong'
 require_relative '../../../games/mahjong_support/table_events'
 require_relative '../../../games/mahjong_support/table_presentation'
+require_relative '../../../games/mahjong'
 include GameRoomTest::Assertions
 include MahjongRoundFixture
 include MahjongAddedKongFixture
 
-class MahjongTableNativeGame < GameRoomGames::Base
-  include GameRoomGames::MahjongTablePresentation
+class MahjongTableNativeGame < GameRoomGames::Mahjong::Table
 end
 NativeOptionTest.native_method(ListBox, :update, 'src/ui/controls/list_box.rb')
 NativeOptionTest.native_method(Button, :press, 'src/ui/controls/button.rb')

@@ -68,7 +68,7 @@
           "en": "- Three of a kind needs at least three equal dice and scores the sum of all five."
         },
         {
-          "en": "- Four of a kind needs at least four equal dice and scores the sum of all five."
+          "en": "- Four of a kind needs at least four equal dice and scores the sum of all five, with a minimum of 15 points."
         },
         {
           "en": "- Full house needs three of one value and two of another. It scores 25 or the sum of the dice, whichever is higher. Three 6s and two 4s therefore score 26."

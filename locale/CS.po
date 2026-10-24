@@ -90,15 +90,15 @@ msgstr "%{card}. Vyberte způsob zahrání"
 msgid "%{card}. Total: %{total}."
 msgstr "%{card}. Součet: %{total}."
 
-#: games/uno.rb:1354
+#: games/uno.rb:1362
 msgid "%{card}; any card may be played."
 msgstr "%{card}; lze zahrát libovolnou kartu."
 
-#: games/uno.rb:1151
+#: games/uno.rb:1152
 msgid "%{card}; colour %{colour}"
 msgstr "%{card}; barva %{colour}"
 
-#: games/uno.rb:1356
+#: games/uno.rb:1364
 msgid "%{card}; current colour: %{colour}."
 msgstr "%{card}; aktuální barva: %{colour}."
 
@@ -194,7 +194,7 @@ msgstr "%{cell}; dostupný tah"
 msgid "%{cell}; selected"
 msgstr "%{cell}; vybráno"
 
-#: games/uno.rb:788
+#: games/uno.rb:789
 msgid "%{challenger} challenges the +4 played by %{source}. %{outcome} %{payment}"
 msgstr "Hráč %{challenger} zpochybňuje kartu +4 zahranou hráčem %{source}. %{outcome} %{payment}"
 
@@ -202,7 +202,7 @@ msgstr "Hráč %{challenger} zpochybňuje kartu +4 zahranou hráčem %{source}. 
 msgid "%{challenge}: %{players}."
 msgstr "%{challenge}: %{players}."
 
-#: games/uno.rb:1146
+#: games/uno.rb:1147
 msgid "%{colour} %{value}"
 msgstr "%{colour} %{value}"
 
@@ -861,7 +861,7 @@ msgstr "Hráč %{player} přistihl hráče %{target}, že neohlásil Makao."
 msgid "%{player} caught %{target} without Makao. %{target} draws %{count}."
 msgstr "%{player} přistihl hráče %{target}, že neohlásil Makao. %{target} si dobírá karty: %{count}."
 
-#: games/uno.rb:770
+#: games/uno.rb:771
 msgid "%{player} caught %{target} without UNO. %{target} draws two cards."
 msgstr "Hráč %{player} přistihl hráče %{target}, který neohlásil UNO. Hráč %{target} si dobírá dvě karty."
 
@@ -881,7 +881,7 @@ msgstr "Hráč %{player} mění barvu na %{suit}."
 msgid "%{player} checks."
 msgstr "Hráč %{player} čeká."
 
-#: games/uno.rb:693
+#: games/uno.rb:694
 msgid "%{player} chose %{colour}."
 msgstr "Hráč %{player} zvolil barvu %{colour}."
 
@@ -901,7 +901,7 @@ msgstr ""
 msgid "%{player} chose talon %{number}."
 msgstr "Hráč %{player} vybral talon %{number}."
 
-#: games/mahjong_support/table_game.rb:420
+#: games/mahjong_support/table_game.rb:429
 msgid "%{player} claimed %{set}."
 msgstr "%{player} ohlásil: %{set}."
 
@@ -943,11 +943,11 @@ msgstr "Hráč %{player} vytvořil stůl."
 msgid "%{player} creates meld %{number}: %{cards}."
 msgstr "Hráč %{player} vykládá kombinaci %{number}: %{cards}."
 
-#: games/mahjong_support/table_game.rb:407 games/mahjong_support/table_game.rb:418
+#: games/mahjong_support/table_game.rb:416 games/mahjong_support/table_game.rb:427
 msgid "%{player} declared Mahjong."
 msgstr "%{player} ohlásil mahjong."
 
-#: games/mahjong_support/table_game.rb:409
+#: games/mahjong_support/table_game.rb:418
 msgid "%{player} declared a concealed kong."
 msgstr "%{player} ohlásil skrytý kong."
 
@@ -962,7 +962,7 @@ msgstr "Hráč %{player} vyhlásil bankrot. Zbývající majetek přebírá %{cr
 msgid "%{player} declared bankruptcy. Remaining property returns to the bank."
 msgstr "Hráč %{player} vyhlásil bankrot. Zbývající nemovitosti se vracejí bance."
 
-#: games/mahjong_support/table_game.rb:413
+#: games/mahjong_support/table_game.rb:422
 msgid "%{player} declared riichi, discarding %{tile}."
 msgstr "%{player} ohlásil riichi a odhodil: %{tile}."
 
@@ -1001,7 +1001,7 @@ msgstr "Hráč %{player} nepodal včas. Soupeř získává bod."
 msgid "%{player} discarded %{card}."
 msgstr "%{player} odhazuje kartu %{card}."
 
-#: games/mahjong_support/table_game.rb:405
+#: games/mahjong_support/table_game.rb:414
 msgid "%{player} discarded %{tile}."
 msgstr "%{player} odhodil: %{tile}."
 
@@ -1050,14 +1050,14 @@ msgstr "Hráč %{player} si dobírá kámen."
 msgid "%{player} drew %{count} %{cards}."
 msgstr "Hráč %{player} si dobral %{count} %{cards}."
 
-#: games/makao.rb:676 games/uno.rb:724
+#: games/makao.rb:676 games/uno.rb:725
 msgid "%{player} drew %{count} card."
 msgid_plural "%{player} drew %{count} cards."
 msgstr[0] "Hráč %{player} si dobral %{count} kartu."
 msgstr[1] "Hráč %{player} si dobral %{count} karty."
 msgstr[2] "Hráč %{player} si dobral %{count} karet."
 
-#: games/makao.rb:676 games/makao.rb:737 games/uno.rb:723 games/uno.rb:787
+#: games/makao.rb:676 games/makao.rb:737 games/uno.rb:724 games/uno.rb:788
 msgid "%{player} drew %{count} penalty card."
 msgid_plural "%{player} drew %{count} penalty cards."
 msgstr[0] "Hráč %{player} dobral %{count} trestnou kartu."
@@ -1074,7 +1074,7 @@ msgstr "%{player} dobírá kartu."
 msgid "%{player} drew a replacement card."
 msgstr "Hráč %{player} si dobral náhradní kartu."
 
-#: games/mahjong_support/table_game.rb:403
+#: games/mahjong_support/table_game.rb:412
 msgid "%{player} drew a tile."
 msgstr "%{player} dobral kámen."
 
@@ -1086,7 +1086,7 @@ msgstr "Hráč %{player} vyřazen"
 msgid "%{player} ended the game. The table remains open."
 msgstr "Hráč %{player} ukončil hru. Stůl zůstává otevřený."
 
-#: games/makao.rb:699 games/uno.rb:747
+#: games/makao.rb:699 games/uno.rb:748
 msgid "%{player} ended the turn."
 msgstr "Hráč %{player} ukončil tah."
 
@@ -1206,7 +1206,7 @@ msgstr "Hráč %{player} licituje."
 msgid "%{player} is choosing a category."
 msgstr "Hráč %{player} vybírá kategorii."
 
-#: games/uno.rb:1399 games/uno.rb:463
+#: games/uno.rb:1407 games/uno.rb:463
 msgid "%{player} is choosing a colour."
 msgstr "Hráč %{player} vybírá barvu."
 
@@ -1253,7 +1253,7 @@ msgstr "Hráč %{player} připravuje nabídku výměny pro hráče %{target}."
 msgid "%{player} is preparing to describe."
 msgstr "Hráč %{player} se připravuje na popisování."
 
-#: games/mahjong_support/private_table_replay.rb:207 games/mahjong_support/table_game.rb:342
+#: games/mahjong_support/private_table_replay.rb:207 games/mahjong_support/table_game.rb:351
 msgid "%{player} is ready for the next hand."
 msgstr "%{player} je připraven na další rozdání."
 
@@ -1437,7 +1437,7 @@ msgstr[2] "%{player} se posouvá o %{count} polí vpřed."
 msgid "%{player} moves to %{square}."
 msgstr "Hráč %{player} se přesouvá na pole %{square}."
 
-#: games/makao.rb:1009 games/uno.rb:1392
+#: games/makao.rb:1009 games/uno.rb:1400
 msgid "%{player} must draw %{count} card."
 msgid_plural "%{player} must draw %{count} cards."
 msgstr[0] "Hráč %{player} si musí dobrat %{count} kartu."
@@ -1452,7 +1452,7 @@ msgstr "%{player} si musí líznout kartu."
 msgid "%{player} must draw a replacement card."
 msgstr "Hráč %{player} si musí dobrat náhradní kartu."
 
-#: games/uno.rb:1389
+#: games/uno.rb:1397
 msgid "%{player} must draw until a %{colour} card appears."
 msgstr "Hráč %{player} musí dobírat, dokud se neobjeví karta barvy: %{colour}."
 
@@ -1480,7 +1480,7 @@ msgstr "Hráč %{player} zaplatil %{amount}; příjemce: %{recipient}; důvod: %
 msgid "%{player} paid %{rent} rent to %{owner}."
 msgstr "Hráč %{player} zaplatil nájemné %{rent} hráči %{owner}."
 
-#: games/mahjong_support/table_game.rb:416 games/tysiac.rb:731
+#: games/mahjong_support/table_game.rb:425 games/tysiac.rb:731
 msgid "%{player} passed."
 msgstr "Hráč %{player} pasoval."
 
@@ -1641,7 +1641,7 @@ msgstr "%{player} hraje ze stolu (%{seat})."
 msgid "%{player} promoted the pawn to %{piece}."
 msgstr "Hráč %{player} proměnil pěšce ve figuru: %{piece}."
 
-#: games/mahjong_support/table_game.rb:411
+#: games/mahjong_support/table_game.rb:420
 msgid "%{player} proposed a kong of %{tile}."
 msgstr "%{player} navrhl kong: %{tile}."
 
@@ -1660,7 +1660,7 @@ msgstr "%{player} zvyšuje sázku na %{amount}."
 msgid "%{player} ran out of auction time and passes."
 msgstr "Hráč %{player} překročil časový limit aukce a pasuje."
 
-#: games/uno.rb:846
+#: games/uno.rb:847
 msgid "%{player} ran out of time and drew %{count} card."
 msgid_plural "%{player} ran out of time and drew %{count} cards."
 msgstr[0] "Hráč %{player} překročil čas a dobral %{count} kartu."
@@ -1680,7 +1680,7 @@ msgstr "%{player} dosahuje přesně 1000 mil a vyhrává kolo."
 msgid "%{player} reached the No Mercy card limit and is out of this game."
 msgstr "%{player} dosahuje limitu karet No Mercy a vypadává z této hry."
 
-#: games/uno.rb:1256
+#: games/uno.rb:1257
 msgid "%{player} reached the No Mercy card limit, receives 250 points and is out of this round."
 msgstr "Hráč %{player} dosáhl limitu karet No Mercy, dostává 250 bodů a vypadává z tohoto kola."
 
@@ -1697,7 +1697,7 @@ msgstr "Hráč %{player} dosáhl bodového limitu. Dohrajte aktuální kolo tah�
 msgid "%{player} reaches the finish."
 msgstr "%{player} dorazí do cíle."
 
-#: games/uno.rb:1226
+#: games/uno.rb:1227
 msgid "%{player} received %{points} point."
 msgid_plural "%{player} received %{points} points."
 msgstr[0] "Hráč %{player} získal %{points} bod."
@@ -1911,7 +1911,7 @@ msgstr "Hráč %{player} uložil %{points} bodů. Uložené skóre: %{total}."
 msgid "%{player} says Makao!"
 msgstr "Hráč %{player} hlásí Makao!"
 
-#: games/uno.rb:757
+#: games/uno.rb:758
 msgid "%{player} says UNO!"
 msgstr "Hráč %{player} říká UNO!"
 
@@ -1954,7 +1954,7 @@ msgstr "Hráč %{player} poslal figurku %{pawn} hráče %{opponent} zpět na zá
 msgid "%{player} serves to %{receiver}."
 msgstr "Podává %{player}, přijímá %{receiver}."
 
-#: lib/axel_pong/client.rb:535 lib/game_surfaces/pong_surface.rb:124
+#: lib/audio_ball/client.rb:658 lib/axel_pong/client.rb:535 lib/game_surfaces/pong_surface.rb:124
 msgid "%{player} serves."
 msgstr "Hráč %{player} podává."
 
@@ -2081,7 +2081,7 @@ msgstr "%{player} hraje kartu %{card}. Odstraněný problém: %{problem}."
 msgid "%{player} uses a Get out of jail card and leaves jail."
 msgstr "Hráč %{player} používá kartu Propuštění z vězení a opouští vězení."
 
-#: games/uno.rb:1233
+#: games/uno.rb:1234
 msgid "%{player} was eliminated with %{score} point."
 msgid_plural "%{player} was eliminated with %{score} points."
 msgstr[0] "Hráč %{player} byl vyřazen. Jeho skóre: %{score} bod."
@@ -2095,7 +2095,7 @@ msgstr "%{player} byl vyřazen. Počet bodů: %{score}."
 msgid "%{player} was eliminated."
 msgstr "Hráč %{player} byl vyřazen."
 
-#: games/uno.rb:813
+#: games/uno.rb:814
 msgid "%{player} was last at the buzzer and draws two cards."
 msgstr "Hráč %{player} zareagoval na bzučák jako poslední a dobírá si dvě karty."
 
@@ -2198,7 +2198,7 @@ msgstr "%{player} vyhrál kolo. Získané body: %{points}."
 msgid "%{player} won the round by reaching 99 exactly."
 msgstr "Hráč %{player} vyhrál kolo dosažením přesně 99."
 
-#: games/rummy.rb:540 games/uno.rb:1220
+#: games/rummy.rb:540 games/uno.rb:1221
 msgid "%{player} won the round."
 msgstr "Hráč %{player} vyhrál kolo."
 
@@ -2399,7 +2399,7 @@ msgstr "%{player}: %{miles} mil; %{status}; ochrany: %{safeties}; karty 200 mil:
 msgid "%{player}: %{pieces}"
 msgstr "%{player}: %{pieces}"
 
-#: games/categories.rb:1364 games/mahjong.rb:162 games/mahjong_support/table_game.rb:198 games/mahjong_support/table_presentation.rb:60 games/quiz_party.rb:1212
+#: games/categories.rb:1364 games/mahjong.rb:162 games/mahjong_support/table_game.rb:207 games/mahjong_support/table_presentation.rb:60 games/quiz_party.rb:1212
 msgid "%{player}: %{points}"
 msgstr "%{player}: %{points}"
 
@@ -2442,7 +2442,7 @@ msgstr "%{player}: %{result}"
 msgid "%{player}: %{result}."
 msgstr "%{player}: %{result}."
 
-#: games/biblios.rb:1296 games/cat_head_tail.rb:433 games/farkle.rb:761 games/three_five_eight.rb:1022 games/tysiac.rb:1632 games/uno.rb:1377 games/yahtzee.rb:550
+#: games/biblios.rb:1296 games/cat_head_tail.rb:433 games/farkle.rb:761 games/three_five_eight.rb:1022 games/tysiac.rb:1632 games/uno.rb:1385 games/yahtzee.rb:550
 msgid "%{player}: %{score}"
 msgstr "%{player}: %{score}"
 
@@ -6282,7 +6282,7 @@ msgstr ""
 msgid "Ante in five-card draw"
 msgstr "Ante v pětikaretním pokeru s výměnou"
 
-#: games/uno.rb:1367
+#: games/uno.rb:1375
 msgid "Any colour may be played."
 msgstr "Lze zahrát libovolnou barvu."
 
@@ -7364,11 +7364,11 @@ msgstr "Označení přídě zrušeno."
 msgid "Bow marked. Choose the stern, or the same square for one mast."
 msgstr "Příď označena. Vyberte záď, nebo stejné pole pro loď o délce jednoho pole."
 
-#: lib/audio_ball/client.rb:680
+#: lib/audio_ball/client.rb:681
 msgid "Break between points."
 msgstr ""
 
-#: lib/audio_ball/client.rb:680
+#: lib/audio_ball/client.rb:681
 msgid "Break between sets."
 msgstr ""
 
@@ -7521,7 +7521,7 @@ msgstr "Bzučák"
 msgid "Buzzer cards"
 msgstr "Karty bzučáku"
 
-#: games/uno.rb:1387 games/uno.rb:1403
+#: games/uno.rb:1395 games/uno.rb:1411
 msgid "Buzzer: press B."
 msgstr "Bzučák: stiskněte B."
 
@@ -8050,7 +8050,7 @@ msgstr "Vyzvi soupeře k náhodnému souboji."
 msgid "Challenge cancelled. Feathers unchanged."
 msgstr "Výzva zrušena. Pírka beze změny."
 
-#: games/uno.rb:786
+#: games/uno.rb:787
 msgid "Challenge failed."
 msgstr "Zpochybnění neuspělo."
 
@@ -8062,7 +8062,7 @@ msgstr "Výzva skončila."
 msgid "Challenge for %{players}."
 msgstr "Výzva pro: %{players}."
 
-#: games/uno.rb:786
+#: games/uno.rb:787
 msgid "Challenge succeeded."
 msgstr "Zpochybnění bylo úspěšné."
 
@@ -8519,7 +8519,7 @@ msgstr "Vyberte kategorii."
 msgid "Choose a colour"
 msgstr "Vyberte barvu"
 
-#: games/uno.rb:1397 games/uno.rb:461 games/uno.rb:600
+#: games/uno.rb:1405 games/uno.rb:461 games/uno.rb:600
 msgid "Choose a colour."
 msgstr "Vyberte barvu."
 
@@ -9977,7 +9977,7 @@ msgstr "Aktuální"
 msgid "Current and recently ended"
 msgstr "Aktuální a nedávno ukončené"
 
-#: games/uno.rb:1372
+#: games/uno.rb:1380
 msgid "Current colour: %{colour}."
 msgstr "Aktuální barva: %{colour}."
 
@@ -10757,7 +10757,7 @@ msgstr "Sada domina"
 
 #: games/mahjong_support/score_breakdown.rb:59
 msgid "Dora"
-msgstr ""
+msgstr "Dora"
 
 #: games/generated/rulebooks/mahjong.rb:206
 msgid "Dora add 1 han for each owned dora tile, but only to a hand with a real yaku. Dora are not yaku. An indicator points to the next tile in its cycle; every copy in the hand or own sets counts. After accepted riichi, hidden ura-dora may add to the final win; the pre-win preview does not reveal them."
@@ -12579,6 +12579,10 @@ msgstr "Opraveno odměřování přestávky mezi sety v Audio Ballu, když zápa
 msgid "Fixed Ctrl+F4 after updating Game Room without restarting ELTEN. It now labels HTTP and, during an active connection, Communications UDP relay ping separately. The relay ping is not the full delay between players."
 msgstr "Opraveno Ctrl+F4 po aktualizaci Game Room bez restartování ELTEN. Nyní samostatně označuje ping HTTP a při aktivním připojení také ping k přenosovému serveru Communications UDP. Ping k přenosovému serveru neudává celkové zpoždění mezi hráči."
 
+#: lib/game_room_changelog.rb:588
+msgid "Fixed UNO rounds ending with a Draw Two or Wild Draw Four. The opponent draws the penalty cards, which count towards the score, and the player who emptied their hand no longer has to draw to finish the round."
+msgstr "Opraven konec kola v UNO po zahrání poslední karty Líznout dvě nebo Divoká líznout čtyři. Soupeř si vezme trestné karty, které se započítají do skóre. Hráč, který se zbavil všech karet, už nemusí dobírat, aby kolo skončilo."
+
 #: lib/game_room_changelog.rb:247
 msgid "Fixed a Game Room installation error caused by Unicode compatibility on some ELTEN runtimes."
 msgstr ""
@@ -12598,6 +12602,10 @@ msgstr "Opravena chyba, kvůli které se po přidání Kachních závodů nemuse
 #: lib/game_room_changelog.rb:525
 msgid "Fixed an error that could prevent tournament matches from starting in Axel Pong and Audio Ball."
 msgstr "Opravena chyba, která mohla bránit zahájení turnajových zápasů ve hrách Axel Pong a Audio Ball."
+
+#: lib/game_room_changelog.rb:592
+msgid "Fixed an error when confirming a tournament start again."
+msgstr "Opravena chyba při opětovném potvrzení zahájení turnaje."
 
 #: lib/game_room_changelog.rb:336
 msgid "Fixed an error when opening Krowa's Word Tower before the first word was ready."
@@ -12917,6 +12925,10 @@ msgstr "Čtyři v řadě"
 msgid "Four of a kind"
 msgstr "Čtveřice"
 
+#: lib/game_room_changelog.rb:589
+msgid "Four of a kind in Yahtzee now scores at least 15 points."
+msgstr "Čtveřice v Yahtzee nyní přináší alespoň 15 bodů."
+
 #: games/mahjong_support/options.rb:25
 msgid "Four players"
 msgstr "Čtyři hráči"
@@ -13197,7 +13209,7 @@ msgstr "Konec hry."
 msgid "Game over. The word was not guessed."
 msgstr "Konec hry. Slovo nebylo uhodnuto."
 
-#: games/duck_racing_support/challenge_presentation.rb:172 games/duck_racing_support/challenge_presentation.rb:312 lib/audio_ball/client.rb:676 lib/axel_pong/client.rb:576 lib/participant_menu.rb:101 lib/participant_menu.rb:99
+#: games/duck_racing_support/challenge_presentation.rb:172 games/duck_racing_support/challenge_presentation.rb:312 lib/audio_ball/client.rb:677 lib/axel_pong/client.rb:576 lib/participant_menu.rb:101 lib/participant_menu.rb:99
 msgid "Game paused."
 msgstr "Hra je pozastavena."
 
@@ -14030,6 +14042,10 @@ msgstr ""
 msgid "Improved responsiveness and recovery during simultaneous actions, background play, invitations and saved-game operations. Reduced repeated work in game updates, tournament lists and leaderboards."
 msgstr "Zlepšena plynulost a zotavení po chybách při souběžných akcích, hře na pozadí, pozvánkách a práci s uloženými hrami. Aktualizace her, seznamů turnajů a žebříčků provádějí méně opakované práce."
 
+#: lib/game_room_changelog.rb:587
+msgid "Improved responsiveness in longer Mahjong games. Successive hands should no longer cause the same growing slowdown, particularly in Hong Kong."
+msgstr "Zlepšena odezva při delších partiích Mahjonga. Po sobě jdoucí rozdání by už neměla hru postupně zpomalovat, zejména ve variantě Hong Kong."
+
 #: lib/game_room_changelog.rb:431
 msgid "Improved the wording and clarity of the English, Czech, Spanish and Russian rules as well."
 msgstr "Zlepšili jsme také jazyk a srozumitelnost anglických, českých, španělských a ruských pravidel."
@@ -14332,6 +14348,10 @@ msgstr ""
 #: games/generated/rulebooks/mahjong.rb:249
 msgid "In sanma you cannot claim Chow, but you may form sequences from your own numbered tiles."
 msgstr ""
+
+#: lib/game_room_changelog.rb:591
+msgid "In singles, Audio Ball announces only who serves. In doubles, it still announces both the server and the receiver."
+msgstr "V Audio Ballu pro dva se oznamuje jen to, kdo podává. Ve čtyřhře se nadále oznamuje i příjemce podání."
 
 #: games/krowa_support/presentation.rb:16
 msgid "In solo mode, you have two options: Daily Krowa, with a new word each day that is the same for everyone, or Random word, where you can choose the word length. In both modes, you have one superpower. You can add words to a dictionary that stores your nouns locally. Hmmm... if you put asdfasdfasdf in there, it will be stored too, but I hope having fun matters more than racking up leaderboard scores. So, if you want to use smerfy as a guess, just press \"Add noun to dictionary and check\". You will not be able to use that word in multiplayer modes, though. Not because I dislike the Smurfs; it is simply not in the database."
@@ -15839,7 +15859,7 @@ msgstr ""
 msgid "MCR: 88 fan"
 msgstr ""
 
-#: games/mahjong.rb:24 games/mahjong_support/private_table.rb:129 games/mahjong_support/solitaire_presentation.rb:12 games/mahjong_support/solitaire_presentation.rb:36 games/mahjong_support/table_game.rb:210 games/mahjong_support/table_presentation.rb:21 games/mahjong_support/table_presentation.rb:25
+#: games/mahjong.rb:24 games/mahjong_support/private_table.rb:129 games/mahjong_support/solitaire_presentation.rb:12 games/mahjong_support/solitaire_presentation.rb:36 games/mahjong_support/table_game.rb:219 games/mahjong_support/table_presentation.rb:21 games/mahjong_support/table_presentation.rb:25
 msgid "Mahjong"
 msgstr "Mahjong"
 
@@ -16105,7 +16125,7 @@ msgstr ""
 msgid "Match resumed."
 msgstr "Zápas pokračuje."
 
-#: games/mahjong_support/table_game.rb:200
+#: games/mahjong_support/table_game.rb:209
 msgid "Match scores"
 msgstr "Skóre celého zápasu"
 
@@ -16692,6 +16712,10 @@ msgstr "Nové partie hry Země a města mají kategorie Nápoj, Nástroj, Znám�
 msgid "New English, Czech, Spanish and Russian rulebooks for every game."
 msgstr "Všechny hry mají nová pravidla v angličtině, češtině, španělštině a ruštině."
 
+#: lib/game_room_changelog.rb:590
+msgid "New Tic Tac Toe games randomly choose who starts. The starting player uses X."
+msgstr "V nových partiích piškvorek se začínající hráč losuje a hraje s křížky."
+
 #: lib/tournaments/draft_screen.rb:21
 msgid "New draft"
 msgstr ""
@@ -17137,7 +17161,7 @@ msgstr "Není připravena žádná skupina karet."
 
 #: lib/tournaments/participant_manager.rb:121
 msgid "No participants."
-msgstr ""
+msgstr "Žádní účastníci."
 
 msgid "No pawns on the board."
 msgstr "Na herním plánu nejsou žádné figurky."
@@ -18416,7 +18440,7 @@ msgstr "Položte kámen na prázdné pole vedle již položeného kamene."
 msgid "Place the new tiles in one row or column."
 msgstr "Umístěte nové kameny do jednoho řádku nebo sloupce."
 
-#: games/tic_tac_toe.rb:30
+#: games/tic_tac_toe.rb:33
 msgid "Place three of your marks in a line before your opponent does."
 msgstr "Umísti tři své znaky do jedné řady dřív než soupeř."
 
@@ -19884,7 +19908,7 @@ msgstr "Načítání výsledků turnaje"
 msgid "Ready"
 msgstr ""
 
-#: games/mahjong_support/table_game.rb:204
+#: games/mahjong_support/table_game.rb:213
 msgid "Ready for the next hand"
 msgstr "Připraven na další rozdání"
 
@@ -24675,7 +24699,7 @@ msgstr "Rozklad pasiánsu mahjong je připraven."
 msgid "The mahjong solitaire puzzle was ended."
 msgstr "Rozklad pasiánsu mahjong byl ukončen."
 
-#: games/mahjong_support/table_game.rb:328
+#: games/mahjong_support/table_game.rb:337
 msgid "The mahjong tiles have been dealt."
 msgstr "Kameny mahjongu byly rozdány."
 
@@ -25798,7 +25822,7 @@ msgstr[2] "Aktuální počet uživatelů u stolu: %{current}."
 msgid "There is no active turn."
 msgstr "Právě není nikdo na tahu."
 
-#: games/uno.rb:1352 games/uno.rb:1361
+#: games/uno.rb:1360 games/uno.rb:1369
 msgid "There is no card on the discard pile."
 msgstr "V odhazovacím balíčku není žádná karta."
 
@@ -25809,7 +25833,7 @@ msgstr "Není zde žádný počítačový hráč k odebrání."
 msgid "There is no contract yet."
 msgstr "Zatím není žádný závazek."
 
-#: games/uno.rb:1370
+#: games/uno.rb:1378
 msgid "There is no current colour."
 msgstr "Není určena aktuální barva."
 
@@ -25820,7 +25844,7 @@ msgstr "Kostka s číslem %{number} neexistuje."
 msgid "There is no discard pile in this variant."
 msgstr "V této variantě není odhazovací balíček."
 
-#: games/uno.rb:1391
+#: games/uno.rb:1399
 msgid "There is no draw obligation."
 msgstr "Není povinnost dobírat karty."
 
@@ -26127,7 +26151,7 @@ msgstr "Tento koncept už na serveru není. Otevřená kopie zůstala beze změn
 msgid "This draft is too large."
 msgstr "Tento koncept je příliš velký."
 
-#: games/reversi.rb:142 games/tic_tac_toe.rb:176
+#: games/reversi.rb:142 games/tic_tac_toe.rb:221
 msgid "This field is already occupied."
 msgstr "Toto pole je již obsazené."
 
@@ -26607,7 +26631,7 @@ msgstr ""
 msgid "Threes"
 msgstr "Trojky"
 
-#: games/tic_tac_toe.rb:26
+#: games/tic_tac_toe.rb:29
 msgid "Tic-tac-toe"
 msgstr "Piškvorky"
 
@@ -27496,7 +27520,7 @@ msgstr "Balíček UNO"
 msgid "UNO is for two to eight players. Each round starts with seven cards per person. On your turn, play a card matching the current colour or the number or symbol on the top discard. On a blue seven, for example, you may play a blue card or a seven of another colour. Wild cards let you choose the next colour."
 msgstr ""
 
-#: games/uno.rb:663
+#: games/uno.rb:664
 msgid "UNO round %{round} started. First card: %{card}."
 msgstr "Začalo kolo UNO %{round}. První karta: %{card}."
 
@@ -28039,7 +28063,7 @@ msgstr "Čeká se, až %{owner} spustí hru"
 msgid "Waiting for %{owner} to start a game."
 msgstr "Čekání, až %{owner} zahájí hru."
 
-#: games/makao.rb:352 games/poker.rb:369 games/uno.rb:1404 lib/tournaments/partner_choice.rb:42
+#: games/makao.rb:352 games/poker.rb:369 games/uno.rb:1412 lib/tournaments/partner_choice.rb:42
 msgid "Waiting for %{player}"
 msgstr "Čekání na hráče %{player}"
 
@@ -28130,7 +28154,7 @@ msgstr ""
 msgid "Waiting for players to reveal their cards."
 msgstr "Čeká se, až hráči odkryjí své karty."
 
-#: lib/audio_ball/client.rb:682
+#: lib/audio_ball/client.rb:683
 msgid "Waiting for players."
 msgstr "Čeká se na hráče."
 
@@ -28154,7 +28178,7 @@ msgstr ""
 msgid "Waiting for the describing player."
 msgstr "Čeká se na popisujícího hráče."
 
-#: games/mahjong_support/table_game.rb:210 lib/game_layout.rb:299
+#: games/mahjong_support/table_game.rb:219 lib/game_layout.rb:299
 msgid "Waiting for the game to start"
 msgstr "Čekání na zahájení hry"
 
@@ -28198,7 +28222,7 @@ msgstr "Čeká se na odpovědi hráčů."
 msgid "Waiting for the players to finish answering."
 msgstr "Čekání, až hráči dokončí odpovědi."
 
-#: lib/audio_ball/client.rb:677
+#: lib/audio_ball/client.rb:678
 msgid "Waiting for the point to be saved."
 msgstr ""
 
@@ -32115,7 +32139,7 @@ msgstr "změna barvy"
 msgid "wild colour roulette"
 msgstr "divoká barevná ruleta"
 
-#: games/uno.rb:1085
+#: games/uno.rb:1086
 msgid "wild draw colour"
 msgstr "divoká karta s dobíráním do zvolené barvy"
 
@@ -32131,7 +32155,7 @@ msgstr "změna barvy a dobrat šest"
 msgid "wild draw ten"
 msgstr "změna barvy a dobrání deseti karet"
 
-#: games/uno.rb:1084
+#: games/uno.rb:1085
 msgid "wild draw two"
 msgstr "změna barvy a dobrání dvou karet"
 

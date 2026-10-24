@@ -318,7 +318,7 @@ class GameRoomSessionRunner
         @session = next_session
         @sync.update_session(latest_id)
       end
-      snapshot = @repository.snapshot_for(@session, force_events: force && !@sync.reconciled?)
+      snapshot = @repository.snapshot_for(@session, force_events: force && !@sync.reconciled?, read_only: true)
       unless snapshot
         @snapshot = @replay = nil
         return
@@ -326,7 +326,7 @@ class GameRoomSessionRunner
       @snapshot, @session = snapshot, snapshot.session
       @replay = @game.replay(@session, snapshot.events, @repository)
       if reconcile_departed_players || reconcile_membership_action
-        snapshot = @repository.snapshot_for(@session)
+        snapshot = @repository.snapshot_for(@session, read_only: true)
         @snapshot, @session = snapshot, snapshot.session
         @replay = @game.replay(@session, snapshot.events, @repository)
         room = @room_snapshot_provider.call || room

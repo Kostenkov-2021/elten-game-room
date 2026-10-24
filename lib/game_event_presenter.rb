@@ -68,14 +68,7 @@ class GameRoomEventPresenter
     return unless prepare_presentation_session(session, background: background)
     @presentation_session = session
     newest_id = replay.accepted_events.map { |event| @repository.call.event_id(event) }.max.to_i
-    if @last_seen_event_id == nil
-      @last_seen_event_id = newest_id
-      seed_reconstructed_timers(replay, now: timer_now) unless timer_now == nil
-      presentation_replay.remember(session, replay)
-      @history_changed.call(replay, true) unless background
-      present_initial_decision(replay)
-      return
-    end
+    return present_reconstructed_events(replay, newest_id, session, background, timer_now) if @last_seen_event_id == nil
 
     new_events = replay.accepted_events.select do |event|
       @repository.call.event_id(event) > @last_seen_event_id
@@ -148,6 +141,15 @@ class GameRoomEventPresenter
     @last_seen_event_id = [@last_seen_event_id, newest_id].max
     present_decision.call if @event_presentation == nil || new_events.empty? && !event_presentation_busy?
     @event_presentation&.advance
+  end
+
+  def present_reconstructed_events(replay, newest_id, session, background, timer_now)
+    @last_seen_event_id = newest_id
+    seed_reconstructed_timers(replay, now: timer_now) unless timer_now == nil
+    presentation_replay.remember(session, replay)
+    @history_changed.call(replay, true) unless background
+    present_initial_decision(replay)
+    nil
   end
 
   def present_game_event(event, before_replay, after_replay, description_replay, signal_received_at,

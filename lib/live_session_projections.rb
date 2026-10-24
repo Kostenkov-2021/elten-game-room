@@ -86,25 +86,46 @@ class GameRoomLiveSessionStore
       nil
     end
 
-    def game_events(session, force: false)
+    GAME_PROJECTION_BYTES = 32 * 1024 * 1024
+
+    def game_events(session, force: false, read_only: false)
       table_id = positive_identifier(session["table_id"])
       session_id = positive_identifier(session["__id"] || session["id"])
       return [] if table_id == nil || session_id == nil
 
       ensure_current(table_id, force: force)
-      records = records_for(table_id)
+      room, source, generation, corrections, native, cached = @mutex.synchronize do
+        state = @rooms[table_id]
+        [state, state&.records, state&.record_generation, state&.history_corrections, @sessions[table_id], state&.game_projection]
+      end
+      records = records_for(table_id, read_only: true)
       ledger = control_ledger(table_id)
+      identity = [session_id, session['__archive_id'].to_s]
+      same_source = cached && cached[:source].equal?(source) && cached[:native].equal?(native) && cached[:identity] == identity
+      if same_source && cached[:generation] == generation && cached[:ledger].equal?(ledger) && cached[:records].equal?(records)
+        return read_only ? cached[:events] : GameRoomSnapshot.copy(Array.new(cached[:events]))
+      end
+      previous_expansions = same_source ? cached[:expansions] : {}
       starts = records.select { |record| record.packet['kind'] == 'game_started' && record.packet.dig('data', 'session_id') == session_id }
       # Historical archive lookup used the first start; live action expansion
       # used the latest start's ID base. Reuse both without changing that format.
       game_record = starts.first
       action_game_record = starts.last
-      clock = {offset: action_game_record&.packet&.dig('data', 'clock_offset').to_i, frozen_at: nil}
-      aborted = false
-      pause_intent = nil
-      intent_boundary = ''
-      intent_epochs = {}
-      imported = if !session["__archive_id"].to_s.empty?
+      incremental = same_source && cached[:records] && cached[:corrections] == corrections &&
+        cached[:game_record].equal?(game_record) && cached[:action_game_record].equal?(action_game_record) &&
+        cached[:anchor] == ledger.anchor && cached[:owner] == ledger.current_owner &&
+        cached[:records].length <= records.length &&
+        cached[:records].each_with_index.all? { |record, index| record.equal?(records[index]) && record.packet.frozen? }
+      expansions = incremental ? previous_expansions.dup : {}.compare_by_identity
+      progress = {
+        clock: incremental ? cached[:clock].dup : {offset: action_game_record&.packet&.dig('data', 'clock_offset').to_i, frozen_at: nil},
+        aborted: incremental ? cached[:aborted] : false,
+        pause_intent: incremental && cached[:pause_intent] ? cached[:pause_intent].transform_values(&:dup) : nil,
+        intent_boundary: incremental ? cached[:intent_boundary] : '',
+        intent_epochs: incremental ? cached[:intent_epochs].transform_values(&:dup) : {}}
+      imported = if incremental
+        cached[:imported]
+      elsif !session["__archive_id"].to_s.empty?
         (game_record == nil ? [] : archive_events_for(game_record).to_a).reject { |item| item.key?('players') }.map do |event|
               GameRoomSessionClock.archived_event(event).merge("__id" => event["id"], "session_id" => session_id, "table_id" => table_id,
                 "__insertion_user" => game_record.sender, "__controller" => true, "move_id" => "archive:#{game_record.message_id}:#{event['id']}")
@@ -112,37 +133,35 @@ class GameRoomLiveSessionStore
       else
         []
       end
-      current = records.flat_map do |record|
-        if !clock[:frozen_at] && action_game_record && record.sequence >= action_game_record.sequence
-          intent_epochs[intent_boundary] ||= []
-          intent_epochs[intent_boundary] |= [ledger.epoch_at(record.sequence)]
-        end
-        if record.packet["kind"] == "game_boundary" && record.packet.dig("data", "session_id") == session_id
-          if record.packet['data']['frozen'] && record.packet['data']['tournament_presence']
-            # A still-pending native request may cross a return and a second
-            # pause. Retain the actual unfrozen origins, never a paused origin.
-            pause_intent = intent_epochs.transform_values(&:dup) unless clock[:frozen_at]
-          else
-            pause_intent = nil
-            intent_boundary = record.message_id
-          end
-          advance_game_clock(clock, record)
-          aborted ||= record.packet.dig("data", "aborted") == true
-          if record.packet.dig('data', 'tournament_presence', 'mode') == 'continue'
-            next [tournament_elimination_event(record, action_game_record, ledger, clock)]
-          end
-        end
-        next [] if record.packet["kind"].to_s != "game_action"
-        next [] if record.packet.dig("data", "session_id").to_i != session_id
-        next [] if aborted
-        if clock[:frozen_at]
-          next [] unless pause_intent && record.server_pool && %w[take reveal].include?(record.server_pool['operation']) &&
-            pause_intent.fetch(record.packet['data']['presence_boundary'], []).include?(record.packet['data']['control_epoch'])
-        end
-
-        expand_game_action(record, game_record: action_game_record, ledger: ledger, clock: clock)
+      current = (incremental ? records.drop(cached[:records].length) : records).flat_map do |record|
+        project_game_record(record,session_id:session_id,game_record:action_game_record,ledger:ledger,
+          progress:progress,expansions:expansions,previous:previous_expansions)
       end
-      (imported + current).sort_by { |row| row["__id"].to_i }
+      combined = (incremental ? cached[:events] : imported) + current
+      # A normal append has increasing native event IDs. Imported historical
+      # shapes retain the old explicit ordering when that condition is absent.
+      combined.sort_by! { |row| row['__id'].to_i } unless incremental &&
+        (current.empty? || cached[:events].empty? || cached[:events].last['__id'].to_i < current.first['__id'].to_i)
+      events = GameRoomSnapshot::Log.from_owned(combined,
+        previous: same_source ? cached[:events] : nil)
+      if events.retained_bytes + expansions.length * 128 <= GAME_PROJECTION_BYTES
+        projection = {source: source, native: native, identity: identity, generation: generation,
+          ledger: ledger, events: events, expansions: expansions, records: records.freeze,
+          corrections: corrections, game_record: game_record, action_game_record: action_game_record,
+          anchor: GameRoomSnapshot.copy(ledger.anchor), owner: ledger.current_owner.to_s.dup.freeze,
+          imported: imported}.merge(progress)
+        @mutex.synchronize do
+          # A slow old read cannot publish into a rejoined/pruned room, a
+          # corrected log, or a newer generation with the same numeric counter.
+          if room && @rooms[table_id].equal?(room) && room.records.equal?(source) &&
+              room.record_generation == generation && @sessions[table_id].equal?(native)
+            room.game_projection = projection
+          end
+        end
+      elsif room
+        @mutex.synchronize { room.game_projection = nil if @rooms[table_id].equal?(room) && room.record_generation == generation }
+      end
+      read_only ? events : GameRoomSnapshot.copy(Array.new(events))
     end
 
     def game_aborted?(table_id, session_id)
@@ -157,6 +176,47 @@ class GameRoomLiveSessionStore
     end
 
     private
+
+    def project_game_record(record, session_id:, game_record:, ledger:, progress:, expansions:, previous:)
+      clock=progress[:clock]
+      if !clock[:frozen_at] && game_record && record.sequence>=game_record.sequence
+        progress[:intent_epochs][progress[:intent_boundary]] ||= []
+        progress[:intent_epochs][progress[:intent_boundary]] |= [ledger.epoch_at(record.sequence)]
+      end
+      if record.packet['kind']=='game_boundary' && record.packet.dig('data','session_id')==session_id
+        if record.packet['data']['frozen'] && record.packet['data']['tournament_presence']
+          # In-flight receipts retain their actual unfrozen origin across a
+          # return and another pause; a paused origin cannot authorize a move.
+          progress[:pause_intent]=progress[:intent_epochs].transform_values(&:dup) unless clock[:frozen_at]
+        else
+          progress[:pause_intent]=nil
+          progress[:intent_boundary]=record.message_id
+        end
+        advance_game_clock(clock,record)
+        progress[:aborted] ||= record.packet.dig('data','aborted')==true
+        return [tournament_elimination_event(record,game_record,ledger,clock)] if record.packet.dig('data','tournament_presence','mode')=='continue'
+      end
+      return [] unless record.packet['kind']=='game_action' && record.packet.dig('data','session_id').to_i==session_id && !progress[:aborted]
+      if clock[:frozen_at]
+        intent=progress[:pause_intent]
+        return [] unless intent && record.server_pool && %w[take reveal].include?(record.server_pool['operation']) &&
+          intent.fetch(record.packet['data']['presence_boundary'],[]).include?(record.packet['data']['control_epoch'])
+      end
+      # Corrected timestamps, earlier starts, authority or clock boundaries
+      # change the expansion key even if the record count stays unchanged.
+      key=[record.created_at,record.estimated_time,game_record,game_record&.created_at,
+        ledger.owner_at(record.sequence),clock[:offset],clock[:frozen_at]]
+      prior=previous[record]
+      reusable=record.packet.frozen? && (record.server_random.nil? || record.server_random.frozen?) &&
+        (record.server_pool.nil? || record.server_pool.frozen?)
+      rows=if reusable && prior && prior.first==key
+        prior.last
+      else
+        GameRoomSnapshot::Log.from_owned(expand_game_action(record,game_record:game_record,ledger:ledger,clock:clock))
+      end
+      expansions[record]=[key,rows] if reusable
+      rows
+    end
 
     def tournament_elimination_event(record, game_record, ledger, clock)
       data = record.packet.fetch('data')

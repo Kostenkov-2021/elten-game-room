@@ -15,8 +15,11 @@ questions = pack.data.fetch('questions')
 # Zuzler on 2026-10-18; answers, order and all other fields remain unchanged.
 # The 2026-10-21 review corrected the Sasza Zaluska item, with its complete
 # approved wording and choices checked in reviewed_questions_test.rb.
+# The 2026-10-23 reports corrected three existing items (Gerard Wilk,
+# subtraction spoken as a word, and the giveaway qualifier in a distractor).
+# Their exact approved content is checked in reviewed_questions_test.rb.
 assert(Digest::SHA256.hexdigest(JSON.generate(questions.first(14887))) ==
-  '639d17ef7b739a09851cd50ad19b636eb5df0663a777e24b93e5520900656aa4',
+  '8fba62bd7f79360d805216922be9c9847534d58ef8c707b206c66a92eff157cc',
   'The existing Polish set changed while importing a community proposal')
 
 expected = {

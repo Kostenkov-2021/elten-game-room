@@ -17,7 +17,7 @@ workspace.define_singleton_method(:mode_label){'Shared tournaments'}
 workspace.define_singleton_method(:operations){[]}
 workspace.define_singleton_method(:reconcile){|_|raise 'Read-only recovery menu sent a write'}
 workspace.define_singleton_method(:load){TournamentPublicUI.snapshot([])}
-%i[join withdraw set_partner edit_tournament delete_tournament].each do |name|
+%i[join withdraw set_partner partnership_action edit_tournament delete_tournament].each do |name|
   workspace.define_singleton_method(name){|*|raise "Unexpected mutation: #{name}"}
 end
 driver=TournamentNativeDriver.new

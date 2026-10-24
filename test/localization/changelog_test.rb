@@ -455,6 +455,16 @@ assert(GameRoomChangelog.pending_entries(255, 256).map(&:build) == [256], 'build
 assert(GameRoomChangelog.pending_entries(nil, 256).map(&:build) == [256], 'first build 256 launch repeats history')
 assert(GameRoomChangelog.pending_entries(256, 256).empty?, 'build 256 reopens after being read')
 assert(GameRoomChangelog.list_items([entry_256]).first == 'Version 2.0.5.5, build 256', 'build 256 heading differs')
+entry_257 = entries.find { |entry| entry.build == 257 }
+assert(entry_257 && entry_257.version == '2.0.5.6' && entry_257.changes.length == 6, 'build 257 has incorrect release metadata')
+assert(entry_257.changes.uniq.length == 6, 'build 257 contains duplicate notes')
+['Mahjong', 'Draw Two', 'Wild Draw Four', '15 points', 'Tic Tac Toe', 'Audio Ball', 'tournament'].each do |topic|
+  assert(entry_257.changes.join(' ').include?(topic), "build 257 lacks #{topic}")
+end
+assert(GameRoomChangelog.pending_entries(256, 257).map(&:build) == [257], 'build 257 repeats older notes')
+assert(GameRoomChangelog.pending_entries(nil, 257).map(&:build) == [257], 'first build 257 launch repeats history')
+assert(GameRoomChangelog.pending_entries(257, 257).empty?, 'build 257 reopens after being read')
+assert(GameRoomChangelog.list_items([entry_257]).first == 'Version 2.0.5.6, build 257', 'build 257 heading differs')
 %w[PL CS ES RU].each do |language|
   bytes = File.binread(File.expand_path("../../locale/#{language}.mo", __dir__))
   total, source_table, target_table = bytes.byteslice(8, 12).unpack('V3')
@@ -482,5 +492,7 @@ assert(GameRoomChangelog.list_items([entry_256]).first == 'Version 2.0.5.5, buil
     "build 255 has untranslated #{language} notes")
   assert(entry_256.changes.all? { |source| !release_catalog.fetch(source, '').empty? },
     "build 256 has untranslated #{language} notes")
+  assert(entry_257.changes.all? { |source| !release_catalog.fetch(source, '').empty? },
+    "build 257 has untranslated #{language} notes")
 end
-puts "Changelog tests passed: first launch, updates, downgrade, Enter, storage, old notes preserved and multilingual build 256 notes"
+puts "Changelog tests passed: first launch, updates, downgrade, Enter, storage, old notes preserved and multilingual build 257 notes"

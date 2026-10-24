@@ -17,7 +17,7 @@ workspace.define_singleton_method(:load) do
   reads += 1
   {'announcements' => [], 'diagnostics' => {}}
 end
-%i[join withdraw set_partner edit_tournament delete_tournament].each { |name| workspace.define_singleton_method(name) { |*_| raise 'Unexpected server mutation' } }
+%i[join withdraw set_partner partnership_action edit_tournament delete_tournament].each { |name| workspace.define_singleton_method(name) { |*_| raise 'Unexpected server mutation' } }
 args = T.args(program: program).merge(workspace_factory: -> { workspace })
 hub = G::Hub.new(**args)
 T.script(->(form) {

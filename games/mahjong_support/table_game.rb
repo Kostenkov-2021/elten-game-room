@@ -47,10 +47,10 @@ module GameRoomGames
       @mahjong_table_repository = repository
       # The CAS token changes after every write, but is not game semantics.
       # The cache still authenticates the complete event prefix and actors.
-      source_events = events.to_a
+      source_events = events.is_a?(Array) ? events : events.to_a
       input = GameRoomReplayCache::Input.new(session.reject { |key, _| key == '__game_revision' }, source_events, repository,
         previous: @mahjong_table_input)
-      @mahjong_table_input = input.retained_bytes <= GameRoomReplayCache::MAX_BYTES ? input : nil
+      @mahjong_table_input = input.retention_bytes <= GameRoomReplayCache::MAX_BYTES ? input : nil
       @mahjong_table_cache ||= GameRoomReplayCache.new
       checkpoint = @mahjong_table_cache.reduce(input, context: [profile, session_id],
         identities: [repository, GameRoomLocalization.cache_token]) do |previous, prefix|
@@ -62,13 +62,22 @@ module GameRoomGames
         end
         state, accepted_positions, history = previous
         accepted = accepted_positions.map { |position| input.events.fetch(position) }
-        current = reduce_mahjong_table(state, accepted, history, input.events.drop(prefix), input.session, input)
-        [current.state, current.accepted_events.map { |event| input.index_of(event) }, current.history]
+        current = reduce_mahjong_table(state, accepted, history.dup, input.events.drop(prefix), input.session, input)
+        positions = current.accepted_events.map { |event| input.index_of(event) }
+        [current.state, GameRoomSnapshot::Log.from_owned(positions, previous: accepted_positions),
+          GameRoomSnapshot::Log.from_owned(current.history, previous: history)]
       end
       state, accepted_positions, history = checkpoint
-      # Preserve the original replay contract and alias to this owned snapshot's
-      # events. The private checkpoint contains positions, never these objects.
-      mahjong_table_replay(state, accepted_positions.map { |position| source_events.fetch(position) }, history)
+      # Accepted records are the cache's authenticated, deeply sealed copies,
+      # not caller-owned Hashes. Repeated snapshot copies share only these logs;
+      # the current hand/model remains an isolated mutable copy.
+      unless @mahjong_accepted_input.equal?(input.events) && @mahjong_accepted_positions.equal?(accepted_positions)
+        @mahjong_accepted_input, @mahjong_accepted_positions = input.events, accepted_positions
+        @mahjong_accepted_log = GameRoomSnapshot::Log.from_sealed(accepted_positions.map { |position| input.events.fetch(position) },
+          bytes: input.retained_bytes)
+      end
+      accepted = @mahjong_accepted_log
+      mahjong_table_replay(state, accepted, history)
     end
 
     def incremental_replay(previous, session, events, repository)

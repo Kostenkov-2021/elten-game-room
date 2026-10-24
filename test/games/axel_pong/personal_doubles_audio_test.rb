@@ -1,4 +1,4 @@
-require_relative 'doubles_audio_test'
+require_relative '../../support/axel_pong_doubles_audio'
 [[0,1,0,1],[0,0,1,1],[1,0,1,0]].each do |teams|
   4.times do |viewer|
     with_audio do |audio,program|

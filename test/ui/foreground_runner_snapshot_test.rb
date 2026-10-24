@@ -64,9 +64,10 @@ check.call('new confirmed log uses the owned full snapshot without either Tasks 
     assert_equal(source.room, payload[1])
     assert_equal(source.activity, payload[2])
     assert(!source.snapshot.equal?(payload.first))
-    assert(!source.snapshot.events.equal?(payload.first.events))
+    assert(source.snapshot.events.equal?(payload.first.events), 'Immutable input log was needlessly copied')
+    assert(payload.first.events.frozen? && payload.first.events.first.frozen?)
     assert(!source.room.equal?(payload[1]))
-    payload.first.events.first['value'].replace('not a move')
+    assert_raises(FrozenError) { payload.first.events.first['value'].replace('not a move') }
     payload[1].members << 'Not a member'
     assert_equal(1, f.native.replay('Alice').accepted_events.length)
     assert(!source.room.members.include?('Not a member'))
@@ -148,6 +149,7 @@ check.call('unchanged, older and corrected same-number log use the established r
   # A correction with the same count/ID must not be inferred from those numbers.
   # The ordinary repository/replay path remains responsible for full validation.
   changed = GameRoomSnapshot.copy(packet)
+  changed.snapshot.events = GameRoomSnapshot.copy(Array.new(changed.snapshot.events))
   changed.snapshot.events.first['value'] = 'corrected-fixture'
   f.runner.instance_variable_set(:@presentation_snapshot, changed)
   assert_equal(nil, f.screen.send(:prepared_runner_payload, revision))

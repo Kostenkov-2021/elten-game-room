@@ -87,15 +87,15 @@ msgstr ""
 msgid "%{card}. Total: %{total}."
 msgstr ""
 
-#: games/uno.rb:1354
+#: games/uno.rb:1362
 msgid "%{card}; any card may be played."
 msgstr ""
 
-#: games/uno.rb:1151
+#: games/uno.rb:1152
 msgid "%{card}; colour %{colour}"
 msgstr ""
 
-#: games/uno.rb:1356
+#: games/uno.rb:1364
 msgid "%{card}; current colour: %{colour}."
 msgstr ""
 
@@ -191,7 +191,7 @@ msgstr ""
 msgid "%{cell}; selected"
 msgstr ""
 
-#: games/uno.rb:788
+#: games/uno.rb:789
 msgid "%{challenger} challenges the +4 played by %{source}. %{outcome} %{payment}"
 msgstr ""
 
@@ -199,7 +199,7 @@ msgstr ""
 msgid "%{challenge}: %{players}."
 msgstr ""
 
-#: games/uno.rb:1146
+#: games/uno.rb:1147
 msgid "%{colour} %{value}"
 msgstr ""
 
@@ -852,7 +852,7 @@ msgstr ""
 msgid "%{player} caught %{target} without Makao. %{target} draws %{count}."
 msgstr ""
 
-#: games/uno.rb:770
+#: games/uno.rb:771
 msgid "%{player} caught %{target} without UNO. %{target} draws two cards."
 msgstr ""
 
@@ -872,7 +872,7 @@ msgstr ""
 msgid "%{player} checks."
 msgstr ""
 
-#: games/uno.rb:693
+#: games/uno.rb:694
 msgid "%{player} chose %{colour}."
 msgstr ""
 
@@ -892,7 +892,7 @@ msgstr ""
 msgid "%{player} chose talon %{number}."
 msgstr ""
 
-#: games/mahjong_support/table_game.rb:420
+#: games/mahjong_support/table_game.rb:429
 msgid "%{player} claimed %{set}."
 msgstr ""
 
@@ -934,11 +934,11 @@ msgstr ""
 msgid "%{player} creates meld %{number}: %{cards}."
 msgstr ""
 
-#: games/mahjong_support/table_game.rb:407 games/mahjong_support/table_game.rb:418
+#: games/mahjong_support/table_game.rb:416 games/mahjong_support/table_game.rb:427
 msgid "%{player} declared Mahjong."
 msgstr ""
 
-#: games/mahjong_support/table_game.rb:409
+#: games/mahjong_support/table_game.rb:418
 msgid "%{player} declared a concealed kong."
 msgstr ""
 
@@ -953,7 +953,7 @@ msgstr ""
 msgid "%{player} declared bankruptcy. Remaining property returns to the bank."
 msgstr ""
 
-#: games/mahjong_support/table_game.rb:413
+#: games/mahjong_support/table_game.rb:422
 msgid "%{player} declared riichi, discarding %{tile}."
 msgstr ""
 
@@ -992,7 +992,7 @@ msgstr ""
 msgid "%{player} discarded %{card}."
 msgstr ""
 
-#: games/mahjong_support/table_game.rb:405
+#: games/mahjong_support/table_game.rb:414
 msgid "%{player} discarded %{tile}."
 msgstr ""
 
@@ -1043,13 +1043,13 @@ msgstr ""
 msgid "%{player} drew %{count} %{cards}."
 msgstr ""
 
-#: games/makao.rb:676 games/uno.rb:724
+#: games/makao.rb:676 games/uno.rb:725
 msgid "%{player} drew %{count} card."
 msgid_plural "%{player} drew %{count} cards."
 msgstr[0] ""
 msgstr[1] ""
 
-#: games/makao.rb:676 games/makao.rb:737 games/uno.rb:723 games/uno.rb:787
+#: games/makao.rb:676 games/makao.rb:737 games/uno.rb:724 games/uno.rb:788
 msgid "%{player} drew %{count} penalty card."
 msgid_plural "%{player} drew %{count} penalty cards."
 msgstr[0] ""
@@ -1065,7 +1065,7 @@ msgstr ""
 msgid "%{player} drew a replacement card."
 msgstr ""
 
-#: games/mahjong_support/table_game.rb:403
+#: games/mahjong_support/table_game.rb:412
 msgid "%{player} drew a tile."
 msgstr ""
 
@@ -1077,7 +1077,7 @@ msgstr ""
 msgid "%{player} ended the game. The table remains open."
 msgstr ""
 
-#: games/makao.rb:699 games/uno.rb:747
+#: games/makao.rb:699 games/uno.rb:748
 msgid "%{player} ended the turn."
 msgstr ""
 
@@ -1194,7 +1194,7 @@ msgstr ""
 msgid "%{player} is choosing a category."
 msgstr ""
 
-#: games/uno.rb:1399 games/uno.rb:463
+#: games/uno.rb:1407 games/uno.rb:463
 msgid "%{player} is choosing a colour."
 msgstr ""
 
@@ -1244,7 +1244,7 @@ msgstr ""
 msgid "%{player} is preparing to describe."
 msgstr ""
 
-#: games/mahjong_support/private_table_replay.rb:207 games/mahjong_support/table_game.rb:342
+#: games/mahjong_support/private_table_replay.rb:207 games/mahjong_support/table_game.rb:351
 msgid "%{player} is ready for the next hand."
 msgstr ""
 
@@ -1432,7 +1432,7 @@ msgstr[1] ""
 msgid "%{player} moves to %{square}."
 msgstr ""
 
-#: games/makao.rb:1009 games/uno.rb:1392
+#: games/makao.rb:1009 games/uno.rb:1400
 msgid "%{player} must draw %{count} card."
 msgid_plural "%{player} must draw %{count} cards."
 msgstr[0] ""
@@ -1446,7 +1446,7 @@ msgstr ""
 msgid "%{player} must draw a replacement card."
 msgstr ""
 
-#: games/uno.rb:1389
+#: games/uno.rb:1397
 msgid "%{player} must draw until a %{colour} card appears."
 msgstr ""
 
@@ -1473,7 +1473,7 @@ msgstr ""
 msgid "%{player} paid %{rent} rent to %{owner}."
 msgstr ""
 
-#: games/mahjong_support/table_game.rb:416 games/tysiac.rb:731
+#: games/mahjong_support/table_game.rb:425 games/tysiac.rb:731
 msgid "%{player} passed."
 msgstr ""
 
@@ -1634,7 +1634,7 @@ msgstr ""
 msgid "%{player} promoted the pawn to %{piece}."
 msgstr ""
 
-#: games/mahjong_support/table_game.rb:411
+#: games/mahjong_support/table_game.rb:420
 msgid "%{player} proposed a kong of %{tile}."
 msgstr ""
 
@@ -1653,7 +1653,7 @@ msgstr ""
 msgid "%{player} ran out of auction time and passes."
 msgstr ""
 
-#: games/uno.rb:846
+#: games/uno.rb:847
 msgid "%{player} ran out of time and drew %{count} card."
 msgid_plural "%{player} ran out of time and drew %{count} cards."
 msgstr[0] ""
@@ -1672,7 +1672,7 @@ msgstr ""
 msgid "%{player} reached the No Mercy card limit and is out of this game."
 msgstr ""
 
-#: games/uno.rb:1256
+#: games/uno.rb:1257
 msgid "%{player} reached the No Mercy card limit, receives 250 points and is out of this round."
 msgstr ""
 
@@ -1689,7 +1689,7 @@ msgstr ""
 msgid "%{player} reaches the finish."
 msgstr ""
 
-#: games/uno.rb:1226
+#: games/uno.rb:1227
 msgid "%{player} received %{points} point."
 msgid_plural "%{player} received %{points} points."
 msgstr[0] ""
@@ -1905,7 +1905,7 @@ msgstr ""
 msgid "%{player} says Makao!"
 msgstr ""
 
-#: games/uno.rb:757
+#: games/uno.rb:758
 msgid "%{player} says UNO!"
 msgstr ""
 
@@ -1948,7 +1948,7 @@ msgstr ""
 msgid "%{player} serves to %{receiver}."
 msgstr ""
 
-#: lib/axel_pong/client.rb:535 lib/game_surfaces/pong_surface.rb:124
+#: lib/audio_ball/client.rb:658 lib/axel_pong/client.rb:535 lib/game_surfaces/pong_surface.rb:124
 msgid "%{player} serves."
 msgstr ""
 
@@ -2080,7 +2080,7 @@ msgstr ""
 msgid "%{player} uses a Get out of jail card and leaves jail."
 msgstr ""
 
-#: games/uno.rb:1233
+#: games/uno.rb:1234
 msgid "%{player} was eliminated with %{score} point."
 msgid_plural "%{player} was eliminated with %{score} points."
 msgstr[0] ""
@@ -2093,7 +2093,7 @@ msgstr ""
 msgid "%{player} was eliminated."
 msgstr ""
 
-#: games/uno.rb:813
+#: games/uno.rb:814
 msgid "%{player} was last at the buzzer and draws two cards."
 msgstr ""
 
@@ -2194,7 +2194,7 @@ msgstr ""
 msgid "%{player} won the round by reaching 99 exactly."
 msgstr ""
 
-#: games/rummy.rb:540 games/uno.rb:1220
+#: games/rummy.rb:540 games/uno.rb:1221
 msgid "%{player} won the round."
 msgstr ""
 
@@ -2394,7 +2394,7 @@ msgstr ""
 msgid "%{player}: %{pieces}"
 msgstr ""
 
-#: games/categories.rb:1364 games/mahjong.rb:162 games/mahjong_support/table_game.rb:198 games/mahjong_support/table_presentation.rb:60 games/quiz_party.rb:1212
+#: games/categories.rb:1364 games/mahjong.rb:162 games/mahjong_support/table_game.rb:207 games/mahjong_support/table_presentation.rb:60 games/quiz_party.rb:1212
 msgid "%{player}: %{points}"
 msgstr ""
 
@@ -2437,7 +2437,7 @@ msgstr ""
 msgid "%{player}: %{result}."
 msgstr ""
 
-#: games/biblios.rb:1296 games/cat_head_tail.rb:433 games/farkle.rb:761 games/three_five_eight.rb:1022 games/tysiac.rb:1632 games/uno.rb:1377 games/yahtzee.rb:550
+#: games/biblios.rb:1296 games/cat_head_tail.rb:433 games/farkle.rb:761 games/three_five_eight.rb:1022 games/tysiac.rb:1632 games/uno.rb:1385 games/yahtzee.rb:550
 msgid "%{player}: %{score}"
 msgstr ""
 
@@ -6283,7 +6283,7 @@ msgstr ""
 msgid "Ante in five-card draw"
 msgstr ""
 
-#: games/uno.rb:1367
+#: games/uno.rb:1375
 msgid "Any colour may be played."
 msgstr ""
 
@@ -7359,11 +7359,11 @@ msgstr ""
 msgid "Bow marked. Choose the stern, or the same square for one mast."
 msgstr ""
 
-#: lib/audio_ball/client.rb:680
+#: lib/audio_ball/client.rb:681
 msgid "Break between points."
 msgstr ""
 
-#: lib/audio_ball/client.rb:680
+#: lib/audio_ball/client.rb:681
 msgid "Break between sets."
 msgstr ""
 
@@ -7516,7 +7516,7 @@ msgstr ""
 msgid "Buzzer cards"
 msgstr ""
 
-#: games/uno.rb:1387 games/uno.rb:1403
+#: games/uno.rb:1395 games/uno.rb:1411
 msgid "Buzzer: press B."
 msgstr ""
 
@@ -8048,7 +8048,7 @@ msgstr ""
 msgid "Challenge cancelled. Feathers unchanged."
 msgstr ""
 
-#: games/uno.rb:786
+#: games/uno.rb:787
 msgid "Challenge failed."
 msgstr ""
 
@@ -8060,7 +8060,7 @@ msgstr ""
 msgid "Challenge for %{players}."
 msgstr ""
 
-#: games/uno.rb:786
+#: games/uno.rb:787
 msgid "Challenge succeeded."
 msgstr ""
 
@@ -8516,7 +8516,7 @@ msgstr ""
 msgid "Choose a colour"
 msgstr ""
 
-#: games/uno.rb:1397 games/uno.rb:461 games/uno.rb:600
+#: games/uno.rb:1405 games/uno.rb:461 games/uno.rb:600
 msgid "Choose a colour."
 msgstr ""
 
@@ -9988,7 +9988,7 @@ msgstr ""
 msgid "Current and recently ended"
 msgstr ""
 
-#: games/uno.rb:1372
+#: games/uno.rb:1380
 msgid "Current colour: %{colour}."
 msgstr ""
 
@@ -12609,6 +12609,10 @@ msgstr ""
 msgid "Fixed Ctrl+F4 after updating Game Room without restarting ELTEN. It now labels HTTP and, during an active connection, Communications UDP relay ping separately. The relay ping is not the full delay between players."
 msgstr ""
 
+#: lib/game_room_changelog.rb:588
+msgid "Fixed UNO rounds ending with a Draw Two or Wild Draw Four. The opponent draws the penalty cards, which count towards the score, and the player who emptied their hand no longer has to draw to finish the round."
+msgstr ""
+
 #: lib/game_room_changelog.rb:247
 msgid "Fixed a Game Room installation error caused by Unicode compatibility on some ELTEN runtimes."
 msgstr ""
@@ -12627,6 +12631,10 @@ msgstr ""
 
 #: lib/game_room_changelog.rb:525
 msgid "Fixed an error that could prevent tournament matches from starting in Axel Pong and Audio Ball."
+msgstr ""
+
+#: lib/game_room_changelog.rb:592
+msgid "Fixed an error when confirming a tournament start again."
 msgstr ""
 
 #: lib/game_room_changelog.rb:336
@@ -12951,6 +12959,10 @@ msgstr ""
 msgid "Four of a kind"
 msgstr ""
 
+#: lib/game_room_changelog.rb:589
+msgid "Four of a kind in Yahtzee now scores at least 15 points."
+msgstr ""
+
 #: games/mahjong_support/options.rb:25
 msgid "Four players"
 msgstr ""
@@ -13234,7 +13246,7 @@ msgstr ""
 msgid "Game over. The word was not guessed."
 msgstr ""
 
-#: games/duck_racing_support/challenge_presentation.rb:172 games/duck_racing_support/challenge_presentation.rb:312 lib/audio_ball/client.rb:676 lib/axel_pong/client.rb:576 lib/participant_menu.rb:101 lib/participant_menu.rb:99
+#: games/duck_racing_support/challenge_presentation.rb:172 games/duck_racing_support/challenge_presentation.rb:312 lib/audio_ball/client.rb:677 lib/axel_pong/client.rb:576 lib/participant_menu.rb:101 lib/participant_menu.rb:99
 msgid "Game paused."
 msgstr ""
 
@@ -14071,6 +14083,10 @@ msgstr ""
 msgid "Improved responsiveness and recovery during simultaneous actions, background play, invitations and saved-game operations. Reduced repeated work in game updates, tournament lists and leaderboards."
 msgstr ""
 
+#: lib/game_room_changelog.rb:587
+msgid "Improved responsiveness in longer Mahjong games. Successive hands should no longer cause the same growing slowdown, particularly in Hong Kong."
+msgstr ""
+
 #: lib/game_room_changelog.rb:431
 msgid "Improved the wording and clarity of the English, Czech, Spanish and Russian rules as well."
 msgstr ""
@@ -14372,6 +14388,10 @@ msgstr ""
 
 #: games/generated/rulebooks/mahjong.rb:249
 msgid "In sanma you cannot claim Chow, but you may form sequences from your own numbered tiles."
+msgstr ""
+
+#: lib/game_room_changelog.rb:591
+msgid "In singles, Audio Ball announces only who serves. In doubles, it still announces both the server and the receiver."
 msgstr ""
 
 #: games/krowa_support/presentation.rb:16
@@ -15903,7 +15923,7 @@ msgstr ""
 msgid "MCR: 88 fan"
 msgstr ""
 
-#: games/mahjong.rb:24 games/mahjong_support/private_table.rb:129 games/mahjong_support/solitaire_presentation.rb:12 games/mahjong_support/solitaire_presentation.rb:36 games/mahjong_support/table_game.rb:210 games/mahjong_support/table_presentation.rb:21 games/mahjong_support/table_presentation.rb:25
+#: games/mahjong.rb:24 games/mahjong_support/private_table.rb:129 games/mahjong_support/solitaire_presentation.rb:12 games/mahjong_support/solitaire_presentation.rb:36 games/mahjong_support/table_game.rb:219 games/mahjong_support/table_presentation.rb:21 games/mahjong_support/table_presentation.rb:25
 msgid "Mahjong"
 msgstr ""
 
@@ -16169,7 +16189,7 @@ msgstr ""
 msgid "Match resumed."
 msgstr ""
 
-#: games/mahjong_support/table_game.rb:200
+#: games/mahjong_support/table_game.rb:209
 msgid "Match scores"
 msgstr ""
 
@@ -16760,6 +16780,10 @@ msgstr ""
 
 #: lib/game_room_changelog.rb:416
 msgid "New English, Czech, Spanish and Russian rulebooks for every game."
+msgstr ""
+
+#: lib/game_room_changelog.rb:590
+msgid "New Tic Tac Toe games randomly choose who starts. The starting player uses X."
 msgstr ""
 
 #: lib/tournaments/draft_screen.rb:21
@@ -18485,7 +18509,7 @@ msgstr ""
 msgid "Place the new tiles in one row or column."
 msgstr ""
 
-#: games/tic_tac_toe.rb:30
+#: games/tic_tac_toe.rb:33
 msgid "Place three of your marks in a line before your opponent does."
 msgstr ""
 
@@ -19959,7 +19983,7 @@ msgstr ""
 msgid "Ready"
 msgstr ""
 
-#: games/mahjong_support/table_game.rb:204
+#: games/mahjong_support/table_game.rb:213
 msgid "Ready for the next hand"
 msgstr ""
 
@@ -24815,7 +24839,7 @@ msgstr ""
 msgid "The mahjong solitaire puzzle was ended."
 msgstr ""
 
-#: games/mahjong_support/table_game.rb:328
+#: games/mahjong_support/table_game.rb:337
 msgid "The mahjong tiles have been dealt."
 msgstr ""
 
@@ -25943,7 +25967,7 @@ msgstr[1] ""
 msgid "There is no active turn."
 msgstr ""
 
-#: games/uno.rb:1352 games/uno.rb:1361
+#: games/uno.rb:1360 games/uno.rb:1369
 msgid "There is no card on the discard pile."
 msgstr ""
 
@@ -25954,7 +25978,7 @@ msgstr ""
 msgid "There is no contract yet."
 msgstr ""
 
-#: games/uno.rb:1370
+#: games/uno.rb:1378
 msgid "There is no current colour."
 msgstr ""
 
@@ -25965,7 +25989,7 @@ msgstr ""
 msgid "There is no discard pile in this variant."
 msgstr ""
 
-#: games/uno.rb:1391
+#: games/uno.rb:1399
 msgid "There is no draw obligation."
 msgstr ""
 
@@ -26279,7 +26303,7 @@ msgstr ""
 msgid "This draft is too large."
 msgstr ""
 
-#: games/reversi.rb:142 games/tic_tac_toe.rb:176
+#: games/reversi.rb:142 games/tic_tac_toe.rb:221
 msgid "This field is already occupied."
 msgstr ""
 
@@ -26759,7 +26783,7 @@ msgstr ""
 msgid "Threes"
 msgstr ""
 
-#: games/tic_tac_toe.rb:26
+#: games/tic_tac_toe.rb:29
 msgid "Tic-tac-toe"
 msgstr ""
 
@@ -27648,7 +27672,7 @@ msgstr ""
 msgid "UNO is for two to eight players. Each round starts with seven cards per person. On your turn, play a card matching the current colour or the number or symbol on the top discard. On a blue seven, for example, you may play a blue card or a seven of another colour. Wild cards let you choose the next colour."
 msgstr ""
 
-#: games/uno.rb:663
+#: games/uno.rb:664
 msgid "UNO round %{round} started. First card: %{card}."
 msgstr ""
 
@@ -28200,7 +28224,7 @@ msgstr ""
 msgid "Waiting for %{owner} to start a game."
 msgstr ""
 
-#: games/makao.rb:352 games/poker.rb:369 games/uno.rb:1404 lib/tournaments/partner_choice.rb:42
+#: games/makao.rb:352 games/poker.rb:369 games/uno.rb:1412 lib/tournaments/partner_choice.rb:42
 msgid "Waiting for %{player}"
 msgstr ""
 
@@ -28291,7 +28315,7 @@ msgstr ""
 msgid "Waiting for players to reveal their cards."
 msgstr ""
 
-#: lib/audio_ball/client.rb:682
+#: lib/audio_ball/client.rb:683
 msgid "Waiting for players."
 msgstr ""
 
@@ -28315,7 +28339,7 @@ msgstr ""
 msgid "Waiting for the describing player."
 msgstr ""
 
-#: games/mahjong_support/table_game.rb:210 lib/game_layout.rb:299
+#: games/mahjong_support/table_game.rb:219 lib/game_layout.rb:299
 msgid "Waiting for the game to start"
 msgstr ""
 
@@ -28359,7 +28383,7 @@ msgstr ""
 msgid "Waiting for the players to finish answering."
 msgstr ""
 
-#: lib/audio_ball/client.rb:677
+#: lib/audio_ball/client.rb:678
 msgid "Waiting for the point to be saved."
 msgstr ""
 
@@ -32288,7 +32312,7 @@ msgstr ""
 msgid "wild colour roulette"
 msgstr ""
 
-#: games/uno.rb:1085
+#: games/uno.rb:1086
 msgid "wild draw colour"
 msgstr ""
 
@@ -32304,7 +32328,7 @@ msgstr ""
 msgid "wild draw ten"
 msgstr ""
 
-#: games/uno.rb:1084
+#: games/uno.rb:1085
 msgid "wild draw two"
 msgstr ""
 

@@ -74,6 +74,7 @@ class GameRoomTableControl
 
   def initialize(founder:, records:, anchor:)
     @founder, @anchor, @records = founder.to_s, anchor, []
+    @record_epochs = {}
     @complete = anchor == nil
     return if anchor == nil
     indexed = records.each_with_object({}) { |r, all| all[r.sequence] = r if r.packet["kind"] == KIND }
@@ -81,6 +82,7 @@ class GameRoomTableControl
     while self.class.valid_anchor?(cursor)
       record = indexed[cursor["seq"]]
       return unless record && self.class.anchor(record) == cursor
+      @record_epochs[record.sequence] = cursor['digest'] if record.packet.frozen?
       data = record.packet["data"]
       return unless self.class.valid_data?(data, sequence: record.sequence, sender: record.sender)
       @records.unshift(record)
@@ -112,7 +114,7 @@ class GameRoomTableControl
 
   def epoch_at(sequence)
     record = @records.reverse.find { |r| r.sequence < sequence }
-    record ? self.class.anchor(record)["digest"] : "initial"
+    record ? (@record_epochs[record.sequence] || self.class.anchor(record)['digest']) : 'initial'
   end
 
   def current_owner

@@ -43,7 +43,7 @@ assert_equal(signature.call(expected), signature.call(actual), 'Warm Hong Kong r
 assert_equal(signature.call(expected), signature.call(MahjongTableGameTest::Game.new.replay(session, events, repository)))
 
 # Returning a mutable UI/planning replay never exposes the retained checkpoint.
-actual.history.clear
+actual.history = []
 again = game.replay(session, events, repository)
 assert_equal(signature.call(expected), signature.call(again), 'A caller mutated the cached checkpoint')
 assert_equal(events.size, processed, 'Unchanged input repeated a rule transition')

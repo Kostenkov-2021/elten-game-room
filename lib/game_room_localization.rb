@@ -105,7 +105,8 @@ module GameRoomLocalization
     def language_name(code)
       name = @catalogs[code]&.metadata&.fetch("X-Language-Name", nil)
       if name.to_s.empty? && defined?(Lists) && Lists.respond_to?(:langs)
-        record = Lists.langs[code]
+        languages = Lists.langs
+        record = languages[code] if languages.is_a?(Hash)
         name = record["nativeName"] if record.is_a?(Hash)
       end
       name = { "en" => "English", "pl" => "polski" }.fetch(code, code) if name.to_s.empty?

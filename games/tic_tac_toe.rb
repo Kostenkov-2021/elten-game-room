@@ -4,6 +4,9 @@ require_relative "../lib/game_tree_search"
 require_relative "../lib/board_presentation"
 
 require_relative "../lib/game_room_localization"
+require_relative "../lib/server_random"
+
+GameRoomServerRandom.register('tic_tac_toe', ['tic_tac_toe_start'])
 
 module GameRoomGames
   using GameRoomLocalization::Translations
@@ -32,6 +35,20 @@ module GameRoomGames
 
     def rule_sections
       generated_rule_sections
+    end
+
+    def table_creation_options(values = {})
+      super.merge('random_start'=>1)
+    end
+
+    def new_game_options(values)
+      normalize_options(values).merge('random_start'=>1)
+    end
+
+    def normalize_options(values)
+      result=super
+      result['random_start']=1 if values.is_a?(Hash) && (values['random_start']==1 || values[:random_start]==1)
+      result
     end
 
     def supports_bots?
@@ -73,15 +90,24 @@ module GameRoomGames
       board = Array.new(SIZE) { Array.new(SIZE) }
       accepted = []
       history = [starting_history(players)]
-      current_player = players[0]
+      random_start = options_from_json(session['options'])['random_start']==1
+      first_player = random_start ? nil : 0
+      current_player = random_start ? nil : players[0]
       winner = nil
       draw = false
 
       events.each do |event|
         break if winner != nil || draw
-        next if event["action"].to_s != "place"
-
         actor = repository.actor_of(event, session)
+        if event['action']=='tic_tac_toe_start'
+          next unless random_start && first_player.nil? && same_user?(actor,players.first) &&
+            /\A[01]\z/.match?(event['value'].to_s) && GameRoomServerRandom.valid_recipe_event?(event,kind:'first_server')
+          first_player=event['value'].to_i
+          current_player=players[first_player]
+          accepted << event
+          next
+        end
+        next if event["action"].to_s != "place"
         next if current_player == nil || !same_user?(actor, current_player)
 
         coordinates = parse_coordinates(event["value"])
@@ -97,7 +123,7 @@ module GameRoomGames
         accepted << event
         event_id = repository.event_id(event)
         field = field_label(column, row)
-        mark = MARKS[marker]
+        mark = MARKS[(marker-first_player)%2]
         history << HistoryEntry.new(
           key: "move:#{event_id}",
           text: board_move_text(actor, field),
@@ -126,8 +152,18 @@ module GameRoomGames
         winner: winner,
         draw: draw,
         accepted_events: accepted,
-        history: history
+        history: history,
+        state: random_start ? {opening_pending:first_player.nil?, phase: (winner || draw ? :finished : :playing)} : nil
       )
+    end
+
+    def automatic_action(replay,actor,context:nil)
+      return nil unless replay.state&.[](:opening_pending) && same_user?(actor,replay.players.first)
+      {'kind'=>'command','action'=>'tic_tac_toe_start'}
+    end
+
+    def automatic_action_due?(replay,actor,context:nil)
+      !automatic_action(replay,actor,context:context).nil?
     end
 
     def surface_spec(replay, viewer)
@@ -147,6 +183,15 @@ module GameRoomGames
 
     def action_for(selection, replay, actor, context: nil)
       return [:finished, nil] if replay.finished?
+      if replay.state&.[](:opening_pending)
+        return [:invalid,nil] unless selection['kind']=='command' && selection['action']=='tic_tac_toe_start' &&
+          same_user?(actor,replay.players.first) && context && (context.server_random || context.random_source)
+        if context.server_random
+          return [:ok,ActionPlan.new(events:[GameRoomServerRandom.recipe_command(action:'tic_tac_toe_start',kind:'first_server')])]
+        end
+        first=context.random_source.roll(count:1,sides:2).values.first-1
+        return [:ok,event_plan('tic_tac_toe_start',first)]
+      end
       return [:not_your_turn, nil] if !same_user?(replay.current_player, actor)
       return [:invalid, nil] if selection["kind"].to_s != "grid"
       return [:invalid, nil] if selection["action"].to_s != "select"

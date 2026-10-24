@@ -29,6 +29,10 @@ score = yahtzee.legal_actions(yahtzee_replay, "Alice").find { |action| action["a
 yahtzee_replay = append_action(yahtzee, yahtzee_session, repository, yahtzee_events, yahtzee_replay, "Alice", score)
 assert(yahtzee_replay.current_player == "Bob", "Yahtzee did not advance after scoring")
 assert(yahtzee.default_options["yahtzee_bonus"] && yahtzee.default_options["joker_rule"], "Yahtzee bonus and Joker are not independent enabled defaults")
+[[[1,1,1,1,2],15],[[2,2,2,2,6],15],[[3,3,3,3,6],18],[[1,1,1,1,1],15],[[1,1,1,2,3],0]].each do |dice,expected|
+  assert(yahtzee.send(:score_category,'four_kind',dice,yahtzee_replay.state,'Alice')==expected,
+    "Four of a kind must award at least 15, but only for a qualifying roll: #{dice.inspect}")
+end
 
 joker_state = yahtzee.send(:initial_state, players,
   yahtzee.normalize_options("yahtzee_bonus" => false, "joker_rule" => true))

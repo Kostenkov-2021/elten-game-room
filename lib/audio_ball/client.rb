@@ -655,7 +655,8 @@ module GameRoomAudioBall
       service = [number, @replay.state[:scores].sum / 2, @players[server], @players[receiver]]
       return if @announced_service == service
       @announced_service = service
-      text = GameRoomContent.utf8(_('%{player} serves to %{receiver}.')) % {
+      template = @players.length == 2 ? _('%{player} serves.') : _('%{player} serves to %{receiver}.')
+      text = GameRoomContent.utf8(template) % {
         player: GameRoomContent.utf8(GameRoomParticipants.display_name(@players[server])),
         receiver: GameRoomContent.utf8(GameRoomParticipants.display_name(@players[receiver]))}
       if @audio.respond_to?(:announce)

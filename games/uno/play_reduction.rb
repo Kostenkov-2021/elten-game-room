@@ -170,12 +170,9 @@ module GameRoomGames
         end
         finisher = active_players(state).find { |owner| state[:hands][owner].empty? }
         if finisher
-          if state[:pending_draw] > 0 || state[:pending_colour] != nil || state[:buzzer_active] || colour_choice_pending?(state)
-            state[:pending_finisher] ||= finisher
-          else
-            finish_round(state, finisher, id, history)
-            return true
-          end
+          state[:pending_finisher] ||= finisher
+          others = active_players(state).select { |owner| owner != state[:pending_finisher] && state[:hands][owner].empty? }
+          state[:pending_finishers] = (state.fetch(:pending_finishers, []) + others).uniq unless others.empty?
         else
           apply_no_mercy(state, player, id, history, deadline: deadline)
         end

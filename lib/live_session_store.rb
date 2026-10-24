@@ -1242,15 +1242,19 @@ class GameRoomLiveSessionStore
     end_room_io(table_id)
   end
 
-  def records_for(table_id)
-    source, raw, generation, cache = @mutex.synchronize do
+  def records_for(table_id, read_only: false)
+    source, raw, generation, corrections, cache = @mutex.synchronize do
       source = @rooms[table_id]&.records
-      [source, source.to_a.dup, (@rooms[table_id]&.record_generation || 0), @rooms[table_id]&.validated_records]
+      [source, source.to_a.dup, (@rooms[table_id]&.record_generation || 0),
+        (@rooms[table_id]&.history_corrections || 0), @rooms[table_id]&.validated_records]
     end
     native = active_session(table_id)
     anchor = control_metadata(native)[GameRoomTableControl::ANCHOR_KEY]
+    metadata = native&.metadata.to_h
     key = [generation, native, anchor]
-    return cache[:records].dup if cache && cache[:key] == key
+    if cache && cache[:source].equal?(source) && cache[:key] == key && cache[:metadata] == metadata
+      return read_only ? cache[:records] : cache[:records].dup
+    end
     ledger = control_ledger(table_id, raw: raw, native: native)
     return [] unless ledger.complete
     # A new-game checkpoint may compact the server log. Preserve this client's
@@ -1258,22 +1262,34 @@ class GameRoomLiveSessionStore
     # prefix using the new owner's authority.
     root = ledger.records.first
     prefix_end = root && root.packet["data"]["previous"] == nil ? root.packet["data"]["from"].to_i : 0
-    accepted = cache ? cache[:records].select { |record| record.sequence < prefix_end } : []
+    unchanged_prefix = cache && cache[:input] && cache[:source].equal?(source) &&
+      cache[:key][1].equal?(native) && cache[:key][2] == anchor && cache[:metadata] == metadata &&
+      cache[:corrections] == corrections && cache[:input].length <= raw.length &&
+      cache[:input].each_with_index.all? { |record, index| record.equal?(raw[index]) && record.packet.frozen? }
+    accepted = if unchanged_prefix
+      cache[:records].dup
+    else
+      cache ? cache[:records].select { |record| record.sequence < prefix_end } : []
+    end
     retained = accepted.to_h { |record| [record.sequence, true] }
-    validator = RecordValidator.new(accepted, metadata: native&.metadata.to_h)
-    raw.each do |record|
+    validator = unchanged_prefix ? cache[:validator].restore : RecordValidator.new(accepted, metadata: metadata)
+    pending = unchanged_prefix ? raw.drop(cache[:input].length) : raw
+    pending.each do |record|
       next if retained[record.sequence]
       accepted << record if validator.accept(record, owner: ledger.owner_at(record.sequence), ledger: ledger)
     end
+    checkpoint = GameRoomSnapshot.capture(validator)
+    owned_metadata, owned_anchor = GameRoomSnapshot.copy([metadata, anchor])
     @mutex.synchronize do
       # Counters restart after pruning. Check the actual collection and native
       # membership too, so a slower reader cannot publish into a rejoined room.
       if source && @rooms[table_id]&.records.equal?(source) &&
           @sessions[table_id].equal?(native) && room_state(table_id).record_generation == generation
-        room_state(table_id).validated_records = {key: key, records: accepted.freeze}
+        room_state(table_id).validated_records = {key: [generation, native, owned_anchor], records: accepted.freeze,
+          source: source, input: raw.freeze, corrections: corrections, metadata: owned_metadata, validator: checkpoint}
       end
     end
-    accepted.dup
+    read_only ? accepted.freeze : accepted.dup
   end
 
   def control_metadata(native)
@@ -1282,9 +1298,28 @@ class GameRoomLiveSessionStore
   end
 
   def control_ledger(table_id, raw: nil, native: active_session(table_id))
-    raw ||= @mutex.synchronize { (@rooms[table_id]&.records || []).dup }
-    GameRoomTableControl.new(founder: native&.metadata.to_h["owner"], records: raw,
-      anchor: control_metadata(native)[GameRoomTableControl::ANCHOR_KEY])
+    founder = native&.metadata.to_h['owner']
+    anchor = control_metadata(native)[GameRoomTableControl::ANCHOR_KEY]
+    # Explicit prefixes belong to record validation and are always checked.
+    return GameRoomTableControl.new(founder: founder, records: raw, anchor: anchor) if raw
+    room, source, generation, cached = @mutex.synchronize do
+      state = @rooms[table_id]
+      [state, state&.records, state&.record_generation, state&.control_projection]
+    end
+    if cached && cached[:source].equal?(source) && cached[:native].equal?(native) &&
+        cached[:generation] == generation && cached[:founder] == founder && cached[:anchor] == anchor
+      return cached[:ledger]
+    end
+    owned_founder, owned_anchor = GameRoomSnapshot.copy([founder, anchor])
+    result = GameRoomTableControl.new(founder: owned_founder, records: source.to_a.dup, anchor: owned_anchor)
+    @mutex.synchronize do
+      if room && @rooms[table_id].equal?(room) && room.records.equal?(source) &&
+          room.record_generation == generation && @sessions[table_id].equal?(native)
+        room.control_projection = {source: source, native: native, generation: generation,
+          founder: owned_founder, anchor: owned_anchor, ledger: result}
+      end
+    end
+    result
   end
 
   def command_value(command, key)

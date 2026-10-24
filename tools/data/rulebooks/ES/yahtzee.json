@@ -68,7 +68,7 @@
           "es": "- Trío: al menos tres dados iguales. Sumas los cinco dados, no solo el trío."
         },
         {
-          "es": "- Póquer: al menos cuatro iguales. Sumas los cinco dados."
+          "es": "- Póquer: al menos cuatro iguales. Sumas los cinco dados, con un mínimo de 15 puntos."
         },
         {
           "es": "- Full: tres iguales y una pareja de otro valor. Da 25 o la suma de los dados si es mayor; tres seises y dos cuatros valen 26."

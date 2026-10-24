@@ -21,6 +21,7 @@ require_relative '../../__app'
 def assert(value, message = 'Assertion failed'); raise message unless value; end
 class Form
   def main_shortcut_pressed?(*, **); false; end
+  def keyboard_binding_pressed?(*, **); false; end
   def wait
     @wait = true
     Thread.current[:event_test_driver].call(self)

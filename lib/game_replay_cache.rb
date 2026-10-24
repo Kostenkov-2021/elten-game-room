@@ -2,6 +2,7 @@
 
 require 'digest'
 require 'thread'
+require_relative 'game_snapshot'
 
 # One owned, authenticated prefix. A changed earlier record, actor, session or
 # dependency invalidates it; returned reducers never share its mutable model.
@@ -10,19 +11,42 @@ class GameRoomReplayCache
   Entry = Data.define(:key, :identities, :count, :signature, :checkpoint)
 
   class Input
-    attr_reader :session, :players, :events, :retained_bytes
+    attr_reader :session, :players, :events, :retained_bytes, :retention_bytes
 
     def initialize(session, events, repository, previous: nil)
       @session, @players = Marshal.load(Marshal.dump([session, repository.players_for(session)]))
-      @by_event = {}.compare_by_identity
-      @sizes = []
-      @retained_bytes = 0
-      @signatures = [Digest::SHA256.digest('authenticated-replay-prefix-v1').freeze]
-      @records = events.to_a.each_with_index.map do |event, index|
+      sealed = events.is_a?(GameRoomSnapshot::Log) && events.frozen?
+      @source = sealed ? events : nil
+      @authentication = repository.replay_authentication_identity if sealed && repository.respond_to?(:replay_authentication_identity)
+      reusable = @authentication && previous && previous.instance_variable_get(:@authentication) == @authentication &&
+        previous.session == @session && previous.players == @players
+      prior_source = previous.instance_variable_get(:@source) if reusable
+      if prior_source && prior_source.equal?(events)
+        %i[by_event sizes retained_bytes borrowed_bytes signatures records events retention_bytes].each do |name|
+          instance_variable_set("@#{name}", previous.instance_variable_get("@#{name}"))
+        end
+        return
+      end
+      prefix = prior_source && prior_source.length <= events.length &&
+        prior_source.each_with_index.all? { |item, index| item.equal?(events[index]) } ? prior_source.length : 0
+      @by_event = prefix.positive? ? previous.instance_variable_get(:@by_event).dup : {}.compare_by_identity
+      @sizes = prefix.positive? ? previous.instance_variable_get(:@sizes).dup : []
+      @retained_bytes = prefix.positive? ? previous.retained_bytes : 0
+      @borrowed_bytes = prefix.positive? ? previous.instance_variable_get(:@borrowed_bytes) : 0
+      @signatures = prefix.positive? ? previous.instance_variable_get(:@signatures).dup : [Digest::SHA256.digest('authenticated-replay-prefix-v1').freeze]
+      @records = prefix.positive? ? previous.instance_variable_get(:@records).dup : []
+      events.to_a.drop(prefix).each_with_index do |event, offset|
+        index = prefix + offset
         prior = previous && previous.record_at(index)
         # Reuse only owned, sealed values. Recheck authentication even for an
         # unchanged raw event; its current controller interpretation may differ.
-        row = prior && prior.first.eql?(event) ? prior.first : Marshal.load(Marshal.dump(event))
+        row = if prior && prior.first.eql?(event)
+          prior.first
+        elsif sealed
+          event
+        else
+          Marshal.load(Marshal.dump(event))
+        end
         actor = repository.actor_of(row, @session)
         actor = actor.dup.freeze if actor.is_a?(String)
         record = [row, repository.event_id(row), actor]
@@ -40,13 +64,22 @@ class GameRoomReplayCache
           @sizes << encoded.bytesize
         end
         @retained_bytes += @sizes.last
-        @by_event[row] = [index, record]
-        record
+        @borrowed_bytes += @sizes.last if sealed && row.equal?(event)
+        @by_event[row] = [index, record].freeze
+        @records << record
       end
-      @events = @records.map(&:first)
+      @events = if prefix.positive?
+        (previous.events.dup.concat(@records.drop(prefix).map(&:first))).freeze
+      else
+        @records.map(&:first).freeze
+      end
+      @by_event.freeze
       @records.freeze
       @signatures.freeze
       @sizes.freeze
+      # Borrowed rows already belong to the bounded native log. Account for
+      # this cache's indexes/digests, not another imagined copy of those rows.
+      @retention_bytes = @retained_bytes - @borrowed_bytes + @records.length * 192
     end
 
     def actor_of(event, _session = nil); @by_event.fetch(event).last[2]; end
@@ -89,13 +122,13 @@ class GameRoomReplayCache
     if same_context && entry.count <= count
       if input.signature(entry.count) == entry.signature
         prefix = entry.count
-        checkpoint = Marshal.load(entry.checkpoint)
+        checkpoint = entry.checkpoint.restore
         return checkpoint if prefix == count
       end
     end
     result = yield(checkpoint, prefix)
     signature = input.signature
-    encoded = Marshal.dump(result).freeze
+    encoded = GameRoomSnapshot.capture(result)
     @lock.synchronize do
       if ticket == @generation
         historical = same_context && entry.equal?(@entry) && @entry.count > count

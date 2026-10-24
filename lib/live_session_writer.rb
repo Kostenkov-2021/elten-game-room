@@ -279,14 +279,17 @@ class GameRoomLiveSessionStore
       record = Record.new(
         table_id: table_id,
         sequence: seq,
-        message_id: identity,
-        sender: sender.to_s,
+        message_id: identity.dup.freeze,
+        sender: sender.to_s.dup.freeze,
         packet: JSON.parse(JSON.generate(packet)),
         created_at: normalize_time(created_at),
         estimated_time: estimated_time,
-        server_random: server_random,
-        server_pool: server_pool
+        server_random: GameRoomSnapshot.copy(server_random),
+        server_pool: GameRoomSnapshot.copy(server_pool)
       )
+      # Packet/authority input never changes after ingestion. Estimated native
+      # timestamps are corrected separately, with a new room generation.
+      GameRoomSnapshot::Log.from_owned([record.packet, record.server_random, record.server_pool], bytes: 0)
       store_ingested_record(table_id, record, source_session)
     end
 
@@ -310,6 +313,7 @@ class GameRoomLiveSessionStore
             previous.estimated_time = false
             corrected = previous
             room_state(table_id).record_generation += 1
+            room_state(table_id).history_corrections += 1
           end
           next false
         end

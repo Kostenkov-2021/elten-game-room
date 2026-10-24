@@ -482,7 +482,7 @@ module GameRoomGames
       joker = joker_active?(state, actor, values)
       case category.to_s
       when "three_kind" then counts.values.max.to_i >= 3 ? values.sum : 0
-      when "four_kind" then counts.values.max.to_i >= 4 ? values.sum : 0
+      when "four_kind" then counts.values.max.to_i >= 4 ? [15, values.sum].max : 0
       when "full_house" then (counts.values.sort == [2, 3] || joker) ? [25, values.sum].max : 0
       when "small_straight" then straight_length(values) >= 4 || joker ? 30 : 0
       when "large_straight" then straight_length(values) >= 5 || joker ? 40 : 0
@@ -561,7 +561,7 @@ module GameRoomGames
       # roll immediately. Upper-section progress also has value before 63.
       upper = %w[ones twos threes fours fives sixes]
       face = upper.index(category)
-      targets = { "three_kind" => 20, "four_kind" => 14, "full_house" => 20,
+      targets = { "three_kind" => 20, "four_kind" => 15, "full_house" => 20,
         "small_straight" => 25, "large_straight" => 23, "yahtzee" => 12,
         "chance" => 22, "pair" => 22, "two_pairs" => 20, "misery" => 24 }
       reserve = face ? (face + 1) * 3 : targets.fetch(category, 0)

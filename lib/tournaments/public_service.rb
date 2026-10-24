@@ -137,14 +137,11 @@ module GameRoomTournaments
     # journal. They do not fabricate a result or modify an earlier join.
     def change_phase(tournament_id:, action:, intent_id:, expected_generation:)
       raise Error, :invalid_phase_action unless %w[open close start].include?(action)
-      if action == 'start'
-        row = snapshot.fetch(:model).to_h['announcements'].find { |item| item['alias_ids'].include?(tournament_id) }
-        raise Error, :source_changed unless row && RegistrationProjection.publication_generation(row) == expected_generation
-        before_tournament_start!(row)
-        complete_partnerships(tournament_id: tournament_id, starting: true)
-      end
       change_publication(tournament_id: tournament_id, intent_id: intent_id, kind: 'amendment', starting: action == 'start') do |row|
         raise Error, :source_changed unless RegistrationProjection.publication_generation(row) == expected_generation
+        # Resolve a repeated Start intent before preparing any new pairs or
+        # rejecting the already-started publication in the shared write path.
+        complete_partnerships(tournament_id: tournament_id, starting: true) if action == 'start'
         now=boundary{@clock.call}
         revised=Data.copy(row.slice(*Publication::COLUMNS))
         timing=TournamentTiming.schedule(row)

@@ -98,7 +98,7 @@ class GameRepository
     end
   end
 
-  def snapshot_for(session, force_events: false)
+  def snapshot_for(session, force_events: false, read_only: false)
     return nil if session_id(session) <= 0 || session["table_id"].to_i <= 0
 
     players = players_for(session)
@@ -107,7 +107,7 @@ class GameRepository
     current = with_players(session, players)
     refreshed = @transport.game_session(session_id(current), table: current["table_id"])
     current = with_players(refreshed, players_for(refreshed)) if refreshed != nil
-    events = events_for(current, force: force_events)
+    events = events_for(current, force: force_events, read_only: read_only)
     # A terminal boundary can have arrived in the event read just completed.
     refreshed = @transport.game_session(session_id(current), table: current["table_id"])
     current = with_players(refreshed, players_for(refreshed)) if refreshed != nil
@@ -161,7 +161,7 @@ class GameRepository
   end
 
   def event_revision(session, known_revision: nil, force: false)
-    events_revision(events_for(session, force: force))
+    events_revision(events_for(session, force: force, read_only: true))
   end
 
   def events_revision(events)
@@ -172,7 +172,15 @@ class GameRepository
   def confirmed_event_ids(session)
     # Native entries are already persisted; an uncertain write is reconciled
     # by the store before this prefix can confirm a bot's move.
-    events_for(session).map { |event| event_id(event) }.select(&:positive?)
+    events_for(session, read_only: true).map { |event| event_id(event) }.select(&:positive?)
+  end
+
+  # Only the native repository opts into reuse of a deeply sealed input prefix.
+  # Session/seat context is compared in Input. Method identities invalidate
+  # earlier actor/ID interpretations if a runtime implementation changes.
+  def replay_authentication_identity
+    %i[actor_of event_id row_id players_for persisted_players_for unique_users includes_user? insertion_user event_players].map { |name| method(name) } +
+      [GameRoomParticipants.method(:same?), GameRoomParticipants.method(:bot?), GameRoomParticipantReplay.method(:roster_at)]
   end
 
   def next_sequence(session, accepted_events)
@@ -287,8 +295,9 @@ class GameRepository
     GameRoomEventProtocol.command_value(command, key)
   end
 
-  def events_for(session, force: false)
-    @transport.game_events(session, force: force)
+  def events_for(session, force: false, read_only: false)
+    return @transport.game_events(session, force: force) unless read_only
+    @transport.game_events(session, force: force, read_only: true)
   end
 
   def persisted_players_for(session)

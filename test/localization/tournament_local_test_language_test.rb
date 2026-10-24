@@ -105,7 +105,7 @@ shared_workspace = Object.new
 shared_workspace.define_singleton_method(:load) { G::RegistrationProjection.build(announcements: [], registrations: [], registry: registry, complete: true).to_h }
 shared_workspace.define_singleton_method(:mode_label) { mode }
 shared_workspace.define_singleton_method(:actor) { T::ACTOR }
-%i[join withdraw set_partner].each do |name|
+%i[join withdraw set_partner partnership_action].each do |name|
   shared_workspace.define_singleton_method(name) { |*| raise "Unexpected mutation: #{name}" }
 end
 driver.step(list) do |form|

@@ -11,6 +11,8 @@ class TournamentFixedTeamNativeService
       @creates = state.fetch('creates', []).map(&:dup)
       state.fetch('cores', []).each do |raw|
         values = raw.transform_keys(&:to_sym)
+        # Room metadata retains the founder across native host transfers.
+        values[:creator] = raw.fetch('metadata').fetch('owner', raw.fetch('owner'))
         values[:visibility] = raw.fetch('visibility').to_sym
         values[:participants] = raw.fetch('participants').to_h do |key, person|
           [key, Participant.new(id: person.fetch('id'), user: person.fetch('user'))]
@@ -27,7 +29,9 @@ class TournamentFixedTeamNativeService
 
     def dump
       {'creates' => @creates, 'cores' => cores.values.map do |core|
-        value = core.to_h.reject { |key, _| %i[mutex views].include?(key) }.transform_keys(&:to_s)
+        # Creator is an SDK-fixture discovery field, not part of the local
+        # tournament archive's deliberately exact native-core schema.
+        value = core.to_h.reject { |key, _| %i[mutex views creator].include?(key) }.transform_keys(&:to_s)
         value['visibility'] = core.visibility.to_s
         value['participants'] = core.participants.transform_values { |person| {'id' => person.id, 'user' => person.user} }
         value['dedup'] = core.dedup.map { |key, sequence| {'key' => key, 'sequence' => sequence} }

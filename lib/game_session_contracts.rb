@@ -40,7 +40,9 @@ module GameRoomSessionContracts
     attr_reader :revision
 
     def initialize(session:, replay:, repository:)
-      @identity, @events = GameRoomSnapshot.copy([SessionIdentity.from_row(session), replay.accepted_events.to_a])
+      log = replay.accepted_events
+      log = log.to_a unless log.is_a?(GameRoomSnapshot::Log) && log.frozen?
+      @identity, @events = GameRoomSnapshot.copy([SessionIdentity.from_row(session), log])
       freeze_tree(@identity, {})
       freeze_tree(@events, {})
       @revision = EventRevision.from_legacy(repository.events_revision(@events))

@@ -33,7 +33,7 @@ end
   NativeOptionTest.language = language
   game = MahjongGameTest::Game.new
   book = game.rule_book
-  assert_equal(%i[aim tiles play ending layout controls], book.sections.map(&:id))
+  assert_equal(%i[aim tiles play ending solitaire_points layout controls], book.sections.map(&:id))
   book.sections.each do |section|
     assert(section.title.encoding == Encoding::UTF_8 && section.title.valid_encoding?)
     section.paragraphs.each { |text| assert(text.encoding == Encoding::UTF_8 && text.valid_encoding?) }

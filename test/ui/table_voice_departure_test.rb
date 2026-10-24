@@ -1,4 +1,4 @@
-require_relative 'table_voice_controller_test'
+require_relative '../support/table_voice_controller'
 require_relative '../../lib/table_voice_membership'
 device=LocalConferenceDevice.new
 voice={'status'=>'ready','head'=>'voice-head','channel_id'=>555,'name'=>'Our table','creator'=>'Alice','password'=>''}

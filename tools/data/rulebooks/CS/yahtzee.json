@@ -68,7 +68,7 @@
           "cs": "- Trojice vyžaduje nejméně tři stejné kostky. Boduje součet všech pěti, nejen trojice."
         },
         {
-          "cs": "- Čtveřice vyžaduje nejméně čtyři stejné kostky. Také dává součet všech pěti."
+          "cs": "- Čtveřice vyžaduje nejméně čtyři stejné kostky. Získáš součet všech pěti, nejméně však 15 bodů."
         },
         {
           "cs": "- Full house tvoří trojice jedné hodnoty a dvojice jiné. Dává 25 bodů, nebo součet kostek, je-li vyšší. Tři šestky a dvě čtyřky tedy dávají 26."

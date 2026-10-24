@@ -38,10 +38,20 @@ end
 validator_class.prepend(counter)
 1600.times { |i| add_record(store, 1, 10 + i, 'game_action', action_data) }
 expected = store.send(:records_for, 1).map(&:sequence)
-assert(calls == 1608, 'Exactly one validation per stored operation, including rejected entries')
+assert(calls == 1600, 'An unchanged authenticated prefix validates only newly appended operations')
 store.send(:records_for, 1)
-assert(calls == 1608, 'Unchanged generation uses verified cache')
+assert(calls == 1600, 'Unchanged generation uses verified cache')
 assert(expected.size == 1604, 'Long history preserves every accepted action')
+
+# Replacing an earlier immutable record invalidates the prefix, even when
+# the count is unchanged. Rejected/future starts must be checked again too.
+room = store.send(:room_state, 1)
+index = room.records.index { |record| record.sequence == 4 }
+room.records[index] = room.records[index].dup.tap { |record| record.sender = 'Mallory' }
+room.record_generation += 1
+before = calls
+assert(store.send(:records_for, 1).map(&:sequence) == [7, 8], 'Changed earlier authority cannot inherit the old acceptance')
+assert(calls - before == room.records.size, 'A changed prefix is fully revalidated, including rejections')
 
 # Pending writes and in-flight recovery retain their room even under pressure.
 store.send(:room_state, 1).pending_move = {uncertain: true}

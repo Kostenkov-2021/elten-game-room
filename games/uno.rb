@@ -653,6 +653,7 @@ module GameRoomGames
         straight_actor: nil, straight_last: nil, straight_direction: nil,
         colour_choice_player: nil, colour_choice_card: nil, colour_choice_steps: nil,
         pending_finisher: nil)
+      state.delete(:pending_finishers)
       record_uno_deal(state, event, actor, repository, history)
       true
     rescue ArgumentError
@@ -1263,12 +1264,19 @@ module GameRoomGames
     end
 
     def finish_pending_round(state, event_id, history)
-      finisher = state[:pending_finisher]
-      return if finisher == nil || state[:pending_draw] > 0 || state[:pending_colour] != nil ||
+      candidates = ([state[:pending_finisher]] + state.fetch(:pending_finishers, [])).compact.uniq
+      return if candidates.empty? || state[:pending_draw] > 0 || state[:pending_colour] != nil ||
         state[:buzzer_active] || colour_choice_pending?(state)
 
+      # A draw chain may come back to its first empty hand. That player must
+      # pay it, but another player who emptied their hand during the chain
+      # must not have to draw merely to let the round finish.
+      finisher = candidates.find do |player|
+        state[:hands][player].empty? && !state[:eliminated][player] && !state[:round_eliminated][player]
+      end
       state[:pending_finisher] = nil
-      finish_round(state, finisher, event_id, history) if state[:hands][finisher].empty? && !state[:eliminated][finisher]
+      state.delete(:pending_finishers)
+      finish_round(state, finisher, event_id, history) if finisher
     end
 
     def advance_turn(state, actor, deadline = 0)

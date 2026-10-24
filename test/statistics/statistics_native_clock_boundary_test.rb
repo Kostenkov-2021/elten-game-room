@@ -8,6 +8,8 @@ require_relative '../../lib/game_statistics_screen'
 # The host clock is real. Only the authenticated account and the already
 # received sample are local fixtures; no HTTP or running client is used.
 Session = Struct.new(:name, :token).new('Alice', 'token-one') unless Object.const_defined?(:Session)
+Session.name = 'Alice'
+Session.token = 'token-one'
 def Session.logged?; true; end
 
 module StatisticsNativeClockBoundary

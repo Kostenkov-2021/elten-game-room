@@ -23,7 +23,7 @@ program.define_singleton_method(:run_network_task) { |*, **, &operation| operati
 workspace = Object.new
 workspace.define_singleton_method(:load) { data }
 workspace.define_singleton_method(:registry) { GameRoomGames::CATALOG }
-workspace.define_singleton_method(:set_partner) { |*args|calls << [:pair,*args]; {'status'=>'confirmed'} }
+workspace.define_singleton_method(:set_partner) { |*|raise 'Organizer must not assign partners' }
 workspace.define_singleton_method(:remove_participant) do |_, account|
   calls << [:remove, account]
   data['members']=data['members'].reject { |person|person['account']==account }
@@ -40,7 +40,7 @@ driver.step('Participants') do |form|
   list.index=2
   list.trigger(:select)
   assert_equal([:user,'Gamma'],calls.last)
-  assert_equal([:invite,:partner,:remove,:invitations,:refresh],manager.send(:available_actions).map(&:first))
+  assert_equal([:invite,:remove,:invitations,:refresh],manager.send(:available_actions).map(&:first))
   manager.send(:execute,:partner)
   manager.send(:execute,:invitations)
   manager.send(:execute,:remove)
@@ -48,18 +48,13 @@ driver.step('Participants') do |form|
   assert_equal('Delta',list.options[list.index], 'Removal lost the neighbouring selection')
   form.cancel_button.press
 end
-driver.step('Partner') do |form|
-  assert_equal(['Alpha','Beta','Delta','Without a partner'],form.fields.first.options)
-  form.fields.first.index=1
-  form.fields.first.trigger(:select)
-end
 driver.step('Invited users') do |form|
   assert_equal(['PendingPerson — Pending','DeclinedPerson — Declined'],form.fields.first.options)
   form.cancel_button.press
 end
 manager.run
 driver.finish
-assert(calls.any? { |entry|entry.is_a?(Array) && entry[0..3]==[:pair,11,'gamma','beta'] },'Partner selection was not applied')
+assert(calls.none? { |entry|entry.is_a?(Array) && entry.first==:pair },'Organizer assigned a partner')
 assert_equal([:remove,'gamma'],calls.last)
 actor='Visitor'
 guest = T::ParticipantManager.new(program:program,workspace:workspace,owner:T::Dialogs::Owner.new(-> {actor},->(*) {}),
@@ -73,7 +68,7 @@ driver.step('Participants') do |form|
 end
 guest.run
 driver.finish
-puts 'PASS native participant callbacks: user menu, organizer actions, partner picker, removal/focus, two read-only statuses and guest guards; no keyboard injection'
+puts 'PASS native participant callbacks: user menu, no organizer partner assignment, removal/focus, two read-only statuses and guest guards; no keyboard injection'
 operations=T::OperationsScreen.new(program:program,load:-> {[]},reconcile:->(*) {},alert:->(*) {},mode_label:'Shared tournaments',actor:actor)
 %w[invitation invite_declined].each do |kind|
   message=operations.send(:label,{'kind'=>kind,'status'=>'confirmed','values'=>{'tournament_id'=>11,'account'=>'Alpha'}})

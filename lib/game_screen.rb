@@ -1027,7 +1027,7 @@ class GameScreen
         room = @room_snapshot || @room_snapshot_provider.call
         # Notifications carry persisted events. Only failed/uncertain reads
         # bypass local stack metadata; retain the complete room projection.
-        snapshot = @repository.snapshot_for(@session,
+        snapshot = @repository.snapshot_for(@session, read_only: true,
           force_events: @automatic_recovery_pending && !@synchronizer.reconciled?)
         [snapshot, room, @activity_entries || activity_entries_for(room)]
       end

@@ -68,7 +68,7 @@
           "pl": "- Trójka wymaga co najmniej trzech jednakowych kości. Dostajesz sumę oczek ze wszystkich pięciu kości, również tych spoza trójki."
         },
         {
-          "pl": "- Kareta wymaga co najmniej czterech jednakowych kości. Dostajesz sumę oczek wszystkich pięciu kości."
+          "pl": "- Kareta wymaga co najmniej czterech jednakowych kości. Dostajesz sumę oczek wszystkich pięciu kości, ale nie mniej niż 15 punktów."
         },
         {
           "pl": "- Full to trzy kości jednej wartości i dwie innej. Dostajesz 25 punktów albo sumę oczek, jeżeli jest większa. Na przykład trzy szóstki i dwie czwórki dają 26 punktów."

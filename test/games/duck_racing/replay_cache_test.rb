@@ -315,7 +315,7 @@ check.call('cache memory is bounded and oversized checkpoints do not truncate or
     cache.reduce(current, context: []) { [{index: index}] }
     entry = cache.instance_variable_get(:@entry)
     assert(entry.checkpoint.frozen? && entry.signature.frozen? && entry.key.frozen?)
-    assert_equal([{index: index}], Marshal.load(entry.checkpoint))
+    assert_equal([{index: index}], entry.checkpoint.restore)
   end
   assert(!cache.instance_variables.any? { |key| key.to_s.include?('entries') }, 'Cache unexpectedly retained multiple sessions')
 end

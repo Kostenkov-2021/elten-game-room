@@ -19,7 +19,7 @@
       },
       "paragraphs": [
         {
-          "pl": "Pierwszy gracz stawia krzyżyki i zaczyna partię. Drugi stawia kółka. W każdej turze zajmujesz jedno puste pole swoim znakiem, a potem ruch wykonuje przeciwnik."
+          "pl": "Gra losuje, kto zaczyna partię. Ta osoba stawia krzyżyki, a przeciwnik kółka. W każdej turze zajmujesz jedno puste pole swoim znakiem, a potem ruch wykonuje przeciwnik."
         },
         {
           "pl": "Wybierz pole strzałkami i naciśnij Enter, żeby postawić znak. Postawionych znaków nie można przesuwać. Jeśli przeciwnik ma już dwa znaki w jednej linii, możesz zająć trzecie pole, żeby nie pozwolić mu wygrać."

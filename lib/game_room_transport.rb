@@ -208,8 +208,8 @@ class GameRoomTransport
     @live_store.game_action_limits(table_or_id)
   end
 
-  def game_events(session, force: false)
-    @live_store.game_events(session, force: force)
+  def game_events(session, force: false, read_only: false)
+    @live_store.game_events(session, force: force, read_only: read_only)
   end
 
   def private_cards_snapshot(session, events)

@@ -19,7 +19,7 @@
       },
       "paragraphs": [
         {
-          "en": "The first player uses crosses and makes the opening move; the other uses noughts. Take turns marking one empty square."
+          "en": "The starting player is chosen at random and uses crosses; the other uses noughts. Take turns marking one empty square."
         },
         {
           "en": "Move to a square with the arrows and press Enter to mark it. Marks stay where they are placed. If your opponent has two in a line, taking the third square can block their win."
