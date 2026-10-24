@@ -46,7 +46,7 @@ module GameRoomTournaments
       raise C::Blocked, :native_target_mismatch unless options.eql?(native.to_h['options'])
       validate_readback!(readback, owner, capacity: native.to_h['players'].size)
       game = registry.build(request['game_id'])
-      consumed = game.options_for_team_roster(game.new_game_options(options), players: native.to_h['players'])
+      consumed = game.game_start_options(options, players: native.to_h['players'], fixed: true)
       unless consumed.eql?(native.to_h['options']) && valid_assignment?(game, consumed, native.to_h['players'])
         raise C::Blocked, :native_target_mismatch
       end

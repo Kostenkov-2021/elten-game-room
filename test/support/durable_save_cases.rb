@@ -26,7 +26,7 @@ module DurableSaveCases
   def save(command, h, store)
     caught { command.call(**DurableSaveFixture.arguments(h), intent: store) }
   end
-  def frozen?(h)
+  def game_frozen?(h)
     h.repositories['Alice'].snapshot_for(h.session, force_events: true).session['__frozen'] == true
   end
   def lost(command, h, store, service)

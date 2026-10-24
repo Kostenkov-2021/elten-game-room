@@ -3448,8 +3448,8 @@ class EltenGameRoom < Program
     end
 
     participants = state.room.game_participants
-    options = game.new_game_options(game.options_from_json(row["game_options"]))
-    options = game.options_for_team_roster(options, players: participants)
+    options = game.game_start_options(game.options_from_json(row["game_options"]),
+      players: participants, fixed: row["tournament_match"].is_a?(Hash))
     options_error = game.validation_error(options, player_count: participants.length)
     # A variant can require a narrower roster than the game's general limits.
     # Keep its explanation and show who is actually signed up to play.

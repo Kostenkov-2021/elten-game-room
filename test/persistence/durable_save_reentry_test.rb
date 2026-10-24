@@ -24,7 +24,7 @@ scenario('R1: ponowne wejście nie zastępuje receipt właściciela ani nie zwal
   error = save(command, h, first)
   operation = first.list.fetch(0)
   assert(operation['status'] == 'uncertain' && service.state['uploads'] == 1, 'Nie osiągnięto uncertain po jednym prawdziwym uploadzie')
-  assert(frozen?(h), 'R1: przegrana próba zwolniła ochronę niepewnej intencji')
+  assert(game_frozen?(h), 'R1: przegrana próba zwolniła ochronę niepewnej intencji')
   assert(error.is_a?(Intent::Uncertain), "Wywołanie właściciela nie wykonało jedynego uploadu: #{error.inspect}")
   assert(observations.size == 2 && observations.all? { |o| o[:error].is_a?(Intent::Pending) && o[:unchanged] && o[:uploads] == 0 },
     'Ponowne wejście musi odmówić przed freeze, bez zwolnienia aktywnej blokady')

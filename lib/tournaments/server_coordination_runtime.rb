@@ -12,6 +12,9 @@ module GameRoomTournaments
 
     def configure_tournament_coordination
       stop_tournament_coordination
+      # Extensions are loaded before ELTEN logs in. A missing account/token is
+      # normal here; the existing extension tick starts us after authentication.
+      return unless Session.logged?
       account=Publication::Data.account(Session.name).downcase
       @tournament_runtime_account=account
       @tournament_runtime_epoch=SecureRandom.uuid
@@ -64,6 +67,9 @@ module GameRoomTournaments
     def stop_tournament_coordination
       @tournament_coordinator&.close
       @tournament_coordinator=nil
+      @tournament_runtime_account=nil
+      @tournament_runtime_epoch=nil
+      @tournament_runtime_error=nil
       @tournament_coordination_tick_at=nil
       stop_tournament_starts
     end
@@ -110,6 +116,10 @@ module GameRoomTournaments
       lock=(@tournament_coordination_tick_lock ||= Mutex.new)
       return unless lock.try_lock
       begin
+        unless Session.logged?
+          stop_tournament_coordination if @tournament_runtime_account || @tournament_coordinator || @tournament_start_inbox
+          return
+        end
         configure_tournament_coordination if @tournament_runtime_account!=Session.name.to_s.downcase
         now=Process.clock_gettime(Process::CLOCK_MONOTONIC)
         return if @tournament_coordination_tick_at && now-@tournament_coordination_tick_at<1.0

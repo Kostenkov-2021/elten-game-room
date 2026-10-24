@@ -34,6 +34,6 @@ include DurableSaveCases
     before = File.binread(store.path)
     error = caught { store.fetch(operation['id']) }
     assert(error.is_a?(Intent::Corrupt), "Przyjęto #{variant}: #{error.inspect}")
-    assert(File.binread(store.path) == before && service.state['uploads'] == 1 && frozen?(h), 'Odczyt naprawił/ponowił uszkodzony intent')
+    assert(File.binread(store.path) == before && service.state['uploads'] == 1 && game_frozen?(h), 'Odczyt naprawił/ponowił uszkodzony intent')
   end
 end

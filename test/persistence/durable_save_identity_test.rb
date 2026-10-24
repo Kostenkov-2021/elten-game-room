@@ -27,7 +27,7 @@ include DurableSaveTampering
     assert(error.is_a?(IOError), "Przyjęto #{variant} albo zgubiono kontrakt błędu: #{error.inspect}")
     assert(File.binread(store.path) == before && service.state == remote_before, 'Odmowa zmodyfikowała źródła')
     assert(store.fetch(operation['id'])['status'] == 'uncertain' && service.state['uploads'] == 1, 'Odmowa ponowiła/potwierdziła zapis')
-    assert(frozen?(h) && !h.core.closed, 'Odmowa zwolniła granicę lub zamknęła stół')
+    assert(game_frozen?(h) && !h.core.closed, 'Odmowa zwolniła granicę lub zamknęła stół')
   end
 end
 
@@ -39,5 +39,5 @@ scenario('Poprawny UTF-8 pozostaje dokładny w bajtach archiwum i manifestu') do
   row = archive.reconcile(intent: store, id: operation['id'], game: h.game)
   assert(row['table_name'] == h.table['name'], 'Zmieniono polski tekst')
   assert(operation['id'].match?(/\A[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\z/), 'Niepełny UUID')
-  assert(service.state['uploads'] == 1 && frozen?(h) && !h.core.closed, 'Poprawny odczyt wykonał close/reupload')
+  assert(service.state['uploads'] == 1 && game_frozen?(h) && !h.core.closed, 'Poprawny odczyt wykonał close/reupload')
 end

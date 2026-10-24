@@ -1,4 +1,5 @@
 require_relative '../support/session_runner'
+require_relative '../support/contract_values'
 require_relative '../../games/quiz_party'
 require_relative '../../games/duck_racing'
 
@@ -29,12 +30,13 @@ end
   end
   events = h.events('Alice')
   assert(events.size == h.replay('Alice').accepted_events.size, "#{game.id}: random action rejected")
-  # JSON-normalize the RNG-bearing Duck state instead of comparing Random object identities.
-  snapshots = h.users.map { |u| Marshal.dump(GameRoomTest::ReplaySnapshot.capture(h.replay(u))) }
+  # Compare semantic values, including RNG state. Marshal bytes also encode
+  # internal object sharing, which may legitimately differ between clients.
+  snapshots = h.users.map { |u| GameRoomTest::ContractValues.canonical(GameRoomTest::ReplaySnapshot.capture(h.replay(u))) }
   assert(snapshots.uniq.size == 1, "#{game.id}: public state differs")
   legacy = events.map { |e| e.reject { |k,_| k == '__server_random' } }
   restored = game.replay(h.session,legacy,h.repositories['Alice'])
-  assert(Marshal.dump(restored.state) == Marshal.dump(h.replay('Alice').state), "#{game.id}: archive replay differs")
+  assert_equal(GameRoomTest::ContractValues.canonical(restored.state), GameRoomTest::ContractValues.canonical(h.replay('Alice').state), "#{game.id}: archive replay differs")
   raw = legacy.select { |e| GameRoomServerRandom.actions(game.id).include?(e['action']) }
   begin
     h.write('Alice',raw)
@@ -47,6 +49,6 @@ end
   h.view('Bob').leave
   h.add_client('Bob')
   assert(h.join('Bob'), 'Rejoin failed')
-  assert(Marshal.dump(h.replay('Bob').state) == Marshal.dump(h.replay('Carol').state), 'Return diverged')
+  assert_equal(GameRoomTest::ContractValues.canonical(h.replay('Bob').state), GameRoomTest::ContractValues.canonical(h.replay('Carol').state), 'Return diverged')
   puts "PASS server #{game.id}: native entropy, shared writer, ordered replay, owner/return, archive dialect"
 end

@@ -34,7 +34,8 @@ GameRoomGames::CATALOG.ids.each do |game_id|
       room = h.as('Alice') { service.open_match(match_id: 'd'*64, leg: 1) }
       # Use exactly the option preparation used by the ordinary Start button.
       [users, users.reverse].uniq.each do |arrivals|
-        displayed = game.options_for_team_roster(game.new_game_options(game.options_from_json(room['game_options'])), players: arrivals)
+        displayed = game.game_start_options(game.options_from_json(room['game_options']), players: arrivals,
+          fixed: room['tournament_match'].is_a?(Hash))
         prepared = service.start_parameters(room, players: arrivals, options: displayed)
         assert_equal(users, prepared[:players], "#{game.id}: wrong planned seats")
         assert(prepared[:requested_session_id].positive?, "#{game.id}: missing bound game")

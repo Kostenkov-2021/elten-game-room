@@ -33,7 +33,7 @@ scenario('R2: potwierdzenie drugim READ nie zasłania obiektu ProgramError i cau
   assert(error.backtrace == original_backtrace, 'Zastąpiono backtrace ProgramError')
   assert(writer.fetch(confirmed['id']) == confirmed && File.binread(writer.path) == terminal_bytes,
     'Pomocnicza niepewność zmieniła terminalny rekord lub jego rewizję')
-  assert(frozen?(h) && !h.core.closed && h.core.entries == confirmed_stack && service.state == remote,
+  assert(game_frozen?(h) && !h.core.closed && h.core.entries == confirmed_stack && service.state == remote,
     'Obsługa ProgramError wykonała rollback, close lub drugi upload')
   # Best-effort nie maskuje też nieoczekiwanego błędu PROGRAMU samego dziennika.
 end

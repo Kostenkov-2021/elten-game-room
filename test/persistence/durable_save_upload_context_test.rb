@@ -20,7 +20,7 @@ scenario('Guard upload sprawdza konto także przy przerwaniu spoza StandardError
   Thread.current[:game_room_test_user] = 'Alice'
   assert(error.equal?(interrupted), 'Zmieniono przerwanie upload')
   assert(caught { store.list }.is_a?(Intent::ContextChanged), 'RED: upload nie zatrzasnął zmiany konta w ensure')
-  assert(service.state['uploads'] == 1 && frozen?(h) && !h.core.closed, 'Naruszono niepewną wysyłkę')
+  assert(service.state['uploads'] == 1 && game_frozen?(h) && !h.core.closed, 'Naruszono niepewną wysyłkę')
 end
 
 scenario('Normalny powrót upload po zmianie konta nie przechodzi do odczytu ani confirm') do |_root,h,store,service,_archive,command|
@@ -43,5 +43,5 @@ scenario('Normalny powrót upload po zmianie konta nie przechodzi do odczytu ani
   assert(caught { store.list }.is_a?(Intent::ContextChanged), 'Powrót właściciela wyłączył guard')
   data = DurableSaveFixture.read(store.path)
   assert(data['operations'][0]['status'] == 'attempted', 'Potwierdzono operację pod innym kontem')
-  assert(service.state['uploads'] == 1 && frozen?(h) && !h.core.closed, 'Normalny powrót zwolnił niepewną granicę')
+  assert(service.state['uploads'] == 1 && game_frozen?(h) && !h.core.closed, 'Normalny powrót zwolnił niepewną granicę')
 end

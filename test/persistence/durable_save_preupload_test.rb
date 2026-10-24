@@ -7,7 +7,7 @@ scenario('Błąd list przed claim jest definitywny, oddaje własny freeze i nie 
   service.define_singleton_method(:list) { |**_options| raise original }
   error = save(command,h,store)
   assert(error.equal?(original), 'Zmieniono pierwotny błąd list')
-  assert(service.state['uploads'] == 0 && !frozen?(h) && !h.core.closed, 'Nie oddano własnej granicy bez upload')
+  assert(service.state['uploads'] == 0 && !game_frozen?(h) && !h.core.closed, 'Nie oddano własnej granicy bez upload')
   operation = store.list.fetch(0)
   assert(operation['status'] == 'definitive_preupload', 'RED: błąd przed claim pozostawił prepared')
   assert(save(command,h,store).is_a?(Intent::Pending), 'Ponowienie tej samej sesji dostało nowe prawo wysyłki')
@@ -17,7 +17,7 @@ end
 scenario('Quota oddaje tylko własną granicę, nie nowszy receipt ani rewanż') do |_root,h,store,service,_archive,command|
   service.quota = 0
   assert(save(command,h,store).is_a?(IOError), 'Nie odrzucono quota')
-  assert(!frozen?(h) && store.list.fetch(0)['status'] == 'definitive_preupload', 'Quota nie oddała własnej granicy')
+  assert(!game_frozen?(h) && store.list.fetch(0)['status'] == 'definitive_preupload', 'Quota nie oddała własnej granicy')
   assert(service.state['uploads'] == 0 && !h.core.closed, 'Quota wysłała lub zamknęła')
 end
 

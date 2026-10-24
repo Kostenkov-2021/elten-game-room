@@ -12,7 +12,7 @@ scenario('Kontrola konta po nieudanym download zatrzaskuje zmianę') do |root,h,
   Thread.current[:game_room_test_user] = 'Alice'
   assert(error.equal?(original), 'Zasłonięto błąd download')
   assert(caught { store.list }.is_a?(Intent::ContextChanged), 'Brak kontroli konta po wyjątku download')
-  assert(service.state['uploads'] == 1 && frozen?(h), 'Naruszenie niepewności')
+  assert(service.state['uploads'] == 1 && game_frozen?(h), 'Naruszenie niepewności')
 end
 scenario('Konto sprawdzane po list przed upload także po wyjątku') do |root,h,store,service,archive,command|
   original = IOError.new('list przerwany')
