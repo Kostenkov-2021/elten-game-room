@@ -16,6 +16,10 @@ ticks=[]
 coordinator.define_singleton_method(:tick){ticks << Thread.current}
 coordinator.define_singleton_method(:last_error){nil}
 coordinator.define_singleton_method(:close){}
+previous_account=Session.instance_variable_get(:@name)
+previous_token=Session.token
+Session.name=Session.name
+Session.token='covered-coordination-fixture'
 program_class.instance_variable_set(:@tournament_runtime_program,program)
 program_class.instance_variable_set(:@tournament_runtime_account,Session.name.downcase)
 program_class.instance_variable_set(:@tournament_coordinator,coordinator)
@@ -56,5 +60,7 @@ begin
 ensure
   registration.close
   program_class.stop_tournament_coordination
+  Session.name=previous_account
+  Session.token=previous_token
 end
 puts 'PASS covered tournament coordination: active UI, one shared cadence, foreground return and presenter cleanup'
