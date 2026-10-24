@@ -136,6 +136,7 @@ require_relative "lib/game_room_presence_store"
 require_relative "lib/game_room_presence_collector"
 require_relative "lib/game_room_presence_screen"
 require_relative "lib/game_room_analytics_runtime"
+require_relative "lib/sports_rankings/runtime"
 require_relative "lib/game_statistics_screen"
 require_relative "lib/table_activity_repository"
 require_relative "lib/table_history_exporter"
@@ -193,12 +194,13 @@ class EltenGameRoom < Program
   extend GameRoomTableWatchRuntime
   extend GameRoomContactFiltersRuntime
   extend GameRoomAnalyticsRuntime
+  extend GameRoomSportsRankings::Runtime
   GAME_ROOM_VERSION = "2.0.5.6".freeze
   GAME_ROOM_BUILD_ID = 257
   GAME_ROOM_CAPABILITIES = ["invitations", "live_sessions", "live_session_stack"].freeze
   LOBBY_ACTIVITY_POLL_INTERVAL = 5.0
 
-  SERVER_TABLES = GameRoomGames::KrowaServerSchema::TABLES.merge(GameRoomStatistics::Schema::TABLES).merge(GameRoomPresence::Schema::TABLES).merge({
+  SERVER_TABLES = GameRoomGames::KrowaServerSchema::TABLES.merge(GameRoomStatistics::Schema::TABLES).merge(GameRoomPresence::Schema::TABLES).merge(GameRoomSportsRankings::Schema::TABLES).merge({
     GameRoomTableWatch::TABLE => GameRoomTableWatch::SCHEMA,
     "game_room_users" => {
       "visibility" => "public",
@@ -271,9 +273,12 @@ class EltenGameRoom < Program
       extension.every("room_presence", seconds: 1, autorun: false, persistent: false, first: :after_interval) do |context|
         run_presence_job(context.token)
       end
+      extension.every("sports_rankings_upload", seconds: 1, autorun: false, persistent: false, first: :after_interval) do |context|
+        run_sports_rankings_job(context.token)
+      end
       extension.start { table_watch_start; start_tournament_coordination(program) }
-      extension.tick(interval: 1.0) { contacts_tick; table_watch_tick; tournament_coordination_tick; tournament_starts_tick; InvitationResponseOutbox.tick_default; analytics_tick }
-      extension.stop { table_watch_stop; contacts_stop; stop_tournament_coordination; stop_analytics }
+      extension.tick(interval: 1.0) { contacts_tick; table_watch_tick; tournament_coordination_tick; tournament_starts_tick; InvitationResponseOutbox.tick_default; analytics_tick; sports_rankings_tick }
+      extension.stop { table_watch_stop; contacts_stop; stop_tournament_coordination; stop_analytics; stop_sports_rankings }
       extension.main_tab(
         "tables",
         label: _("Power Games"),
@@ -512,9 +517,11 @@ class EltenGameRoom < Program
   end
 
   def statistics_observer_for(game, service: self.class.statistics_service, viewer: Session.name.to_s.dup.freeze)
-    return nil unless service && self.class.analytics_enabled?
+    rankings = self.class.sports_rankings_service if game.respond_to?(:sports_ranking_result)
+    return nil unless rankings || service && self.class.analytics_enabled?
     lambda do |session, replay|
-      next unless self.class.analytics_enabled?
+      rankings&.observe(game: game, session: session, replay: replay)
+      next unless service && self.class.analytics_enabled?
       participants = session.fetch("__players", [])
       if replay && game.eliminated_from_game?(replay, viewer)
         participants = participants.reject { |player| GameRoomParticipants.same?(player, viewer) }
@@ -1001,6 +1008,15 @@ class EltenGameRoom < Program
     ->(session,replay,events) do
       @ordinary_tournament_services&.values&.each{|service|service&.observe(table,session,replay,events)}
     end
+  end
+
+  def record_tournament_ranking(candidate, match, receipt, players, finished_at)
+    game = game_definition(candidate.fetch('game_id'))
+    return unless game&.respond_to?(:sports_ranking_result)
+    self.class.sports_rankings_service&.observe_tournament(game: game, candidate: candidate, match: match,
+      receipt: receipt, players: players, finished_at: finished_at)
+  rescue StandardError => error
+    log_statistics_failure("Sports result recording failed: #{error.class}")
   end
 
   public :open_ordinary_tournament_match, :ordinary_tournament_overview, :reconcile_ordinary_tournament_operation, :award_ordinary_tournament_forfeit

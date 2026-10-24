@@ -4,6 +4,7 @@ require_relative '../lib/audio_ball/difficulty'
 require_relative '../lib/audio_ball/sound_pack'
 require_relative '../lib/audio_ball/rotation'
 require_relative '../lib/realtime/p2p_options'
+require_relative '../lib/sports_rankings/game'
 
 require_relative "../lib/game_room_localization"
 
@@ -12,6 +13,7 @@ GameRoomServerRandom.register('audio_ball', ['audio_ball_start'])
 module GameRoomGames
   using GameRoomLocalization::Translations
   class AudioBall < Base
+    include GameRoomSportsRankings::Game
     def tournament_small_point_policy(options:)
       tournament_target_small_points(normalize_options(options).fetch('sets_to_win') * POINTS_TO_WIN)
     end

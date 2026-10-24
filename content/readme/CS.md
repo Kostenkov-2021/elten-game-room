@@ -13,7 +13,8 @@ ELTEN předčítá karty, herní desky, výsledky i události a zvuky pomáhají
 - [Zvuky a hraní na pozadí](#zvuky-a-hraní-na-pozadí)
 - [Jazyky](#jazyky)
 - [Uložené hry a historie](#uložené-hry-a-historie)
-- [Žebříčky a statistiky](#žebříčky-a-statistiky)
+- [Žebříčky](#žebříčky)
+- [Statistiky](#statistiky)
 - [Funkce které snadno přehlédnete](#funkce-které-snadno-přehlédnete)
 - [Přehled klávesových zkratek](#přehled-klávesových-zkratek)
 - [Turnaje](#turnaje)
@@ -238,9 +239,25 @@ Kategorie umožňují oddělit rozhovor od herních událostí nebo číst vše 
 
 Ctrl+Shift+S uloží dostupnou historii stolu do souboru TXT ve vybrané složce. Můžete si tak uchovat rozhovor nebo průběh partie. Jde o export textu, nikoli o uloženou hru pro pozdější pokračování, a stůl se při něm nezavře. Před sdílením souboru pamatujte na to, že může obsahovat zprávy ostatních účastníků.
 
-## Žebříčky a statistiky
+## Žebříčky
 
-„Žebříčky“ shromažďují výsledky her, které tuto funkci podporují. Krowa nabízí mimo jiné denní žebříček a výsledky Slovní věže.
+V hlavním menu vyberte Žebříčky a potom hru.
+
+### Axel Pong a Audio Ball
+
+Nejprve zvolte dvouhru nebo čtyřhru, potom Moje statistiky nebo žebříček za posledních 7 dní, 30 dní, půl roku či rok. Seznam obsahuje pořadí a přezdívky. Enter na hráči otevře jeho vyhrané a prohrané zápasy, bilanci zápasů, vstřelené a obdržené góly a rozdíl gólů za zvolené období. Moje statistiky obsahují stejné údaje za všechny zaznamenané zápasy.
+
+Pořadí závisí na výhrách a prohrách, rozdílu gólů a délce zápasů. Krátké zápasy mají menší váhu než delší; počítá se skutečný počet gólů vítězné strany, nikoli nastavený cíl. Audio Ball sčítá góly ze všech setů. Ve čtyřhře se každému spoluhráči započítá celý výsledek týmu.
+
+Výsledky se ukládají automaticky po skončení zápasu, pokud obě strany v tu chvíli tvoří pouze lidé. Počítají se i turnajové zápasy včetně gólů přidělených při kontumaci.
+
+### Krowa
+
+- V žebříčku slov je výše ten, kdo slovo uhodl na méně pokusů. Vyhledávat lze celé slovo i jeho část.
+- Denní Krowa má samostatný žebříček pro každý den, také podle počtu pokusů. Dnešní slovo zůstává skryté; řešení minulých dní lze zobrazit po jejich skončení.
+- Ve Slovní věži rozhoduje počet dokončených kol: čím více, tím lepší místo. Enter na výsledku zobrazí slova a pokusy v jednotlivých kolech.
+
+## Statistiky
 
 „Statistics“ (statistiky) ukazují aktivitu v Power Games, například zahájené a dokončené partie, rozdělené podle her a hraní s lidmi, s boty či o samotě. Lze vybrat období, například posledních sedm dní nebo celou dobu sběru údajů.
 

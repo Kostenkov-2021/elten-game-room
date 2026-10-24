@@ -113,7 +113,8 @@ assert(active.game.local_action({"kind" => "command", "action" => "krowa_gallery
   "hidden gallery remains callable during a game")
 assert(active.game.game_view_spec(active.replay, "Alice").status_commands.empty?, "active gallery remains visible")
 
-assert(EltenGameRoom::GAME_REGISTRY.ids.count { |id| EltenGameRoom::GAME_REGISTRY.build(id).supports_leaderboards? } == 1, "legacy games queried for rankings")
+ranking_games = EltenGameRoom::GAME_REGISTRY.ids.select { |id| EltenGameRoom::GAME_REGISTRY.build(id).supports_leaderboards? }
+assert(ranking_games.sort == %w[audio_ball axel_pong krowa], "unrelated games queried for rankings")
 assert(EltenGameRoom::MAIN_OPTIONS.include?("Leaderboards"), "rankings absent from main menu")
 Form.driver = nil
 puts "Krowa UI: Enter/custom nouns, shared Ctrl+P menu, gallery phases, same-table restart, answer/chat focus and rankings OK"

@@ -13,7 +13,8 @@ ELTEN reads out cards, boards, scores and events, while sounds help you follow t
 - [Sounds and playing in the background](#sounds-and-playing-in-the-background)
 - [Languages](#languages)
 - [Saved games and history](#saved-games-and-history)
-- [Leaderboards and statistics](#leaderboards-and-statistics)
+- [Leaderboards](#leaderboards)
+- [Statistics](#statistics)
 - [Features you might miss](#features-you-might-miss)
 - [Shortcut reference](#shortcut-reference)
 - [Tournaments](#tournaments)
@@ -238,9 +239,25 @@ Categories let you separate chat from game events or read everything together. T
 
 Ctrl+Shift+S saves the available table history to a TXT file in a folder you choose. You can use it to keep a conversation or a record of play. This is a text export, not a save you can later resume, and it does not close the table. Remember that the file may contain other participants' messages before sharing it.
 
-## Leaderboards and statistics
+## Leaderboards
 
-“Leaderboards” collects results from games that support them. Krowa offers, among other things, a daily leaderboard and Word Tower results.
+Choose Leaderboards in the main menu, then a game.
+
+### Axel Pong and Audio Ball
+
+Choose Single or Doubles, then My statistics or a leaderboard covering the last 7 days, 30 days, six months or year. The list shows places and usernames. Press Enter on a player to see their matches won and lost, match balance, goals scored and conceded, and goal balance for that period. My statistics shows the same information across all recorded matches.
+
+Your place depends on wins and losses, goal advantage and match length. Short matches carry less weight than longer ones; the winning side's actual goal total matters, not the target chosen before play. Audio Ball counts goals from every set. In doubles, each teammate receives the team's full result.
+
+Results are saved automatically after a match if both sides consist entirely of people at the end. Tournament matches count too, including the technical goal scores awarded for forfeits.
+
+### Krowa
+
+- Word leaderboards favour fewer guesses. Search by a word or part of one.
+- Daily Krowa has a separate leaderboard for each day, also ordered by guesses. Today's word stays hidden; earlier solutions can be viewed once their day is over.
+- Word Tower ranks runs by completed rounds: more rounds means a higher place. Press Enter on a result to see each round's word and guesses.
+
+## Statistics
 
 “Statistics” shows activity in Power Games, including games started and completed, broken down by game and by playing with people, with bots or alone. You can choose a period, such as the last seven days or all recorded time.
 

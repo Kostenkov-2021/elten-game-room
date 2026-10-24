@@ -29,12 +29,13 @@ module GameRoomTournaments
     end
     Data = Publication::Data
     attr_reader :owner
-    def initialize(program:, registry:, lobby:, games:, transport:, table:, journal:, source:, user:, entry_guard:nil, changed:->(_reference){}, read_scope:->(&block){block.call}, completed_source:nil)
+    def initialize(program:, registry:, lobby:, games:, transport:, table:, journal:, source:, user:, entry_guard:nil, changed:->(_reference){}, read_scope:->(&block){block.call}, completed_source:nil, rankings_observer:nil)
       @program, @registry, @lobby, @games, @transport = program, registry, lobby, games, transport
       @table, @journal, @source, @user = table, journal, source, user
       @entry_guard,@result_changed=entry_guard,changed
       @read_scope=read_scope
       @completed_source=completed_source
+      @rankings_observer=rankings_observer
       @owner = journal.owner
       @changed = false
       @bindings, @binding_usernames, @seen, @errors = {}, {}, {}, Queue.new
@@ -396,6 +397,7 @@ module GameRoomTournaments
       if is_forfeit
         return forfeit_archive(document,candidate,tournament_id,match).resume(id).tap do
           @result_changed.call(candidate.fetch('publication_ref'))
+          notify_sports_rankings(candidate,tournament_id,match)
         end
       end
       if document['kind']=='ordinary-match-create-v1'
@@ -411,6 +413,7 @@ module GameRoomTournaments
         retained==expected && current==candidate && current_id==tournament_id && doc==document
       end).resume(id).tap do
         @result_changed.call(candidate.fetch('publication_ref')) if %w[forfeit result].include?(kind)
+        notify_sports_rankings(candidate,tournament_id,match) if kind == 'result'
       end
     rescue Publication::Invalid=>error
       raise unless error.code==:missing_publication && @completed_source && record
@@ -445,7 +448,7 @@ module GameRoomTournaments
             validate_bound_result!(value,match,binding)
             current==candidate && current_id==id
           end
-        end).reconcile(record.fetch('id'))
+        end).reconcile(record.fetch('id')).tap { notify_sports_rankings(candidate,id,match) }
     end
     def close
       @lock.synchronize { return if @closed; @closed=true; @jobs << nil }
@@ -475,9 +478,29 @@ module GameRoomTournaments
         current==candidate && current_id==id && fresh && document==fresh.merge('publication_ref'=>candidate.fetch('publication_ref'))
       end
       @result_changed.call(candidate.fetch('publication_ref'))
+      notify_sports_rankings(candidate,id,match)
     end
 
     private
+    # Only confirmed, canonical receipts reach ranking persistence. A ranking
+    # outage must not turn a successfully saved sporting result into a failure.
+    def notify_sports_rankings(candidate,id,match)
+      return unless @rankings_observer && @registry.build(candidate['game_id']).respond_to?(:sports_ranking_result)
+      completed_at = nil
+      receipt = forfeit_document(candidate,id,match) { |entry| completed_at = entry.fetch('time') }
+      receipt ||= read_result_document(candidate,id,match) { |time| completed_at = time }
+      return unless receipt && completed_at.is_a?(Integer) && completed_at.positive?
+      people = prepared_match(candidate,match).fetch('players')
+      @rankings_observer.call(candidate,match,receipt,people,completed_at)
+    rescue StandardError => error
+      begin
+        Log.warning("Sports tournament ranking handoff failed: #{error.class}") if defined?(Log)
+      rescue StandardError
+        nil
+      end
+      nil
+    end
+
     # Called under @lock. No recapture, journal access or network write here.
     def queue_result_retry(job)
       return false unless job && job[:retryable] && !job[:queued] && !@closed

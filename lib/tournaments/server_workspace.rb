@@ -215,7 +215,8 @@ module GameRoomTournaments
           phase_store(reference,root_source:-> {evidence_source(reference)}).current
         end,
         read_scope:method(:with_read_scope),
-        entry_guard:method(:authorize_entry_on_worker),changed:method(:signal_change))
+        entry_guard:method(:authorize_entry_on_worker),changed:method(:signal_change),
+        rankings_observer: (@program.method(:record_tournament_ranking) if @program.respond_to?(:record_tournament_ranking,true)))
     end
 
     def authorize_entry_on_worker(candidate,match,binding)

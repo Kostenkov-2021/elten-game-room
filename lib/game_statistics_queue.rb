@@ -16,9 +16,10 @@ module GameRoomStatistics
     MAX_PENDING = 4096
     MAX_ACKNOWLEDGED = 2048
 
-    def initialize(storage:, user:, before_write: nil)
+    def initialize(storage:, user:, before_write: nil, path: PATH)
       @storage, @user = storage, copy_user(user).freeze
       @before_write = before_write
+      @path = path
     end
 
     def push(key, payload)
@@ -29,6 +30,13 @@ module GameRoomStatistics
     # Do not weaken comparisons for a different game, mode or match identity.
     def self.equivalent?(first, second)
       return true if first.eql?(second)
+      if first.is_a?(Hash) && second.is_a?(Hash) && first['kind'] == 'sports_result' &&
+          first['match_key'].is_a?(String) && !first['match_key'].empty?
+        # A local append acknowledgement can precede the canonical server time
+        # by a second. Preserve the first date, never relax the actual outcome.
+        return first.reject { |field, _| %w[finished_at day_key].include?(field) }.eql?(
+          second.reject { |field, _| %w[finished_at day_key].include?(field) })
+      end
       return false unless first.is_a?(Hash) && second.is_a?(Hash) &&
         %w[started completed].include?(first["kind"]) && first["match"].is_a?(String)
       first.reject { |field, _| field == "day_key" }.eql?(second.reject { |field, _| field == "day_key" })
@@ -86,7 +94,7 @@ module GameRoomStatistics
       unless limit.instance_of?(Integer) && limit.between?(0, MAX_PENDING)
         raise InvalidQueueData, "Statistics batch limit must be an integer from 0 to 4096"
       end
-      state = @storage.read_json(PATH, default: {"version" => 1, "accounts" => {}})
+      state = @storage.read_json(@path, default: {"version" => 1, "accounts" => {}})
       validate_state(state)
       account = state["accounts"][@user]
       return [] unless account
@@ -104,7 +112,7 @@ module GameRoomStatistics
     private
 
     def update_state
-      result = @storage.update_json(PATH, default: {"version" => 1, "accounts" => {}}) do |state|
+      result = @storage.update_json(@path, default: {"version" => 1, "accounts" => {}}) do |state|
         @before_write&.call
         validate_state(state)
         yield state

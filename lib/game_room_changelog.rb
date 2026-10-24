@@ -584,6 +584,7 @@ module GameRoomChangelog
       version: "2.0.5.6",
       build: 257,
       changes: [
+        "Added Axel Pong and Audio Ball leaderboards for singles and doubles, covering the last 7 days, 30 days, six months or year. Open a player to view wins, losses and goals; My statistics shows your all-time results. Rankings consider results, goal advantage and match length, and save completed human-only matches in the background, including tournament forfeits.",
         "Improved responsiveness in longer Mahjong games. Successive hands should no longer cause the same growing slowdown, particularly in Hong Kong.",
         "Fixed UNO rounds failing to end after stacked draw penalties returned to the first player who emptied their hand. Other players who have also played their last card are now remembered when that penalty is settled.",
         "Four of a kind in Yahtzee now scores at least 15 points.",

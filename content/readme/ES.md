@@ -13,7 +13,8 @@ ELTEN lee las cartas, los tableros, las puntuaciones y los sucesos, mientras que
 - [Sonidos y juego en segundo plano](#sonidos-y-juego-en-segundo-plano)
 - [Idiomas](#idiomas)
 - [Partidas guardadas e historial](#partidas-guardadas-e-historial)
-- [Clasificaciones y estadísticas](#clasificaciones-y-estadísticas)
+- [Clasificaciones](#clasificaciones)
+- [Estadísticas](#estadísticas)
 - [Funciones que conviene conocer](#funciones-que-conviene-conocer)
 - [Resumen de atajos](#resumen-de-atajos)
 - [Torneos](#torneos)
@@ -238,9 +239,25 @@ Las categorías permiten separar la conversación de los sucesos del juego o lee
 
 Ctrl+Shift+S guarda el historial disponible de la mesa en un archivo TXT en la carpeta que elijas. Así puedes conservar una conversación o el desarrollo de una partida. Es una exportación de texto, no un guardado para reanudar el juego, y no cierra la mesa. Recuerda que el archivo puede contener mensajes de otras personas antes de compartirlo.
 
-## Clasificaciones y estadísticas
+## Clasificaciones
 
-«Clasificaciones» reúne los resultados de los juegos que ofrecen esta función. Krowa incluye, entre otras cosas, una clasificación diaria y los resultados de la Torre de palabras.
+En el menú principal, elige Clasificaciones y después un juego.
+
+### Axel Pong y Audio Ball
+
+Primero elige individuales o dobles y después Mis estadísticas o una clasificación de los últimos 7 días, 30 días, seis meses o un año. La lista muestra posiciones y nombres de usuario. Pulsa Enter sobre un jugador para ver sus victorias, derrotas, balance de partidos, goles a favor y en contra y diferencia de goles durante ese período. Mis estadísticas contiene los mismos datos de todos tus partidos registrados.
+
+La posición depende de las victorias y derrotas, la ventaja en goles y la duración de los partidos. Los partidos cortos tienen menos peso que los largos: cuenta el total real de goles del bando ganador, no la meta elegida antes de jugar. En Audio Ball se suman los goles de todos los sets. En dobles, cada compañero recibe el resultado completo del equipo.
+
+Los resultados se guardan automáticamente al terminar un partido si ambos bandos están formados únicamente por personas en ese momento. También cuentan los partidos de torneo, incluidos los goles asignados por incomparecencia.
+
+### Krowa
+
+- En las clasificaciones de palabras, cuantos menos intentos, mejor posición. Puedes buscar una palabra o parte de ella.
+- Krowa diaria tiene una clasificación para cada día, también por número de intentos. La palabra de hoy permanece oculta; las soluciones anteriores se pueden consultar una vez terminado su día.
+- En la Torre de palabras cuenta el número de rondas completadas: cuantas más, mejor posición. Pulsa Enter sobre un resultado para consultar las palabras y los intentos de cada ronda.
+
+## Estadísticas
 
 «Statistics» (estadísticas) muestra la actividad en Power Games: por ejemplo, las partidas iniciadas y terminadas, separadas por juego y por partidas con personas, con bots o en solitario. Puedes elegir un período, como los últimos siete días o todo el tiempo registrado.
 

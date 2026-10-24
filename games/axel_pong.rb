@@ -2,12 +2,14 @@
 require_relative 'base'
 require_relative '../lib/axel_pong/engine'
 require_relative '../lib/realtime/p2p_options'
+require_relative '../lib/sports_rankings/game'
 
 require_relative "../lib/game_room_localization"
 
 module GameRoomGames
   using GameRoomLocalization::Translations
   class AxelPong < Base
+    include GameRoomSportsRankings::Game
     def tournament_small_point_policy(options:)
       tournament_target_small_points(points_to_win(options) || 11)
     end

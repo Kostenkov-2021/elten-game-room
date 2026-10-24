@@ -102,7 +102,7 @@ paths.each do |language, path|
     assert(headings.map { |h| field.text_range(h.from, h.to) } == expected_titles, "#{language}: native headings or Unicode offsets changed")
     links = elements(field, EditBox::Element::Link)
     contents = links.select { |link| link.param[1].start_with?("#") }
-    assert(contents.length == 19, "#{language}: lost a contents or chapter link, including tournaments")
+    assert(contents.length == 20, "#{language}: lost a contents or chapter link, including separate leaderboards and statistics")
     contents.each do |link|
       target = field.instance_variable_get(:@contents_targets)[link]
       assert(target, "#{language}: broken internal link #{link.param[1]}")

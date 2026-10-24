@@ -20,7 +20,8 @@ będzie już znajomych.
 - [Dźwięki i gra w tle](#dźwięki-i-gra-w-tle)
 - [Języki](#języki)
 - [Zapis partii i historia](#zapis-partii-i-historia)
-- [Rankingi i statystyki](#rankingi-i-statystyki)
+- [Rankingi](#rankingi)
+- [Statystyki](#statystyki)
 - [Funkcje, które łatwo przeoczyć](#funkcje-które-łatwo-przeoczyć)
 - [Ściągawka ze skrótów](#ściągawka-ze-skrótów)
 - [Turnieje](#turnieje)
@@ -381,10 +382,39 @@ To eksport tekstu, nie zapis pozwalający później wznowić grę, i nie zamyka
 stołu. Pamiętaj, że plik może zawierać wiadomości innych uczestników,
 zanim udostępnisz go dalej.
 
-## Rankingi i statystyki
+## Rankingi
 
-„Rankingi” zbierają wyniki gier, które mają taką funkcję. Krowa udostępnia
-między innymi ranking dzienny i wyniki Wieży słów. 
+W głównym menu wybierz „Rankingi”, a następnie grę.
+
+### Axel Pong i Audio Ball
+
+Najpierw wybierz singiel lub debel, a potem „Moje statystyki” albo ranking
+z ostatnich 7 dni, 30 dni, pół roku lub roku. Lista pokazuje miejsca i nicki.
+Enter na graczu otwiera jego wygrane i przegrane mecze, bilans meczów,
+strzelone i stracone bramki oraz bilans bramek z wybranego okresu.
+„Moje statystyki” zawierają te same informacje ze wszystkich zapisanych meczów.
+
+O miejscu w rankingu decydują wygrane i przegrane, przewaga w bramkach
+oraz długość meczu. Krótkie mecze mają mniejszą wagę niż dłuższe;
+liczy się liczba bramek zwycięskiej strony, nie cel ustawiony przed grą.
+W Audio Ballu sumują się bramki ze wszystkich setów. W deblu każdy gracz
+otrzymuje pełny wynik swojej drużyny.
+
+Wyniki zapisują się automatycznie po zakończeniu meczu, jeżeli obie strony
+składają się wtedy wyłącznie z ludzi. Liczą się także mecze turniejowe,
+a walkowery uwzględniają bramki przyznane w turnieju.
+
+### Krowa
+
+- W rankingu słowa wyżej jest ten, kto odgadł je w mniejszej liczbie prób.
+  Wyszukiwarka pozwala znaleźć słowo lub jego fragment.
+- Dzienna Krowa ma osobny ranking na każdy dzień, również według liczby prób.
+  Słowo z bieżącego dnia pozostaje ukryte; rozwiązania wcześniejszych dni
+  można sprawdzić po ich zakończeniu.
+- W Wieży słów liczy się liczba ukończonych rund: im więcej, tym wyższe miejsce.
+  Enter na wyniku pokazuje słowa i próby z poszczególnych rund.
+
+## Statystyki
 
 „Statystyki” pokazują aktywność w Power Games: między innymi rozpoczęte
 i ukończone partie, z podziałem na gry oraz rozgrywki z ludźmi, z botami

@@ -38,6 +38,7 @@ module GameRoomTournaments
         intent_id:'ordinary-forfeit:'+key['operation_key']+':'+digest,document:document,anchor:key)
       view=result_view
       @result_changed.call(candidate.fetch('publication_ref'))
+      notify_sports_rankings(candidate,id,match)
       view
     end
 

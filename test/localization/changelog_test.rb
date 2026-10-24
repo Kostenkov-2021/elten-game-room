@@ -456,9 +456,9 @@ assert(GameRoomChangelog.pending_entries(nil, 256).map(&:build) == [256], 'first
 assert(GameRoomChangelog.pending_entries(256, 256).empty?, 'build 256 reopens after being read')
 assert(GameRoomChangelog.list_items([entry_256]).first == 'Version 2.0.5.5, build 256', 'build 256 heading differs')
 entry_257 = entries.find { |entry| entry.build == 257 }
-assert(entry_257 && entry_257.version == '2.0.5.6' && entry_257.changes.length == 8, 'build 257 has incorrect release metadata')
-assert(entry_257.changes.uniq.length == 8, 'build 257 contains duplicate notes')
-['Mahjong', 'stacked draw penalties', '15 points', 'Tic Tac Toe', 'Audio Ball', 'tournament', 'Ctrl+Shift+M', 'context menu', 'Channel space'].each do |topic|
+assert(entry_257 && entry_257.version == '2.0.5.6' && entry_257.changes.length == 9, 'build 257 has incorrect release metadata')
+assert(entry_257.changes.uniq.length == 9, 'build 257 contains duplicate notes')
+['Mahjong', 'stacked draw penalties', '15 points', 'Tic Tac Toe', 'Audio Ball', 'tournament', 'Ctrl+Shift+M', 'context menu', 'Channel space', 'leaderboards', 'My statistics'].each do |topic|
   assert(entry_257.changes.join(' ').include?(topic), "build 257 lacks #{topic}")
 end
 uno_note_257 = entry_257.changes.find { |note| note.start_with?('Fixed UNO') }

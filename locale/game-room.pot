@@ -372,7 +372,7 @@ msgstr ""
 msgid "%{field}: the selected day is not available in this month. Choose the day again."
 msgstr ""
 
-#: games/axel_pong.rb:109 games/duck_racing_support/presentation.rb:622 games/duck_racing_support/presentation.rb:627 games/ninety_nine.rb:925
+#: games/axel_pong.rb:111 games/duck_racing_support/presentation.rb:622 games/duck_racing_support/presentation.rb:627 games/ninety_nine.rb:925
 msgid "%{first} and %{second}"
 msgstr ""
 
@@ -403,19 +403,23 @@ msgstr ""
 msgid "%{game}, %{owner}"
 msgstr ""
 
-#: __app.rb:3021
+#: __app.rb:3037
 msgid "%{game}, %{table}"
+msgstr ""
+
+#: lib/sports_rankings/screen.rb:81
+msgid "%{game}: %{mode}"
 msgstr ""
 
 #: lib/game_room_screens.rb:696
 msgid "%{game}: %{section}"
 msgstr ""
 
-#: __app.rb:1326
+#: __app.rb:1342
 msgid "%{game}; %{date}; %{players}"
 msgstr ""
 
-#: __app.rb:2625
+#: __app.rb:2641
 msgid "%{game}; %{table}; invited by %{sender}; %{count}/%{maximum}"
 msgstr ""
 
@@ -431,7 +435,7 @@ msgstr ""
 msgid "%{giver} gave a trump card to %{target}; %{target} chooses the return card."
 msgstr ""
 
-#: __app.rb:3884
+#: __app.rb:3900
 msgid "%{group}, %{volume}%%"
 msgstr ""
 
@@ -634,7 +638,7 @@ msgstr ""
 msgid "%{owner} waived the rent from %{player}."
 msgstr ""
 
-#: __app.rb:3313
+#: __app.rb:3329
 msgid "%{owner}, %{count}/%{maximum}, %{status}"
 msgstr ""
 
@@ -973,7 +977,7 @@ msgstr ""
 msgid "%{player} describes for team %{team}."
 msgstr ""
 
-#: games/audio_ball.rb:132
+#: games/audio_ball.rb:134
 msgid "%{player} did not hit the ball in time. The opponent receives a point."
 msgstr ""
 
@@ -984,7 +988,7 @@ msgstr ""
 msgid "%{player} did not serve in time and loses a point."
 msgstr ""
 
-#: games/axel_pong.rb:194
+#: games/axel_pong.rb:196
 msgid "%{player} did not serve in time. The opponent receives a point."
 msgstr ""
 
@@ -1917,7 +1921,7 @@ msgstr ""
 msgid "%{player} scored %{points} points in this round."
 msgstr ""
 
-#: games/audio_ball.rb:135 games/axel_pong.rb:197
+#: games/audio_ball.rb:137 games/axel_pong.rb:199
 msgid "%{player} scores. %{first}: %{one}; %{second}: %{two}."
 msgstr ""
 
@@ -2120,7 +2124,7 @@ msgstr ""
 msgid "%{player} wins %{amount} with %{hand}"
 msgstr ""
 
-#: games/audio_ball.rb:142
+#: games/audio_ball.rb:144
 msgid "%{player} wins set %{set}. Sets: %{first}: %{one}; %{second}: %{two}."
 msgstr ""
 
@@ -2183,7 +2187,7 @@ msgstr ""
 msgid "%{player} won the game with %{points} points."
 msgstr ""
 
-#: games/audio_ball.rb:149 games/audio_ball.rb:218 games/axel_pong.rb:142 games/axel_pong.rb:202 games/base.rb:477 games/base.rb:577 games/categories.rb:959 games/ludo.rb:196 games/ludo.rb:375 games/mille_bornes/presentation.rb:127 games/quiz_party.rb:837 games/rummy.rb:582
+#: games/audio_ball.rb:151 games/audio_ball.rb:220 games/axel_pong.rb:144 games/axel_pong.rb:204 games/base.rb:477 games/base.rb:577 games/categories.rb:959 games/ludo.rb:196 games/ludo.rb:375 games/mille_bornes/presentation.rb:127 games/quiz_party.rb:837 games/rummy.rb:582
 msgid "%{player} won the game."
 msgstr ""
 
@@ -2388,6 +2392,10 @@ msgstr ""
 
 #: games/mille_bornes/presentation.rb:261
 msgid "%{player}: %{miles} miles; %{status}; safeties: %{safeties}; 200-mile cards: %{count} of 2."
+msgstr ""
+
+#: lib/sports_rankings/screen.rb:190
+msgid "%{player}: %{period}"
 msgstr ""
 
 #: games/base/shortcuts.rb:29
@@ -2708,11 +2716,11 @@ msgstr ""
 msgid "%{seconds} seconds remaining."
 msgstr ""
 
-#: __app.rb:371
+#: __app.rb:376
 msgid "%{sender} invites you to %{table} (%{game})."
 msgstr ""
 
-#: __app.rb:369
+#: __app.rb:374
 msgid "%{sender} invites you to a tournament match (%{game})."
 msgstr ""
 
@@ -2720,11 +2728,11 @@ msgstr ""
 msgid "%{sender} invites you to register for %{name} (%{game})."
 msgstr ""
 
-#: __app.rb:371
+#: __app.rb:376
 msgid "%{sender} invites you to resume %{table} (%{game})."
 msgstr ""
 
-#: __app.rb:369
+#: __app.rb:374
 msgid "%{sender} invites you to resume a tournament match (%{game})."
 msgstr ""
 
@@ -2821,7 +2829,7 @@ msgstr ""
 msgid "%{suit}: %{cards}"
 msgstr ""
 
-#: __app.rb:3025
+#: __app.rb:3041
 msgid "%{table}, unavailable"
 msgstr ""
 
@@ -2914,7 +2922,7 @@ msgstr ""
 msgid "%{user} declined your invitation to %{table}."
 msgstr ""
 
-#: __app.rb:3945
+#: __app.rb:3961
 msgid "%{user}'s table"
 msgstr ""
 
@@ -4810,7 +4818,7 @@ msgstr ""
 msgid "A full column cannot be selected. After a valid move, the turn passes to the other player."
 msgstr ""
 
-#: __app.rb:3418 __app.rb:3460
+#: __app.rb:3434 __app.rb:3476
 msgid "A game has already started. Opening the current game."
 msgstr ""
 
@@ -5202,7 +5210,7 @@ msgstr ""
 msgid "About this adaptation"
 msgstr ""
 
-#: __app.rb:2404 __app.rb:2605
+#: __app.rb:2420 __app.rb:2621
 msgid "Accept"
 msgstr ""
 
@@ -5218,7 +5226,7 @@ msgstr ""
 msgid "Accept displayed plan"
 msgstr ""
 
-#: __app.rb:2795 lib/game_room_ui.rb:140 lib/game_room_ui.rb:325 lib/game_room_widget.rb:198 lib/game_room_widget.rb:204
+#: __app.rb:2811 lib/game_room_ui.rb:140 lib/game_room_ui.rb:325 lib/game_room_widget.rb:198 lib/game_room_widget.rb:204
 msgid "Accept invitation"
 msgstr ""
 
@@ -5230,7 +5238,7 @@ msgstr ""
 msgid "Accept partnership with %{player}"
 msgstr ""
 
-#: __app.rb:3550
+#: __app.rb:3566
 msgid "Accept teams"
 msgstr ""
 
@@ -5286,7 +5294,7 @@ msgstr ""
 msgid "Accepted: %{players}"
 msgstr ""
 
-#: __app.rb:2665 __app.rb:2688
+#: __app.rb:2681 __app.rb:2704
 msgid "Accepting invitation"
 msgstr ""
 
@@ -5376,7 +5384,7 @@ msgstr ""
 msgid "Add a new category"
 msgstr ""
 
-#: __app.rb:2400
+#: __app.rb:2416
 msgid "Add a new computer in this place"
 msgstr ""
 
@@ -5487,6 +5495,10 @@ msgstr ""
 msgid "Added Axel Pong Doubles by budyn1211: two teams of two players, with alternating returns and shared scores. Spectators can use 1–4 to choose a player's perspective. Partners have distinguishable step and return sounds."
 msgstr ""
 
+#: lib/game_room_changelog.rb:587
+msgid "Added Axel Pong and Audio Ball leaderboards for singles and doubles, covering the last 7 days, 30 days, six months or year. Open a player to view wins, losses and goals; My statistics shows your all-time results. Rankings consider results, goal advantage and match length, and save completed human-only matches in the background, including tournament forfeits."
+msgstr ""
+
 #: lib/game_room_changelog.rb:172
 msgid "Added Axel Pong, an audio ping-pong game for two people or a player and a bot, with Classic and Arcade Classic modes and six difficulty levels. Play with the keyboard or mouse. Ctrl+P at the table opens personal settings for automatic return and sound volumes, also available in Settings > Axel Pong."
 msgstr ""
@@ -5594,7 +5606,7 @@ msgstr ""
 msgid "Added statistics by balteam: visits, started and completed games, with game and period filters. Open Statistics in the main menu. Ctrl+W on that menu's options list reads current public and private table counts and human memberships, including observers but not bots. Developer mode does not collect new statistics."
 msgstr ""
 
-#: __app.rb:2301
+#: __app.rb:2317
 msgid "Adding computer"
 msgstr ""
 
@@ -6035,7 +6047,7 @@ msgstr ""
 msgid "Also added Biblios by dawidpieper (Pajper): a card game of building a library and bidding at auctions, for two to four players, with bots and Polish translation."
 msgstr ""
 
-#: __app.rb:1086 lib/game_shortcut_bindings.rb:60
+#: __app.rb:1102 lib/game_shortcut_bindings.rb:60
 msgid "Alt"
 msgstr ""
 
@@ -6088,7 +6100,7 @@ msgstr ""
 msgid "An extra tank protects against running out of gas, puncture-proof tires protect against flat tires, and the driving ace protects against accidents. Right of way protects against red lights and speed limits and removes the need for green lights. A safety removes the corresponding current problem and protects you until the round ends."
 msgstr ""
 
-#: __app.rb:2476
+#: __app.rb:2492
 msgid "An invitation to this table is already pending for this user."
 msgstr ""
 
@@ -6162,11 +6174,11 @@ msgstr ""
 msgid "Announce when a table is created"
 msgstr ""
 
-#: __app.rb:2915
+#: __app.rb:2931
 msgid "Announcements of placed and removed letters disabled."
 msgstr ""
 
-#: __app.rb:2915
+#: __app.rb:2931
 msgid "Announcements of placed and removed letters enabled."
 msgstr ""
 
@@ -6178,7 +6190,7 @@ msgstr ""
 msgid "Another person is playing now."
 msgstr ""
 
-#: __app.rb:891
+#: __app.rb:898
 msgid "Another player is creating this match's table. Accept their invitation or try again shortly."
 msgstr ""
 
@@ -6301,7 +6313,7 @@ msgstr ""
 msgid "Apă-Canal"
 msgstr ""
 
-#: games/axel_pong.rb:41 lib/axel_pong/client.rb:515
+#: games/axel_pong.rb:43 lib/axel_pong/client.rb:515
 msgid "Arcade"
 msgstr ""
 
@@ -6670,7 +6682,7 @@ msgstr ""
 msgid "Auctioned: %{card}. %{bid}"
 msgstr ""
 
-#: games/audio_ball.rb:33 games/duck_racing_support/challenge_presentation.rb:138 games/duck_racing_support/presentation.rb:62
+#: games/audio_ball.rb:35 games/duck_racing_support/challenge_presentation.rb:138 games/duck_racing_support/presentation.rb:62
 msgid "Audio Ball"
 msgstr ""
 
@@ -6692,15 +6704,15 @@ msgstr ""
 msgid "Audio Ball now supports doubles: two teams of two players, alternating returns and sharing points and sets. You can play with people or computer players."
 msgstr ""
 
-#: games/audio_ball.rb:247
+#: games/audio_ball.rb:249
 msgid "Audio Ball playfield"
 msgstr ""
 
-#: games/audio_ball.rb:202
+#: games/audio_ball.rb:204
 msgid "Audio Ball requires exactly two players."
 msgstr ""
 
-#: games/audio_ball.rb:48
+#: games/audio_ball.rb:50
 msgid "Audio Ball settings"
 msgstr ""
 
@@ -6785,7 +6797,7 @@ msgstr ""
 msgid "Awaiting review"
 msgstr ""
 
-#: __app.rb:923 __app.rb:928 lib/tournaments/server_schedule_overview.rb:339 lib/tournaments/server_schedule_overview.rb:41
+#: __app.rb:930 __app.rb:935 lib/tournaments/server_schedule_overview.rb:339 lib/tournaments/server_schedule_overview.rb:41
 msgid "Award forfeit"
 msgstr ""
 
@@ -6793,7 +6805,7 @@ msgstr ""
 msgid "Award zero points to everyone"
 msgstr ""
 
-#: games/axel_pong.rb:24 games/duck_racing_support/challenge_presentation.rb:140 games/duck_racing_support/presentation.rb:63
+#: games/axel_pong.rb:26 games/duck_racing_support/challenge_presentation.rb:140 games/duck_racing_support/presentation.rb:63
 msgid "Axel Pong"
 msgstr ""
 
@@ -6886,7 +6898,7 @@ msgstr ""
 msgid "B: respond to the buzzer."
 msgstr ""
 
-#: __app.rb:1359 __app.rb:1626 __app.rb:1670 __app.rb:1819 __app.rb:2489 __app.rb:2606 __app.rb:2798 games/krowa_support/leaderboards.rb:39 lib/game_room_presence_screen.rb:16 lib/game_room_screens.rb:686 lib/game_room_screens.rb:703 lib/game_screen.rb:371 lib/game_screen.rb:756 lib/game_statistics_screen.rb:37 lib/game_statistics_screen.rb:75 lib/table_voice_screen.rb:142 lib/table_voice_screen.rb:160 lib/tournaments/draft_preview.rb:24 lib/tournaments/draft_preview.rb:77 lib/tournaments/draft_screen.rb:26 lib/tournaments/local_fixed_team_execution_details.rb:19 lib/tournaments/local_fixed_team_execution_screen.rb:103 lib/tournaments/local_fixed_team_plan_screen.rb:68 lib/tournaments/local_game_choice_dialog.rb:28 lib/tournaments/local_individual_plan_screen.rb:25 lib/tournaments/local_organizer_decision_screen.rb:28 lib/tournaments/local_participant_manager.rb:16 lib/tournaments/local_realtime_game_dialog.rb:44 lib/tournaments/local_test_hub.rb:58 lib/tournaments/local_tournament_overview.rb:26 lib/tournaments/match_entry_screen.rb:280 lib/tournaments/match_entry_screen.rb:375 lib/tournaments/operations_screen.rb:59 lib/tournaments/participant_manager.rb:20 lib/tournaments/participant_partner_picker.rb:22 lib/tournaments/partner_choice.rb:55 lib/tournaments/proposal_notice_dialog.rb:27 lib/tournaments/public_preview.rb:127 lib/tournaments/public_preview.rb:189 lib/tournaments/public_preview.rb:210 lib/tournaments/public_screen.rb:75 lib/tournaments/server_proposal_screen.rb:31 lib/tournaments/server_schedule_overview.rb:297 lib/tournaments/server_schedule_overview.rb:38 lib/tournaments/server_trial_hub.rb:32 lib/tournaments/tournament_invitation_screen.rb:13 lib/tournaments/tournament_invite_picker.rb:24 lib/tournaments/tournament_setup_editor.rb:116
+#: __app.rb:1375 __app.rb:1642 __app.rb:1686 __app.rb:1835 __app.rb:2505 __app.rb:2622 __app.rb:2814 games/krowa_support/leaderboards.rb:39 lib/game_room_presence_screen.rb:16 lib/game_room_screens.rb:686 lib/game_room_screens.rb:703 lib/game_screen.rb:371 lib/game_screen.rb:756 lib/game_statistics_screen.rb:37 lib/game_statistics_screen.rb:75 lib/sports_rankings/screen.rb:106 lib/sports_rankings/screen.rb:192 lib/sports_rankings/screen.rb:56 lib/table_voice_screen.rb:142 lib/table_voice_screen.rb:160 lib/tournaments/draft_preview.rb:24 lib/tournaments/draft_preview.rb:77 lib/tournaments/draft_screen.rb:26 lib/tournaments/local_fixed_team_execution_details.rb:19 lib/tournaments/local_fixed_team_execution_screen.rb:103 lib/tournaments/local_fixed_team_plan_screen.rb:68 lib/tournaments/local_game_choice_dialog.rb:28 lib/tournaments/local_individual_plan_screen.rb:25 lib/tournaments/local_organizer_decision_screen.rb:28 lib/tournaments/local_participant_manager.rb:16 lib/tournaments/local_realtime_game_dialog.rb:44 lib/tournaments/local_test_hub.rb:58 lib/tournaments/local_tournament_overview.rb:26 lib/tournaments/match_entry_screen.rb:280 lib/tournaments/match_entry_screen.rb:375 lib/tournaments/operations_screen.rb:59 lib/tournaments/participant_manager.rb:20 lib/tournaments/participant_partner_picker.rb:22 lib/tournaments/partner_choice.rb:55 lib/tournaments/proposal_notice_dialog.rb:27 lib/tournaments/public_preview.rb:127 lib/tournaments/public_preview.rb:189 lib/tournaments/public_preview.rb:210 lib/tournaments/public_screen.rb:75 lib/tournaments/server_proposal_screen.rb:31 lib/tournaments/server_schedule_overview.rb:297 lib/tournaments/server_schedule_overview.rb:38 lib/tournaments/server_trial_hub.rb:32 lib/tournaments/tournament_invitation_screen.rb:13 lib/tournaments/tournament_invite_picker.rb:24 lib/tournaments/tournament_setup_editor.rb:116
 msgid "Back"
 msgstr ""
 
@@ -6927,22 +6939,22 @@ msgstr ""
 msgid "Balkanic board"
 msgstr ""
 
-#: games/audio_ball.rb:67
+#: games/audio_ball.rb:69
 msgid "Ball sound: Down arrow or S"
 msgstr ""
 
-#: games/audio_ball.rb:66
+#: games/audio_ball.rb:68
 msgid "Ball sound: Left arrow or D"
 msgstr ""
 
-#: games/audio_ball.rb:65
+#: games/audio_ball.rb:67
 msgid "Ball sound: Up arrow or W"
 msgstr ""
 
 msgid "Ball speed and holding the ball"
 msgstr ""
 
-#: games/audio_ball.rb:69
+#: games/audio_ball.rb:71
 msgid "Ball stopped after a successful defence"
 msgstr ""
 
@@ -7687,7 +7699,7 @@ msgstr ""
 msgid "Calm (short search)"
 msgstr ""
 
-#: __app.rb:2405 __app.rb:3551 __app.rb:3609 games/krowa_support/client.rb:190 games/krowa_support/leaderboards.rb:209 games/rummy_ui.rb:26 lib/audio_ball/settings.rb:24 lib/axel_pong/settings.rb:41 lib/game_option_editor.rb:117 lib/game_room_screens.rb:361 lib/game_screen.rb:665 lib/game_screen.rb:709 lib/game_surfaces/card_actions.rb:52 lib/game_surfaces/word_board.rb:208 lib/quiz_contributions/views.rb:143 lib/quiz_contributions/views.rb:164 lib/table_voice_screen.rb:180 lib/tournaments/draft_details_editor.rb:123 lib/tournaments/draft_details_editor.rb:35 lib/tournaments/draft_editor.rb:42 lib/tournaments/local_fixed_team_execution_details.rb:40 lib/tournaments/local_fixed_team_execution_details.rb:68 lib/tournaments/local_test_dialogs.rb:182 lib/tournaments/local_test_dialogs.rb:213 lib/tournaments/match_entry_screen.rb:386 lib/tournaments/public_preview.rb:104 lib/tournaments/publication_editor.rb:82 lib/tournaments/server_forfeit_screen.rb:183 lib/tournaments/server_forfeit_screen.rb:207 lib/tournaments/server_forfeit_screen.rb:217 lib/tournaments/server_forfeit_screen.rb:30 lib/tournaments/server_forfeit_screen.rb:62 lib/tournaments/server_forfeit_screen.rb:86 lib/tournaments/tournament_dates_editor.rb:61 lib/tournaments/tournament_setup_editor.rb:29
+#: __app.rb:2421 __app.rb:3567 __app.rb:3625 games/krowa_support/client.rb:190 games/krowa_support/leaderboards.rb:209 games/rummy_ui.rb:26 lib/audio_ball/settings.rb:24 lib/axel_pong/settings.rb:41 lib/game_option_editor.rb:117 lib/game_room_screens.rb:361 lib/game_screen.rb:665 lib/game_screen.rb:709 lib/game_surfaces/card_actions.rb:52 lib/game_surfaces/word_board.rb:208 lib/quiz_contributions/views.rb:143 lib/quiz_contributions/views.rb:164 lib/table_voice_screen.rb:180 lib/tournaments/draft_details_editor.rb:123 lib/tournaments/draft_details_editor.rb:35 lib/tournaments/draft_editor.rb:42 lib/tournaments/local_fixed_team_execution_details.rb:40 lib/tournaments/local_fixed_team_execution_details.rb:68 lib/tournaments/local_test_dialogs.rb:182 lib/tournaments/local_test_dialogs.rb:213 lib/tournaments/match_entry_screen.rb:386 lib/tournaments/public_preview.rb:104 lib/tournaments/publication_editor.rb:82 lib/tournaments/server_forfeit_screen.rb:183 lib/tournaments/server_forfeit_screen.rb:207 lib/tournaments/server_forfeit_screen.rb:217 lib/tournaments/server_forfeit_screen.rb:30 lib/tournaments/server_forfeit_screen.rb:62 lib/tournaments/server_forfeit_screen.rb:86 lib/tournaments/tournament_dates_editor.rb:61 lib/tournaments/tournament_setup_editor.rb:29
 msgid "Cancel"
 msgstr ""
 
@@ -7742,11 +7754,11 @@ msgstr ""
 msgid "Cancelling the tournament match"
 msgstr ""
 
-#: lib/tournaments/server_schedule_overview.rb:121 lib/tournaments/server_workspace.rb:784
+#: lib/tournaments/server_schedule_overview.rb:121 lib/tournaments/server_workspace.rb:785
 msgid "Cannot start: %{count} participants registered; at least %{minimum} are required."
 msgstr ""
 
-#: lib/tournaments/server_schedule_overview.rb:119 lib/tournaments/server_workspace.rb:790
+#: lib/tournaments/server_schedule_overview.rb:119 lib/tournaments/server_workspace.rb:791
 msgid "Cannot start: unpaired participants: %{count}. An even number is required."
 msgstr ""
 
@@ -8115,7 +8127,7 @@ msgstr ""
 msgid "Change settings for the next game"
 msgstr ""
 
-#: __app.rb:3548 lib/game_room_screens.rb:21
+#: __app.rb:3564 lib/game_room_screens.rb:21
 msgid "Change team"
 msgstr ""
 
@@ -8332,11 +8344,11 @@ msgstr ""
 msgid "Checking game availability"
 msgstr ""
 
-#: __app.rb:1264
+#: __app.rb:1280
 msgid "Checking game before saving"
 msgstr ""
 
-#: __app.rb:2643
+#: __app.rb:2659
 msgid "Checking invitation"
 msgstr ""
 
@@ -8360,7 +8372,7 @@ msgstr ""
 msgid "Checking server date"
 msgstr ""
 
-#: __app.rb:595
+#: __app.rb:602
 msgid "Checking server table access"
 msgstr ""
 
@@ -8368,30 +8380,30 @@ msgstr ""
 msgid "Checking set details"
 msgstr ""
 
-#: __app.rb:3184
+#: __app.rb:3200
 msgid "Checking table"
 msgstr ""
 
 msgid "Checking the current game"
 msgstr ""
 
-#: __app.rb:1390
+#: __app.rb:1406
 msgid "Checking the current table"
 msgstr ""
 
-#: __app.rb:3408
+#: __app.rb:3424
 msgid "Checking the table before starting"
 msgstr ""
 
-#: __app.rb:2289 __app.rb:2678 __app.rb:3454
+#: __app.rb:2305 __app.rb:2694 __app.rb:3470
 msgid "Checking the table members"
 msgstr ""
 
-#: __app.rb:1893
+#: __app.rb:1909
 msgid "Checking tournament match"
 msgstr ""
 
-#: __app.rb:430
+#: __app.rb:435
 msgid "Checking your current table"
 msgstr ""
 
@@ -8535,7 +8547,7 @@ msgstr ""
 msgid "Choose a date and time inside the selected window. This is not an invitation TTL or tournament rule."
 msgstr ""
 
-#: __app.rb:3104
+#: __app.rb:3120
 msgid "Choose a game for the preset"
 msgstr ""
 
@@ -8569,7 +8581,7 @@ msgstr ""
 msgid "Choose a player for the trade"
 msgstr ""
 
-#: __app.rb:2359
+#: __app.rb:2375
 msgid "Choose a player in the current game."
 msgstr ""
 
@@ -8656,7 +8668,7 @@ msgstr ""
 msgid "Choose a talon."
 msgstr ""
 
-#: __app.rb:3604
+#: __app.rb:3620
 msgid "Choose a team"
 msgstr ""
 
@@ -8825,11 +8837,11 @@ msgstr ""
 msgid "Choose rubber or estimated-reference scoring."
 msgstr ""
 
-#: __app.rb:3534 lib/participant_menu.rb:27
+#: __app.rb:3550 lib/participant_menu.rb:27
 msgid "Choose teams"
 msgstr ""
 
-#: __app.rb:3549
+#: __app.rb:3565
 msgid "Choose teams randomly"
 msgstr ""
 
@@ -8883,7 +8895,7 @@ msgstr ""
 msgid "Choose the final contract"
 msgstr ""
 
-#: __app.rb:2355
+#: __app.rb:2371
 msgid "Choose the new table master"
 msgstr ""
 
@@ -8914,7 +8926,7 @@ msgstr ""
 msgid "Choose the quiz language, then tick the question sets you want. Initially only the general set in that language is selected. Every checked set has the same chance of being chosen, followed by a random question from that set. The same selection applies to duels, group challenges, question squares and Curiosity."
 msgstr ""
 
-#: __app.rb:2373
+#: __app.rb:2389
 msgid "Choose the replacement"
 msgstr ""
 
@@ -9065,7 +9077,7 @@ msgstr ""
 msgid "Clarified three questions in the Polish general-knowledge set following player reports."
 msgstr ""
 
-#: games/audio_ball.rb:81 games/axel_pong.rb:41 lib/axel_pong/client.rb:515
+#: games/audio_ball.rb:83 games/axel_pong.rb:43 lib/axel_pong/client.rb:515
 msgid "Classic"
 msgstr ""
 
@@ -9113,11 +9125,11 @@ msgstr ""
 msgid "Close the table for everyone"
 msgstr ""
 
-#: __app.rb:2340
+#: __app.rb:2356
 msgid "Close the table for everyone?"
 msgstr ""
 
-#: __app.rb:2341
+#: __app.rb:2357
 msgid "Closing table"
 msgstr ""
 
@@ -9382,7 +9394,7 @@ msgstr ""
 msgid "Connecting the match."
 msgstr ""
 
-#: __app.rb:3057 __app.rb:455
+#: __app.rb:3073 __app.rb:460
 msgid "Connecting to Elten"
 msgstr ""
 
@@ -9534,7 +9546,7 @@ msgstr ""
 msgid "Could not connect to the Krowa leaderboard."
 msgstr ""
 
-#: __app.rb:3904
+#: __app.rb:3920
 msgid "Could not disconnect the voice conversation. Open Conferences to leave it."
 msgstr ""
 
@@ -9542,7 +9554,7 @@ msgstr ""
 msgid "Could not load Krowa settings. Please try again."
 msgstr ""
 
-#: __app.rb:1154
+#: __app.rb:1170
 msgid "Could not open the README."
 msgstr ""
 
@@ -9704,11 +9716,11 @@ msgstr ""
 msgid "Create a new set"
 msgstr ""
 
-#: __app.rb:1217 __app.rb:234 lib/game_room_widget.rb:178
+#: __app.rb:1233 __app.rb:236 lib/game_room_widget.rb:178
 msgid "Create a new table"
 msgstr ""
 
-#: __app.rb:2315
+#: __app.rb:2331
 msgid "Create a new table to add named computers."
 msgstr ""
 
@@ -9747,15 +9759,15 @@ msgstr ""
 msgid "Create your own question sets"
 msgstr ""
 
-#: __app.rb:238 lib/quiz_contributions/views.rb:47
+#: __app.rb:240 lib/quiz_contributions/views.rb:47
 msgid "Create your own quiz question sets"
 msgstr ""
 
-#: __app.rb:1232
+#: __app.rb:1248
 msgid "Creating table"
 msgstr ""
 
-#: __app.rb:877
+#: __app.rb:884
 msgid "Creating tournament table"
 msgstr ""
 
@@ -9771,7 +9783,7 @@ msgstr ""
 msgid "Crowd on."
 msgstr ""
 
-#: __app.rb:1085 lib/game_shortcut_bindings.rb:59
+#: __app.rb:1101 lib/game_shortcut_bindings.rb:59
 msgid "Ctrl"
 msgstr ""
 
@@ -10067,15 +10079,15 @@ msgstr ""
 msgid "Custom lets you select your own pool from those 27 categories, and remembers the last custom choice locally. Categories shown in each round chooses how many are drawn from the pool: one to nine, default six. It cannot exceed the size of your pool. For example, choosing all nine Easy categories with six per round still draws only six, and the selection may differ next round."
 msgstr ""
 
-#: games/axel_pong.rb:48
+#: games/axel_pong.rb:50
 msgid "Custom number"
 msgstr ""
 
-#: games/axel_pong.rb:51
+#: games/axel_pong.rb:53
 msgid "Custom number of points"
 msgstr ""
 
-#: games/axel_pong.rb:50
+#: games/axel_pong.rb:52
 msgid "Custom number of points (2-999)"
 msgstr ""
 
@@ -10238,7 +10250,7 @@ msgstr ""
 msgid "Daily Krowa leaderboard"
 msgstr ""
 
-#: __app.rb:3804
+#: __app.rb:3820
 msgid "Daily Krowa requires a private table. Create a new private table for this variant."
 msgstr ""
 
@@ -10420,7 +10432,7 @@ msgstr ""
 msgid "Delete removes the draft tile under the cursor; Backspace undoes the last placement; Z cancels the draft; F submits. G exchanges tiles; P passes. C reads the rack; I cycles free, alphabetic and vowel-first rack order; Y previews words and points; L lists played words; E reads tile counts; S reads scores; T reads whose turn it is. Writing advances past committed letters. Sorting requires cancelling the draft. These shortcuts do not act in chat."
 msgstr ""
 
-#: __app.rb:1332
+#: __app.rb:1348
 msgid "Delete saved game"
 msgstr ""
 
@@ -10436,7 +10448,7 @@ msgstr ""
 msgid "Delete this local tournament draft?"
 msgstr ""
 
-#: __app.rb:1349
+#: __app.rb:1365
 msgid "Delete this saved game?"
 msgstr ""
 
@@ -10464,7 +10476,7 @@ msgstr ""
 msgid "Deleting draft"
 msgstr ""
 
-#: __app.rb:1349 __app.rb:1574
+#: __app.rb:1365 __app.rb:1590
 msgid "Deleting saved game"
 msgstr ""
 
@@ -10591,7 +10603,7 @@ msgstr[1] ""
 msgid "Die: 1 to %{sides}, %{count} race rolls left."
 msgstr ""
 
-#: games/audio_ball.rb:82 games/axel_pong.rb:44
+#: games/audio_ball.rb:84 games/axel_pong.rb:46
 msgid "Difficulty and ball speed"
 msgstr ""
 
@@ -10672,7 +10684,7 @@ msgstr ""
 msgid "Dissolve partnership with %{player}"
 msgstr ""
 
-#: lib/tournaments/server_workspace.rb:794
+#: lib/tournaments/server_workspace.rb:795
 msgid "Dissolve your current partnership before choosing someone else."
 msgstr ""
 
@@ -10730,11 +10742,11 @@ msgstr ""
 msgid "Do you want to exit ELTEN Game Room?"
 msgstr ""
 
-#: __app.rb:665
+#: __app.rb:672
 msgid "Do you want to exit Power Games?"
 msgstr ""
 
-#: __app.rb:2235
+#: __app.rb:2251
 msgid "Do you want to leave the table?"
 msgstr ""
 
@@ -10742,7 +10754,7 @@ msgstr ""
 msgid "Do you want to leave the table? The table will be closed for everyone."
 msgstr ""
 
-#: __app.rb:2684
+#: __app.rb:2700
 msgid "Do you want to leave your current table and join the invited table?"
 msgstr ""
 
@@ -10837,7 +10849,7 @@ msgstr ""
 msgid "Double salary when landing on Start"
 msgstr ""
 
-#: games/audio_ball.rb:29 games/audio_ball.rb:79 games/axel_pong.rb:43 games/generated/rulebooks/axel_pong.rb:20
+#: games/audio_ball.rb:31 games/audio_ball.rb:81 games/axel_pong.rb:45 games/generated/rulebooks/axel_pong.rb:20 lib/sports_rankings/screen.rb:32 lib/sports_rankings/screen.rb:81
 msgid "Doubles"
 msgstr ""
 
@@ -10848,11 +10860,11 @@ msgstr ""
 msgid "Doubles give another play, but leave an obligation"
 msgstr ""
 
-#: games/audio_ball.rb:202 games/axel_pong.rb:88
+#: games/audio_ball.rb:204 games/axel_pong.rb:90
 msgid "Doubles requires exactly four players."
 msgstr ""
 
-#: games/audio_ball.rb:206 games/axel_pong.rb:95
+#: games/audio_ball.rb:208 games/axel_pong.rb:97
 msgid "Doubles requires two teams of two players."
 msgstr ""
 
@@ -11352,7 +11364,7 @@ msgstr ""
 msgid "East-West vulnerable"
 msgstr ""
 
-#: games/axel_pong.rb:45
+#: games/axel_pong.rb:47
 msgid "Easy"
 msgstr ""
 
@@ -11491,11 +11503,11 @@ msgstr ""
 msgid "Enable my availability for automatic matches"
 msgstr ""
 
-#: __app.rb:2325
+#: __app.rb:2341
 msgid "Enabling observer mode"
 msgstr ""
 
-#: __app.rb:2325
+#: __app.rb:2341
 msgid "Enabling player mode"
 msgstr ""
 
@@ -11533,7 +11545,7 @@ msgstr ""
 msgid "End on the start date"
 msgstr ""
 
-#: __app.rb:3831
+#: __app.rb:3847
 msgid "End the current game for everyone? The table and chat will stay open, and no winner will be recorded."
 msgstr ""
 
@@ -11599,7 +11611,7 @@ msgstr ""
 msgid "Ending"
 msgstr ""
 
-#: __app.rb:3838
+#: __app.rb:3854
 msgid "Ending game"
 msgstr ""
 
@@ -11671,7 +11683,7 @@ msgstr ""
 msgid "Enter a virtual player name."
 msgstr ""
 
-#: games/axel_pong.rb:84
+#: games/axel_pong.rb:86
 msgid "Enter a whole number of points from 2 to 999."
 msgstr ""
 
@@ -12568,7 +12580,7 @@ msgstr ""
 msgid "First tournament day"
 msgstr ""
 
-#: __app.rb:897
+#: __app.rb:904
 msgid "First-to-wins knockout series currently run only in the local tournament test. The ordinary-table server trial cannot play subsequent games yet."
 msgstr ""
 
@@ -12613,7 +12625,7 @@ msgstr ""
 msgid "Fixed Ctrl+F4 after updating Game Room without restarting ELTEN. It now labels HTTP and, during an active connection, Communications UDP relay ping separately. The relay ping is not the full delay between players."
 msgstr ""
 
-#: lib/game_room_changelog.rb:593
+#: lib/game_room_changelog.rb:594
 msgid "Fixed Ctrl+Shift+M at the table. It now toggles your conference microphone and announces its state. You can also mute or unmute it from the table's context menu while connected."
 msgstr ""
 
@@ -12621,7 +12633,7 @@ msgstr ""
 msgid "Fixed UNO rounds ending with a Draw Two or Wild Draw Four. The opponent draws the penalty cards, which count towards the score, and the player who emptied their hand no longer has to draw to finish the round."
 msgstr ""
 
-#: lib/game_room_changelog.rb:588
+#: lib/game_room_changelog.rb:589
 msgid "Fixed UNO rounds failing to end after stacked draw penalties returned to the first player who emptied their hand. Other players who have also played their last card are now remembered when that penalty is settled."
 msgstr ""
 
@@ -12645,7 +12657,7 @@ msgstr ""
 msgid "Fixed an error that could prevent tournament matches from starting in Axel Pong and Audio Ball."
 msgstr ""
 
-#: lib/game_room_changelog.rb:592
+#: lib/game_room_changelog.rb:593
 msgid "Fixed an error when confirming a tournament start again."
 msgstr ""
 
@@ -12971,7 +12983,7 @@ msgstr ""
 msgid "Four of a kind"
 msgstr ""
 
-#: lib/game_room_changelog.rb:589
+#: lib/game_room_changelog.rb:590
 msgid "Four of a kind in Yahtzee now scores at least 15 points."
 msgstr ""
 
@@ -13231,7 +13243,7 @@ msgstr ""
 msgid "Game in progress"
 msgstr ""
 
-#: __app.rb:331 __app.rb:374 lib/tournaments/proposal_notice_dialog.rb:23 lib/tournaments/proposal_notifications_runtime.rb:60 lib/tournaments/proposal_notifications_runtime.rb:72
+#: __app.rb:336 __app.rb:379 lib/tournaments/proposal_notice_dialog.rb:23 lib/tournaments/proposal_notifications_runtime.rb:60 lib/tournaments/proposal_notifications_runtime.rb:72
 msgid "Game invitation"
 msgstr ""
 
@@ -13246,7 +13258,7 @@ msgstr ""
 msgid "Game lists are sorted alphabetically using names in the interface language. Ninety-nine is now displayed as 99."
 msgstr ""
 
-#: games/audio_ball.rb:80 games/axel_pong.rb:40
+#: games/audio_ball.rb:82 games/axel_pong.rb:42
 msgid "Game mode"
 msgstr ""
 
@@ -13266,7 +13278,7 @@ msgstr ""
 msgid "Game points for %{for}, game points against %{against}."
 msgstr ""
 
-#: __app.rb:1200 __app.rb:242 lib/game_rules.rb:108 lib/participant_menu.rb:23
+#: __app.rb:1216 __app.rb:244 lib/game_rules.rb:108 lib/participant_menu.rb:23
 msgid "Game rules"
 msgstr ""
 
@@ -13407,6 +13419,18 @@ msgid "Go to jail"
 msgstr ""
 
 msgid "Goal"
+msgstr ""
+
+#: lib/sports_rankings/screen.rb:186
+msgid "Goal balance: %{count}"
+msgstr ""
+
+#: lib/sports_rankings/screen.rb:185
+msgid "Goals conceded: %{count}"
+msgstr ""
+
+#: lib/sports_rankings/screen.rb:184
+msgid "Goals scored: %{count}"
 msgstr ""
 
 msgid "Goals use Axel Pong goal effects and goal-announcer recordings. The recorded score introduction is followed by your number and the opponent's number, without overlapping the voices. Scores from 0 to 21 use Pong recordings; if either score is higher or a required recording is missing, Elten speech reads the complete score instead. Observers hear the table's player order. Ordinary points have a 5.7-second restart pause; the break between sets remains five seconds. Set and match information is announced without making gameplay depend on a speech completion callback."
@@ -13635,7 +13659,7 @@ msgstr ""
 msgid "Hands or minutes between blind increases"
 msgstr ""
 
-#: games/axel_pong.rb:45
+#: games/axel_pong.rb:47
 msgid "Hard"
 msgstr ""
 
@@ -14051,7 +14075,7 @@ msgstr ""
 msgid "Immediately after an attack, play the matching safety from your hand, even outside your normal turn. This opportunity ends when the next player draws or plays. Moving the cursor or opening information does not end it."
 msgstr ""
 
-#: games/axel_pong.rb:45
+#: games/axel_pong.rb:47
 msgid "Impossible"
 msgstr ""
 
@@ -14095,7 +14119,7 @@ msgstr ""
 msgid "Improved responsiveness and recovery during simultaneous actions, background play, invitations and saved-game operations. Reduced repeated work in game updates, tournament lists and leaderboards."
 msgstr ""
 
-#: lib/game_room_changelog.rb:587
+#: lib/game_room_changelog.rb:588
 msgid "Improved responsiveness in longer Mahjong games. Successive hands should no longer cause the same growing slowdown, particularly in Hong Kong."
 msgstr ""
 
@@ -14402,7 +14426,7 @@ msgstr ""
 msgid "In sanma you cannot claim Chow, but you may form sequences from your own numbered tiles."
 msgstr ""
 
-#: lib/game_room_changelog.rb:591
+#: lib/game_room_changelog.rb:592
 msgid "In singles, Audio Ball announces only who serves. In doubles, it still announces both the server and the receiver."
 msgstr ""
 
@@ -14556,7 +14580,7 @@ msgstr ""
 msgid "Indonesian board"
 msgstr ""
 
-#: __app.rb:1332 lib/tournaments/server_schedule_overview.rb:20
+#: __app.rb:1348 lib/tournaments/server_schedule_overview.rb:20
 msgid "Information"
 msgstr ""
 
@@ -14564,7 +14588,7 @@ msgstr ""
 msgid "Information and rules"
 msgstr ""
 
-#: games/axel_pong.rb:45
+#: games/axel_pong.rb:47
 msgid "Insane"
 msgstr ""
 
@@ -14650,7 +14674,7 @@ msgstr ""
 msgid "Investment"
 msgstr ""
 
-#: __app.rb:2796
+#: __app.rb:2812
 msgid "Invitation"
 msgstr ""
 
@@ -14669,7 +14693,7 @@ msgstr ""
 msgid "Invitation sent."
 msgstr ""
 
-#: __app.rb:2601
+#: __app.rb:2617
 msgid "Invitations"
 msgstr ""
 
@@ -14685,7 +14709,7 @@ msgstr ""
 msgid "Invitations sent: %{sent}. Unconfirmed: %{unconfirmed}."
 msgstr ""
 
-#: __app.rb:2488 lib/tournaments/tournament_invite_picker.rb:23
+#: __app.rb:2504 lib/tournaments/tournament_invite_picker.rb:23
 msgid "Invite"
 msgstr ""
 
@@ -14693,11 +14717,11 @@ msgstr ""
 msgid "Invite an online Elten user"
 msgstr ""
 
-#: __app.rb:2453
+#: __app.rb:2469
 msgid "Invite an online user"
 msgstr ""
 
-#: __app.rb:2453
+#: __app.rb:2469
 msgid "Invite from contacts"
 msgstr ""
 
@@ -14810,11 +14834,11 @@ msgstr ""
 msgid "Jail can be reached by a field, a card or three doubles. Before rolling you may pay the exit fee or use a held jail card. Otherwise try for doubles, for up to three turns. Successful doubles release you and move the pawn but give no extra roll. After the third failed attempt you pay and move by that roll. Merely visiting the jail field is not imprisonment."
 msgstr ""
 
-#: __app.rb:1669
+#: __app.rb:1685
 msgid "Join"
 msgstr ""
 
-#: __app.rb:1621 __app.rb:235
+#: __app.rb:1637 __app.rb:237
 msgid "Join a table"
 msgstr ""
 
@@ -14834,7 +14858,7 @@ msgstr ""
 msgid "Joining a local test tournament"
 msgstr ""
 
-#: __app.rb:1750
+#: __app.rb:1766
 msgid "Joining table"
 msgstr ""
 
@@ -15282,14 +15306,30 @@ msgstr ""
 msgid "Leaderboard: %{word}"
 msgstr ""
 
-#: __app.rb:1025 __app.rb:239
+#: lib/sports_rankings/screen.rb:70
+msgid "Leaderboard: last 30 days"
+msgstr ""
+
+#: lib/sports_rankings/screen.rb:70
+msgid "Leaderboard: last 7 days"
+msgstr ""
+
+#: lib/sports_rankings/screen.rb:71
+msgid "Leaderboard: last six months"
+msgstr ""
+
+#: lib/sports_rankings/screen.rb:71
+msgid "Leaderboard: last year"
+msgstr ""
+
+#: __app.rb:1041 __app.rb:241
 msgid "Leaderboards"
 msgstr ""
 
 msgid "Leaderboards will become available after the first playable game is added."
 msgstr ""
 
-#: __app.rb:2058 lib/game_layout.rb:188 lib/game_screen/input.rb:112 lib/participant_menu.rb:32
+#: __app.rb:2074 lib/game_layout.rb:188 lib/game_screen/input.rb:112 lib/participant_menu.rb:32
 msgid "Leave"
 msgstr ""
 
@@ -15341,11 +15381,11 @@ msgstr ""
 msgid "Leave your current conference and join this conversation?"
 msgstr ""
 
-#: lib/tournaments/server_workspace.rb:802
+#: lib/tournaments/server_workspace.rb:803
 msgid "Leave your current table before accepting a tournament match."
 msgstr ""
 
-#: __app.rb:893 lib/tournaments/proposal_notice_dialog.rb:54
+#: __app.rb:900 lib/tournaments/proposal_notice_dialog.rb:54
 msgid "Leave your current table before opening another tournament match."
 msgstr ""
 
@@ -15357,7 +15397,7 @@ msgstr ""
 msgid "Leaving a table also disconnects its voice conference. Ctrl+Shift+M toggles your conference microphone while you are at the table."
 msgstr ""
 
-#: __app.rb:2255
+#: __app.rb:2271
 msgid "Leaving table"
 msgstr ""
 
@@ -15487,7 +15527,7 @@ msgstr ""
 msgid "Listen to a pattern of six to ten beats using two tones. F plays the lower tone and J the higher one. Repeat both the order of the tones and the spaces between them."
 msgstr ""
 
-#: games/audio_ball.rb:36
+#: games/audio_ball.rb:38
 msgid "Listen to the incoming ball, choose the right defence and return it with a shot of your own."
 msgstr ""
 
@@ -15553,7 +15593,7 @@ msgstr ""
 msgid "Loading Game Room tables"
 msgstr ""
 
-#: __app.rb:2968 lib/game_room_widget.rb:148 lib/game_room_widget.rb:152 lib/game_room_widget.rb:50
+#: __app.rb:2984 lib/game_room_widget.rb:148 lib/game_room_widget.rb:152 lib/game_room_widget.rb:50
 msgid "Loading Power Games tables"
 msgstr ""
 
@@ -15565,11 +15605,11 @@ msgstr ""
 msgid "Loading Word Tower rounds"
 msgstr ""
 
-#: __app.rb:1607
+#: __app.rb:1623
 msgid "Loading available tables"
 msgstr ""
 
-#: __app.rb:2993
+#: __app.rb:3009
 msgid "Loading contacts"
 msgstr ""
 
@@ -15577,7 +15617,7 @@ msgstr ""
 msgid "Loading draft"
 msgstr ""
 
-#: __app.rb:2579
+#: __app.rb:2595
 msgid "Loading invitations"
 msgstr ""
 
@@ -15613,22 +15653,22 @@ msgstr ""
 msgid "Loading saved drafts"
 msgstr ""
 
-#: __app.rb:1335 __app.rb:1343 __app.rb:1553
+#: __app.rb:1351 __app.rb:1359 __app.rb:1569
 msgid "Loading saved game"
 msgstr ""
 
-#: __app.rb:1319
+#: __app.rb:1335
 msgid "Loading saved games"
 msgstr ""
 
 msgid "Loading server time"
 msgstr ""
 
-#: __app.rb:1064 lib/game_statistics_screen.rb:109 lib/game_statistics_screen.rb:112
+#: __app.rb:1080 lib/game_statistics_screen.rb:109 lib/game_statistics_screen.rb:112 lib/sports_rankings/screen.rb:100 lib/sports_rankings/screen.rb:103
 msgid "Loading statistics"
 msgstr ""
 
-#: __app.rb:1652
+#: __app.rb:1668
 msgid "Loading tables"
 msgstr ""
 
@@ -15636,7 +15676,7 @@ msgstr ""
 msgid "Loading tournament drafts"
 msgstr ""
 
-#: __app.rb:2421 lib/tournaments/tournament_invite_picker.rb:12
+#: __app.rb:2437 lib/tournaments/tournament_invite_picker.rb:12
 msgid "Loading users"
 msgstr ""
 
@@ -15693,7 +15733,7 @@ msgstr ""
 msgid "Local readiness operation in progress. Back discards its presentation, not its durable intent."
 msgstr ""
 
-#: __app.rb:3170
+#: __app.rb:3186
 msgid "Local settings saved. New-table notification subscriptions could not be saved."
 msgstr ""
 
@@ -16147,6 +16187,10 @@ msgstr ""
 msgid "Match awaiting play"
 msgstr ""
 
+#: lib/sports_rankings/screen.rb:183
+msgid "Match balance: %{count}"
+msgstr ""
+
 #: lib/tournaments/local_dispatch_screen.rb:93
 msgid "Match declined. Choose I am ready to play to receive another proposal."
 msgstr ""
@@ -16217,7 +16261,7 @@ msgstr ""
 msgid "Match the numbers on dominoes and play all your tiles before anyone else to avoid penalty points."
 msgstr ""
 
-#: games/audio_ball.rb:78 games/axel_pong.rb:42
+#: games/audio_ball.rb:80 games/axel_pong.rb:44
 msgid "Match type"
 msgstr ""
 
@@ -16237,8 +16281,16 @@ msgstr ""
 msgid "Matches are created after registration closes. Open the tournament as its test organizer to prepare them automatically."
 msgstr ""
 
+#: lib/sports_rankings/screen.rb:182
+msgid "Matches lost: %{count}"
+msgstr ""
+
 #: lib/tournaments/public_text.rb:119
 msgid "Matches may be played at any time after the tournament starts."
+msgstr ""
+
+#: lib/sports_rankings/screen.rb:181
+msgid "Matches won: %{count}"
 msgstr ""
 
 #: lib/tournaments/server_schedule_overview.rb:179
@@ -16598,7 +16650,7 @@ msgstr ""
 msgid "Move your paddle with Left and Right arrow. Serve with Up arrow or Space. When the ball returns, move into its path and press the same key when it comes within reach."
 msgstr ""
 
-#: games/axel_pong.rb:27
+#: games/axel_pong.rb:29
 msgid "Move your paddle, defend your goal and hit the ball where your opponent cannot stop it."
 msgstr ""
 
@@ -16738,6 +16790,10 @@ msgstr ""
 msgid "My question proposals"
 msgstr ""
 
+#: lib/sports_rankings/screen.rb:70 lib/sports_rankings/screen.rb:99
+msgid "My statistics"
+msgstr ""
+
 #: lib/game_room_ui.rb:130 lib/game_room_ui.rb:327 lib/game_room_widget.rb:199 lib/game_room_widget.rb:205 lib/tournaments/match_entry_screen.rb:273 lib/tournaments/public_screen.rb:181
 msgid "My tournaments"
 msgstr ""
@@ -16798,7 +16854,7 @@ msgstr ""
 msgid "New English, Czech, Spanish and Russian rulebooks for every game."
 msgstr ""
 
-#: lib/game_room_changelog.rb:590
+#: lib/game_room_changelog.rb:591
 msgid "New Tic Tac Toe games randomly choose who starts. The starting player uses X."
 msgstr ""
 
@@ -16822,7 +16878,7 @@ msgstr ""
 msgid "New set"
 msgstr ""
 
-#: __app.rb:355 __app.rb:361
+#: __app.rb:360 __app.rb:366
 msgid "New table"
 msgstr ""
 
@@ -16861,7 +16917,7 @@ msgstr ""
 msgid "Next page"
 msgstr ""
 
-#: games/axel_pong.rb:45
+#: games/axel_pong.rb:47
 msgid "Nightmare"
 msgstr ""
 
@@ -17125,7 +17181,7 @@ msgstr ""
 msgid "No further registration request will be sent from this preview."
 msgstr ""
 
-#: __app.rb:1884 __app.rb:1885
+#: __app.rb:1900 __app.rb:1901
 msgid "No games have been played yet"
 msgstr ""
 
@@ -17284,7 +17340,7 @@ msgstr ""
 msgid "No points"
 msgstr ""
 
-#: games/krowa_support/leaderboards.rb:187 games/krowa_support/leaderboards.rb:77
+#: games/krowa_support/leaderboards.rb:187 games/krowa_support/leaderboards.rb:77 lib/sports_rankings/screen.rb:156
 msgid "No published results"
 msgstr ""
 
@@ -17363,7 +17419,7 @@ msgstr ""
 msgid "No suit has been led."
 msgstr ""
 
-#: __app.rb:3075
+#: __app.rb:3091
 msgid "No table preset is assigned to this shortcut."
 msgstr ""
 
@@ -17416,11 +17472,11 @@ msgstr ""
 msgid "Nobody has chosen a card yet."
 msgstr ""
 
-#: __app.rb:3523 lib/game_option_values.rb:84
+#: __app.rb:3539 lib/game_option_values.rb:84
 msgid "None"
 msgstr ""
 
-#: games/axel_pong.rb:45
+#: games/axel_pong.rb:47
 msgid "Normal"
 msgstr ""
 
@@ -17853,11 +17909,11 @@ msgstr ""
 msgid "Only the match coordinator can perform this action."
 msgstr ""
 
-#: lib/tournaments/server_workspace.rb:801
+#: lib/tournaments/server_workspace.rb:802
 msgid "Only the organizer can do this."
 msgstr ""
 
-#: __app.rb:3414
+#: __app.rb:3430
 msgid "Only the table master may start a game."
 msgstr ""
 
@@ -17877,7 +17933,7 @@ msgstr ""
 msgid "Only the tricks promised beyond the first six earn contract points. If you make your contract, they are worth:"
 msgstr ""
 
-#: __app.rb:1358 __app.rb:1625 games/krowa_support/leaderboards.rb:292 games/krowa_support/leaderboards.rb:38 lib/game_room_screens.rb:111 lib/game_room_screens.rb:685 lib/quiz_contributions/views.rb:142
+#: __app.rb:1374 __app.rb:1641 games/krowa_support/leaderboards.rb:292 games/krowa_support/leaderboards.rb:38 lib/game_room_screens.rb:111 lib/game_room_screens.rb:685 lib/quiz_contributions/views.rb:142 lib/sports_rankings/screen.rb:56
 msgid "Open"
 msgstr ""
 
@@ -17936,7 +17992,7 @@ msgstr ""
 msgid "Opening the betting requires a pair of jacks or better."
 msgstr ""
 
-#: __app.rb:3457
+#: __app.rb:3473
 msgid "Opening the current game"
 msgstr ""
 
@@ -18492,7 +18548,7 @@ msgstr ""
 msgid "Pile: %{total}."
 msgstr ""
 
-#: games/krowa_support/leaderboards.rb:186 games/krowa_support/leaderboards.rb:264 games/krowa_support/leaderboards.rb:74 lib/tournaments/server_forfeit_screen.rb:81
+#: games/krowa_support/leaderboards.rb:186 games/krowa_support/leaderboards.rb:264 games/krowa_support/leaderboards.rb:74 lib/sports_rankings/screen.rb:102 lib/tournaments/server_forfeit_screen.rb:81
 msgid "Place"
 msgstr ""
 
@@ -18750,6 +18806,10 @@ msgstr ""
 msgid "Player sounds in doubles"
 msgstr ""
 
+#: lib/sports_rankings/screen.rb:105
+msgid "Player statistics"
+msgstr ""
+
 #: lib/game_statistics_screen.rb:32
 msgid "Players"
 msgstr ""
@@ -18781,7 +18841,7 @@ msgstr ""
 msgid "Players: %{count}"
 msgstr ""
 
-#: __app.rb:3524 lib/table_roster_reader.rb:69
+#: __app.rb:3540 lib/table_roster_reader.rb:69
 msgid "Players: %{players}."
 msgstr ""
 
@@ -18882,7 +18942,7 @@ msgstr ""
 msgid "Points in cards are not the same as the score you receive"
 msgstr ""
 
-#: games/axel_pong.rb:46
+#: games/axel_pong.rb:48
 msgid "Points to win"
 msgstr ""
 
@@ -18946,7 +19006,7 @@ msgstr ""
 msgid "Pong observers can press 1 or 2 in the playfield to listen from the first or second player's perspective. This does not give control of a paddle."
 msgstr ""
 
-#: games/axel_pong.rb:240
+#: games/axel_pong.rb:242
 msgid "Pong playfield"
 msgstr ""
 
@@ -18954,7 +19014,7 @@ msgstr ""
 msgid "Pong reconnects for a new match at the same table, including after changing the score target. Improved connection recovery and reduced goal-announcement delays."
 msgstr ""
 
-#: games/axel_pong.rb:160
+#: games/axel_pong.rb:162
 msgid "Pong settings"
 msgstr ""
 
@@ -18988,7 +19048,7 @@ msgstr ""
 msgid "Pot: %{amount}."
 msgstr ""
 
-#: __app.rb:279 lib/game_room_screens.rb:104
+#: __app.rb:284 lib/game_room_screens.rb:104
 msgid "Power Games"
 msgstr ""
 
@@ -19089,7 +19149,7 @@ msgstr ""
 msgid "Preparing round %{round}."
 msgstr ""
 
-#: __app.rb:1448 __app.rb:1482
+#: __app.rb:1464 __app.rb:1498
 msgid "Preparing saved game"
 msgstr ""
 
@@ -19097,7 +19157,7 @@ msgstr ""
 msgid "Preparing submission"
 msgstr ""
 
-#: games/audio_ball.rb:68
+#: games/audio_ball.rb:70
 msgid "Preparing the ball: Right arrow or A"
 msgstr ""
 
@@ -19828,7 +19888,7 @@ msgstr ""
 msgid "R: reject an incoming offer."
 msgstr ""
 
-#: __app.rb:243 lib/game_room_screens.rb:81
+#: __app.rb:245 lib/game_room_screens.rb:81
 msgid "README"
 msgstr ""
 
@@ -19960,11 +20020,11 @@ msgstr ""
 msgid "Read the selected target with Check local match entry, then consent and confirm entry separately. Local entry does not open or start a network game."
 msgstr ""
 
-#: __app.rb:1735 __app.rb:1740 lib/game_room_widget.rb:190 lib/game_room_widget.rb:207
+#: __app.rb:1751 __app.rb:1756 lib/game_room_widget.rb:190 lib/game_room_widget.rb:207
 msgid "Read the table participants"
 msgstr ""
 
-#: __app.rb:1736 __app.rb:1739 lib/game_room_widget.rb:189 lib/game_room_widget.rb:208 lib/participant_menu.rb:24
+#: __app.rb:1752 __app.rb:1755 lib/game_room_widget.rb:189 lib/game_room_widget.rb:208 lib/participant_menu.rb:24
 msgid "Read the table variant and settings"
 msgstr ""
 
@@ -20124,7 +20184,7 @@ msgstr ""
 msgid "Reed path"
 msgstr ""
 
-#: lib/game_room_presence_screen.rb:15 lib/game_statistics_screen.rb:36 lib/quiz_contributions/views.rb:46 lib/tournaments/draft_screen.rb:25 lib/tournaments/local_participant_manager.rb:15 lib/tournaments/local_tournament_overview.rb:17 lib/tournaments/operations_screen.rb:58 lib/tournaments/participant_manager.rb:32 lib/tournaments/participant_manager.rb:83 lib/tournaments/public_preview.rb:361 lib/tournaments/public_screen.rb:199 lib/tournaments/public_screen.rb:74 lib/tournaments/server_proposal_screen.rb:30 lib/tournaments/server_schedule_overview.rb:21 lib/tournaments/tournament_invitation_screen.rb:20
+#: lib/game_room_presence_screen.rb:15 lib/game_statistics_screen.rb:36 lib/quiz_contributions/views.rb:46 lib/sports_rankings/screen.rb:106 lib/tournaments/draft_screen.rb:25 lib/tournaments/local_participant_manager.rb:15 lib/tournaments/local_tournament_overview.rb:17 lib/tournaments/operations_screen.rb:58 lib/tournaments/participant_manager.rb:32 lib/tournaments/participant_manager.rb:83 lib/tournaments/public_preview.rb:361 lib/tournaments/public_screen.rb:199 lib/tournaments/public_screen.rb:74 lib/tournaments/server_proposal_screen.rb:30 lib/tournaments/server_schedule_overview.rb:21 lib/tournaments/tournament_invitation_screen.rb:20
 msgid "Refresh"
 msgstr ""
 
@@ -20196,7 +20256,7 @@ msgstr ""
 msgid "Registration has not opened according to the local computer clock. This is not a server confirmation."
 msgstr ""
 
-#: lib/tournaments/public_text.rb:72 lib/tournaments/server_workspace.rb:797
+#: lib/tournaments/public_text.rb:72 lib/tournaments/server_workspace.rb:798
 msgid "Registration has not opened yet."
 msgstr ""
 
@@ -20208,7 +20268,7 @@ msgstr ""
 msgid "Registration is closed, the tournament is full, or this player has already joined."
 msgstr ""
 
-#: lib/tournaments/public_text.rb:73 lib/tournaments/server_workspace.rb:798
+#: lib/tournaments/public_text.rb:73 lib/tournaments/server_workspace.rb:799
 msgid "Registration is closed."
 msgstr ""
 
@@ -20284,11 +20344,11 @@ msgstr ""
 msgid "Registration outside the allowed window."
 msgstr ""
 
-#: __app.rb:2605
+#: __app.rb:2621
 msgid "Reject"
 msgstr ""
 
-#: __app.rb:2795 lib/game_room_screens.rb:140
+#: __app.rb:2811 lib/game_room_screens.rb:140
 msgid "Reject invitation"
 msgstr ""
 
@@ -20304,7 +20364,7 @@ msgstr ""
 msgid "Rejected or conflicting entry reports — announcements: %{announcements}; registrations: %{registrations}. These are not accepted entries."
 msgstr ""
 
-#: __app.rb:2758
+#: __app.rb:2774
 msgid "Rejecting invitation"
 msgstr ""
 
@@ -20422,7 +20482,7 @@ msgstr ""
 msgid "Removing a red light or the lack of an initial green light allows driving only if no other problem blocks it. Repairing a fuel, tire or accident problem still requires a green light unless you have Right of way. Other problems remain unchanged. Instant repair is not a safety or an immediate response to an attack: it grants no immunity, extra turn, or 100- or 300-point bonus."
 msgstr ""
 
-#: __app.rb:2301
+#: __app.rb:2317
 msgid "Removing computer"
 msgstr ""
 
@@ -20555,7 +20615,7 @@ msgstr ""
 msgid "Resolve what happens on your landing square before the next player takes a turn. If a card or move starts a challenge, finish it before continuing."
 msgstr ""
 
-#: __app.rb:3171
+#: __app.rb:3187
 msgid "Restart ELTEN to apply the interface language preferences."
 msgstr ""
 
@@ -20610,7 +20670,7 @@ msgstr ""
 msgid "Results — %{phase}"
 msgstr ""
 
-#: __app.rb:1332 __app.rb:3528
+#: __app.rb:1348 __app.rb:3544
 msgid "Resume game"
 msgstr ""
 
@@ -20618,7 +20678,7 @@ msgstr ""
 msgid "Resume saved tournament"
 msgstr ""
 
-#: __app.rb:1567
+#: __app.rb:1583
 msgid "Resuming game"
 msgstr ""
 
@@ -21189,7 +21249,7 @@ msgstr ""
 msgid "Rules for this game are not available in this version of ELTEN Game Room."
 msgstr ""
 
-#: __app.rb:1208
+#: __app.rb:1224
 msgid "Rules for this game are not available in this version of Power Games."
 msgstr ""
 
@@ -21367,7 +21427,7 @@ msgstr ""
 msgid "Save Taboo between turns, after the table master approves the review."
 msgstr ""
 
-#: __app.rb:3781
+#: __app.rb:3797
 msgid "Save changes"
 msgstr ""
 
@@ -21404,7 +21464,7 @@ msgstr ""
 msgid "Save partner"
 msgstr ""
 
-#: __app.rb:3111
+#: __app.rb:3127
 msgid "Save preset"
 msgstr ""
 
@@ -21412,7 +21472,7 @@ msgstr ""
 msgid "Save result"
 msgstr ""
 
-#: __app.rb:1302 lib/participant_menu.rb:29
+#: __app.rb:1318 lib/participant_menu.rb:29
 msgid "Save table history"
 msgstr ""
 
@@ -21424,7 +21484,7 @@ msgstr ""
 msgid "Save the game at the beginning of a trick, before any person has chosen a card."
 msgstr ""
 
-#: __app.rb:1271
+#: __app.rb:1287
 msgid "Save this game and close the table for everyone?"
 msgstr ""
 
@@ -21440,7 +21500,7 @@ msgstr ""
 msgid "Saved drafts"
 msgstr ""
 
-#: __app.rb:1329 __app.rb:236
+#: __app.rb:1345 __app.rb:238
 msgid "Saved games"
 msgstr ""
 
@@ -21484,7 +21544,7 @@ msgstr ""
 msgid "Saving editorial decision"
 msgstr ""
 
-#: __app.rb:1273
+#: __app.rb:1289
 msgid "Saving game"
 msgstr ""
 
@@ -21496,7 +21556,7 @@ msgstr ""
 msgid "Saving is not supported for this game."
 msgstr ""
 
-#: __app.rb:3151
+#: __app.rb:3167
 msgid "Saving notification settings"
 msgstr ""
 
@@ -21504,11 +21564,11 @@ msgstr ""
 msgid "Saving question for a report"
 msgstr ""
 
-#: __app.rb:3810
+#: __app.rb:3826
 msgid "Saving table settings"
 msgstr ""
 
-#: __app.rb:3645
+#: __app.rb:3661
 msgid "Saving teams"
 msgstr ""
 
@@ -21694,7 +21754,7 @@ msgstr ""
 msgid "Seeds in each pit"
 msgstr ""
 
-#: __app.rb:1818 __app.rb:2797 __app.rb:3608 lib/game_screen.rb:664 lib/game_surfaces/word_board.rb:208
+#: __app.rb:1834 __app.rb:2813 __app.rb:3624 lib/game_screen.rb:664 lib/game_surfaces/word_board.rb:208
 msgid "Select"
 msgstr ""
 
@@ -21832,19 +21892,19 @@ msgstr ""
 msgid "Sending assessment"
 msgstr ""
 
-#: __app.rb:2209 lib/game_screen.rb:1272
+#: __app.rb:2225 lib/game_screen.rb:1272
 msgid "Sending chat message"
 msgstr ""
 
-#: __app.rb:1528 __app.rb:2457 __app.rb:880 lib/tournaments/tournament_invite_picker.rb:47
+#: __app.rb:1544 __app.rb:2473 __app.rb:887 lib/tournaments/tournament_invite_picker.rb:47
 msgid "Sending invitation"
 msgstr ""
 
-#: __app.rb:619
+#: __app.rb:626
 msgid "Sending invitations is unavailable because server table access could not be confirmed."
 msgstr ""
 
-#: __app.rb:617
+#: __app.rb:624
 msgid "Sending invitations is unavailable because the server requires an official launcher stamp that this Elten session cannot provide. Changing developer mode does not grant server table access."
 msgstr ""
 
@@ -21909,7 +21969,7 @@ msgstr ""
 msgid "Server table access could not be checked. Global lobby history and sending invitations are unavailable until you reopen Game Room."
 msgstr ""
 
-#: __app.rb:609
+#: __app.rb:616
 msgid "Server table access could not be checked. Global lobby history and sending invitations are unavailable until you reopen Power Games."
 msgstr ""
 
@@ -21969,7 +22029,7 @@ msgstr ""
 msgid "Set: enter a title."
 msgstr ""
 
-#: games/audio_ball.rb:86
+#: games/audio_ball.rb:88
 msgid "Sets to win"
 msgstr ""
 
@@ -21977,7 +22037,7 @@ msgstr ""
 msgid "Sets: %{own} to %{opponent}."
 msgstr ""
 
-#: __app.rb:241 lib/game_room_screens.rb:320
+#: __app.rb:243 lib/game_room_screens.rb:320
 msgid "Settings"
 msgstr ""
 
@@ -21985,11 +22045,11 @@ msgstr ""
 msgid "Settings changed. Preview the plan again before accepting."
 msgstr ""
 
-#: __app.rb:3176
+#: __app.rb:3192
 msgid "Settings saved."
 msgstr ""
 
-#: __app.rb:3174
+#: __app.rb:3190
 msgid "Settings saved. Restart ELTEN to apply the interface language preferences."
 msgstr ""
 
@@ -22050,7 +22110,7 @@ msgstr ""
 msgid "Sharp (searches deeply and answers more slowly)"
 msgstr ""
 
-#: __app.rb:1087 lib/game_shortcut_bindings.rb:61
+#: __app.rb:1103 lib/game_shortcut_bindings.rb:61
 msgid "Shift"
 msgstr ""
 
@@ -22475,14 +22535,14 @@ msgstr ""
 msgid "Simplified tournament menus and removed duplicate actions. The main views are now Tournament matches, Standings, and Information and rules. Your tournaments appear first in the current list, and context menus show the available keyboard shortcuts."
 msgstr ""
 
-#: games/audio_ball.rb:79 games/axel_pong.rb:43
+#: games/audio_ball.rb:81 games/axel_pong.rb:45 lib/sports_rankings/screen.rb:32 lib/sports_rankings/screen.rb:81
 msgid "Single"
 msgstr ""
 
 msgid "Single Double 6 contains 28 tiles, deals seven each and supports two to four players. Every other set deals ten. Double 9 and twice Double 6 support at most five players; all remaining sets support at most eight. The list also offers Double 12, 15 and 18, twice Double 9 or 12, and four times Double 6, 9 or 12. Identical copies remain separate tiles."
 msgstr ""
 
-#: games/axel_pong.rb:88
+#: games/axel_pong.rb:90
 msgid "Single requires exactly two players."
 msgstr ""
 
@@ -22639,7 +22699,7 @@ msgstr ""
 msgid "Some changes could not be saved on this computer. Discard them and close?"
 msgstr ""
 
-#: lib/tournaments/local_tournament_overview.rb:47 lib/tournaments/server_schedule_overview.rb:127 lib/tournaments/server_workspace.rb:792
+#: lib/tournaments/local_tournament_overview.rb:47 lib/tournaments/server_schedule_overview.rb:127 lib/tournaments/server_workspace.rb:793
 msgid "Some participants still need partners. Complete the pairs before creating matches."
 msgstr ""
 
@@ -22731,7 +22791,7 @@ msgstr ""
 msgid "South-east Asia board"
 msgstr ""
 
-#: __app.rb:1088 lib/game_shortcut_bindings.rb:57
+#: __app.rb:1104 lib/game_shortcut_bindings.rb:57
 msgid "Space"
 msgstr ""
 
@@ -22841,6 +22901,14 @@ msgstr ""
 msgid "Sport"
 msgstr ""
 
+#: lib/sports_rankings/screen.rb:27
+msgid "Sports leaderboards are temporarily unavailable."
+msgstr ""
+
+#: lib/sports_rankings/screen.rb:165
+msgid "Sports leaderboards are unavailable. Try Refresh."
+msgstr ""
+
 #: games/mahjong_support/tile_labels.rb:20
 msgid "Spring"
 msgstr ""
@@ -22900,7 +22968,7 @@ msgstr ""
 msgid "Start date (YYYY-MM-DD)"
 msgstr ""
 
-#: __app.rb:3537 games/krowa_support/presentation.rb:15 lib/game_layout.rb:183
+#: __app.rb:3553 games/krowa_support/presentation.rb:15 lib/game_layout.rb:183
 msgid "Start game"
 msgstr ""
 
@@ -22970,7 +23038,7 @@ msgstr ""
 msgid "Starting chips must be from 100 to 100000."
 msgstr ""
 
-#: __app.rb:3493
+#: __app.rb:3509
 msgid "Starting game"
 msgstr ""
 
@@ -22999,7 +23067,7 @@ msgstr ""
 msgid "Stasiun Hall Bandung"
 msgstr ""
 
-#: __app.rb:240 lib/game_statistics_screen.rb:28
+#: __app.rb:242 lib/game_statistics_screen.rb:28
 msgid "Statistics"
 msgstr ""
 
@@ -23340,7 +23408,7 @@ msgstr ""
 msgid "Table chat messages can now contain up to 2000 characters instead of 400."
 msgstr ""
 
-#: __app.rb:896
+#: __app.rb:903
 msgid "Table creation is not confirmed. Check Operations; the table will not be created again automatically."
 msgstr ""
 
@@ -23521,7 +23589,7 @@ msgstr ""
 msgid "Team %{players}"
 msgstr ""
 
-#: __app.rb:3603
+#: __app.rb:3619
 msgid "Team %{team}"
 msgstr ""
 
@@ -23533,7 +23601,7 @@ msgstr ""
 msgid "Team %{team} wins Taboo."
 msgstr ""
 
-#: games/axel_pong.rb:108 games/mille_bornes/presentation.rb:251 games/tysiac.rb:1573
+#: games/axel_pong.rb:110 games/mille_bornes/presentation.rb:251 games/tysiac.rb:1573
 msgid "Team %{team}: %{players}"
 msgstr ""
 
@@ -23858,7 +23926,7 @@ msgstr ""
 msgid "The account changed. Close this window and reopen tournament drafts."
 msgstr ""
 
-#: lib/tournaments/server_workspace.rb:775 lib/tournaments/ui_dialogs.rb:35
+#: lib/tournaments/server_workspace.rb:776 lib/tournaments/ui_dialogs.rb:35
 msgid "The account changed. Close tournaments and reopen them."
 msgstr ""
 
@@ -24069,7 +24137,7 @@ msgstr ""
 msgid "The challenge was cancelled. No feathers change hands."
 msgstr ""
 
-#: lib/tournaments/server_workspace.rb:777 lib/tournaments/shared_hub.rb:73 lib/tournaments/shared_hub.rb:91
+#: lib/tournaments/server_workspace.rb:778 lib/tournaments/shared_hub.rb:73 lib/tournaments/shared_hub.rb:91
 msgid "The change could not be confirmed. Refresh to check its status."
 msgstr ""
 
@@ -24124,7 +24192,7 @@ msgstr ""
 msgid "The current game contains private data that cannot be transferred at this stage."
 msgstr ""
 
-#: __app.rb:939 lib/tournaments/server_schedule_overview.rb:311
+#: __app.rb:946 lib/tournaments/server_schedule_overview.rb:311
 msgid "The current game history is unavailable. Join the table as an observer and try again. No forfeit was recorded."
 msgstr ""
 
@@ -24494,7 +24562,7 @@ msgstr ""
 msgid "The game announces when someone goes onto the barrel and records it in the history. S reads scores and marks the players currently on the barrel. Shift+S also tells you how many barrel chances they have left."
 msgstr ""
 
-#: __app.rb:3471
+#: __app.rb:3487
 msgid "The game cannot start until these players join the real-time session: %{players}."
 msgstr ""
 
@@ -24505,7 +24573,7 @@ msgstr ""
 msgid "The game could not be opened. Please try again."
 msgstr ""
 
-#: __app.rb:1296
+#: __app.rb:1312
 msgid "The game could not be saved. The table was not closed by this operation."
 msgstr ""
 
@@ -24550,7 +24618,7 @@ msgstr ""
 msgid "The game has already started."
 msgstr ""
 
-#: __app.rb:1282
+#: __app.rb:1298
 msgid "The game has been saved."
 msgstr ""
 
@@ -24583,7 +24651,7 @@ msgstr ""
 msgid "The game was interrupted because fewer than two participants remain."
 msgstr ""
 
-#: __app.rb:1582
+#: __app.rb:1598
 msgid "The game was resumed, but its saved copy could not be deleted. Remove it from Saved games."
 msgstr ""
 
@@ -24884,7 +24952,7 @@ msgstr ""
 msgid "The match authorization changed. Automatic dispatch stopped; saved history and player reservations are retained."
 msgstr ""
 
-#: __app.rb:931
+#: __app.rb:938
 msgid "The match changed. Review the updated consequences before confirming again."
 msgstr ""
 
@@ -24977,7 +25045,7 @@ msgstr ""
 msgid "The number of starting tokens must be greater than zero."
 msgstr ""
 
-#: __app.rb:1544 __app.rb:2474 __app.rb:3235 lib/game_room_widget.rb:251 lib/game_screen.rb:1603
+#: __app.rb:1560 __app.rb:2490 __app.rb:3251 lib/game_room_widget.rb:251 lib/game_screen.rb:1603
 msgid "The operation could not be completed. Please try again."
 msgstr ""
 
@@ -25217,7 +25285,7 @@ msgstr ""
 msgid "The readiness revision changed. Check status before a new declaration."
 msgstr ""
 
-#: __app.rb:1706 __app.rb:2672 __app.rb:2700 __app.rb:3034
+#: __app.rb:1722 __app.rb:2688 __app.rb:2716 __app.rb:3050
 msgid "The real-time connection to this table could not be established. Please try again."
 msgstr ""
 
@@ -25276,11 +25344,11 @@ msgstr ""
 msgid "The saved draft is damaged."
 msgstr ""
 
-#: __app.rb:1555
+#: __app.rb:1571
 msgid "The saved game is no longer available."
 msgstr ""
 
-#: __app.rb:1353
+#: __app.rb:1369
 msgid "The saved game storage is damaged or incompatible."
 msgstr ""
 
@@ -25326,7 +25394,7 @@ msgctxt "cat_head_tail"
 msgid "The score limit must be greater than zero."
 msgstr ""
 
-#: __app.rb:938
+#: __app.rb:945
 msgid "The scores from a completed round are unavailable. No forfeit was recorded."
 msgstr ""
 
@@ -25443,7 +25511,7 @@ msgstr ""
 msgid "The server repeated a page of submissions."
 msgstr ""
 
-#: __app.rb:607
+#: __app.rb:614
 msgid "The server requires an official launcher stamp that this Elten session cannot provide. Changing developer mode does not grant server table access. Global lobby history and sending invitations are unavailable until server table access is confirmed."
 msgstr ""
 
@@ -25453,7 +25521,7 @@ msgstr ""
 msgid "The server tournament test failed. No local fallback was used. Check Operations before repeating a write."
 msgstr ""
 
-#: __app.rb:3346 lib/table_roster_reader.rb:79
+#: __app.rb:3362 lib/table_roster_reader.rb:79
 msgid "The settings of this table are not available."
 msgstr ""
 
@@ -25486,7 +25554,7 @@ msgstr ""
 msgid "The soft nest looks like a good place for a nap."
 msgstr ""
 
-#: __app.rb:3887 __app.rb:3892
+#: __app.rb:3903 __app.rb:3908
 msgid "The sound volume could not be saved."
 msgstr ""
 
@@ -25524,7 +25592,7 @@ msgstr ""
 msgid "The table and score use Power Games's normal session; movement uses Communications. During a human match, each player calculates their own flight and return locally. Lost or delayed paddle-position updates alone do not stop the ball. Serves, returns and misses travel separately in order. An actual connection failure pauses the rally; a replacement connection restarts the unfinished point with the confirmed score unchanged. Observers may listen but cannot control a paddle. Unfinished matches cannot currently be saved."
 msgstr ""
 
-#: __app.rb:3649 __app.rb:3795 __app.rb:3814
+#: __app.rb:3665 __app.rb:3811 __app.rb:3830
 msgid "The table changed while you were editing. Open its settings again."
 msgstr ""
 
@@ -25557,11 +25625,11 @@ msgstr ""
 msgid "The table form shows only settings relevant to the chosen variant. Number of letters is available in Random word and Race; Scoring criterion appears only in Race. Daily Krowa and Word Tower select their own lengths and hide both settings."
 msgstr ""
 
-#: __app.rb:1313
+#: __app.rb:1329
 msgid "The table history could not be saved."
 msgstr ""
 
-#: __app.rb:1309
+#: __app.rb:1325
 msgid "The table history has been saved to %{path}."
 msgstr ""
 
@@ -25569,7 +25637,7 @@ msgstr ""
 msgid "The table is empty."
 msgstr ""
 
-#: __app.rb:1522
+#: __app.rb:1538
 msgid "The table is waiting for the original players. Start the game when everyone has joined."
 msgstr ""
 
@@ -25698,7 +25766,7 @@ msgstr ""
 msgid "The tournament %{name} has finished."
 msgstr ""
 
-#: lib/tournaments/partner_choice.rb:103 lib/tournaments/partner_choice.rb:88 lib/tournaments/server_workspace.rb:800
+#: lib/tournaments/partner_choice.rb:103 lib/tournaments/partner_choice.rb:88 lib/tournaments/server_workspace.rb:801
 msgid "The tournament changed. Refresh and choose the action again."
 msgstr ""
 
@@ -25706,7 +25774,7 @@ msgstr ""
 msgid "The tournament changed. Refresh its view before changing it again."
 msgstr ""
 
-#: __app.rb:3486 __app.rb:904 lib/tournaments/public_text.rb:69
+#: __app.rb:3502 __app.rb:911 lib/tournaments/public_text.rb:69
 msgid "The tournament deadline has passed. New matches cannot be started; games already in progress may finish."
 msgstr ""
 
@@ -25718,7 +25786,7 @@ msgstr ""
 msgid "The tournament has started. Withdrawal is no longer available."
 msgstr ""
 
-#: lib/tournaments/public_text.rb:74 lib/tournaments/public_text.rb:91 lib/tournaments/server_workspace.rb:799
+#: lib/tournaments/public_text.rb:74 lib/tournaments/public_text.rb:91 lib/tournaments/server_workspace.rb:800
 msgid "The tournament is full."
 msgstr ""
 
@@ -25791,7 +25859,7 @@ msgstr ""
 msgid "The upper-section bonus adds 35 points if the six upper rows total at least 63. It is enabled by default. You do not need three of each value separately: a strong result in Sixes can compensate for a weak result in Ones. Switching the bonus off leaves the rows themselves unchanged."
 msgstr ""
 
-#: __app.rb:3465 __app.rb:3637
+#: __app.rb:3481 __app.rb:3653
 msgid "The users at the table changed while teams were being selected. Please start again."
 msgstr ""
 
@@ -25921,19 +25989,19 @@ msgstr ""
 msgid "There are no non-empty answers to review"
 msgstr ""
 
-#: __app.rb:2446
+#: __app.rb:2462
 msgid "There are no online contacts available to invite."
 msgstr ""
 
-#: __app.rb:2446
+#: __app.rb:2462
 msgid "There are no online users available to invite."
 msgstr ""
 
-#: __app.rb:1657
+#: __app.rb:1673
 msgid "There are no open tables for this game."
 msgstr ""
 
-#: __app.rb:1612
+#: __app.rb:1628
 msgid "There are no open tables."
 msgstr ""
 
@@ -25941,7 +26009,7 @@ msgstr ""
 msgid "There are no optional board sizes or alternative placement rules in this game. Either player can be a bot."
 msgstr ""
 
-#: __app.rb:2553
+#: __app.rb:2569
 msgid "There are no pending invitations."
 msgstr ""
 
@@ -25953,7 +26021,7 @@ msgstr ""
 msgid "There are not enough cards to deal this many cards to every player."
 msgstr ""
 
-#: lib/tournaments/server_schedule_overview.rb:126 lib/tournaments/server_workspace.rb:786
+#: lib/tournaments/server_schedule_overview.rb:126 lib/tournaments/server_workspace.rb:787
 msgid "There are not enough participants to start this tournament."
 msgstr ""
 
@@ -25981,7 +26049,7 @@ msgstr ""
 msgid "There is a short break before the next serve after an ordinary point, and a five-second break between sets. The game automatically announces the set number and who is serving. You do not need to request these announcements."
 msgstr ""
 
-#: __app.rb:3928
+#: __app.rb:3944
 msgid "There is currently %{current} user at the table."
 msgid_plural "There are currently %{current} users at the table."
 msgstr[0] ""
@@ -26047,7 +26115,7 @@ msgstr ""
 msgid "There is no trump suit."
 msgstr ""
 
-#: __app.rb:2370
+#: __app.rb:2386
 msgid "There is nobody available to replace this player."
 msgstr ""
 
@@ -26100,7 +26168,7 @@ msgstr ""
 msgid "These registration dates would exclude registered participants. Keep their registration times within the window."
 msgstr ""
 
-#: lib/tournaments/server_workspace.rb:773
+#: lib/tournaments/server_workspace.rb:774
 msgid "These settings would create more than 256 matches in one phase. Reduce the participant limit, choose groups or use rotating compositions. Nothing was sent."
 msgstr ""
 
@@ -26366,7 +26434,7 @@ msgstr ""
 msgid "This game does not support computers."
 msgstr ""
 
-#: __app.rb:937
+#: __app.rb:944
 msgid "This game does not yet support removing a participant from a tournament match in progress. No result was recorded."
 msgstr ""
 
@@ -26378,7 +26446,7 @@ msgstr ""
 msgid "This game is not supported by this version of ELTEN Game Room."
 msgstr ""
 
-#: __app.rb:3430 __app.rb:3715 __app.rb:3918
+#: __app.rb:3446 __app.rb:3731 __app.rb:3934
 msgid "This game is not supported by this version of Power Games."
 msgstr ""
 
@@ -26390,7 +26458,7 @@ msgstr ""
 msgid "This game requires %{minimum} to %{maximum} players per match."
 msgstr ""
 
-#: __app.rb:3924
+#: __app.rb:3940
 msgid "This game requires exactly %{required} players."
 msgstr ""
 
@@ -26398,7 +26466,7 @@ msgstr ""
 msgid "This game requires exactly %{required} players. There are currently %{current} users at the table."
 msgstr ""
 
-#: __app.rb:3926
+#: __app.rb:3942
 msgid "This game requires from %{minimum} to %{maximum} players."
 msgstr ""
 
@@ -26406,7 +26474,7 @@ msgstr ""
 msgid "This game requires from %{minimum} to %{maximum} players. There are currently %{current} users at the table."
 msgstr ""
 
-#: __app.rb:895
+#: __app.rb:902
 msgid "This game variant requires a private table and is not supported by this server test."
 msgstr ""
 
@@ -26420,11 +26488,11 @@ msgstr ""
 msgid "This invitation expired. Choose Play to send a new one."
 msgstr ""
 
-#: __app.rb:2749 __app.rb:466
+#: __app.rb:2765 __app.rb:471
 msgid "This invitation has expired."
 msgstr ""
 
-#: __app.rb:2565 __app.rb:2652 __app.rb:2786
+#: __app.rb:2581 __app.rb:2668 __app.rb:2802
 msgid "This invitation is no longer available."
 msgstr ""
 
@@ -26444,7 +26512,7 @@ msgstr ""
 msgid "This match has already been played."
 msgstr ""
 
-#: __app.rb:940
+#: __app.rb:947
 msgid "This match has already been resolved."
 msgstr ""
 
@@ -26452,15 +26520,15 @@ msgstr ""
 msgid "This match has already finished."
 msgstr ""
 
-#: __app.rb:894
+#: __app.rb:901
 msgid "This match has unsupported player counts or team assignments for the selected game."
 msgstr ""
 
-#: __app.rb:331 lib/tournaments/proposal_notifications_runtime.rb:59 lib/tournaments/proposal_notifications_runtime.rb:72 lib/tournaments/server_proposal_screen.rb:49
+#: __app.rb:336 lib/tournaments/proposal_notifications_runtime.rb:59 lib/tournaments/proposal_notifications_runtime.rb:72 lib/tournaments/server_proposal_screen.rb:49
 msgid "This match invitation is no longer available."
 msgstr ""
 
-#: __app.rb:936
+#: __app.rb:943
 msgid "This match is still being played. A manual forfeit cannot interrupt it."
 msgstr ""
 
@@ -26471,7 +26539,7 @@ msgstr ""
 msgid "This match proposal changed. Refresh before responding; no new opponent was accepted."
 msgstr ""
 
-#: __app.rb:892
+#: __app.rb:899
 msgid "This match was started or its state is uncertain, so it cannot be started again. Use 'Check pending changes' in the tournament list to check any unconfirmed operation."
 msgstr ""
 
@@ -26513,11 +26581,11 @@ msgstr ""
 msgid "This ordinary-table test supports two individual players. Pair tables are not connected to result collection yet."
 msgstr ""
 
-#: lib/tournaments/server_workspace.rb:795
+#: lib/tournaments/server_workspace.rb:796
 msgid "This participant already has a partner."
 msgstr ""
 
-#: __app.rb:2377
+#: __app.rb:2393
 msgid "This participant cannot replace the selected player."
 msgstr ""
 
@@ -26541,11 +26609,11 @@ msgstr ""
 msgid "This player already has a partner. Refresh the list and choose a free player."
 msgstr ""
 
-#: __app.rb:2363
+#: __app.rb:2379
 msgid "This player is no longer at the table."
 msgstr ""
 
-#: __app.rb:3080
+#: __app.rb:3096
 msgid "This preset needs updating. Check its game and options before creating a table."
 msgstr ""
 
@@ -26581,11 +26649,11 @@ msgstr ""
 msgid "This runtime cannot safely read local tournament test data."
 msgstr ""
 
-#: __app.rb:1436 __app.rb:1600
+#: __app.rb:1452 __app.rb:1616
 msgid "This saved game is not compatible with this version or is damaged."
 msgstr ""
 
-#: __app.rb:1385
+#: __app.rb:1401
 msgid "This saved game needs %{count} seats, but tables support at most %{maximum}."
 msgstr ""
 
@@ -26619,15 +26687,15 @@ msgstr ""
 msgid "This table already has a game. A forfeit cannot replace a game in progress or a finished result."
 msgstr ""
 
-#: __app.rb:3196 __app.rb:362
+#: __app.rb:3212 __app.rb:367
 msgid "This table announcement has expired or is no longer available."
 msgstr ""
 
-#: __app.rb:1720 __app.rb:2313 __app.rb:2660 __app.rb:2704 __app.rb:2713 __app.rb:3046
+#: __app.rb:1736 __app.rb:2329 __app.rb:2676 __app.rb:2720 __app.rb:2729 __app.rb:3062
 msgid "This table is full."
 msgstr ""
 
-#: __app.rb:1514 __app.rb:1539 __app.rb:1723 __app.rb:2314 __app.rb:2480 __app.rb:2652 __app.rb:2704 __app.rb:2716 __app.rb:3048 __app.rb:3209 __app.rb:479 lib/game_table_background.rb:116 lib/table_roster_reader.rb:48
+#: __app.rb:1530 __app.rb:1555 __app.rb:1739 __app.rb:2330 __app.rb:2496 __app.rb:2668 __app.rb:2720 __app.rb:2732 __app.rb:3064 __app.rb:3225 __app.rb:484 lib/game_table_background.rb:116 lib/table_roster_reader.rb:48
 msgid "This table is no longer available."
 msgstr ""
 
@@ -26667,7 +26735,7 @@ msgstr ""
 msgid "This tournament is no longer available."
 msgstr ""
 
-#: __app.rb:834 lib/tournaments/tournament_start_runtime.rb:113 lib/tournaments/tournament_start_runtime.rb:161 lib/tournaments/tournament_start_runtime.rb:93
+#: __app.rb:841 lib/tournaments/tournament_start_runtime.rb:113 lib/tournaments/tournament_start_runtime.rb:161 lib/tournaments/tournament_start_runtime.rb:93
 msgid "This tournament notification is no longer available."
 msgstr ""
 
@@ -26679,7 +26747,7 @@ msgstr ""
 msgid "This trade is no longer valid. Check the player, properties and available cash."
 msgstr ""
 
-#: __app.rb:2478
+#: __app.rb:2494
 msgid "This user is already at the table."
 msgstr ""
 
@@ -26932,7 +27000,7 @@ msgstr ""
 msgid "To swap two positions, press Shift with the first position's digit, then Shift with the second. You can also select each position with the arrow keys and Enter. Listen and swap as often as you need."
 msgstr ""
 
-#: __app.rb:3422
+#: __app.rb:3438
 msgid "To use the new game rules, create a table in Game Room 2.0. All players need version 2.0 or later."
 msgstr ""
 
@@ -27014,7 +27082,7 @@ msgstr ""
 msgid "Tournament access failed. Check Operations before repeating a write."
 msgstr ""
 
-#: lib/tournaments/server_workspace.rb:803 lib/tournaments/server_workspace.rb:806
+#: lib/tournaments/server_workspace.rb:804 lib/tournaments/server_workspace.rb:807
 msgid "Tournament access failed. Check pending changes before repeating a write."
 msgstr ""
 
@@ -27073,7 +27141,7 @@ msgstr ""
 msgid "Tournament ends"
 msgstr ""
 
-#: lib/tournaments/server_workspace.rb:771
+#: lib/tournaments/server_workspace.rb:772
 msgid "Tournament fields are limited to 2048 bytes. Shorten the rules or settings. Nothing was sent."
 msgstr ""
 
@@ -27089,7 +27157,7 @@ msgstr ""
 msgid "Tournament game result: %{id}"
 msgstr ""
 
-#: __app.rb:1285 __app.rb:1425 __app.rb:1589 lib/game_screen.rb:283
+#: __app.rb:1301 __app.rb:1441 __app.rb:1605 lib/game_screen.rb:283
 msgid "Tournament games cannot be saved or resumed from a saved game."
 msgstr ""
 
@@ -27112,7 +27180,7 @@ msgstr ""
 msgid "Tournament list scope"
 msgstr ""
 
-#: __app.rb:3321 __app.rb:3325 lib/tournaments/server_proposal_screen.rb:27
+#: __app.rb:3337 __app.rb:3341 lib/tournaments/server_proposal_screen.rb:27
 msgid "Tournament match"
 msgstr ""
 
@@ -27164,7 +27232,7 @@ msgstr ""
 msgid "Tournament participants and invitations are now managed from the participant list. Organizers can invite several online users or contacts at once; Ctrl+L shows pending and declined invitations."
 msgstr ""
 
-#: __app.rb:822 lib/tournaments/tournament_start_runtime.rb:115
+#: __app.rb:829 lib/tournaments/tournament_start_runtime.rb:115
 msgid "Tournament partnership"
 msgstr ""
 
@@ -27228,11 +27296,11 @@ msgstr ""
 msgid "Tournament table link: %{id}"
 msgstr ""
 
-#: __app.rb:1288 __app.rb:1428 __app.rb:1592 __app.rb:3482 __app.rb:898 __app.rb:941 __app.rb:958
+#: __app.rb:1304 __app.rb:1444 __app.rb:1608 __app.rb:3498 __app.rb:905 __app.rb:948 __app.rb:965
 msgid "Tournament table operation blocked: %{reason}"
 msgstr ""
 
-#: __app.rb:1292 __app.rb:1432 __app.rb:1596 __app.rb:906 __app.rb:946 __app.rb:962
+#: __app.rb:1308 __app.rb:1448 __app.rb:1612 __app.rb:913 __app.rb:953 __app.rb:969
 msgid "Tournament table or result not confirmed. Check Operations before trying again."
 msgstr ""
 
@@ -27252,7 +27320,7 @@ msgstr ""
 msgid "Tournament winner: %{player}"
 msgstr ""
 
-#: __app.rb:237 lib/game_room_ui.rb:131 lib/game_room_ui.rb:328 lib/game_room_widget.rb:200 lib/game_room_widget.rb:206 lib/tournaments/public_screen.rb:181 lib/tournaments/public_screen.rb:65 lib/tournaments/server_workspace.rb:755
+#: __app.rb:239 lib/game_room_ui.rb:131 lib/game_room_ui.rb:328 lib/game_room_widget.rb:200 lib/game_room_widget.rb:206 lib/tournaments/public_screen.rb:181 lib/tournaments/public_screen.rb:65 lib/tournaments/server_workspace.rb:756
 msgid "Tournaments"
 msgstr ""
 
@@ -27560,7 +27628,7 @@ msgstr ""
 msgid "Twos, threes, fours and kings"
 msgstr ""
 
-#: __app.rb:2111 lib/game_screen/input.rb:381
+#: __app.rb:2127 lib/game_screen/input.rb:381
 msgid "Type a chat message first."
 msgstr ""
 
@@ -27743,7 +27811,7 @@ msgstr ""
 msgid "Unknown domino set."
 msgstr ""
 
-#: games/axel_pong.rb:49
+#: games/axel_pong.rb:51
 msgid "Unlimited"
 msgstr ""
 
@@ -27846,7 +27914,7 @@ msgstr ""
 msgid "Updating game"
 msgstr ""
 
-#: __app.rb:1586 __app.rb:1979 __app.rb:2229 __app.rb:2238 __app.rb:2249 __app.rb:2337 __app.rb:2382 __app.rb:3624 __app.rb:3633 __app.rb:3778 __app.rb:3791 __app.rb:3832 lib/game_screen.rb:1068 lib/game_screen/input.rb:531
+#: __app.rb:1602 __app.rb:1995 __app.rb:2245 __app.rb:2254 __app.rb:2265 __app.rb:2353 __app.rb:2398 __app.rb:3640 __app.rb:3649 __app.rb:3794 __app.rb:3807 __app.rb:3848 lib/game_screen.rb:1068 lib/game_screen/input.rb:531
 msgid "Updating table"
 msgstr ""
 
@@ -28013,7 +28081,7 @@ msgstr ""
 msgid "Use two jokers adds two cards that can represent an ordinary or special card. You choose what the joker represents when playing it. It only defends a penalty if the represented card would be a legal defence. Representing an ace, jack or king uses its special effect only when that effect is enabled at the table."
 msgstr ""
 
-#: games/krowa_support/leaderboards.rb:186 games/krowa_support/leaderboards.rb:74
+#: games/krowa_support/leaderboards.rb:186 games/krowa_support/leaderboards.rb:74 lib/sports_rankings/screen.rb:102
 msgid "User"
 msgstr ""
 
@@ -28028,7 +28096,7 @@ msgstr ""
 msgid "Users at the table. %{name}; %{game}; host: %{owner}; %{count}/%{maximum}"
 msgstr ""
 
-#: __app.rb:3330
+#: __app.rb:3346
 msgid "Users at the table. %{status}; %{name}; %{game}; host: %{owner}; %{count}/%{maximum}"
 msgstr ""
 
@@ -28427,7 +28495,7 @@ msgstr ""
 msgid "Waiting for the private solution."
 msgstr ""
 
-#: __app.rb:1564
+#: __app.rb:1580
 msgid "Waiting for these players: %{players}."
 msgstr ""
 
@@ -28570,7 +28638,7 @@ msgstr ""
 msgid "What your card will do"
 msgstr ""
 
-#: __app.rb:244 lib/game_room_screens.rb:63
+#: __app.rb:246 lib/game_room_screens.rb:63
 msgid "What's new"
 msgstr ""
 
@@ -28780,7 +28848,7 @@ msgstr ""
 msgid "Which square is %{player} on?"
 msgstr ""
 
-#: lib/game_room_changelog.rb:594
+#: lib/game_room_changelog.rb:595
 msgid "While connected to a voice conference, Channel space appears directly after the voice conversation button. Use the arrow keys to move, and Shift+Left/Right Arrow to turn, just as in ELTEN conferences."
 msgstr ""
 
@@ -29147,7 +29215,7 @@ msgstr ""
 msgid "Yes"
 msgstr ""
 
-#: lib/tournaments/server_workspace.rb:779
+#: lib/tournaments/server_workspace.rb:780
 msgid "You already accepted another match. Cancel that invitation or finish the match first."
 msgstr ""
 
@@ -29163,11 +29231,11 @@ msgstr ""
 msgid "You are already at a table."
 msgstr ""
 
-#: __app.rb:1404 __app.rb:1418 __app.rb:1716 __app.rb:2719 __app.rb:3043
+#: __app.rb:1420 __app.rb:1434 __app.rb:1732 __app.rb:2735 __app.rb:3059
 msgid "You are already at another table."
 msgstr ""
 
-#: __app.rb:2670
+#: __app.rb:2686
 msgid "You are already at this table."
 msgstr ""
 
@@ -29324,7 +29392,7 @@ msgstr ""
 msgid "You can observe all the other modes if the table is public or you are invited to it. If you join Krowa while someone is guessing a random word, you can check the word length and the list and number of their attempts. You can also write in chat: \"p in the fourth position! Seriously, the fourth letter is p!\" But I am not encouraging that."
 msgstr ""
 
-#: lib/tournaments/server_workspace.rb:796
+#: lib/tournaments/server_workspace.rb:797
 msgid "You can only choose your own partner."
 msgstr ""
 
@@ -29408,7 +29476,7 @@ msgstr ""
 msgid "You chose %{card}."
 msgstr ""
 
-#: __app.rb:1249
+#: __app.rb:1265
 msgid "You created a room."
 msgstr ""
 
@@ -29552,7 +29620,7 @@ msgstr ""
 msgid "You have no properties available to mortgage now."
 msgstr ""
 
-#: __app.rb:1322
+#: __app.rb:1338
 msgid "You have no saved games."
 msgstr ""
 
@@ -29603,7 +29671,7 @@ msgstr ""
 msgid "You hold your cards in your hand and choose which one to play. The cards in your hand are always listed from the lowest to the highest, with the joker last. The cards you win go to a separate pile."
 msgstr ""
 
-#: __app.rb:2843
+#: __app.rb:2859
 msgid "You joined %{player}'s room."
 msgstr ""
 
@@ -29823,11 +29891,11 @@ msgstr ""
 msgid "You want as few points as possible. The round winner receives zero; everyone else adds the value of cards still held. Number cards count their number, coloured action cards 20 and wild cards 50. The elimination limit is normally 500, configurable from 50 to 5000. Players reaching it leave after the round, while the others continue. The last remaining player wins the whole game."
 msgstr ""
 
-#: __app.rb:2331
+#: __app.rb:2347
 msgid "You will observe the next game."
 msgstr ""
 
-#: __app.rb:2331
+#: __app.rb:2347
 msgid "You will play in the next game."
 msgstr ""
 
@@ -30662,7 +30730,7 @@ msgstr ""
 msgid "change rack order"
 msgstr ""
 
-#: games/axel_pong.rb:249
+#: games/axel_pong.rb:251
 msgid "change side-wall cues"
 msgstr ""
 
@@ -30935,7 +31003,7 @@ msgstr ""
 msgid "finished writing"
 msgstr ""
 
-#: games/audio_ball.rb:28
+#: games/audio_ball.rb:30
 msgid "first to %{count} set"
 msgid_plural "first to %{count} sets"
 msgstr[0] ""
@@ -30985,7 +31053,7 @@ msgstr ""
 msgid "game finished"
 msgstr ""
 
-#: __app.rb:3400
+#: __app.rb:3416
 msgid "game in progress"
 msgstr ""
 
@@ -31068,11 +31136,11 @@ msgstr ""
 msgid "hryvnias"
 msgstr ""
 
-#: games/axel_pong.rb:261
+#: games/axel_pong.rb:263
 msgid "hurry the opponent before a serve"
 msgstr ""
 
-#: games/audio_ball.rb:260
+#: games/audio_ball.rb:262
 msgid "hurry the opponent holding the ball"
 msgstr ""
 
@@ -31164,19 +31232,19 @@ msgstr ""
 msgid "lira"
 msgstr ""
 
-#: games/axel_pong.rb:252
+#: games/axel_pong.rb:254
 msgid "listen from the first player's perspective"
 msgstr ""
 
-#: games/axel_pong.rb:256
+#: games/axel_pong.rb:258
 msgid "listen from the fourth player's perspective"
 msgstr ""
 
-#: games/axel_pong.rb:253
+#: games/axel_pong.rb:255
 msgid "listen from the second player's perspective"
 msgstr ""
 
-#: games/axel_pong.rb:255
+#: games/axel_pong.rb:257
 msgid "listen from the third player's perspective"
 msgstr ""
 
@@ -31331,7 +31399,7 @@ msgstr ""
 msgid "one pair"
 msgstr ""
 
-#: __app.rb:3400 games/mexican_train.rb:185
+#: __app.rb:3416 games/mexican_train.rb:185
 msgid "open"
 msgstr ""
 
@@ -31506,7 +31574,7 @@ msgstr ""
 msgid "read active and folded players"
 msgstr ""
 
-#: games/axel_pong.rb:248
+#: games/axel_pong.rb:250
 msgid "read active shields and invisible ball"
 msgstr ""
 
@@ -31558,7 +31626,7 @@ msgstr ""
 msgid "read players' colours"
 msgstr ""
 
-#: games/audio_ball.rb:256
+#: games/audio_ball.rb:258
 msgid "read points and sets"
 msgstr ""
 
@@ -31574,7 +31642,7 @@ msgstr ""
 msgid "read rack position %{number}"
 msgstr ""
 
-#: games/axel_pong.rb:245
+#: games/axel_pong.rb:247
 msgid "read scores"
 msgstr ""
 
@@ -31689,7 +31757,7 @@ msgstr ""
 msgid "read the number of tiles left in the wall"
 msgstr ""
 
-#: games/axel_pong.rb:247
+#: games/axel_pong.rb:249
 msgid "read the observed player's paddle position"
 msgstr ""
 
@@ -31749,7 +31817,7 @@ msgstr ""
 msgid "read the scores"
 msgstr ""
 
-#: games/audio_ball.rb:257 games/axel_pong.rb:246
+#: games/audio_ball.rb:259 games/axel_pong.rb:248
 msgid "read the server and connection status"
 msgstr ""
 
@@ -31845,7 +31913,7 @@ msgstr ""
 msgid "read your mileage, hazards and safeties"
 msgstr ""
 
-#: games/axel_pong.rb:247
+#: games/axel_pong.rb:249
 msgid "read your paddle position"
 msgstr ""
 
@@ -32203,7 +32271,7 @@ msgstr ""
 msgid "toggle mouse control"
 msgstr ""
 
-#: games/axel_pong.rb:264
+#: games/axel_pong.rb:266
 msgid "toggle the crowd"
 msgstr ""
 

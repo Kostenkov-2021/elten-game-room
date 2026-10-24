@@ -541,6 +541,12 @@ Procedure: `docs/BUILDING.md`. Preserve licensing and attribution.
   difference solely in the date of a repeated result for the same game.
   Retention removes only the account's own expired presence reports,
   never historical statistics.
+- Sports leaderboards reuse that worker/outbox framework, not game-time network
+  writes. The final human roster owns the result; team goals are not divided.
+  Use confirmed tournament receipts (including technical goals), not a second
+  ordinary report of the same bound session. Preserve match-key deduplication,
+  canonical dates, complete short-page reads and hidden internal ordering points.
+  See [SPORTS_LEADERBOARDS.md](docs/SPORTS_LEADERBOARDS.md).
 - Statistics wake a managed worker on events, not empty polling every
   30 seconds. `GameRoomAnalyticsStorage` resolves native `data_path` once
   per runtime, in the background; do not return to repeated host package
