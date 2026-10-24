@@ -99,7 +99,7 @@ test("resulting mileage is translated from real catalogs in all supported langua
     "pl" => "Żaneta zagrywa 25 mil. Łącznie 125 mil.",
     "cs" => "Żaneta zahrál kartu 25 mil a nyní má ujeto 125 mil.",
     "es" => "Żaneta jugó 25 millas y ahora lleva 125 millas.",
-    "ru" => "Żaneta разыгрывает 25 миль, теперь у него 125 миль."
+    "ru" => "Żaneta сыграл 25 миль; пробег: 125 миль."
   }
   messages.each do |language, expected|
     GameRoomTestLocalization.use_language(language)

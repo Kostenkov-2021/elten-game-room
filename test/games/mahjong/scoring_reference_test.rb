@@ -10,8 +10,9 @@ include GameRoomTest::Assertions
   sections = book.sections.to_h { |section| [section.id.to_s, section] }
   rows = book.sections.select { |section| section.id.to_s.start_with?('table_mcr_fan_') }.flat_map(&:paragraphs)
   assert_equal(81, rows.length, "#{language}: MCR catalog incomplete")
+  fan_name = language == 'ru' ? 'фань' : 'fan'
   actual = rows.to_h do |row|
-    match = /\A- MCR (\d+): (\d+) (?:fan|фан) — (.+)\z/.match(row)
+    match = /\A- MCR (\d+): (\d+) #{Regexp.escape(fan_name)} — (.+)\z/.match(row)
     assert(match, "#{language}: unreadable MCR entry #{row}")
     [match[1].to_i, match[2].to_i]
   end
@@ -22,7 +23,8 @@ include GameRoomTest::Assertions
   hk = book.sections.select { |section| section.id.to_s.start_with?('table_hk_fan_') }.flat_map(&:paragraphs)
   assert_equal(29, hk.length, "#{language}: HK catalog incomplete")
   assert_equal(28, sections.fetch('table_yaku').paragraphs.count { |paragraph| paragraph.start_with?('- ') })
-  assert_equal(10, sections.fetch('table_riichi_yakuman').paragraphs.count { |paragraph| paragraph.start_with?('- 1 yakuman') })
+  yakuman_name = language == 'ru' ? 'якуман' : 'yakuman'
+  assert_equal(10, sections.fetch('table_riichi_yakuman').paragraphs.count { |paragraph| paragraph.start_with?("- 1 #{yakuman_name} — ") })
   assert(sections.key?('table_fu') && sections.key?('solitaire_points'))
   assert(sections.keys.none? { |id| id.end_with?('_practice') }, 'Worked-example chapters were retained')
   assert(book.sections.all? { |s| s.paragraphs.none? { |p| p.start_with?('|') } }, 'Raw Markdown table in native instructions')
