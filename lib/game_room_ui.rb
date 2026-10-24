@@ -3,6 +3,7 @@ require_relative "game_room_preferences"
 require_relative "context_help"
 require_relative "game_room_ping"
 require_relative "game_room_pending_operation"
+require_relative "conference_controls"
 
 # The host handles function keys before Form events. Intercept dispatch, not
 # saved QuickActions or host sources. Only a currently waiting Game Room form
@@ -98,6 +99,7 @@ module GameRoomUI
     attr_accessor :game_room_entry_boundary
     attr_accessor :game_room_pending_operation
     attr_accessor :game_room_tournament_shortcut_enabled, :game_room_invitation_context_field
+    attr_accessor :game_room_table_controls, :game_room_conference_refresh
 
     def initialize(fields, program: nil, **options)
       @game_room_program = program
@@ -119,6 +121,11 @@ module GameRoomUI
     def context(menu, submenu = true)
       super
       return if submenu && !contextinglobal_enabled?
+      if game_room_table_controls && GameRoomConferenceControls.connected? && @game_room_program&.respond_to?(:toggle_conference_microphone, true)
+        menu.option(GameRoomContent.utf8(GameRoomConferenceControls.microphone_label), nil, "M") do
+          @game_room_program&.__send__(:toggle_conference_microphone)
+        end
+      end
       return unless game_room_invitation_context?
       menu.option(GameRoomContent.utf8(_("My tournaments")),nil,"T"){open_my_tournaments} if game_room_tournament_shortcut?
       menu.option(GameRoomContent.utf8(_("Tournaments")),nil,"t"){open_tournaments} if game_room_tournament_shortcut? && @game_room_program.respond_to?(:show_tournaments,true)
@@ -182,9 +189,9 @@ module GameRoomUI
 
     def update
       @game_room_program.send(:announce_volume_save_error) if @game_room_program&.respond_to?(:announce_volume_save_error, true)
-      if game_room_hotkeys_active? && @game_room_program&.respond_to?(:toggle_conference_microphone,true) &&
-          keyboard_binding_pressed?([0x4D,:control,:shift],first:true) &&
-          $activecontrols.to_a.reverse.find { |field| field.respond_to?(:game_room_hotkeys_active?) && field.game_room_hotkeys_active? }.equal?(self)
+      game_room_conference_refresh&.call
+      if game_room_table_controls && game_room_hotkeys_active? && @game_room_program&.respond_to?(:toggle_conference_microphone,true) &&
+          keyboard_binding_pressed?([0x4D,:control,:shift],first:true)
         clear_game_room_key
         @game_room_program.send(:toggle_conference_microphone)
       end
@@ -319,7 +326,7 @@ module GameRoomUI
       end
       global_tips.unshift(GameRoomContextHelp.shortcut_tip('Ctrl+Shift+T',_("My tournaments"))) if game_room_tournament_shortcut?
       global_tips.unshift(GameRoomContextHelp.shortcut_tip('Ctrl+T',_("Tournaments"))) if game_room_tournament_shortcut?
-      global_tips.unshift(GameRoomContextHelp.shortcut_tip('Ctrl+Shift+M',_("Mute or unmute the conference microphone"))) if @game_room_program&.respond_to?(:toggle_conference_microphone,true)
+      global_tips.unshift(GameRoomContextHelp.shortcut_tip('Ctrl+Shift+M',_("Mute or unmute the conference microphone"))) if game_room_table_controls && @game_room_program&.respond_to?(:toggle_conference_microphone,true)
       items = GameRoomContextHelp.clean_tips(tips + form_tips + history_tips + global_tips)
       items = [_("No shortcuts are available on this screen.")] if items.empty?
       @game_room_help_open = true

@@ -85,6 +85,7 @@ field.add_tip("Native field tip")
 GameRoomContextHelp.replace([field], ["Room action", "Duplicate"], source: :context)
 GameRoomContextHelp.replace([field], ["Game action", "Duplicate"], source: :game)
 form = GameRoomUI::Form.new([field], program: app)
+form.game_room_table_controls = true
 form.game_room_general_help_tips = ["History action"]
 native = EltenAPI::QuickActions.hotkey_actions(1)
 driver = nil
@@ -108,7 +109,7 @@ driver = lambda do |current|
     lines = list.text.split("\n")
     assert(lines.first(4) == ["Game action", "Duplicate", "Room action", "Native field tip"], "help order/deduplication")
     assert(lines[4] == "History action" && lines.uniq == lines, "general order/duplicates")
-    assert(lines[5].start_with?("Ctrl+Shift+M") && lines[5].include?("conference microphone"), "global conference help missing or out of order")
+    assert(lines[5].start_with?("Ctrl+Shift+M") && lines[5].include?("conference microphone"), "table conference help missing or out of order")
     assert(lines[6].start_with?("Ctrl+J") && lines[6].include?("Accept invitation"), "global invitation help missing or out of order")
     assert(list.key_processed(:key_enter) == false, "Enter cannot close help")
     EltenAPI::QuickActions.hotkey_actions(1).each(&:call)

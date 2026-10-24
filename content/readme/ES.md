@@ -103,6 +103,8 @@ Los demás oyen una invitación breve y ven «Unirse a la conversación de voz»
 
 Al salir de una mesa también te desconectas de su conferencia. Ctrl+Shift+M silencia o activa tu micrófono en la conferencia actual.
 
+También puedes silenciar o activar el micrófono desde el menú contextual de la mesa; un mensaje confirma su estado. Mientras estás en una conferencia, «Espacio del canal» aparece justo después del botón de conversación de voz. Usa las flechas para moverte y Mayús+flecha izquierda o derecha para girar, igual que en la ventana de conferencias.
+
 ### El anfitrión y la gestión de bots y equipos
 
 El anfitrión prepara la mesa, inicia la partida y gestiona a los participantes. En juegos con bots puede añadir un rival controlado por el ordenador con Ctrl+O. El bot recibe un nombre y aparece en la misma lista que los demás jugadores.

@@ -103,6 +103,8 @@ Ostatní uslyší krátkou pozvánku a u stolu najdou „Připojit se k hlasové
 
 Když opustíte stůl, odpojíte se také od jeho konference. Ctrl+Shift+M ztlumí nebo zapne váš mikrofon v probíhající konferenci.
 
+Mikrofon můžete ztlumit nebo zapnout také v kontextové nabídce stolu. Hlášení potvrdí jeho stav. Při připojení ke konferenci se hned za tlačítkem hlasového hovoru zobrazí „Prostor kanálu“. Šipkami se v něm pohybujete a pomocí Shift+šipky vlevo nebo vpravo se otáčíte, stejně jako v okně konference.
+
 ### Hostitel a správa botů a týmů
 
 Hostitel připravuje stůl, zahajuje partie a spravuje účastníky. Ve hrách s boty může přes Ctrl+O přidat počítačového soupeře. Bot dostane jméno a objeví se ve stejném seznamu jako ostatní hráči.

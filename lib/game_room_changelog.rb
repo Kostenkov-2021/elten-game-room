@@ -585,11 +585,13 @@ module GameRoomChangelog
       build: 257,
       changes: [
         "Improved responsiveness in longer Mahjong games. Successive hands should no longer cause the same growing slowdown, particularly in Hong Kong.",
-        "Fixed UNO rounds ending with a Draw Two or Wild Draw Four. The opponent draws the penalty cards, which count towards the score, and the player who emptied their hand no longer has to draw to finish the round.",
+        "Fixed UNO rounds failing to end after stacked draw penalties returned to the first player who emptied their hand. Other players who have also played their last card are now remembered when that penalty is settled.",
         "Four of a kind in Yahtzee now scores at least 15 points.",
         "New Tic Tac Toe games randomly choose who starts. The starting player uses X.",
         "In singles, Audio Ball announces only who serves. In doubles, it still announces both the server and the receiver.",
-        "Fixed an error when confirming a tournament start again."
+        "Fixed an error when confirming a tournament start again.",
+        "Fixed Ctrl+Shift+M at the table. It now toggles your conference microphone and announces its state. You can also mute or unmute it from the table's context menu while connected.",
+        "While connected to a voice conference, Channel space appears directly after the voice conversation button. Use the arrow keys to move, and Shift+Left/Right Arrow to turn, just as in ELTEN conferences."
       ].freeze
     ).freeze
   ].freeze

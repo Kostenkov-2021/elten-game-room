@@ -103,6 +103,8 @@ The others hear a short invitation and get a “Join voice conversation” butto
 
 Leaving a table also disconnects you from its conference. Ctrl+Shift+M mutes or unmutes your microphone in the current conference.
 
+You can also mute or unmute from the table's context menu; a message confirms the microphone's state. While connected to a conference, “Channel space” appears immediately after the voice conversation button. Use the arrow keys to move and Shift+Left/Right Arrow to turn, just as in the conference window.
+
 ### The host and managing bots and teams
 
 The host prepares the table, starts games and manages the participants. In games with bots, the host can add a computer opponent with Ctrl+O. The bot receives a name and appears on the same list as the other players.

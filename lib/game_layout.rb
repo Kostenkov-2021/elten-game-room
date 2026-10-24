@@ -157,7 +157,7 @@ module GameRoomLayout
     attr_accessor :activity_cursor, :session_id, :game_client
     attr_reader :binding_generation
     attr_reader :surface, :history, :users, :chat, :back_button, :form,
-      :primary_button, :restart_button, :waiting_status, :phase, :voice_button
+      :primary_button, :restart_button, :waiting_status, :phase, :voice_button, :channel_space
 
     def computer_changes
       @computer_changes ||= GameRoomUI::ComputerChangeBuffer.new
@@ -188,6 +188,8 @@ module GameRoomLayout
       @back_button = Button.new(_("Leave"))
       @form = GameSurfaces::RefreshAwareForm.new([], index: 0, quiet: true)
       @form.game_room_entry_boundary = true
+      @form.game_room_table_controls = true
+      @form.game_room_conference_refresh = -> { refresh_conference_controls }
       @preserved_hand_surface_state = nil
       @form.extend(ShortcutFormBehavior)
       binding_controls.each { |control| control.extend(Bindings) }
@@ -309,7 +311,7 @@ module GameRoomLayout
         status: status_fields,
         game: game_fields - trailing_fields,
         game_actions: trailing_fields,
-        users: [@users,@voice_button],
+        users: [@users,@voice_button,*Array(@channel_space)],
         chat: [@chat], history: [@history]
       }
       @content_fields = []
@@ -329,7 +331,35 @@ module GameRoomLayout
       @form.cancel_button = @back_button
       new_index = form_index_for_location(location)
       @form.index = new_index if @form.index.to_i != new_index
+      refresh_conference_controls
       self
+    end
+
+    # Conference membership changes locally, without a table/game event. Keep
+    # the same control and focused object; only its visibility changes.
+    def refresh_conference_controls
+      return unless @content_fields&.include?(@voice_button)
+      connected = GameRoomConferenceControls.connected?
+      focused = @form.fields[@form.index.to_i]
+      if connected && @channel_space == nil
+        @channel_space = GameRoomConferenceControls.build_space
+        index = @content_fields.index(@voice_button) + 1
+        @content_fields.insert(index, @channel_space)
+        @field_locations.insert(index, [:users, 2])
+        @form.fields.insert(@form.fields.index(@voice_button) + 1, @channel_space)
+        # Native hidden flags use field indices. Inserting a control shifts
+        # Leave too; reset the same table-owned flags as the normal update.
+        @form.show_all
+        @form.hide(@back_button)
+        @form.index = @form.fields.index(focused) if focused
+      end
+      return if @channel_space == nil
+      if connected
+        @form.show(@channel_space)
+      else
+        @form.hide(@channel_space)
+        @form.index = @form.fields.index(@voice_button) if focused.equal?(@channel_space)
+      end
     end
 
     private def phase_status_fields(view_spec, phase, own_table)

@@ -169,6 +169,18 @@ and the tests for the relevant surface and game.
 
 ## Tournament shortcuts and context menus
 
+Table forms also opt into `game_room_table_controls`. Ctrl+Shift+M and the
+table's context menu share the native `Conference.muted` state and announce
+the resulting state. Do not gate first-frame dispatch on `$activecontrols`:
+the host has already cleared that list before the form updates.
+
+While a native conference is connected, the layout shows a native Static
+"Channel space" immediately after its voice conversation button. Movement,
+rotation and position/size queries delegate to Conference, without a second
+position model or audio pipeline. Membership is local: changing it updates
+only this control's visibility, preserving the focused field and chat draft.
+Regression: `test/ui/table_conference_controls_native_test.rb`.
+
 Only the main lobby opts into `game_room_tournament_shortcut_enabled`.
 Ctrl+T opens the tournament browser; Ctrl+Shift+T keeps the My tournaments
 scope even when no matching row exists. Neither shortcut's menu/help entry appears in game, tournament or

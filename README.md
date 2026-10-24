@@ -144,6 +144,8 @@ Pozostali usłyszą krótkie zaproszenie, a przy stole pojawi się „Dołącz d
 
 Po wyjściu ze stołu rozłączysz się także z jego konferencją. Ctrl+Shift+M wycisza lub włącza twój mikrofon w trwającej konferencji.
 
+Wyciszenie mikrofonu możesz też przełączyć w menu kontekstowym stołu. Usłyszysz, czy mikrofon jest wyciszony, czy włączony. Gdy jesteś na konferencji, za przyciskiem rozmowy pojawia się „Przestrzeń kanału”. Strzałkami zmieniasz w niej położenie, a Shift+strzałka w lewo lub w prawo obraca cię tak samo jak w oknie konferencji.
+
 ### Gospodarz, boty i drużyny
 
 Gospodarz przygotowuje stół, rozpoczyna partię i zarządza obsadą.

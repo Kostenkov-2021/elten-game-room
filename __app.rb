@@ -2045,13 +2045,7 @@ class EltenGameRoom < Program
   end
 
   def toggle_conference_microphone
-    unless defined?(Conference) && Conference.opened? && Conference.channel&.id.to_i.positive?
-      speak(_("You are not connected to a voice conversation."))
-      return false
-    end
-    Conference.muted = !Conference.muted
-    speak(Conference.muted ? _("Microphone muted") : _("Microphone unmuted"))
-    true
+    GameRoomConferenceControls.toggle_microphone
   end
 
   def waiting_computer_context(row, chat_context)
