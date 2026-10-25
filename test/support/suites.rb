@@ -2,10 +2,14 @@ module GameRoomTestSuites
   NAMES = %w[models transport ui native tooling integration tournaments].freeze
   ROOT = File.expand_path('../..', __dir__)
   ROOT_TESTS = %w[code_quality_test.rb game_imports_test.rb model_contract_test.rb].freeze
-  # Full local tournament lifecycles replay several completed games and their
-  # immutable ancestors. Give those scenarios measured, bounded budgets instead
-  # of treating an ordinary three-minute runner limit as a product failure.
+  # Exhaustive searches and full tournament lifecycles can exceed the ordinary
+  # three-minute runner limit. Give these scenarios measured, bounded budgets
+  # without dropping their coverage or full-history assertions.
   SLOW_TIMEOUTS = {
+    # All 5,478 reachable boards and 4,520 production-strategy decisions:
+    # about 105 s locally, but repeated shared CI runs exceed 180 s.
+    # Keep the complete exhaustive check and a bounded six-minute CI budget.
+    'exhaustive_strategy_test.rb' => 360,
     'individual_quiz_finish_test.rb' => 5400,
     'generic_team_knockout_lifecycle_test.rb' => 1800,
     'team_knockout_lifecycle_test.rb' => 5400,

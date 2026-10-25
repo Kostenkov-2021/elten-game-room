@@ -2,6 +2,9 @@ def _(text); text; end
 require_relative "../../../lib/game_simulation"
 require_relative "../../../games/tic_tac_toe"
 
+$stdout.sync = true
+puts 'Tic-tac-toe: checking every reachable position with the production strategy.'
+
 LINES = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]].freeze
 def oracle(board, moving, memo)
   return -1 if LINES.any? { |line| line.all? { |i| board[i] == 1 - moving } }
@@ -37,6 +40,7 @@ until stack.empty?
   expected = oracle(board, moving, memo)
   raise "suboptimal choice #{key}: #{chosen.inspect}" unless actual == expected
   checked += 1
+  puts "Tic-tac-toe: #{checked} playable positions checked." if (checked % 1000).zero?
   actions.each do |action|
     child = environment.fork_for_search
     raise 'rejected legal move' unless child.step_for_search(action, actor:actor) == :ok

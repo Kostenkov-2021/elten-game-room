@@ -23,6 +23,10 @@ assert(suites.values.all? { |items| !items.empty? }, 'empty suite')
 assert_equal('native', GameRoomTestSuites.classify('test/realtime/realtime_native_receive_test.rb'))
 assert_equal('models', GameRoomTestSuites.classify('test/model_contract_test.rb'))
 assert_equal('integration', GameRoomTestSuites.classify('test/quiz_contributions/model_repository_test.rb'))
+assert_equal(360, GameRoomTestSuites.timeout_for('test/games/tic_tac_toe/exhaustive_strategy_test.rb', fallback: 180),
+  'The complete strategy search must have its bounded CI budget')
+assert_equal(180, GameRoomTestSuites.timeout_for('test/games/tic_tac_toe/rules_test.rb', fallback: 180),
+  'The exhaustive-search budget must not extend ordinary game tests')
 assert_raises(ArgumentError) { GameRoomTestSuites.select('typo') }
 assert_equal(GameRoomTestSuites::ROOT_TESTS.sort, Dir.glob('test/*_test.rb', base: root).map { |entry| File.basename(entry) }.sort,
   'specific scenarios leaked into the test root')
@@ -62,11 +66,13 @@ Dir.mktmpdir('game-room-runner-options-') do |folder|
   result = GameRoomTestRunner.run(['test'], root: folder, output: StringIO.new)
   assert(GameRoomTestRunner.success?(result) && result.first[:output].include?('nested scenario ran'), 'nested scenario was not executed')
 
-  slow = File.join(folder, 'individual_quiz_finish_test.rb')
-  File.write(slow, '$stdout.sync = true; puts "started"; sleep 10')
-  limited = GameRoomTestRunner.run([slow], timeout: 0.2, output: StringIO.new).first
-  assert_equal('timeout', limited[:outcome], 'An explicit timeout must override a slow scenario budget')
-  assert(limited[:seconds] < 3, 'The explicit timeout was ignored')
+  %w[individual_quiz_finish_test.rb exhaustive_strategy_test.rb].each do |name|
+    slow = File.join(folder, name)
+    File.write(slow, '$stdout.sync = true; puts "started"; sleep 10')
+    limited = GameRoomTestRunner.run([slow], timeout: 0.2, output: StringIO.new).first
+    assert_equal('timeout', limited[:outcome], 'An explicit timeout must override a slow scenario budget')
+    assert(limited[:seconds] < 3, 'The explicit timeout was ignored')
+  end
 
   preload, scenario, check = %w[preload scenario additional].map { |name| File.join(folder, name + '.rb') }
   File.write(preload, 'RUNNER_PRELOADED = true')
