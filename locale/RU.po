@@ -5,15 +5,15 @@ msgstr ""
 "Project-Id-Version: Power Games 2.0.5.6\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2026-10-24 09:55+0300\n"
+"PO-Revision-Date: 2026-10-25 10:41+0300\n"
 "Last-Translator: Russian translation contributors\n"
 "Language-Team: Russian\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<="
-"4 && (n%100<12 || n%100>14) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : 2);\n"
+"X-Generator: Poedit 3.10\n"
 
 #: games/bridge/presentation.rb:178
 msgid " and "
@@ -1199,7 +1199,7 @@ msgstr "%{player} пригласил игрока %{user}."
 
 #: lib/table_activity_repository.rb:215
 msgid "%{player} invites you to a voice conversation."
-msgstr "%{player} приглашает вас в голосовую беседу."
+msgstr "%{player} приглашает вас в комнату голосового чата."
 
 #: lib/tournaments/tournament_start_runtime.rb:119
 msgid "%{player} invites you to be partners in %{name}."
@@ -2978,7 +2978,7 @@ msgstr "%{variant}; фишек: %{chips}; блайнды %{small}/%{big}; %{stru
 
 #: games/mancala.rb:118
 msgid "%{variant}; %{seeds} seeds in each pit"
-msgstr "%{variant}; камней в каждой лунке: %{seeds}."
+msgstr "%{variant}; камней в каждой лунке: %{seeds}"
 
 #: games/krowa.rb:171
 msgid "%{variant}; 3 to 8 letters; %{count} attempts per letter"
@@ -6544,7 +6544,7 @@ msgstr "В качестве наблюдателя нажмите 1 в игро�
 
 #: games/generated/rulebooks/axel_pong.rb:45
 msgid "As an observer, use the number keys in the Pong playfield to choose a player's perspective: 1 selects the first player, 2 the second, and in Doubles 3 the third and 4 the fourth. The numbers follow the player order in the match, not the teams. The game confirms the player's name. This changes only your listening perspective and the order of the spoken score after a point; it does not let you move any paddle. The choice stays in place between points. The keys do not select a perspective while you are typing in chat or reading history."
-msgstr "В качестве наблюдателя используйте числовые клавиши в игровом поле Pong, чтобы выбрать точку зрения игрока: 1 выбирает первого игрока, 2 второго, а в Doubles 3 — третьего, 4 — четвёртого. Числа соответствуют порядку игрока в матче, а не команд. Игра подтверждает имя игрока. Это меняет только вашу точку зрения слушания и порядок голосового счёта после определённого очка; не даёт вам двигать ракетку. Выбор остаётся на месте между очками. Клавиши не выбирают перспективу во время ввода в чате или чтения истории."
+msgstr "В качестве наблюдателя используйте цифровые клавиши в игровом поле Pong, чтобы выбрать точку зрения игрока: 1 выбирает первого игрока, 2 второго, а в Doubles 3 — третьего, 4 — четвёртого. Числа соответствуют порядку игрока в матче, а не команд. Игра подтверждает имя игрока. Это меняет только вашу точку зрения слушания и порядок голосового счёта после определённого очка; не даёт вам двигать ракетку. Выбор остаётся на месте между очками. Клавиши не выбирают перспективу во время ввода в чате или чтения истории."
 
 #: games/generated/rulebooks/bridge.rb:32
 msgid "As declarer you also play dummy's cards. When it is dummy's turn, press Tab to move to the list of dummy's cards, or press Z, which goes straight to the cards dummy may play, and choose a card with Enter. Everyone can press D to hear dummy's hand."
@@ -9419,7 +9419,7 @@ msgstr "Подключение к Elten"
 
 #: lib/table_voice_screen.rb:141
 msgid "Connecting to the voice conversation..."
-msgstr "Подключение к голосовой беседе..."
+msgstr "Подключение к комнате голосового чата..."
 
 #: lib/tournaments/local_fixed_team_execution_screen.rb:75
 msgid "Consent to the selected local match"
@@ -9564,7 +9564,7 @@ msgstr "Не удалось подключиться к таблице лиде�
 
 #: __app.rb:3920
 msgid "Could not disconnect the voice conversation. Open Conferences to leave it."
-msgstr "Не удалось отключиться от голосовой беседы. Откройте Конференции, чтобы выйти."
+msgstr "Не удалось отключиться от комнаты голосового чата. Откройте Голосовой чат в Elten, чтобы выйти."
 
 #: games/krowa_support/client.rb:35
 msgid "Could not load Krowa settings. Please try again."
@@ -9766,7 +9766,7 @@ msgstr "Создать турнир"
 
 #: lib/game_layout.rb:12 lib/table_voice_screen.rb:176
 msgid "Create voice conversation"
-msgstr "Создать голосовую беседу"
+msgstr "Создать комнату голосового чата"
 
 #: __app.rb:235 lib/quiz_contributions/views.rb:31
 msgid "Create your own question sets"
@@ -10688,7 +10688,7 @@ msgstr "Сброшенные кости"
 
 #: lib/game_layout.rb:15
 msgid "Disconnect voice conversation"
-msgstr "Отключить голосовую беседу"
+msgstr "Отключить комнату голосового чата"
 
 #: lib/tournaments/partner_choice.rb:27
 msgid "Dissolve partnership with %{player}"
@@ -13829,7 +13829,7 @@ msgstr "Как ходят фигуры"
 
 #: games/generated/rulebooks/farkle.rb:9
 msgid "How far do you dare to roll?"
-msgstr "Набор очков и риск"
+msgstr "Набор очков и риск: как далеко ты осмелишься зайти?"
 
 #: games/mancala.rb:99
 msgid "How hard the computer plays"
@@ -14284,11 +14284,11 @@ msgstr "В пасьянсе раскладка — всё расположени
 
 #: games/generated/rulebooks/taboo.rb:10
 msgid "In Taboo, your team guesses a word from your spoken clues. The difficulty is that you may not say the word itself or any of the five forbidden words printed with it. Game Room handles cards, time and points, but does not transmit, record or judge speech. Connect through an ELTEN conference or another voice application, or play in person with headphones. Do not share the sound or screen reading the secret card."
-msgstr "В игре Taboo ваша команда угадывает слово по вашим устным подсказкам. Сложность заключается в том, что нельзя говорить само слово или любое из пяти запретных слов, указанных на карте. Игровая комната ведёт карты, отслеживает время и очки, но не передаёт, не записывает и не оценивает речь. Подключайтесь через конференцию ELTEN или другое голосовое приложение, либо играйте лично в наушниках. Не делитесь звуком или экраном, показывающим секретную карту."
+msgstr "В игре Taboo ваша команда угадывает слово по вашим устным подсказкам. Сложность заключается в том, что нельзя говорить само слово или любое из пяти запретных слов, указанных на карте. Игровая комната ведёт карты, отслеживает время и очки, но не передаёт, не записывает и не оценивает речь. Подключайтесь через комнату голосового чата ELTEN или другое голосовое приложение, либо играйте лично в наушниках. Не делитесь звуком или экраном, показывающим секретную карту."
 
 #: games/generated/rulebooks/taboo.rb:10
 msgid "In Taboo, your team guesses a word from your spoken clues. The difficulty is that you may not say the word itself or any of the five forbidden words printed with it. Power Games handles cards, time and points, but does not transmit, record or judge speech. Connect through an ELTEN conference or another voice application, or play in person with headphones. Do not share the sound or screen reading the secret card."
-msgstr "В игре Taboo ваша команда угадывает слово по вашим устным подсказкам. Сложность заключается в том, что нельзя говорить само слово или любое из пяти запретных слов, указанных на карте. Игровая комната ведёт карты, отслеживает время и очки, но не передаёт, не записывает и не оценивает речь. Подключайтесь через конференцию ELTEN или другое голосовое приложение, либо играйте лично в наушниках. Не делитесь звуком или экраном, показывающим секретную карту."
+msgstr "В игре Taboo ваша команда угадывает слово по вашим устным подсказкам. Сложность заключается в том, что нельзя говорить само слово или любое из пяти запретных слов, указанных на карте. Игровая комната ведёт карты, отслеживает время и очки, но не передаёт, не записывает и не оценивает речь. Подключайтесь через комнату голосового чата ELTEN или другое голосовое приложение, либо играйте лично в наушниках. Не делитесь звуком или экраном, показывающим секретную карту."
 
 #: games/generated/rulebooks/tic_tac_toe.rb:10
 msgid "In Tic-tac-toe, two players try to make a line of three of their own marks. The board has three rows and three columns. The first player uses X and makes the first move; the other uses O."
@@ -14706,11 +14706,11 @@ msgstr "Пригласить"
 
 #: lib/participant_menu.rb:18
 msgid "Invite an online Elten user"
-msgstr "Пригласить пользователя Elten в сети"
+msgstr "Пригласить пользователя Elten онлайн"
 
 #: __app.rb:2469
 msgid "Invite an online user"
-msgstr "Пригласить пользователя в сети"
+msgstr "Пригласить пользователя онлайн"
 
 #: __app.rb:2469
 msgid "Invite from contacts"
@@ -14851,7 +14851,7 @@ msgstr "Зарегистрироваться на турнир"
 
 #: lib/game_layout.rb:15
 msgid "Join voice conversation"
-msgstr "Присоединиться к голосовой беседе"
+msgstr "Присоединиться к комнате голосового чата"
 
 #: lib/tournaments/local_workspace.rb:81
 msgid "Joining a local test tournament"
@@ -15388,7 +15388,7 @@ msgstr "Выход из локального тестового турнира"
 
 #: lib/game_room_changelog.rb:576
 msgid "Leaving a table also disconnects its voice conference. Ctrl+Shift+M toggles your conference microphone while you are at the table."
-msgstr "При выходе из-за стола вы также отключаетесь от его голосовой конференции. За столом Ctrl+Shift+M включает или выключает микрофон конференции."
+msgstr "При выходе из-за стола вы также отключаетесь от его комнаты голосового чата. За столом Ctrl+Shift+M включает или выключает микрофон в голосовом чате."
 
 #: __app.rb:2271
 msgid "Leaving table"
@@ -19182,7 +19182,7 @@ msgid "Press Ctrl+F1 to read the game rules."
 msgstr "Нажмите Ctrl+F1, чтобы прочитать правила игры."
 
 msgid "Press Ctrl+I to invite an online Elten user."
-msgstr "Нажмите Ctrl+I, чтобы пригласить пользователя Elten в сети."
+msgstr "Нажмите Ctrl+I, чтобы пригласить пользователя Elten онлайн."
 
 msgid "Press Ctrl+J to accept a game invitation."
 msgstr "Нажмите Ctrl+J, чтобы принять приглашение в игру."
@@ -22631,7 +22631,7 @@ msgstr "Не удалось прочитать часть данных турн�
 
 #: lib/table_voice_screen.rb:29
 msgid "Someone is already preparing the voice conversation. Try again shortly."
-msgstr "Кто-то уже создаёт голосовую беседу. Попробуйте чуть позже."
+msgstr "Кто-то уже создаёт комнату голосового чата. Попробуйте чуть позже."
 
 #: games/categories.rb:1300
 msgid "Song"
@@ -23356,18 +23356,18 @@ msgstr "Табу"
 
 #: lib/game_room_changelog.rb:104 lib/game_room_changelog.rb:82
 msgid "Taboo is a voice game for four, six or eight people in two teams, with 500 cards in each language. Use an external conference or voice conversation. The table master reviews and approves every turn; the game does not recognize speech and has no bots."
-msgstr "Табу — это голосовая игра для четырёх, шести или восьми человек в двух командах, с 500 карточками на каждом языке. Используйте внешнюю конференцию или голосовой разговор. Ведущий за столом проверяет и одобряет каждый ход; игра не распознаёт речь и не имеет ботов."
+msgstr "Табу — это голосовая игра для четырёх, шести или восьми человек в двух командах, с 500 карточками на каждом языке. Используйте сторонее приложение для звонков или комнату голосового чата. Ведущий за столом проверяет и одобряет каждый ход; игра не распознаёт речь и не имеет ботов."
 
 #: games/taboo_ui.rb:57
 msgid "Taboo is finished."
 msgstr "Табу завершено."
 
 msgid "Taboo is played by four, six or eight humans in two equal teams, without bots. Connect through a conference, another voice application, or talk in person with headphones. Game Room does not record, transmit or judge speech. Do not share the sound or screen that reads the card."
-msgstr "В «Табу» играют четыре, шесть или восемь человек в двух равных командах, без ботов. Подключайтесь через конференцию, другое голосовое приложение или общайтесь лично в наушниках. Комната игры не записывает, не передаёт и не оценивает речь. Не делитесь звуком или экраном, на котором отображается карта."
+msgstr "В «Табу» играют четыре, шесть или восемь человек в двух равных командах, без ботов. Подключайтесь через комнату голосового чата , другое голосовое приложение или общайтесь лично в наушниках. Комната игры не записывает, не передаёт и не оценивает речь. Не делитесь звуком или экраном, на котором отображается карта."
 
 #: games/taboo.rb:211
 msgid "Taboo is ready. Connect to your voice conversation and use headphones."
-msgstr "Табу готово. Подключитесь к голосовому разговору и используйте наушники."
+msgstr "Табу готово. Подключитесь к комнате голосового чата и используйте наушники."
 
 msgid "Taboo keys depend on your role"
 msgstr "Клавиши Табу зависят от вашей роли"
@@ -25040,7 +25040,7 @@ msgstr "В этой позиции пешка не может пойти с %{fr
 
 #: lib/game_room_presence_screen.rb:43
 msgid "The people count is the sum of room membership counts: it includes observers and excludes bots. A person in more than one room may be counted more than once. This is not a global online count."
-msgstr "Число людей — сумма участников всех комнат, включая наблюдателей, без ботов. Если человек находится в нескольких комнатах, его могут учесть несколько раз. Это не общее число пользователей в сети."
+msgstr "Число людей — сумма участников всех комнат, включая наблюдателей, без ботов. Если человек находится в нескольких комнатах, его могут учесть несколько раз. Это не общее число пользователей онлайн."
 
 msgid "The pile total is %{total}."
 msgstr "Сумма стопки: %{total}."
@@ -25771,11 +25771,11 @@ msgstr "Состав стола изменился во время выбора 
 
 #: lib/table_voice_screen.rb:38 lib/table_voice_screen.rb:46
 msgid "The voice channel could not be created."
-msgstr "Не удалось создать голосовой канал."
+msgstr "Не удалось создать комнату голосового чата."
 
 #: lib/table_voice_screen.rb:108
 msgid "The voice conversation could not be disconnected."
-msgstr "Не удалось отключить голосовую беседу."
+msgstr "Не удалось отключить комнату голосового чата."
 
 #: lib/table_voice_screen.rb:158
 msgid "The voice conversation could not be joined. It may have been closed."
@@ -25783,7 +25783,7 @@ msgstr "Не удалось присоединиться к беседе. Воз
 
 #: lib/table_voice_screen.rb:77
 msgid "The voice conversation is temporarily unavailable."
-msgstr "Голосовая беседа временно недоступна."
+msgstr "Комната голосового чата временно недоступна."
 
 #: lib/table_voice_screen.rb:71
 msgid "The voice invitation was not confirmed. Try again shortly."
@@ -25897,11 +25897,11 @@ msgstr "Нет непустых ответов для проверки"
 
 #: __app.rb:2462
 msgid "There are no online contacts available to invite."
-msgstr "Нет контактов в сети, которых можно пригласить."
+msgstr "Нет контактов онлайн, которых можно пригласить."
 
 #: __app.rb:2462
 msgid "There are no online users available to invite."
-msgstr "Нет пользователей в сети, которых можно пригласить."
+msgstr "Нет пользователей онлайн, которых можно пригласить."
 
 #: __app.rb:1673
 msgid "There are no open tables for this game."
@@ -28172,7 +28172,7 @@ msgstr "Посетители: %{count}"
 
 #: lib/table_voice_screen.rb:141 lib/table_voice_screen.rb:158 lib/table_voice_screen.rb:84
 msgid "Voice conversation"
-msgstr "Голосовая беседа"
+msgstr "Комната голосового чата"
 
 #: lib/game_surfaces/word_board.rb:91
 msgid "Vowels first."
@@ -28748,7 +28748,7 @@ msgstr "На какой клетке сейчас %{player}?"
 
 #: lib/game_room_changelog.rb:595
 msgid "While connected to a voice conference, Channel space appears directly after the voice conversation button. Use the arrow keys to move, and Shift+Left/Right Arrow to turn, just as in ELTEN conferences."
-msgstr "Во время голосового разговора сразу после его кнопки появляется поле Пространство канала. Стрелки позволяют перемещаться, а Shift+стрелка влево или вправо — поворачиваться, как в конференциях ELTEN."
+msgstr "Во время подключения к голосовому чату сразу после его кнопки появляется поле Пространство комнаты. Стрелки позволяют перемещаться, а Shift+стрелка влево или вправо — поворачиваться, как в комнатах голосового чат ELTEN."
 
 #: games/generated/rulebooks/monopoly.rb:33
 msgid "While in debt you may declare bankruptcy. It happens automatically on your own turn when you have no buildings left to sell and no property available to mortgage. A merely possible trade does not postpone this. If another player is your creditor, they receive your remaining properties and held jail cards, with buildings liquidated at half price. For a debt to the bank, the properties return to the bank. Bankruptcy ends your participation; the last player still solvent wins."
@@ -29320,7 +29320,7 @@ msgstr "Гонку можно сохранить между ходами пос�
 
 #: lib/game_room_changelog.rb:107 lib/game_room_changelog.rb:85
 msgid "You can subscribe to notifications about new public tables for selected games. Notifications are sent to online subscribers; no games are selected by default. Private and resumed tables are not announced this way."
-msgstr "Можно подписаться на уведомления о новых открытых столах для выбранных игр. Уведомления получают подписчики, находящиеся в сети; по умолчанию не выбрана ни одна игра. Закрытые и возобновлённые столы таким способом не объявляются."
+msgstr "Можно подписаться на уведомления о новых открытых столах для выбранных игр. Уведомления получают подписчики онлайн; по умолчанию не выбрана ни одна игра. Закрытые и возобновлённые столы таким способом не объявляются."
 
 #: games/scientific_war.rb:851
 msgid "You can swap your hand with your pile before choosing a card."
